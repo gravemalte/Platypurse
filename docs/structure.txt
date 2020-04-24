@@ -3,6 +3,12 @@ The project is organised in multiple folders, this document will describe those 
 - app
 The "app" folder contains the backend logic only php and template files are allowed in there
 
+- config
+Configuration file for the application
+
+- database
+Holds sql files and migrations for the database
+
 - docker
 Docker related files, configuration and building
 
