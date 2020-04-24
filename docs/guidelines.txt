@@ -1,0 +1,11 @@
+We will use the Google Style Guide
+
+For HTML/CSS head over there
+https://google.github.io/styleguide/htmlcssguide.html
+
+For JS head over there
+https://google.github.io/styleguide/jsguide.html
+
+For PHP we use the PSR Guidelines
+1. https://www.php-fig.org/psr/psr-1/
+2. https://www.php-fig.org/psr/psr-12/

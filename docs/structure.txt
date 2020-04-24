@@ -1,0 +1,22 @@
+The project is organised in multiple folders, this document will describe those folders
+
+- app
+The "app" folder contains the backend logic only php and template files are allowed in there
+
+- docker
+Docker related files, configuration and building
+
+- docs
+Documentation and information about the project
+
+- lib
+Self written library's that we need to extend the application, single components no dependencies
+
+- public
+Frontend related code, for example is css or js stuff
+
+- scripts
+Building utilities and other small pieces that perform some magic
+
+- test
+Unit testing files for the application, library have there own test folder
