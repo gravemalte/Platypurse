@@ -1,5 +1,8 @@
 <?php
 
+namespace Application;
+use Configuration;
+
 /*
 |--------------------------------------------------------------------------
 | Boot.php
@@ -9,6 +12,4 @@
 |
 */
 
-namespace Application;
 
-use Configuration;
