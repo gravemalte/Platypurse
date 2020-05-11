@@ -2,8 +2,8 @@
 
 namespace Models;
 
-use Platypurse\Base\Model;
+use Platypurse\Base\Models\BaseModel;
 
-class UserModel extends Model {
+class UserModel extends BaseModel {
 
 }

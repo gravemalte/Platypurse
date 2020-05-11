@@ -4,8 +4,8 @@
 namespace Controllers;
 
 
-use Platypurse\Base\Controller;
+use Platypurse\Base\Controllers\BaseController;
 
-class HomeController extends Controller {
+class HomeController extends BaseController {
 
 }
