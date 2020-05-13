@@ -25,7 +25,7 @@ class Application
             $page = new HomeController();
             $page->index();
 
-        } elseif (file_exists(APP . 'Controller/' . $this->url_controller . '.php')) {
+        } elseif (file_exists(APP . 'Controller/' . $this->url_controller . self::PHP_FILE_ENDING)) {
 
 
             require APP . 'Controller/' . $this->url_controller . self::PHP_FILE_ENDING;
