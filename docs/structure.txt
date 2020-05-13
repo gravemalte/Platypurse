@@ -3,6 +3,9 @@ The project is organised in multiple folders, this document will describe those 
 .docker
 Docker related files, configuration and building
 
+- app
+The "app" folder contains the backend logic only php in there
+
 - config
 Configuration file for the application
 
@@ -21,14 +24,5 @@ Frontend related code, for example is css or js stuff
 - scripts
 Building utilities and other small pieces that perform some magic
 
-- src
-The "src" folder contains the backend logic only php in there
-
 - test
 Unit testing files for the application, library have there own test folder
-
-- vendor
-Autoloading php files, prevents include walls
-
-- views
-This folder contains the templates for our site
