@@ -1,16 +1,21 @@
 <?php
 
+
 define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
+
 define('APP', ROOT . 'app' . DIRECTORY_SEPARATOR);
 define('LIB', ROOT . 'lib' . DIRECTORY_SEPARATOR);
-define('CONF', ROOT . 'config' . DIRECTORY_SEPARATOR);
+define('CONFIG',  ROOT . 'config' . DIRECTORY_SEPARATOR);
 
 
-// load the config file database credentials etc.
-require CONF . 'config.php';
+// load application config (error reporting etc.)
+require CONFIG . 'config.php';
 
-// load of all classes mostly controllers
+
+// load application class
 require APP . 'Application.php';
+
+
 require LIB . 'Platypurse/Base/Controller/BaseController.php';
 require LIB . 'Platypurse/Base/Model/BaseModel.php';
 
