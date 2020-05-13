@@ -1,0 +1,75 @@
+<?php
+
+
+use Controller\HomeController;
+
+class Application
+{
+    const PHP_FILE_ENDING = '.php';
+
+    private $url_controller = null;
+
+    private $url_action = null;
+
+    private $url_params = array();
+
+    public function __construct()
+    {
+        // create array with URL parts in $url
+        $this->splitUrl();
+
+        // check for controller: no controller given ? then load start-page
+        if (!$this->url_controller) {
+
+            require APP . 'Controller/HomeController.php';
+            $page = new HomeController();
+            $page->index();
+
+        } elseif (file_exists(APP . 'Controller/' . $this->url_controller . '.php')) {
+
+
+            require APP . 'Controller/' . $this->url_controller . self::PHP_FILE_ENDING;
+            $this->url_controller = new $this->url_controller();
+
+            // check for method: does such a method exist in the controller ?
+            if (method_exists($this->url_controller, $this->url_action)) {
+
+                if (!empty($this->url_params)) {
+                    call_user_func_array(array($this->url_controller, $this->url_action), $this->url_params);
+                } else {
+                    $this->url_controller->{$this->url_action}();
+                }
+
+            } else {
+                if (strlen($this->url_action) == 0) {
+                    // no action defined: call the default index() method of a selected controller
+                    $this->url_controller->index();
+                }
+                else {
+                    header('location: ' . URL . 'problem');
+                }
+            }
+        } else {
+            header('location: ' . URL . 'problem');
+        }
+    }
+
+
+    private function splitUrl()
+    {
+        if (isset($_GET['url'])) {
+
+            // splitting our URL
+            $url = trim($_GET['url'], '/');
+            $url = filter_var($url, FILTER_SANITIZE_URL);
+            $url = explode('/', $url);
+
+            $this->url_controller = isset($url[0]) ? $url[0] : null;
+            $this->url_action = isset($url[1]) ? $url[1] : null;
+
+            unset($url[0], $url[1]);
+
+            $this->url_params = array_values($url);
+        }
+    }
+}
