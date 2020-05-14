@@ -4,7 +4,8 @@ namespace Platypurse\Helper;
 
 class DebugPDO
 {
-    static public function debugPDO($raw_sql, $parameters) {
+
+    public static function debugPDO($raw_sql, $parameters) {
 
         $keys = array();
         $values = $parameters;

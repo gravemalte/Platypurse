@@ -3,6 +3,7 @@
 
 use Controller\HomeController;
 
+
 class Application
 {
     const PHP_FILE_ENDING = '.php';
@@ -15,21 +16,20 @@ class Application
 
     public function __construct()
     {
-        // create array with URL parts in $url
+        // splitting up our URL
         $this->splitUrl();
 
         // check for controller: no controller given ? then load start-page
         if (!$this->url_controller) {
 
-            require APP . 'Controller/HomeController.php';
             $page = new HomeController();
             $page->index();
 
-        } elseif (file_exists(APP . 'Controller/' . $this->url_controller . self::PHP_FILE_ENDING)) {
+        } elseif (file_exists(APP . 'Controller/' . ucfirst($this->url_controller) . 'Controller.php')) {
 
+            $controller = "\\Controller\\" . ucfirst($this->url_controller) . 'Controller';
+            $this->url_controller = new $controller();
 
-            require APP . 'Controller/' . $this->url_controller . self::PHP_FILE_ENDING;
-            $this->url_controller = new $this->url_controller();
 
             // check for method: does such a method exist in the controller ?
             if (method_exists($this->url_controller, $this->url_action)) {
@@ -70,6 +70,11 @@ class Application
             unset($url[0], $url[1]);
 
             $this->url_params = array_values($url);
+
+            // for debugging. uncomment this if you have problems with the URL
+            echo '<p>Controller: ' . $this->url_controller . '<br></p>';
+            echo '<p>Action: ' . $this->url_action . '<br></p>';
+            echo '<p>Parameters: ' . print_r($this->url_params, true) . '<br></p>';
         }
     }
 }

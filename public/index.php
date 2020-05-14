@@ -11,13 +11,11 @@ define('CONFIG',  ROOT . 'config' . DIRECTORY_SEPARATOR);
 // load application config (error reporting etc.)
 require CONFIG . 'config.php';
 
+// autoloader function, does load all classes except the main entry point see below
+require ROOT . 'vendor/autoload.php';
 
 // load application class
 require APP . 'Application.php';
 
-
-require LIB . 'Platypurse/Base/Controller/BaseController.php';
-require LIB . 'Platypurse/Base/Model/BaseModel.php';
-
-// start the application
+// boot the application
 $app = new Application();

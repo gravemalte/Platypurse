@@ -13,8 +13,8 @@ class HomeController extends BaseController
     {
         // load views
         require APP . 'view/shared/header.php';
-        require APP . 'view/home/index.php';
         require APP . 'view/shared/footer.php';
+        require APP . 'view/home/index.php';
     }
 
     /**
