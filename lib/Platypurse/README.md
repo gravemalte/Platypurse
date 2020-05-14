@@ -1,2 +1,2 @@
 # Platypurse library
-## Contains the base lib components
+## Contains the base framework and helper methods 

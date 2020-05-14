@@ -6,6 +6,7 @@ use Controller\HomeController;
 
 class Application
 {
+    const CONTROLLER = 'Controller';
     const PHP_FILE_ENDING = '.php';
 
     private $url_controller = null;
@@ -19,19 +20,19 @@ class Application
         // splitting up our URL
         $this->splitUrl();
 
-        // check for controller: no controller given ? then load start-page
+        // checks if the current controller is null
         if (!$this->url_controller) {
 
             $page = new HomeController();
             $page->index();
 
-        } elseif (file_exists(APP . 'Controller/' . ucfirst($this->url_controller) . 'Controller.php')) {
+        } elseif (file_exists(APP . 'Controller/' . ucfirst($this->url_controller) .
+            self::CONTROLLER . self::PHP_FILE_ENDING)) {
 
-            $controller = "\\Controller\\" . ucfirst($this->url_controller) . 'Controller';
+            $controller = "\\Controller\\" . ucfirst($this->url_controller) . self::CONTROLLER;
             $this->url_controller = new $controller();
 
 
-            // check for method: does such a method exist in the controller ?
             if (method_exists($this->url_controller, $this->url_action)) {
 
                 if (!empty($this->url_params)) {
@@ -39,13 +40,11 @@ class Application
                 } else {
                     $this->url_controller->{$this->url_action}();
                 }
-
+            // TODO: Rework the header response #2
             } else {
                 if (strlen($this->url_action) == 0) {
-                    // no action defined: call the default index() method of a selected controller
                     $this->url_controller->index();
-                }
-                else {
+                } else {
                     header('location: ' . URL . 'problem');
                 }
             }
@@ -71,7 +70,7 @@ class Application
 
             $this->url_params = array_values($url);
 
-            // for debugging. uncomment this if you have problems with the URL
+            // debugging dirty as shit
             echo '<div class="debugging">';
             echo '<h1>DEBUGGING OUTPUT</h1>';
             echo '<h2>Controller responded the following object:</h2>';

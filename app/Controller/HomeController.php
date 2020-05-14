@@ -12,9 +12,9 @@ class HomeController extends BaseController
     public function index()
     {
         // load views
-        require APP . 'view/shared/header.php';
-        require APP . 'view/shared/footer.php';
-        require APP . 'view/home/index.php';
+        require APP . 'View/shared/header.php';
+        require APP . 'View/shared/footer.php';
+        require APP . 'View/home/index.php';
     }
 
     /**
@@ -23,7 +23,7 @@ class HomeController extends BaseController
     public function testing()
     {
         // load views
-        require APP . 'view/shared/header.php';
-        require APP . 'view/shared/footer.php';
+        require APP . 'View/shared/header.php';
+        require APP . 'View/shared/footer.php';
     }
 }

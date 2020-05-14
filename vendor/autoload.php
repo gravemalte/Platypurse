@@ -1,5 +1,7 @@
 <?php
 
+
+// TODO: Rewrite the autoloader #4
 spl_autoload_register(function ($className) {
     $className = str_replace("\\", DIRECTORY_SEPARATOR, $className);
     if (strpos($className, 'Base') != false ||

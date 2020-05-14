@@ -17,5 +17,10 @@ require ROOT . 'vendor/autoload.php';
 // load application class
 require APP . 'Application.php';
 
+if(!in_array('mod_rewrite', apache_get_modules())){
+    exit("<b>Please enable mod_rewrite in you Apache!
+    Stopping startup.</b>");
+}
+
 // boot the application
 $app = new Application();
