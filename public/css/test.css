@@ -1,3 +1,9 @@
 body {
-    background-color: cyan;
+    background-color: grey;
+}
+
+.debugging{
+    border: black solid 5px;
+    background-color: red;
+    width: 500px;
 }

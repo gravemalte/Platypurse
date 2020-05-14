@@ -72,9 +72,14 @@ class Application
             $this->url_params = array_values($url);
 
             // for debugging. uncomment this if you have problems with the URL
-            echo '<p>Controller: ' . $this->url_controller . '<br></p>';
-            echo '<p>Action: ' . $this->url_action . '<br></p>';
+            echo '<div class="debugging">';
+            echo '<h1>DEBUGGING OUTPUT</h1>';
+            echo '<h2>Controller responded the following object:</h2>';
+            echo '<p>Controller: ' . $this->url_controller . '<br>';
+            echo '<p>Action: ' . $this->url_action . '<br>';
             echo '<p>Parameters: ' . print_r($this->url_params, true) . '<br></p>';
+            echo '</div>';
+
         }
     }
 }
