@@ -36,7 +36,7 @@ name says for the Model, View and the Controller. But what is the Model, View or
 
 Lets split them up we will start with the Model.
 
-The Model is a basicly data class with methods to manupulate the attribute of the class.
+The Model is a basicly data class with methods to manipulate the attribute of the class.
 
 A simple example:
 
