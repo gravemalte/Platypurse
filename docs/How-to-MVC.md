@@ -41,6 +41,7 @@ The Model is a basicly data class with methods to manupulate the attribute of th
 A simple example:
 
 ```php
+<?php
 class Motorcycle {
     // Properties of our Model
     private string $manufacture;
