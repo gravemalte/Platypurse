@@ -3,8 +3,8 @@ How to MVC
 
 ## Table of content
 
-1. [Introduction](#1.-introduction)
-2. [What is the MVC-Pattern?](#2.-what-is-the-mvc-pattern?)
+1. [Introduction](#1-introduction)
+2. [What is the MVC-Pattern?](#2-what-is-the-mvc-pattern)
 3. [How does it work in a technical view?]
 4. [Building our own MVC-framework]
 
