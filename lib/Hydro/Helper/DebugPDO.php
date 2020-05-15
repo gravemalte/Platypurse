@@ -1,6 +1,6 @@
 <?php
 
-namespace Platypurse\Helper;
+namespace Hydro\Helper;
 
 class DebugPDO
 {

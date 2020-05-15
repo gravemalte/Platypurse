@@ -1,6 +1,6 @@
 <?php
 
-namespace Platypurse\Filesystem;
+namespace Hydro\Filesystem;
 
 interface IFilesystem {
 

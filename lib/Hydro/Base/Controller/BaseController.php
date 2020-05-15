@@ -1,6 +1,6 @@
 <?php
 
-namespace Platypurse\Base\Controller;
+namespace Hydro\Base\Controller;
 
 class BaseController {
     

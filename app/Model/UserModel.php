@@ -2,7 +2,7 @@
 
 namespace Model;
 
-use Platypurse\Base\Model\BaseModel;
+use Hydro\Base\Model\BaseModel;
 
 class UserModel extends BaseModel {
 

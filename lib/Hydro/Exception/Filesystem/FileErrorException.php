@@ -1,6 +1,6 @@
 <?php
 
-namespace Platypurse\Exception\Filesystem;
+namespace Hydro\Exception\Filesystem;
 
 use Exception;
 

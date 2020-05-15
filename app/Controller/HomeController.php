@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-use Platypurse\Base\Controller\BaseController;
+use Hydro\Base\Controller\BaseController;
 
 class HomeController extends BaseController
 {

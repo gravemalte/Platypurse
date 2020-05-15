@@ -4,7 +4,7 @@ The project is organised in multiple folders, this document will describe those 
 Docker related files, configuration and building
 
 - app
-The "app" folder bootstraps the MVC pattern
+The "app" folder bootstraps the MVC pattern and contains the Model, View and Controllers
 
 - config
 Configuration file for the application
@@ -18,13 +18,11 @@ Documentation and information about the project
 - lib
 Base library's for the application the components for the MVC pattern lives in there
 
-
 - public
 Frontend related code, for example is css or js stuff
 
 - scripts
 Building utilities and other small pieces that perform some magic
-
 
 - test
 Unit testing files for the application, library have there own test folder
