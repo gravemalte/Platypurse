@@ -1,0 +1,34 @@
+/* color palette */
+
+:root {
+    --quite-white: #DDD;
+    --filter-bright: 0.9;
+    --filter-dark: 0.1;
+}
+
+/* dark mode colors */
+body {
+    --page-bg-color: #222;
+    --page-p-color: var(--quite-white);
+
+    --nav-bg-color: #333;
+    --nav-a-color: var(--quite-white);
+    --nav-search-color: #222;
+    --nav-search-text-color: var(--quite-white);
+    --nav-search-go-filter: var(--filter-bright);
+    --nav-button-bg-color: #444;
+
+    --main-container-bg-color: #333;
+}
+
+/* light colors (fry your eyes) */
+body.light {
+    --page-bg-color: white;
+    --page-p-color: black;
+    --nav-bg-color: #CCC;
+    --nav-a-color: black;
+    --nav-search-color: white;
+    --nav-search-text-color: black;
+    --nav-search-go-filter: var(--filter-dark);
+    --nav-button-color: black;
+}

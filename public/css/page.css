@@ -1,0 +1,23 @@
+/* styles for whole page */
+body {
+    margin: 0;
+    background-color: var(--page-bg-color);
+}
+p, h1, h2, h3, h4, h5, h6 {
+    font-family: sans-serif;
+    color: var(--page-p-color);
+}
+p {
+    margin: 0;
+}
+.button div {
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+}
+.button div:hover {
+    filter: brightness(0.9);
+}
+.button, .button p {
+    text-decoration: none;
+}
+

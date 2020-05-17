@@ -1,0 +1,97 @@
+/* whole navbar */
+.nav-container {
+    width: 100%;
+    height: 5em;
+    background-color: var(--nav-bg-color);
+    display: flex;
+    box-shadow: 0px 0px 5px 0px black;
+}
+.nav-container a {
+    color: var(--nav-a-color);
+}
+
+/* ever element in navbar */
+.nav-element {
+    height: 100%;
+}
+
+/* logo */
+.logo-container {
+    padding: 0.5em;
+    height: 100%;
+}
+.logo-container img {
+    height: 80%;
+}
+
+/* search bar */
+.search-container {
+    flex-grow: 1;
+    min-width: 0;
+}
+.search-container div {
+    border-radius: 15px;
+    padding: 0.25em 0.25em 0.25em 1em;
+    background-color: var(--nav-search-color);
+    display: flex;
+    height: calc(100% - 2 * 1em);
+    box-sizing: border-box;
+    margin: 1em 1em 1em 0;
+}
+.search-container input {
+    flex-grow: 1;
+    border: none;
+    font-size: 2em;
+    min-width: 0;
+    background-color: var(--nav-search-color);
+    color: var(--nav-search-text-color);
+}
+.search-container input:focus {
+    outline: none;
+}
+.search-container a {
+    height: 80%;
+    margin: 0.25em;
+}
+.search-container img {
+    height: 100%;
+    filter: invert(1) brightness(var(--nav-search-go-filter));
+}
+
+/* create offer */
+.nav-element .button {
+    height: 100%;
+}
+.nav-element .button div {
+    background-color: var(--nav-button-bg-color);
+    margin: 1.5em 0.25em;
+    height: calc(100% - 2 * 1.5em);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+.nav-element .button p {
+    color: var(--nav-button-color);
+    padding: 0.5em;
+    font-weight: bold;
+}
+
+.login-container {
+    margin-right: 0.75em;
+}
+
+/* user profile badge */
+.user-profile-container {
+    margin: 0 1em;
+}
+.user-profile-container a {
+    height: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+.user-profile-container a img {
+    height: 70%;
+    filter: invert(1);
+}
