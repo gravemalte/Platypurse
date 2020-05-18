@@ -5,7 +5,7 @@
                 <input type="text" placeholder="search"/>
                 <i class="fa fa-search"></i>
             </div>
-            <ul class="list">
+            <ul class="chat-list">
                 <li class="clearfix">
                     <div class="about">
                         <div class="name">Will Smith</div>
