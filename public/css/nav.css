@@ -5,6 +5,7 @@
     background-color: var(--nav-bg-color);
     display: flex;
     box-shadow: 0px 0px 5px 0px black;
+    position: relative;
 }
 .nav-container a {
     color: var(--nav-a-color);
@@ -15,10 +16,21 @@
     height: 100%;
 }
 
+/* show/hide menu button */
+.show-menu-container {
+    display: none;
+    position: absolute;
+    top: 0.5em;
+    right: 0.5em;
+}
+.show-menu-container img {
+    height: 100%;
+    filter: invert(var(--nav-search-go-filter));
+}
+
 /* logo */
 .logo-container {
     padding: 0.5em;
-    height: 100%;
 }
 .logo-container img {
     height: 80%;
@@ -94,4 +106,27 @@
 .user-profile-container a img {
     height: 70%;
     filter: invert(1);
+}
+
+@media (max-width: 600px) {
+    .nav-container {
+        flex-direction: column;
+        height: 15em;
+        justify-content: space-evenly;
+    }
+    .nav-element {
+        height: 3em;
+        text-align: center;
+    }
+    .show-menu-container {
+        display: block;
+    }
+    .search-container {
+        flex-grow: 0;
+        min-height: 3em;
+    }
+    .search-container div {
+        height: 100%;
+        margin: 0.25em;
+    }
 }

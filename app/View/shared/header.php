@@ -33,6 +33,8 @@
     <link rel="stylesheet" href="css/page.css">
     <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/hot-offer.css">
+    <link rel="stylesheet" href="css/offer-list.css">
 
     <!-- Link JS in the footer template-->
 

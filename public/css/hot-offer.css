@@ -1,0 +1,132 @@
+.hot-offer-container {
+    width: 100%;
+    height: calc(1080px / 2);
+    position: relative;
+}
+.hot-offer-container .annotation {
+    position: absolute;
+    top: 1em;
+    left: -4em;
+    background-color: var(--hot-offer-annotation-color);
+    z-index: 1;
+    padding: 0.5em;
+    border-radius: 15px;
+}
+.hot-offer-container .annotation p {
+    font-size: 4em;
+    font-weight: bold;
+}
+.hot-offer {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+.hot-offer .price-tag {
+    position: absolute;
+    bottom: 1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    border-radius: 0 15px 15px 0;
+    background-color: var(--main-container-bg-color);
+}
+.hot-offer .price-tag p {
+    font-size: 4em;
+}
+.hot-offer .price-tag p:after {
+    content: "€";
+}
+.hot-offer-container .img-container {
+    float: left;
+    width: 70%;
+    overflow: hidden;
+    height: 100%;
+    border-radius: 15px 0 0 15px;
+}
+.hot-offer-container .img-container img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+.hot-offer-container .side-text {
+    width: calc(30% - 1em);
+    height: 100%;
+    float: right;
+    display: flex;
+    flex-direction: column;
+    margin-left: 1em;
+}
+.side-text .name {
+    margin-bottom: 0.1em;
+}
+.side-text .description {
+    flex-grow: 2;
+}
+.side-text .attribute-list {
+    flex-grow: 1;
+}
+.side-text .attribute-list p:before {
+    content: "- ";
+}
+.side-text .view-counter {
+    font-size: 3em;
+    margin-bottom: 0.1em;
+}
+.side-text .view-description {
+    font-size: 0.8em;
+    margin-bottom: 1em;
+}
+@media(max-width: 1090px) {
+    .hot-offer-container .annotation {
+        left: 0;
+        border-radius: 0 15px 15px 0;
+    }
+}
+@media(max-width: 800px) {
+    .hot-offer-container {
+        height: calc(1080px / 1.5);
+    }
+    .hot-offer-container .img-container {
+        float: none;
+        width: 100%;
+        border-radius: 15px 15px 0 0;
+        height: 70%;
+    }
+    .hot-offer-container .side-text {
+        float: none;
+        height: 30%;
+        width: calc(100% - 2 * 0.5em);
+        margin: 0 0.5em 0.5em;
+    }
+    .side-text .name {
+        margin-top: 0.1em;
+    }
+    .hot-offer .price-tag {
+        bottom: 32%;
+    }
+    .view-counter, .view-description {
+        text-align: right;
+    }
+}
+@media(max-width: 800px) {
+    .hot-offer-container .annotation p {
+        font-size: 2em;
+    }
+    .hot-offer-container {
+        height: calc(1080px / 2);
+    }
+    .hot-offer-container .img-container {
+        height: 50%;
+    }
+    .hot-offer-container .side-text {
+        height: 50%;
+    }
+    .hot-offer .price-tag {
+        bottom: 52%;
+    }
+    .hot-offer .price-tag p {
+        font-size: 2em;
+    }
+    .view-counter, .view-description {
+        margin-top: 0;
+    }
+}
