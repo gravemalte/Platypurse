@@ -8,7 +8,7 @@ class ErrorController
 {
 
     public function index(){
-
+        
     }
 
 }
