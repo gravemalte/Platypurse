@@ -77,7 +77,7 @@
                         <p class="name">Smol Boi</p>
                         <p class="description">Total der süße, kleine Boi</p>
                         <div class="price-tag-container">
-                            <p class="price-tag">22</p>
+                            <p class="price-tag">23</p>
                         </div>
                     </div>
                 </a>

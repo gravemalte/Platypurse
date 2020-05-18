@@ -36,6 +36,7 @@
     <link rel="stylesheet" href="css/hot-offer.css">
     <link rel="stylesheet" href="css/offer-list.css">
     <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/chat.css">
 
     <!-- Link JS in the footer template-->
 
