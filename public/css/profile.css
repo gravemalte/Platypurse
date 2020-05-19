@@ -1,10 +1,11 @@
 .profile-area {
-    margin: 8px 0;
-    margin-left: 1em;
-    max-width: 270px;
+    margin: 8px 1em;
+    max-width: 250px;
 }
 
 .profile-image {
+    display: flex;
+    justify-content: center;
     margin: 10px;
 }
 
@@ -12,15 +13,27 @@
     font-size: 1.5em;
     text-align: center;
 }
+
+.profile-rating {
+    margin: 1em 0;
+    display: flex;
+    justify-content: center;
+}
+.profile-rating .fa-star {
+    margin: 10px;
+    color: white;
+}
+
 .profile-container {
     padding: 10px 0;
 }
 .profile-container img {
-    max-width: 250px;
-    max-height: 250px;
+    max-width: 150px;
+    max-height: 150px;
     object-fit: cover;
     width: 100%;
     border-radius: 50%;
+    filter: invert(var(--filter-bright));
 }
 
 .profile-option {
@@ -33,12 +46,11 @@
 }
 
 .profile-button-container .button {
-    width: 100%;
+    margin: 1em 0.5em;
 }
 .profile-button-container .button div {
     background-color: var(--nav-button-bg-color);
-    margin: 1.5em 0.25em;
-    height: calc(100% - 2 * 1.5em);
+    height: 100%;
     display: flex;
     justify-content: center;
     flex-direction: column;
