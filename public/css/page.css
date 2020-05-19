@@ -74,5 +74,18 @@ select {
 .dropdown-item-select option:hover {
     background-color: white;
 }
+.main-page {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+}
+
+.main-area {
+    max-width: calc(1920px / 2);
+    display: flex;
+    flex-direction: column;
+    margin: 0 1em;
+}
 
 

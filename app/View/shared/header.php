@@ -29,18 +29,7 @@
     <!-- used https://www.favicon-generator.org/ for that -->
 
     <!-- CSS linking here -->
-    <link rel="stylesheet" href="css/colors.css">
-    <link rel="stylesheet" href="css/page.css">
-    <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/hot-offer.css">
-    <link rel="stylesheet" href="css/offer-list.css">
-    <link rel="stylesheet" href="css/search.css">
-    <link rel="stylesheet" href="css/chat.css">
-    <link rel="stylesheet" href="css/offer-page.css">
-    <link rel="stylesheet" href="css/profile.css">
-    <link rel="stylesheet" href="css/login.css">
-    <link rel="stylesheet" href="css/create.css">
 
     <!-- Link JS in the footer template-->
 

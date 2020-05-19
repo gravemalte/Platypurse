@@ -1,13 +1,11 @@
-.main-page {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 2em;
-}
-
-.main-area {
-    max-width: calc(1920px / 2);
-    display: flex;
-    flex-direction: column;
-    margin: 0 1em;
-}
+@import "colors.css";
+@import "page.css";
+@import "nav.css";
+@import "hot-offer.css";
+@import "offer-list.css";
+@import "search.css";
+@import "chat.css";
+@import "offer-page.css";
+@import "profile.css";
+@import "login.css";
+@import "create.css";
