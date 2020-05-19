@@ -12,12 +12,16 @@
             </a>
         </div>
         <div class="search-container nav-element">
-            <div>
-                <input type="text" placeholder="Suche...">
-                <a href="/search">
-                    <img src="assets/nav/search-solid.svg" alt="search button">
-                </a>
-            </div>
+            <form action="">
+                <div>
+                    <label for="search">
+                        <input type="text" placeholder="Suche...">
+                    </label>
+                    <a href="/search">
+                        <img src="assets/nav/search-solid.svg" alt="search button">
+                    </a>
+                </div>
+            </form>
         </div>
         <div class="create-offer-container nav-element">
             <a href="/create" class="button create-offer-button">
