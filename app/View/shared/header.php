@@ -39,6 +39,7 @@
     <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/offer-page.css">
     <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/login.css">
 
     <!-- Link JS in the footer template-->
 

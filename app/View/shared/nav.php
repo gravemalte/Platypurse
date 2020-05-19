@@ -31,7 +31,7 @@
             </a>
         </div>
         <div class="login-container nav-element">
-            <a href="" class="button login-button">
+            <a href="/login" class="button login-button">
                 <div>
                     <p>Anmelden</p>
                 </div>
