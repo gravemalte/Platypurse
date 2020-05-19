@@ -29,7 +29,7 @@
     <!-- used https://www.favicon-generator.org/ for that -->
 
     <!-- CSS linking here -->
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/MAIN.css">
 
     <!-- Link JS in the footer template-->
 
