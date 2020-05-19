@@ -1,6 +1,6 @@
 <div class="main-page">
     <div class="main-area">
-        <a href="">
+        <a href="/offer">
             <div class="hot-offer-container card">
                 <div class="annotation">
                     <p>Hot Offer</p>
@@ -28,7 +28,7 @@
             <p>Neuste Angebote</p>
         </div>
         <div class="offer-list-container">
-            <a class="offer-list-link" href="">
+            <a class="offer-list-link" href="/offer">
                 <div class="offer-list-item card">
                     <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
                     <p class="name">Smol Boi</p>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
             </a>
-            <a class="offer-list-link" href="">
+            <a class="offer-list-link" href="/offer">
                 <div class="offer-list-item card">
                     <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
                     <p class="name">Smol Boi</p>
@@ -48,7 +48,7 @@
                     </div>
                 </div>
             </a>
-            <a class="offer-list-link" href="">
+            <a class="offer-list-link" href="/offer">
                 <div class="offer-list-item card">
                     <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
                     <p class="name">Smol Boi</p>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
             </a>
-            <a class="offer-list-link" href="">
+            <a class="offer-list-link" href="/offer">
                 <div class="offer-list-item card">
                     <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
                     <p class="name">Smol Boi</p>
@@ -68,7 +68,7 @@
                     </div>
                 </div>
             </a>
-            <a class="offer-list-link" href="">
+            <a class="offer-list-link" href="/offer">
                 <div class="offer-list-item card">
                     <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
                     <p class="name">Smol Boi</p>
@@ -78,7 +78,7 @@
                     </div>
                 </div>
             </a>
-            <a class="offer-list-link" href="">
+            <a class="offer-list-link" href="/offer">
                 <div class="offer-list-item card">
                     <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
                     <p class="name">Smol Boi</p>

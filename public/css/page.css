@@ -3,7 +3,7 @@ body {
     margin: 0 auto;
     background-color: var(--page-bg-color);
 }
-p, h1, h2, h3, h4, h5, h6 {
+p, h1, h2, h3, h4, h5, h6, i {
     font-family: sans-serif;
     color: var(--page-p-color);
 }
@@ -12,6 +12,7 @@ p {
 }
 .button div {
     border-radius: 5px;
+    background-color: var(--page-button-bg-color);
     box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
 }
 .button div:hover {
@@ -19,6 +20,7 @@ p {
 }
 .button, .button p {
     text-decoration: none;
+    text-align: center;
 }
 .title-container {
     width: 100%;
@@ -35,5 +37,14 @@ p {
 }
 .main-area > a {
     text-decoration: none;
+}
+select {
+    font-size: 1em;
+    width: calc(1920px / 8);
+    padding: 5px;
+    margin: 5px;
+    background-color: var(--nav-search-color);
+    color: var(--nav-search-text-color);
+    border: none;
 }
 

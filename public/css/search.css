@@ -1,15 +1,6 @@
-select {
-    font-size: 1em;
-    width: calc(1920px / 8);
-    padding: 5px;
-    margin: 5px;
-    background-color: var(--nav-search-color);
-    color: var(--nav-search-text-color);
-    border: none;
-}
-
 .filter-area {
     margin: 8px 0;
+    margin-left: 1em;
 }
 
 .title-container p {
@@ -53,9 +44,10 @@ select {
 }
 
 @media (max-width: 600px) {
-    .filter-container {
+    .main-page.filter-page {
         flex-direction: column;
-        height: 15em;
-        justify-content: space-evenly;
+    }
+    .filter-container {
+        margin-right: 1em;
     }
 }

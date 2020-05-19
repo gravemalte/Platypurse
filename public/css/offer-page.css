@@ -1,0 +1,116 @@
+.offer-area {
+    width: 100%;
+    display: flex;
+    margin-bottom: 1em;
+}
+.offer-container {
+    flex-grow: 7;
+    min-height: 40em;
+    position: relative;
+}
+.offer-container img {
+    object-fit: cover;
+    width: 100%;
+    height: 20em;
+    border-radius: 15px 15px 0 0;
+}
+.offer-container .description-container {
+    margin: 0.5em;
+}
+.offer-container .description-container .name{
+    font-size: 2em;
+    font-weight: bold;
+}
+.offer-container .price-tag-container {
+    position: absolute;
+    left: 0;
+    top: 14em;
+}
+.offer-container .price-tag-container .price-tag {
+    background-color: var(--main-container-bg-color);
+    border-radius: 0 15px 15px 0;
+}
+.offer-container .price-tag p {
+    font-size: 3em;
+    padding: 0.1em 0.2em;
+}
+.offer-container .price-tag p:after {
+    content: "€";
+}
+
+.side-container {
+    flex-grow: 3;
+    margin-left: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.offer-buttons-container {
+    width: 100%;
+}
+.offer-buttons-container div {
+    margin-bottom: 1em;
+}
+.offer-buttons-container .button div p {
+    padding: 0.5em;
+    font-size: 1.5em;
+}
+.offer-buttons-container .send-message-button div {
+    background-color: var(--offer-send-message-button-bg-color);
+}
+
+.attribute-list {
+    width: 100%;
+    flex-grow: 1;
+    margin-bottom: 1em;
+}
+.attribute-list div {
+    margin: 1em 1em 0;
+}
+.attribute-list p:before {
+    content: "- ";
+}
+
+.offer-interactions-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.offer-interactions-container .button div {
+    margin-left: 1em;
+}
+.offer-interactions-container .button div i {
+    padding: 0.5em;
+    font-size: 2em;
+}
+
+@media (max-width: 600px) {
+    .offer-area {
+        flex-direction: column;
+    }
+
+    .offer-container {
+        min-height: 25em;
+    }
+    .offer-container img {
+        height: 10em;
+    }
+    .offer-container .price-tag-container {
+        top: 6em;
+    }
+    .offer-container .price-tag p {
+        font-size: 2em;
+    }
+
+    .side-container {
+        margin-top: 1em;
+        margin-left: 0;
+    }
+    .attribute-list {
+        min-height: 20em;
+    }
+
+    .offer-interactions-container {
+        margin-bottom: 1em;
+    }
+}

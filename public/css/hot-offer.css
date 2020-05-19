@@ -112,19 +112,26 @@
         font-size: 2em;
     }
     .hot-offer-container {
-        height: calc(1080px / 2);
+        min-height: calc(1080px / 2);
+        height: auto;
     }
     .hot-offer-container .img-container {
         height: 50%;
     }
     .hot-offer-container .side-text {
-        height: 50%;
+        min-height: 50%;
+        height: auto;
     }
     .hot-offer .price-tag {
-        bottom: 52%;
+        bottom: auto;
+        top: 10em;
     }
     .hot-offer .price-tag p {
         font-size: 2em;
+    }
+    .side-text .attribute-list {
+        height: auto;
+        min-height: 5em;
     }
     .view-counter, .view-description {
         margin-top: 0;

@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="create-offer-container nav-element">
-            <a href="" class="button create-offer-button">
+            <a href="/create" class="button create-offer-button">
                 <div>
                     <p>Angebot erstellen</p>
                 </div>

@@ -10,6 +10,8 @@
 body {
     --page-bg-color: #222;
     --page-p-color: var(--quite-white);
+    --page-i-color: var(--page-p-color);
+    --page-button-bg-color: #444;
 
     --nav-bg-color: #333;
     --nav-a-color: var(--quite-white);
@@ -21,6 +23,8 @@ body {
     --main-container-bg-color: #333;
 
     --hot-offer-annotation-color: #FF9933;
+
+    --offer-send-message-button-bg-color: #0074FF;
 }
 
 /* light colors (fry your eyes) */
