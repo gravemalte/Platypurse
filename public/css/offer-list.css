@@ -21,6 +21,10 @@
     height: 65%;
     border-radius: 15px 15px 0 0;
 }
+.offer-list-item p {
+    margin-left: 0.25em;
+    margin-right: 0.25em;
+}
 .offer-list-item .name {
     font-size: 1.5em;
     font-weight: bold;

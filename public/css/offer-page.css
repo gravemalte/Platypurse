@@ -59,15 +59,15 @@
     background-color: var(--offer-send-message-button-bg-color);
 }
 
-.attribute-list {
+.offer-area .attribute-list {
     width: 100%;
     flex-grow: 1;
     margin-bottom: 1em;
 }
-.attribute-list div {
+.offer-area .attribute-list div {
     margin: 1em 1em 0;
 }
-.attribute-list p:before {
+.offer-area .attribute-list p:before {
     content: "- ";
 }
 
@@ -106,7 +106,7 @@
         margin-top: 1em;
         margin-left: 0;
     }
-    .attribute-list {
+    .offer-area .attribute-list {
         min-height: 20em;
     }
 

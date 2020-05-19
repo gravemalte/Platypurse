@@ -15,12 +15,17 @@
             </div>
             <div class="side-container">
                 <div class="offer-buttons-container">
-                    <a href="" class="send-message-button button">
+                    <a href="/chat" class="send-message-button button">
                         <div>
                             <p>Nachricht schreiben</p>
                         </div>
                     </a>
-                    <a href="" class="save-offer-button button">
+                    <a href="/profile" class="view-profile-button button">
+                        <div>
+                            <p>Verkäuferprofil</p>
+                        </div>
+                    </a>
+                    <a href="/profile" class="save-offer-button button">
                         <div>
                             <p>Zur Merkliste</p>
                         </div>

@@ -12,7 +12,7 @@
             </a>
         </div>
         <div class="search-container nav-element">
-            <form action="">
+            <form action="/search">
                 <div>
                     <label for="search">
                         <input type="text" placeholder="Suche...">

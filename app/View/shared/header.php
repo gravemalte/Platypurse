@@ -40,6 +40,7 @@
     <link rel="stylesheet" href="css/offer-page.css">
     <link rel="stylesheet" href="css/profile.css">
     <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/create.css">
 
     <!-- Link JS in the footer template-->
 

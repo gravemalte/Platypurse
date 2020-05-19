@@ -3,9 +3,9 @@ body {
     margin: 0 auto;
     background-color: var(--page-bg-color);
 }
-p, h1, h2, h3, h4, h5, h6, i {
+p, h1, h2, h3, h4, h5, h6, i, input, textarea, select {
     font-family: sans-serif;
-    color: var(--page-p-color);
+    color: var(--page-text-color);
 }
 p {
     margin: 0;
@@ -40,11 +40,39 @@ p {
 }
 select {
     font-size: 1em;
-    width: calc(1920px / 8);
+    min-width: 10em;
     padding: 5px;
     margin: 5px;
-    background-color: var(--nav-search-color);
-    color: var(--nav-search-text-color);
+    background-color: var(--page-input-bg-color);
     border: none;
 }
+.dropdown-list {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5em;
+}
+.dropdown-item {
+    margin: 0.5em 0.5em 0.5em 0;
+}
+.dropdown-item-header {
+    margin-left: 0.2em;
+    margin-bottom: 0.1em;
+}
+.dropdown-item-select {
+    background-color: var(--page-dropdown-bg-color);
+    border-radius: 5px;
+}
+.dropdown-item-select label {
+    width: 100%;
+}
+.dropdown-item-select select {
+    width: calc(100% - 0.5em);
+}
+.dropdown-item-select select:focus {
+    outline: none;
+}
+.dropdown-item-select option:hover {
+    background-color: white;
+}
+
 

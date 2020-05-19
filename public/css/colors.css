@@ -9,9 +9,10 @@
 /* dark mode colors */
 body {
     --page-bg-color: #222;
-    --page-p-color: var(--quite-white);
-    --page-i-color: var(--page-p-color);
+    --page-text-color: var(--quite-white);
     --page-button-bg-color: #444;
+    --page-input-bg-color: #222;
+    --page-dropdown-bg-color: #222;
 
     --nav-bg-color: #333;
     --nav-a-color: var(--quite-white);
@@ -25,6 +26,7 @@ body {
     --hot-offer-annotation-color: #FF9933;
 
     --offer-send-message-button-bg-color: #0074FF;
+    --create-done-button-bg-color: #0074FF;
 }
 
 /* light colors (fry your eyes) */
