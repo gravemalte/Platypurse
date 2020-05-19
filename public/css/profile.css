@@ -1,0 +1,70 @@
+.profile-area {
+    margin: 8px 0;
+    margin-left: 1em;
+    max-width: 270px;
+}
+
+.profile-image {
+    margin: 10px;
+}
+
+.profile-displayname p {
+    font-size: 1.5em;
+    text-align: center;
+}
+.profile-container {
+    padding: 10px 0;
+}
+.profile-container img {
+    max-width: 250px;
+    max-height: 250px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.profile-option {
+    padding: 5px 0;
+    margin: 10px;
+}
+.profile-button-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.profile-button-container .button {
+    width: 100%;
+}
+.profile-button-container .button div {
+    background-color: var(--nav-button-bg-color);
+    margin: 1.5em 0.25em;
+    height: calc(100% - 2 * 1.5em);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+.profile-button-container .message-button div {
+    background-color: var(--offer-send-message-button-bg-color);
+}
+.profile-button-container .button p {
+    color: var(--nav-search-text-color);
+    padding: 0.5em;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .main-page.profile-page {
+        flex-direction: column;
+    }
+    .profile-button-container {
+        flex-direction: column;
+    }
+    .profile-container {
+        width: 100%;
+        margin-right: 1em;
+    }
+    .profile-area {
+        max-width: none;
+    }
+}

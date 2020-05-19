@@ -38,6 +38,7 @@
     <link rel="stylesheet" href="css/search.css">
     <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/offer-page.css">
+    <link rel="stylesheet" href="css/profile.css">
 
     <!-- Link JS in the footer template-->
 
