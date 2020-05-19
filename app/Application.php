@@ -71,13 +71,13 @@ class Application
             $this->url_params = array_values($url);
 
             // debugging dirty as shit
-            echo '<div class="debugging">';
+            /*echo '<div class="debugging">';
             echo '<h1>DEBUGGING OUTPUT</h1>';
             echo '<h2>Controller responded the following object:</h2>';
             echo '<p>Controller: ' . $this->url_controller . '<br>';
             echo '<p>Action: ' . $this->url_action . '<br>';
             echo '<p>Parameters: ' . print_r($this->url_params, true) . '<br></p>';
-            echo '</div>';
+            echo '</div>';*/
 
         }
     }
