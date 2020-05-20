@@ -1,13 +1,13 @@
 <div class="main-page">
     <div class="main-area">
         <div class="create-offer-container card">
-            <form action="">
+            <form action="/offer">
                 <div class="main-container">
                     <div class="name-container main-input-container">
                         <p class="name">Name</p>
                         <div class="input-container">
                             <label for="name">
-                                <input type="text" placeholder="Name">
+                                <input type="text" placeholder="Name" id="name">
                             </label>
                         </div>
                     </div>
@@ -20,7 +20,7 @@
                                 <i class="far fa-caret-square-down"></i>
                             </p>
                             <label for="image">
-                                <input type="file" multiple accept="image/*"
+                                <input type="file" multiple accept="image/*" id="image">
                             </label>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                         <p class="name">Beschreibung</p>
                         <div class="input-container">
                             <label for="description">
-                                <textarea placeholder="Beschreibung"></textarea>
+                                <textarea placeholder="Beschreibung" id="description"></textarea>
                             </label>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                             </div>
                             <div class="attribute-item-select dropdown-item-select">
                                 <label for="option1">
-                                    <select name="Option 1" id="">
+                                    <select name="Option 1" id="option1">
                                         <option value="Wert 1">Wert 1</option>
                                         <option value="Wert 2">Wert 2</option>
                                     </select>

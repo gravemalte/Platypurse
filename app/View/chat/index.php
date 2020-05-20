@@ -53,10 +53,10 @@
                 </div>
             </div>
             <div class="chat-send-container">
-                <form action="">
+                <form action="/chat">
                     <div class="chat-input-container">
                         <label for="chat-input">
-                            <input type="text" placeholder="Nachricht senden...">
+                            <input type="text" placeholder="Nachricht senden..." id="chat-input" title="Nachricht senden">
                         </label>
                         <a href="">
                             <i class="fas fa-location-arrow"></i>

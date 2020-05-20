@@ -15,7 +15,7 @@
             <form action="/search">
                 <div>
                     <label for="search">
-                        <input type="text" placeholder="Suche...">
+                        <input type="text" id="search" placeholder="Suche..." title="Suche">
                     </label>
                     <a href="/search">
                         <img src="assets/nav/search-solid.svg" alt="search button">
