@@ -79,7 +79,7 @@
 .offer-interactions-container .button div {
     margin-left: 1em;
 }
-.offer-interactions-container .button div i {
+.offer-interactions-container .button div span {
     padding: 0.5em;
     font-size: 2em;
 }

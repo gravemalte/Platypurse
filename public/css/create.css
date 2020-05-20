@@ -85,7 +85,7 @@
 .create-offer-container .side-container .buttons-container .done-button div {
     background-color: var(--create-done-button-bg-color);
 }
-.create-offer-container .side-container .buttons-container i {
+.create-offer-container .side-container .buttons-container span {
     font-size: 2em;
     padding: 0.5em;
 }

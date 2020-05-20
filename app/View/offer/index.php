@@ -39,12 +39,12 @@
                 <div class="offer-interactions-container">
                     <a href="" class="delete-button button">
                         <div>
-                            <i class="fas fa-trash-alt"></i>
+                            <span class="fas fa-trash-alt"></span>
                         </div>
                     </a>
                     <a href="" class="edit-button button">
                         <div>
-                            <i class="fas fa-pencil-alt"></i>
+                            <span class="fas fa-pencil-alt"></span>
                         </div>
                     </a>
                 </div>

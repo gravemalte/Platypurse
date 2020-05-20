@@ -59,7 +59,7 @@
                             <input type="text" placeholder="Nachricht senden..." id="chat-input" title="Nachricht senden">
                         </label>
                         <a href="">
-                            <i class="fas fa-location-arrow"></i>
+                            <span class="fas fa-location-arrow"></span>
                         </a>
                     </div>
                 </form>

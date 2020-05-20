@@ -150,7 +150,7 @@
     text-decoration: none;
     margin-right: 0.25em;
 }
-.chat-input-container i {
+.chat-input-container span {
     font-size: 1.5em;
 }
 

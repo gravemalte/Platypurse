@@ -17,7 +17,7 @@
                             <p>
                                 Drag'n'Drop<br>
                                 Bilder hier<br>
-                                <i class="far fa-caret-square-down"></i>
+                                <span class="far fa-caret-square-down"></span>
                             </p>
                             <label for="image">
                                 <input type="file" multiple accept="image/*" id="image">
@@ -52,7 +52,7 @@
                     <div class="buttons-container">
                         <a href="/offer" class="done-button button">
                             <div>
-                                <i class="fas fa-clipboard-check"></i>
+                                <span class="fas fa-clipboard-check"></span>
                             </div>
                         </a>
                     </div>
