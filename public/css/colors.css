@@ -14,6 +14,8 @@ body {
     --page-input-bg-color: #222;
     --page-dropdown-bg-color: #222;
 
+    --main-container-bg-color: #333;
+
     --nav-bg-color: #333;
     --nav-a-color: var(--quite-white);
     --nav-search-color: #222;
@@ -21,12 +23,17 @@ body {
     --nav-search-go-filter: var(--filter-bright);
     --nav-button-bg-color: #444;
 
-    --main-container-bg-color: #333;
-
     --hot-offer-annotation-color: #FF9933;
 
     --offer-send-message-button-bg-color: #0074FF;
     --create-done-button-bg-color: #0074FF;
+
+    --chat-list-bg-color: #252525;
+    --chat-contact-bg-color: #333;
+    --chat-contact-select-bg-color: #444;
+    --chat-unread-messages-bg-color: #CC0000;
+    --chat-receive-message-bg-color: #666;
+    --chat-send-message-bg-color: #0074FF;
 }
 
 /* light colors (fry your eyes) */

@@ -15,7 +15,7 @@
                 <span class="far fa-star"></span>
             </div>
             <div class="profile-button-container">
-                <a href="" class="button message-button">
+                <a href="/chat" class="button message-button">
                     <div>
                         <p>Nachricht schreiben</p>
                     </div>
