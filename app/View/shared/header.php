@@ -35,4 +35,3 @@
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/55820d01a2.js" crossorigin="anonymous"></script>
-    

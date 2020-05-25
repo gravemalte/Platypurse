@@ -23,7 +23,8 @@ body {
     --nav-search-go-filter: var(--filter-bright);
     --nav-button-bg-color: #444;
 
-    --hot-offer-annotation-color: #FF9933;
+    --hot-offer-annotation-bg-color: #FF9933;
+    --hot-offer-annotation-color: white;
 
     --offer-send-message-button-bg-color: #0074FF;
     --create-done-button-bg-color: #0074FF;

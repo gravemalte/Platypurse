@@ -8,7 +8,7 @@
         </div>
         <div class="logo-container nav-element">
             <a href="/">
-                <img src="gassets/logo/svg/logo_text.svg" alt="logo with text">
+                <img src="assets/logo/svg/logo_text.svg" alt="logo with text">
             </a>
         </div>
         <div class="search-container nav-element">
