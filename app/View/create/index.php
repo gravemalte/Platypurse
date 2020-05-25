@@ -1,7 +1,7 @@
 <div class="main-page">
     <div class="main-area">
         <div class="create-offer-container card">
-            <form action="/offer">
+            <form action="offer">
                 <div class="main-container">
                     <div class="name-container main-input-container">
                         <p class="name">Name</p>
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                     <div class="buttons-container">
-                        <a href="/offer" class="done-button button">
+                        <a href="offer" class="done-button button">
                             <div>
                                 <span class="fas fa-clipboard-check"></span>
                             </div>

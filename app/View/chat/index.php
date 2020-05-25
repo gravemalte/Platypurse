@@ -34,7 +34,7 @@
         </div>
         <div class="chat-main-container">
             <div class="chat-title-container">
-                <a href="/profile">
+                <a href="profile">
                     <p>SchnabelFan1</p>
                 </a>
             </div>
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="chat-send-container">
-                <form action="/chat">
+                <form action="chat">
                     <div class="chat-input-container">
                         <label for="chat-input">
                             <input type="text" placeholder="Nachricht senden..." id="chat-input" title="Nachricht senden">
@@ -67,3 +67,4 @@
         </div>
     </div>
 </div>
+</body>

@@ -15,7 +15,7 @@
                 <span class="far fa-star"></span>
             </div>
             <div class="profile-button-container">
-                <a href="/chat" class="button message-button">
+                <a href="chat" class="button message-button">
                     <div>
                         <p>Nachricht schreiben</p>
                     </div>
@@ -31,7 +31,7 @@
     <div class="main-area">
         <div class="search-results-container">
             <div class="offer-list-container">
-                <a class="offer-list-link" href="/offer">
+                <a class="offer-list-link" href="offer">
                     <div class="offer-list-item card">
                         <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
                         <p class="name">Smol Boi</p>
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </a>
-                <a class="offer-list-link" href="/offer">
+                <a class="offer-list-link" href="offer">
                     <div class="offer-list-item card">
                         <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
                         <p class="name">Smol Boi</p>
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 </a>
-                <a class="offer-list-link" href="/offer">
+                <a class="offer-list-link" href="offer">
                     <div class="offer-list-item card">
                         <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
                         <p class="name">Smol Boi</p>
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                 </a>
-                <a class="offer-list-link" href="/offer">
+                <a class="offer-list-link" href="offer">
                     <div class="offer-list-item card">
                         <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
                         <p class="name">Smol Boi</p>
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                 </a>
-                <a class="offer-list-link" href="/offer">
+                <a class="offer-list-link" href="offer">
                     <div class="offer-list-item card">
                         <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
                         <p class="name">Smol Boi</p>
@@ -81,7 +81,7 @@
                         </div>
                     </div>
                 </a>
-                <a class="offer-list-link" href="/offer">
+                <a class="offer-list-link" href="offer">
                     <div class="offer-list-item card">
                         <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
                         <p class="name">Smol Boi</p>
