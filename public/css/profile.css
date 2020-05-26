@@ -1,0 +1,82 @@
+.profile-area {
+    margin: 8px 1em;
+    max-width: 250px;
+}
+
+.profile-image {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+.profile-displayname p {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.profile-rating {
+    margin: 1em 0;
+    display: flex;
+    justify-content: center;
+}
+.profile-rating .fa-star {
+    margin: 10px;
+    color: white;
+}
+
+.profile-container {
+    padding: 10px 0;
+}
+.profile-container img {
+    max-width: 150px;
+    max-height: 150px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 50%;
+    filter: invert(var(--filter-bright));
+}
+
+.profile-option {
+    padding: 5px 0;
+    margin: 10px;
+}
+.profile-button-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.profile-button-container .button {
+    margin: 1em 0.5em;
+}
+.profile-button-container .button div {
+    background-color: var(--nav-button-bg-color);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+.profile-button-container .message-button div {
+    background-color: var(--offer-send-message-button-bg-color);
+}
+.profile-button-container .button p {
+    color: var(--nav-search-text-color);
+    padding: 0.5em;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .main-page.profile-page {
+        flex-direction: column;
+    }
+    .profile-button-container {
+        flex-direction: column;
+    }
+    .profile-container {
+        width: 100%;
+        margin-right: 1em;
+    }
+    .profile-area {
+        max-width: none;
+    }
+}

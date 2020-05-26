@@ -1,0 +1,50 @@
+/* color palette */
+
+:root {
+    --quite-white: #DDD;
+    --filter-bright: 0.9;
+    --filter-dark: 0.1;
+}
+
+/* dark mode colors */
+body {
+    --page-bg-color: #222;
+    --page-text-color: var(--quite-white);
+    --page-button-bg-color: #444;
+    --page-input-bg-color: #222;
+    --page-dropdown-bg-color: #222;
+
+    --main-container-bg-color: #333;
+
+    --nav-bg-color: #333;
+    --nav-a-color: var(--quite-white);
+    --nav-search-color: #222;
+    --nav-search-text-color: var(--quite-white);
+    --nav-search-go-filter: var(--filter-bright);
+    --nav-button-bg-color: #444;
+
+    --hot-offer-annotation-bg-color: #FE6D09;
+    --hot-offer-annotation-color: white;
+
+    --offer-send-message-button-bg-color: #0074FF;
+    --create-done-button-bg-color: #0074FF;
+
+    --chat-list-bg-color: #252525;
+    --chat-contact-bg-color: #333;
+    --chat-contact-select-bg-color: #444;
+    --chat-unread-messages-bg-color: #CC0000;
+    --chat-receive-message-bg-color: #666;
+    --chat-send-message-bg-color: #0074FF;
+}
+
+/* light colors (fry your eyes) */
+body.light {
+    --page-bg-color: white;
+    --page-p-color: black;
+    --nav-bg-color: #CCC;
+    --nav-a-color: black;
+    --nav-search-color: white;
+    --nav-search-text-color: black;
+    --nav-search-go-filter: var(--filter-dark);
+    --nav-button-color: black;
+}
