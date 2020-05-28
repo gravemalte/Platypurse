@@ -24,6 +24,7 @@ if(!in_array('mod_rewrite', apache_get_modules())){
 }
 
 session_start();
+session_get_cookie_params();
 
 // boot the application
 $app = Application::getInstance();

@@ -52,7 +52,7 @@ class LoginController extends BaseController
 
     }
 
-    public function checkSession()
+    private function checkSession()
     {
     }
 
