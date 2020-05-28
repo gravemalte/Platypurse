@@ -30,13 +30,24 @@
                 </div>
             </a>
         </div>
-        <div class="login-container nav-element">
-            <a href="login" class="button login-button">
-                <div>
-                    <p>Anmelden</p>
+        <?php if(isset($_SESSION['user-email'])):  ?>
+            <p>Welcome <?php echo $_SESSION['user-email'] ?></p>
+            <div class="login-container nav-element">
+                    <a href="login/logout" class="button login-button">
+                        <div>
+                            <p>Abmelden</p>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
+            <?php else: ?>
+                <div class="login-container nav-element">
+                    <a href="login" class="button login-button">
+                        <div>
+                            <p>Anmelden</p>
+                        </div>
+                    </a>
+                </div>
+        <?php endif; ?>
         <div class="user-profile-container nav-element" hidden>
             <a href="">
                 <img src="assets/nav/user-circle-solid.svg" alt="user-profile-icon" class="user-profile-icon">
