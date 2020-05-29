@@ -11,7 +11,7 @@ class BaseController {
 
     function __construct()
     {
-        $this->openDBConn();
+
     }
 
     private function openDBConn()

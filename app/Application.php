@@ -2,10 +2,13 @@
 
 
 use Controller\HomeController;
+use Model\UserModel;
 
 
 class Application
 {
+    private static $instance = null;
+
     const CONTROLLER = 'Controller';
     const PHP_FILE_ENDING = '.php';
 
@@ -15,8 +18,9 @@ class Application
 
     private $url_params = array();
 
-    public function __construct()
+    private function __construct()
     {
+
         // splitting up our URL
         $this->splitUrl();
 
@@ -45,12 +49,22 @@ class Application
                 if (strlen($this->url_action) == 0) {
                     $this->url_controller->index();
                 } else {
-                    header('location: ' . URL . 'problem');
+                    $error = new \Controller\ErrorController();
+                    $error->index();
                 }
             }
         } else {
-            header('location: ' . URL . 'problem');
+            $error = new \Controller\ErrorController();
+            $error->index();
         }
+    }
+
+    public static function getInstance(){
+        if(self::$instance == null){
+            self::$instance = new Application();
+        }
+
+        return self::$instance;
     }
 
 

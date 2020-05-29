@@ -1,7 +1,11 @@
 <?php
 
+
 namespace Hydro\Base\Model;
 
-class BaseModel implements IDao {
+
+interface IDao
+{
+
 
 }
