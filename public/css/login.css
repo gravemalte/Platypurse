@@ -80,6 +80,7 @@
 .form-submit .button div {
     background-color: var(--offer-send-message-button-bg-color);
     padding: 0.5em 0;
+    margin-bottom: 3em;
 }
 .form-submit p {
     font-weight: bold;
@@ -92,8 +93,11 @@
 }
 
 .loginfooter-forgot-button  {
-    margin: 0.25em;
+    margin: 0.2em;
     text-decoration: none;
+}
+.loginfooter-forgot-button p:hover {
+    text-decoration: underline var(--page-text-color);
 }
 
 @media (max-width: 600px) {
