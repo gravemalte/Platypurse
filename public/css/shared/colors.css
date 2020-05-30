@@ -11,6 +11,8 @@ body {
     --page-bg-color: #222;
     --page-text-color: var(--quite-white);
     --page-button-bg-color: #444;
+    --page-button-alt-bg-color: #0074FF;
+    --page-button-alt-text-color: white;
     --page-input-bg-color: #222;
     --page-dropdown-bg-color: #222;
 
