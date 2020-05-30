@@ -7,7 +7,7 @@
             <form action="login/login" method="post" class="login-form">
                 <div class="login-form-email-container">
                     <label for="user-email">Email Adresse</label>
-                    <input type="email" id="user-email" name="user-email" placeholder="Email Adresse">
+                    <input type="email" id="user-email" name="user-email" placeholder="Email Adresse" autofocus required>
 
                 </div>
                 <div class="login-form-passwd-container">
@@ -16,7 +16,7 @@
                     <label for="show-passwd" class="fas fa-eye"></label>
                     <label for="show-passwd" class="fas fa-eye-slash" hidden></label>
                     <label for="user-passwd">Passwort</label>
-                    <input type="text" id="user-passwd" name="user-passwd" placeholder="Passwort">
+                    <input type="text" id="user-passwd" name="user-passwd" placeholder="Passwort" required>
                 </div>
                 <div class="login-form-misc-container">
                     <div class="login-form-remember-me-container">
