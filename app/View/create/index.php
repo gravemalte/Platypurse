@@ -45,7 +45,7 @@
                     <div class="attribute-list dropdown-list">
                         <div class="attribute-item dropdown-item">
                             <div class="attribute-item-header dropdown-item-header">
-                                <p>Option 1</p>
+                                <p>Geschlecht</p>
                             </div>
                             <div class="attribute-item-select dropdown-item-select">
                                 <label for="option1">
