@@ -1,3 +1,8 @@
+<?php
+
+$show_error = false;
+
+?>
 <main class="main-page register-page">
     <div class="register-area">
         <div class="form-container card">
@@ -8,15 +13,29 @@
                 <p>Erstelle ein Konto für Platypurse</p>
             </div>
             <form action="register/register" method="post" class="register-form">
+                <?php if($show_error) : ?>
+                    <div class="error-text-container">
+                        <p id="error-text">Die angegebenen Daten sind ungültig.</p>
+                    </div>
+                <?php endif; ?>
                 <div class="form-user-display-name-container">
+                    <?php if($show_error) : ?>
+                        <div class="show-error"></div>
+                    <?php endif; ?>
                     <label for="user-display-name">Anzeigename</label>
                     <input type="text" id="user-display-name" name="user-display-name" placeholder="Anzeigename" required autofocus>
                 </div>
                 <div class="form-email-container">
+                    <?php if($show_error) : ?>
+                        <div class="show-error"></div>
+                    <?php endif; ?>
                     <label for="user-email">Email Adresse</label>
                     <input type="email" id="user-email" name="user-email" placeholder="Email Adresse" required>
                 </div>
                 <div class="form-passwd-container">
+                    <?php if($show_error) : ?>
+                        <div class="show-error"></div>
+                    <?php endif; ?>
                     <label for="show-passwd" hidden>Passwort anzeigen</label>
                     <input type="checkbox" id="show-passwd" hidden>
                     <label for="show-passwd" class="fas fa-eye"></label>
@@ -25,6 +44,9 @@
                     <input type="text" id="user-passwd" name="user-passwd" placeholder="Passwort" required>
                 </div>
                 <div class="form-passwd-container">
+                    <?php if($show_error) : ?>
+                        <div class="show-error"></div>
+                    <?php endif; ?>
                     <label for="show-passwd" hidden>Passwort anzeigen</label>
                     <input type="checkbox" id="show-passwd" hidden>
                     <label for="show-passwd" class="fas fa-eye"></label>

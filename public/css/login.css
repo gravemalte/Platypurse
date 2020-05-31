@@ -46,6 +46,15 @@ form > div > input[type=email] {
     background-color: var(--page-input-bg-color);
 }
 
+.error-text-container p {
+    text-align: center;
+    color: var(--page-error-color);
+}
+.show-error ~ input {
+    border: 2px solid var(--page-error-color) !important;
+    box-sizing: border-box;
+}
+
 .form-passwd-container label[for=show-passwd] {
     position: absolute;
     bottom: 0.1em;

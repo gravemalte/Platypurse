@@ -1,3 +1,8 @@
+<?php
+
+$show_error = false;
+
+?>
 <main class="main-page login-page">
     <div class="login-area">
         <div class="form-container card">
@@ -5,11 +10,22 @@
                 <p>Anmelden</p>
             </div>
             <form action="login/login" method="post" class="login-form">
+                <?php if($show_error) : ?>
+                <div class="error-text-container">
+                    <p id="error-text">Die Kombination aus Email und Passwort sind ungültig.</p>
+                </div>
+                <?php endif; ?>
                 <div class="form-email-container">
+                    <?php if($show_error) : ?>
+                    <div class="show-error"></div>
+                    <?php endif; ?>
                     <label for="user-email">Email Adresse</label>
                     <input type="email" id="user-email" name="user-email" placeholder="Email Adresse" autofocus required>
                 </div>
                 <div class="form-passwd-container">
+                    <?php if($show_error) : ?>
+                        <div class="show-error"></div>
+                    <?php endif; ?>
                     <label for="show-passwd" hidden>Passwort anzeigen</label>
                     <input type="checkbox" id="show-passwd" hidden>
                     <label for="show-passwd" class="fas fa-eye"></label>
