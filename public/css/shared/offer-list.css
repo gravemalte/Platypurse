@@ -40,5 +40,5 @@
     margin: 0.2em;
 }
 .offer-list-item .price-tag:after {
-    content: "€";
+    content: "\20AC";
 }

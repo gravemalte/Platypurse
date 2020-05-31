@@ -34,7 +34,7 @@
     font-size: 4em;
 }
 .hot-offer .price-tag p:after {
-    content: "€";
+    content: "\20AC";
 }
 .hot-offer-container .img-container {
     float: left;
