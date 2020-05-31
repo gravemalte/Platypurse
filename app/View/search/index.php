@@ -1,5 +1,7 @@
-<?php use Controller\OfferGridController; ?>
-
+<?php
+    use Hydro\Helper\DataSerialize;
+    use Model\OfferModel;
+?>
 <div class="main-page filter-page">
     <div class="filter-area">
         <div class="filter-container card">
@@ -8,7 +10,7 @@
             </div>
             <div class="filter-option">
                 <div class="filter-option-header">
-                    <p>Filteroption 1</p>
+                    <p>Geschlecht</p>
                 </div>
                 <div class="filter-option-dropdown">
                     <select id="filter-dropdown-1" name="sex">
@@ -17,30 +19,24 @@
                     </select>
                 </div>
             </div>
-            <!--<div class="filter-option">
+            <div class="filter-option">
                 <div class="filter-option-header">
-                    <p>Filteroption 3</p>
+                    <p>Alter</p>
                 </div>
                 <div class="filter-option-dropdown">
-                    <select id="filter-dropdown-2">
-                        <option value="option-2-1">Option 1</option>
-                        <option value="option-2-2">Option 2</option>
-                        <option value="option-2-3">Option 3</option>
-                    </select>
+                    <input type="number" id="age-bottom" name="age-bottom" min="0" max="75">
+                    <input type="number" id="age-top" name="age-top" min="0" max="75">
                 </div>
             </div>
             <div class="filter-option">
                 <div class="filter-option-header">
-                    <p>Filteroption 2</p>
+                    <p>Körpergröße</p>
                 </div>
                 <div class="filter-option-dropdown">
-                    <select id="filter-dropdown-3">
-                        <option value="option-3-1">Option 1</option>
-                        <option value="option-3-2">Option 2</option>
-                        <option value="option-3-3">Option 3</option>
-                    </select>
+                    <input type="number" id="size-bottom" name="size-bottom" min="0" max="75">
+                    <input type="number" id="size-top" name="size-top" min="0" max="75">
                 </div>
-            </div>-->
+            </div>
             <div class="filter-button-container">
                 <div class="filter-button-reset">
                     <a href="" class="button reset-button">
@@ -62,67 +58,21 @@
     <div class="main-area">
         <div class="search-results-container">
             <div class="offer-list-container">
-                <?php echo OfferGridController::getDataAsGrid($_POST['search'])?>
-                <!--<a class="offer-list-link" href="offer">
-                    <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name">Smol Boi</p>
-                        <p class="description">Total der süße, kleine Boi</p>
-                        <div class="price-tag-container">
-                            <p class="price-tag">22</p>
+                <?php
+                $unserializeData = DataSerialize::unserializeData(OfferModel::getData($_POST['search']));
+
+                foreach($unserializeData as $offer): ?>
+                    <a class="offer-list-link" href="offer?id=<?php echo $offer->getId();?>">
+                        <div class="offer-list-item card">
+                            <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
+                            <p class="name"><?php echo $offer->getTitle();?></p>
+                            <p class="description"><?php echo $offer->getDescription();?></p>
+                            <div class="price-tag-container">
+                                <p class="price-tag"><?php echo $offer->getPrice();?></p>
+                            </div>
                         </div>
-                    </div>
-                </a>
-                <a class="offer-list-link" href="offer">
-                    <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name">Smol Boi</p>
-                        <p class="description">Total der süße, kleine Boi</p>
-                        <div class="price-tag-container">
-                            <p class="price-tag">23</p>
-                        </div>
-                    </div>
-                </a>
-                <a class="offer-list-link" href="offer">
-                    <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name">Smol Boi</p>
-                        <p class="description">Total der süße, kleine Boi</p>
-                        <div class="price-tag-container">
-                            <p class="price-tag">22</p>
-                        </div>
-                    </div>
-                </a>
-                <a class="offer-list-link" href="offer">
-                    <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name">Smol Boi</p>
-                        <p class="description">Total der süße, kleine Boi</p>
-                        <div class="price-tag-container">
-                            <p class="price-tag">22</p>
-                        </div>
-                    </div>
-                </a>
-                <a class="offer-list-link" href="offer">
-                    <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name">Smol Boi</p>
-                        <p class="description">Total der süße, kleine Boi</p>
-                        <div class="price-tag-container">
-                            <p class="price-tag">22</p>
-                        </div>
-                    </div>
-                </a>
-                <a class="offer-list-link" href="offer">
-                    <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name">Smol Boi</p>
-                        <p class="description">Total der süße, kleine Boi</p>
-                        <div class="price-tag-container">
-                            <p class="price-tag">22</p>
-                        </div>
-                    </div>
-                </a>-->
+                    </a>
+                <?php endforeach;?>
             </div>
         </div>
     </div>

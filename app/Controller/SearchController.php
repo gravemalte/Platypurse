@@ -6,7 +6,7 @@ namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 
-class SearchController extends OfferGridController
+class SearchController extends BaseController
 {
     public function index(){
         // load views

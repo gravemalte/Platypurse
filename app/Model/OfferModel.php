@@ -3,7 +3,6 @@
 namespace Model;
 
 use Hydro\Base\Model\BaseModel;
-use Hydro\Helper\DataSerialize;
 use Hydro\Helper\FileWriter;
 
 class OfferModel extends BaseModel {
@@ -13,15 +12,21 @@ class OfferModel extends BaseModel {
     private $title;
     private $description;
     private $price;
-    private $categories;
+    private $sex;
+    private $age;
+    private $size;
 
-    public function __construct($title, $description, $price, $categories)
+    public function __construct($title = "", $description = "", $price = "", $sex = "", $age = "", $size = "", $id = "")
     {
-        $this->id = uniqid();
+        if(empty($id)): $this->id = uniqid();
+        else: $this->id = $id;
+        endif;
         $this->title = $title;
         $this->description = $description;
         $this->price = $price;
-        $this->categories = $categories;
+        $this->sex = $sex;
+        $this->age = $age;
+        $this->size = $size;
     }
 
     private function writeOfferToFile($offer){
@@ -33,8 +38,7 @@ class OfferModel extends BaseModel {
         $this->writeOfferToFile($offer);
     }
 
-    public function deleteOffer($offer) {
-
+    public function deleteOffer($id) {
     }
 
     public function modifyOffer($offer) {
@@ -137,19 +141,51 @@ class OfferModel extends BaseModel {
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getCategories()
+    public function getSex(): string
     {
-        return $this->categories;
+        return $this->sex;
     }
 
     /**
-     * @param mixed $categories
+     * @param string $sex
      */
-    public function setCategories($categories)
+    public function setSex(string $sex): void
     {
-        $this->categories = $categories;
+        $this->sex = $sex;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAge(): string
+    {
+        return $this->age;
+    }
+
+    /**
+     * @param string $age
+     */
+    public function setAge(string $age): void
+    {
+        $this->age = $age;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSize(): string
+    {
+        return $this->size;
+    }
+
+    /**
+     * @param string $size
+     */
+    public function setSize(string $size): void
+    {
+        $this->size = $size;
     }
 
 }

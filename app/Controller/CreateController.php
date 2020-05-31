@@ -22,8 +22,10 @@ class CreateController extends BaseController
         $offerName = $_POST["name"];
         $offerDescription = $_POST["description"];
         $offerPrice = $_POST["price"];
-        $offerCategories = $_POST["sex"];
-        $offer = new OfferModel($offerName, $offerDescription, $offerPrice, $offerCategories);
+        $sex = $_POST["sex"];
+        $age = $_POST["age"];
+        $size = $_POST["size"];
+        $offer = new OfferModel($offerName, $offerDescription, $offerPrice, $sex, $age, $size);
 
         $offer->createOffer($offer);
         header('location: ' . URL);
