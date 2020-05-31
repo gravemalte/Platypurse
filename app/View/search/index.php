@@ -1,4 +1,6 @@
-<main class="main-page filter-page">
+<?php use Controller\OfferGridController; ?>
+
+<div class="main-page filter-page">
     <div class="filter-area">
         <div class="filter-container card">
             <div class="title-container">
@@ -61,7 +63,8 @@
     <div class="main-area">
         <div class="search-results-container">
             <div class="offer-list-container">
-                <a class="offer-list-link" href="offer">
+                <?php echo OfferGridController::getDataAsGrid($_POST['search'])?>
+                <!--<a class="offer-list-link" href="offer">
                     <div class="offer-list-item card">
                         <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
                         <p class="name">Smol Boi</p>
@@ -120,8 +123,8 @@
                             <p class="price-tag">22</p>
                         </div>
                     </div>
-                </a>
+                </a>-->
             </div>
         </div>
     </div>
-</main>
+</div>

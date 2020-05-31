@@ -12,11 +12,14 @@
             </a>
         </div>
         <div class="search-container nav-element">
-            <form action="search">
+            <form action="search" method="post">
                 <div>
                     <label for="search">
-                        <input type="text" id="search" placeholder="Suche..." title="Suche">
+                        <input type="text" name="search" id="search" placeholder="Suche..." title="Suche">
                     </label>
+                    <button class="done-button">
+                        <span class="fas fa-search"></span>
+                    </button>
                     <a href="search">
                         <img src="assets/nav/search-solid.svg" alt="search button">
                     </a>

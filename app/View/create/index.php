@@ -1,13 +1,21 @@
 <main class="main-page">
     <div class="main-area">
         <div class="create-offer-container card">
-            <form action="offer">
+            <form action="create/create" method="post">
                 <div class="main-container">
                     <div class="name-container main-input-container">
                         <p class="name">Name</p>
                         <div class="input-container">
                             <label for="name">
-                                <input type="text" placeholder="Name" id="name">
+                                <input type="text" placeholder="Name" id="name" name="name">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="name-container main-input-container">
+                        <p class="name">Preis</p>
+                        <div class="input-container">
+                            <label for="price">
+                                <input type="text" placeholder="Preis" id="price" name="price">
                             </label>
                         </div>
                     </div>
@@ -20,7 +28,7 @@
                                 <span class="far fa-caret-square-down"></span>
                             </p>
                             <label for="image">
-                                <input type="file" multiple accept="image/*" id="image">
+                                <input type="file" multiple accept="image/*" id="image" name="image">
                             </label>
                         </div>
                     </div>
@@ -28,7 +36,7 @@
                         <p class="name">Beschreibung</p>
                         <div class="input-container">
                             <label for="description">
-                                <textarea placeholder="Beschreibung" id="description"></textarea>
+                                <textarea placeholder="Beschreibung" id="description" name="description"></textarea>
                             </label>
                         </div>
                     </div>
@@ -41,15 +49,18 @@
                             </div>
                             <div class="attribute-item-select dropdown-item-select">
                                 <label for="option1">
-                                    <select name="Option 1" id="option1">
-                                        <option value="Wert 1">Wert 1</option>
-                                        <option value="Wert 2">Wert 2</option>
+                                    <select name="sex" id="option1">
+                                        <option value="male">Männlich</option>
+                                        <option value="female">Weiblich</option>
                                     </select>
                                 </label>
                             </div>
                         </div>
                     </div>
                     <div class="buttons-container">
+                        <button class="done-button">
+                            <span class="fas fa-clipboard-check"></span>
+                        </button>
                         <a href="offer" class="done-button button">
                             <div>
                                 <span class="fas fa-clipboard-check"></span>

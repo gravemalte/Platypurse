@@ -4,7 +4,7 @@ namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 
-class HomeController extends BaseController
+class HomeController extends OfferGridController
 {
     /**
      *  index page

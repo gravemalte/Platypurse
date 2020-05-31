@@ -6,7 +6,7 @@ namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 
-class SearchController extends BaseController
+class SearchController extends OfferGridController
 {
     public function index(){
         // load views
@@ -16,6 +16,5 @@ class SearchController extends BaseController
         require APP . 'View/search/index.php';
         require APP . 'View/shared/footer.php';
     }
-
 
 }
