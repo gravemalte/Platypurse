@@ -1,4 +1,4 @@
-<div class="main-page">
+<main class="main-page">
     <div class="main-area">
         <div class="offer-area">
             <div class="offer-container card">
@@ -51,4 +51,4 @@
             </div>
         </div>
     </div>
-</div>
+</main>

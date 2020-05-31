@@ -1,4 +1,4 @@
-<div class="main-page profile-page">
+<main class="main-page profile-page">
     <div class="profile-area">
         <div class="profile-container card">
             <div class="profile-image">
@@ -94,4 +94,4 @@
             </div>
         </div>
     </div>
-</div>
+</main>

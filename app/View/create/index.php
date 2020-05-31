@@ -1,4 +1,4 @@
-<div class="main-page">
+<main class="main-page">
     <div class="main-area">
         <div class="create-offer-container card">
             <form action="offer">
@@ -60,4 +60,4 @@
             </form>
         </div>
     </div>
-</div>
+</main>

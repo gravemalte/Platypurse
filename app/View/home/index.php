@@ -1,4 +1,4 @@
-<div class="main-page">
+<main class="main-page">
     <div class="main-area">
         <a href="offer">
             <div class="hot-offer-container card">
@@ -90,4 +90,4 @@
             </a>
         </div>
     </div>
-</div>
+</main>

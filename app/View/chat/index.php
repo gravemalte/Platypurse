@@ -1,4 +1,4 @@
-<div class="main-page">
+<main class="main-page">
     <div class="chat-container card">
         <div class="chat-list-container">
             <a href="">
@@ -66,5 +66,4 @@
             </div>
         </div>
     </div>
-</div>
-</body>
+</main>

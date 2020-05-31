@@ -1,4 +1,4 @@
-<div class="main-page filter-page">
+<main class="main-page filter-page">
     <div class="filter-area">
         <div class="filter-container card">
             <div class="title-container">
@@ -124,4 +124,4 @@
             </div>
         </div>
     </div>
-</div>
+</main>
