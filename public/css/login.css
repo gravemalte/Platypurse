@@ -55,7 +55,8 @@ form > div > input[type=email] {
     box-sizing: border-box;
 }
 
-.form-passwd-container label[for=show-passwd] {
+.form-passwd-container label[for=show-passwd-1],
+.form-passwd-container label[for=show-passwd-2]{
     position: absolute;
     bottom: 0.1em;
     font-size: 1.5em;
