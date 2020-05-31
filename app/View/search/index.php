@@ -11,14 +11,13 @@
                     <p>Filteroption 1</p>
                 </div>
                 <div class="filter-option-dropdown">
-                    <select id="filter-dropdown-1">
-                        <option value="option-1-1">Option 1</option>
-                        <option value="option-1-2">Option 2</option>
-                        <option value="option-1-3">Option 3</option>
+                    <select id="filter-dropdown-1" name="sex">
+                        <option value="male">männlich</option>
+                        <option value="female">weiblich</option>
                     </select>
                 </div>
             </div>
-            <div class="filter-option">
+            <!--<div class="filter-option">
                 <div class="filter-option-header">
                     <p>Filteroption 3</p>
                 </div>
@@ -41,7 +40,7 @@
                         <option value="option-3-3">Option 3</option>
                     </select>
                 </div>
-            </div>
+            </div>-->
             <div class="filter-button-container">
                 <div class="filter-button-reset">
                     <a href="" class="button reset-button">

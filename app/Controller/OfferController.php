@@ -19,7 +19,7 @@ class OfferController extends BaseController
         require APP . 'View/offer/index.php';
         require APP . 'View/shared/footer.php';
 
-        $this->offer = OfferModel::getData($_GET['id']);
+        //$this->offer = OfferModel::getData($_GET['id'])->getTitle();
     }
 
     public function deleteOffer() {

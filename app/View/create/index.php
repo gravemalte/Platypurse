@@ -50,8 +50,8 @@
                             <div class="attribute-item-select dropdown-item-select">
                                 <label for="option1">
                                     <select name="sex" id="option1">
-                                        <option value="male">Männlich</option>
-                                        <option value="female">Weiblich</option>
+                                        <option value="männlich">Männlich</option>
+                                        <option value="weiblich">Weiblich</option>
                                     </select>
                                 </label>
                             </div>
