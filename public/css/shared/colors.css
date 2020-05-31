@@ -38,6 +38,9 @@ body {
     --chat-unread-messages-bg-color: #CC0000;
     --chat-receive-message-bg-color: #666;
     --chat-send-message-bg-color: #0074FF;
+
+    --footer-bg-color: #111;
+    --footer-logo-filter: var(--filter-bright);
 }
 
 /* light colors (fry your eyes) */

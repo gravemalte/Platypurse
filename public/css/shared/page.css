@@ -2,6 +2,9 @@
 body {
     margin: 0 auto;
     background-color: var(--page-bg-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 p,
 span,
@@ -87,6 +90,7 @@ select {
     display: flex;
     justify-content: center;
     margin-top: 2em;
+    flex-grow: 1;
 }
 
 .main-area {
