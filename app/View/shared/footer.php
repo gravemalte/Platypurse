@@ -7,8 +7,8 @@
     <div class="footer-copyright-container">
         <img src="assets/logo/svg/logo_1tone.svg" alt="footer-logo">
         <p class="copyright">© 2020 Platypurse</p>
-        <p class="designed-for">Projekt für das Modul "Webprogrammierung" an der Universität Oldenburg</p>
-        <p class="designed-by">Gestaltet von <em>Malte Grave, Tim Hesse & Marvin Kuhlmann</em></p>
+        <p class="designed-for">Projekt für das Modul "Webprogrammierung" an der Carl von Ossietzky Universität Oldenburg</p>
+        <p class="designed-by">Gestaltet von <em>Malte Grave, Tim Hesse <wbr>& Marvin Kuhlmann</em></p>
     </div>
 </footer>
 </body>

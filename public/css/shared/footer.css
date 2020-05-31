@@ -8,6 +8,9 @@ footer {
 footer > div {
     margin: 1em;
 }
+footer p {
+    text-align: center;
+}
 
 .footer-link-container {
     width: 100%;
