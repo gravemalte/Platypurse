@@ -11,6 +11,7 @@ class RegisterController extends BaseController {
 
     public function index(){
         require APP . 'View/shared/header.php';
+        require APP . 'View/register/header.php';
         require APP . 'View/shared/nav.php';
         require APP . 'View/register/index.php';
     }
