@@ -13,11 +13,11 @@ $show_error = false;
                 <p>Erstelle ein Konto für Platypurse</p>
             </div>
             <form action="register/register" method="post" class="register-form">
-                <?php if($show_error) : ?>
-                    <div class="error-text-container">
-                        <p id="error-text">Die angegebenen Daten sind ungültig.</p>
-                    </div>
-                <?php endif; ?>
+                <p class="error-text">
+                    <?php if($show_error) : ?>
+                        Die angegebenen Daten sind ungültig.
+                    <?php endif; ?>
+                </p>
                 <div class="form-user-display-name-container">
                     <?php if($show_error) : ?>
                         <div class="show-error"></div>

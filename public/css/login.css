@@ -46,7 +46,7 @@ form > div > input[type=email] {
     background-color: var(--page-input-bg-color);
 }
 
-.error-text-container p {
+.error-text {
     text-align: center;
     color: var(--page-error-color);
 }

@@ -10,11 +10,11 @@ $show_error = false;
                 <p>Anmelden</p>
             </div>
             <form action="login/login" method="post" class="login-form">
-                <?php if($show_error) : ?>
-                <div class="error-text-container">
-                    <p id="error-text">Die Kombination aus Email und Passwort sind ungültig.</p>
-                </div>
-                <?php endif; ?>
+                <p class="error-text">
+                    <?php if($show_error) : ?>
+                        Die Kombination aus Email und Passwort sind ungültig.
+                    <?php endif; ?>
+                </p>
                 <div class="form-email-container">
                     <?php if($show_error) : ?>
                     <div class="show-error"></div>
