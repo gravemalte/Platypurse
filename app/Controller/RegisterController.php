@@ -37,7 +37,7 @@ class RegisterController extends BaseController {
         $user = new UserModel($userInputDisplayName, $userInputMail, $userInputPassswd);
         if($this->checkExistingUser($user) != true){
             $user->registerUser($user);
-            header('location: ' . URL);
+            header('location: ' . URL . 'login');
             exit();
         }
         header('location: ' . URL . 'register');
