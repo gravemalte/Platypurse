@@ -38,11 +38,26 @@ class OfferModel extends BaseModel {
         $this->writeOfferToFile($offer);
     }
 
-    public function deleteOffer($id) {
+    public function deleteOfferFromFile($id) {
+        $offerFile = fopen(self::file, 'r');
+        $myData = fread($offerFile, filesize(self::file));
+        $dataArray = explode("\n", $myData);
+
+        foreach($dataArray as $data) {
+            if(strpos(strtolower ($data), strtolower ($id)) !== false) {
+                unset($dataArray[key($dataArray)]);
+            }
+        }
+
+        FileWriter::OverwriteFile(self::file, serialize($dataArray));
+
+        print_r($dataArray);
+        fclose($offerFile);
     }
 
-    public function modifyOffer($offer) {
-        $newOffer = $offer;
+    public function updateOffer($offer) {
+        $this->deleteOfferFromFile($offer->getId());
+        $this->writeOfferToFile($offer);
     }
 
     public function __toString()
