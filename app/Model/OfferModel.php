@@ -38,20 +38,25 @@ class OfferModel extends BaseModel {
         $this->writeOfferToFile($offer);
     }
 
-    public function deleteOfferFromFile($id) {
+    public static function deleteOfferFromFile($id) {
         $offerFile = fopen(self::file, 'r');
         $myData = fread($offerFile, filesize(self::file));
         $dataArray = explode("\n", $myData);
+        $mode = "w+";
 
-        foreach($dataArray as $data) {
-            if(strpos(strtolower ($data), strtolower ($id)) !== false) {
-                unset($dataArray[key($dataArray)]);
+        // Searches for id and removes the entry from the array
+        unset($dataArray[sizeof($dataArray) - 1]);
+        foreach ($dataArray as $key => $value) {
+            if (false !== stripos($value, $id)) {
+
             }
+            else {
+                FileWriter::writeToFile(self::file, $value, $mode);
+            }
+            $mode = "a+";
         }
 
-        FileWriter::OverwriteFile(self::file, serialize($dataArray));
-
-        print_r($dataArray);
+        // print_r($dataArray);
         fclose($offerFile);
     }
 
