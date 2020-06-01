@@ -23,6 +23,9 @@ if(!in_array('mod_rewrite', apache_get_modules())){
     Stopping startup.</b>");
 }
 
+ini_set('session.gc_maxlifetime', 3600);
+session_set_cookie_params(3600);
+
 session_start();
 session_get_cookie_params();
 

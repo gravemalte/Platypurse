@@ -14,26 +14,26 @@ $show_error = false;
             </div>
             <form action="register/register" method="post" class="register-form">
                 <p class="error-text">
-                    <?php if($show_error) : ?>
+                    <?php if(isset($_SESSION['register-error-email'])) : ?>
                         Die angegebenen Daten sind ungültig.
                     <?php endif; ?>
                 </p>
                 <div class="form-user-display-name-container">
-                    <?php if($show_error) : ?>
+                    <?php if(isset($_SESSION['register-error'])) : ?>
                         <div class="show-error"></div>
                     <?php endif; ?>
                     <label for="user-display-name">Anzeigename</label>
                     <input type="text" id="user-display-name" name="user-display-name" placeholder="Anzeigename" required autofocus>
                 </div>
                 <div class="form-email-container">
-                    <?php if($show_error) : ?>
+                    <?php if(isset($_SESSION['register-error-email'])) : ?>
                         <div class="show-error"></div>
                     <?php endif; ?>
                     <label for="user-email">Email Adresse</label>
                     <input type="email" id="user-email" name="user-email" placeholder="Email Adresse" required>
                 </div>
                 <div class="form-passwd-container">
-                    <?php if($show_error) : ?>
+                    <?php if(isset($_SESSION['register-error'])) : ?>
                         <div class="show-error"></div>
                     <?php endif; ?>
                     <label for="show-passwd-1" hidden>Passwort anzeigen</label>
@@ -44,7 +44,7 @@ $show_error = false;
                     <input type="text" id="user-passwd-1" name="user-passwd" placeholder="Passwort" required>
                 </div>
                 <div class="form-passwd-container">
-                    <?php if($show_error) : ?>
+                    <?php if(isset($_SESSION['register-error'])) : ?>
                         <div class="show-error"></div>
                     <?php endif; ?>
                     <label for="show-passwd-2" hidden>Passwort anzeigen</label>

@@ -1,8 +1,3 @@
-<?php
-
-$show_error = false;
-
-?>
 <main class="main-page login-page">
     <div class="login-area">
         <div class="form-container card">
@@ -11,19 +6,19 @@ $show_error = false;
             </div>
             <form action="login/login" method="post" class="login-form">
                 <p class="error-text">
-                    <?php if($show_error) : ?>
+                    <?php if(isset($_SESSION['user-login-error'])) : ?>
                         Die Kombination aus Email und Passwort sind ungültig.
                     <?php endif; ?>
                 </p>
                 <div class="form-email-container">
-                    <?php if($show_error) : ?>
+                    <?php if(isset($_SESSION['user-login-error'])) : ?>
                     <div class="show-error"></div>
                     <?php endif; ?>
                     <label for="user-email">Email Adresse</label>
                     <input type="email" id="user-email" name="user-email" placeholder="Email Adresse" autofocus required>
                 </div>
                 <div class="form-passwd-container">
-                    <?php if($show_error) : ?>
+                    <?php if(isset($_SESSION['user-login-error'])) : ?>
                         <div class="show-error"></div>
                     <?php endif; ?>
                     <label for="show-passwd" hidden>Passwort anzeigen</label>
@@ -36,7 +31,7 @@ $show_error = false;
                 <div class="form-misc-container">
                     <div class="form-remember-me-container">
                         <label for="remember-me">Anmeldung merken</label>
-                        <input type="checkbox" id="remember-me" name="remember-me">
+                        <input type="checkbox" id="remember-me" name="user-remember-me">
                         <label for="remember-me" class="fas fa-square"></label>
                         <label for="remember-me" class="fas fa-check-square"></label>
                     </div>

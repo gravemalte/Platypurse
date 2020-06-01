@@ -1,3 +1,5 @@
+<!--TODO: Eine art Stift zum bearbeiten des Profils wäre cool-->
+
 <main class="main-page profile-page">
     <div class="profile-area">
         <div class="profile-container card">
@@ -5,7 +7,7 @@
                 <img src="assets/nav/user-circle-solid.svg" alt="profile image">
             </div>
             <div class="profile-displayname">
-                <p>Displayname</p>
+                <p><?php echo $_SESSION['user-displayName']?></p>
             </div>
             <div class="profile-rating">
                 <span class="fas fa-star checked"></span>
@@ -22,7 +24,9 @@
                 </a>
                 <a href="" class="button report-button">
                     <div>
+                        <?php if(!(isset($_SESSION['user-email']) == isset($_SESSION['user-email']))): ?>
                         <p>Nutzer melden</p>
+                        <?php endif; ?>
                     </div>
                 </a>
             </div>
