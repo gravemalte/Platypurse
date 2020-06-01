@@ -47,6 +47,7 @@ class OfferModel extends BaseModel {
         // Searches for id and removes the entry from the array
         unset($dataArray[sizeof($dataArray) - 1]);
         foreach ($dataArray as $key => $value) {
+            // TODO make code better
             if (false !== stripos($value, $id)) {
 
             }

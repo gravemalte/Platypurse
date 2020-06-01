@@ -3,7 +3,6 @@
 namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
-use Hydro\Helper\DataSerialize;
 use Model\OfferModel;
 
 class CreateController extends BaseController
@@ -29,16 +28,16 @@ class CreateController extends BaseController
         return new OfferModel($offerName, $offerDescription, $offerPrice, $sex, $age, $size, $id);
     }
 
-    public function create(){
-        $offer = getOfferFromData();
+    public function create() {
+        $offer = CreateController::getOfferFromData();
 
         $offer->createOffer($offer);
         header('location: ' . URL);
         exit();
     }
 
-    public function update($id){
-        $offer = getOfferFromData($id);
+    public function update(){
+        $offer = CreateController::getOfferFromData($_POST['offerId']);
 
         $offer->updateOffer($offer);
         header('location: ' . URL);
