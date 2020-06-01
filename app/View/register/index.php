@@ -36,23 +36,33 @@ $show_error = false;
                     <?php if(isset($_SESSION['register-error'])) : ?>
                         <div class="show-error"></div>
                     <?php endif; ?>
+                    <?php if(strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== false): ?>
                     <label for="show-passwd-1" hidden>Passwort anzeigen</label>
                     <input type="checkbox" id="show-passwd-1" hidden>
                     <label for="show-passwd-1" class="fas fa-eye"></label>
                     <label for="show-passwd-1" class="fas fa-eye-slash"></label>
                     <label for="user-passwd-1">Passwort</label>
                     <input type="text" id="user-passwd-1" name="user-passwd" placeholder="Passwort" required>
+                    <?php else: ?>
+                    <label for="user-passwd-1">Passwort</label>
+                    <input type="password" id="user-passwd-1" name="user-passwd" placeholder="Passwort" required>
+                    <?php endif; ?>
                 </div>
                 <div class="form-passwd-container">
                     <?php if(isset($_SESSION['register-error'])) : ?>
                         <div class="show-error"></div>
                     <?php endif; ?>
+                    <?php if(strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== false): ?>
                     <label for="show-passwd-2" hidden>Passwort anzeigen</label>
                     <input type="checkbox" id="show-passwd-2" hidden>
                     <label for="show-passwd-2" class="fas fa-eye"></label>
                     <label for="show-passwd-2" class="fas fa-eye-slash"></label>
                     <label for="user-passwd-2">Passwort wiederholen</label>
                     <input type="text" id="user-passwd-2" name="user-passwd" placeholder="Passwort wiederholen" required>
+                    <?php else: ?>
+                    <label for="user-passwd-2">Passwort wiederholen</label>
+                    <input type="password" id="user-passwd-2" name="user-passwd" placeholder="Passwort wiederholen" required>
+                    <?php endif; ?>
                 </div>
                 <div class="form-submit-container">
                     <label for="submit" hidden>Registrieren</label>
