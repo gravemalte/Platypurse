@@ -2,7 +2,7 @@
     display: grid;
     grid-template-rows: max-content 1em;
     margin: 1em;
-    width: 20em;
+    min-width: 20em;
     background: var(--page-input-bg-color);
     position: relative;
     border-radius: 25em;

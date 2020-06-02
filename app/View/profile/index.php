@@ -7,7 +7,7 @@
                 <img src="assets/nav/user-circle-solid.svg" alt="profile image">
             </div>
             <div class="profile-displayname">
-                <p><?php echo $_SESSION['user-display-name']?></p>
+                <p><?php echo $_SESSION['user-displayName']?></p>
             </div>
             <div class="profile-rating">
                 <span class="fas fa-star checked"></span>
@@ -22,13 +22,13 @@
                         <p>Nachricht schreiben</p>
                     </div>
                 </a>
+                <?php if(!(isset($_SESSION['user-email']) == isset($_SESSION['user-email']))): ?>
                 <a href="" class="button report-button">
                     <div>
-                        <?php if(!(isset($_SESSION['user-ID']))): ?>
                         <p>Nutzer melden</p>
-                        <?php endif; ?>
                     </div>
                 </a>
+                <?php endif; ?>
             </div>
         </div>
     </div>

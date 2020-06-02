@@ -25,7 +25,8 @@ p {
     border-radius: 5px;
     background-color: var(--page-button-bg-color);
     box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
-    border: none
+    border: none;
+    cursor: pointer;
 }
 .button div:hover, button:hover {
     filter: brightness(0.9);

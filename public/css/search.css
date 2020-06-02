@@ -1,3 +1,11 @@
+.filter-container {
+    margin: 1em;
+}
+.filter-container .title-container p {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
 .filter-options-container {
     display: flex;
     flex-direction: column;
@@ -8,4 +16,30 @@
 }
 .filter-options-container > div > label {
     margin-left: 0.6em;
+}
+
+.filter-button-container {
+    margin: 0 1em 1em;
+}
+.filter-button-container button {
+    padding: 1em;
+    font-size: 1.5em;
+}
+.filter-button-container .search-button {
+    background-color: var(--page-button-alt-bg-color);
+    color: var(--page-button-alt-text-color);
+}
+
+@media (max-width: 800px) {
+    .filter-page {
+        flex-direction: column;
+    }
+
+    .filter-container {
+        margin-top: 0;
+    }
+
+    .filter-options-container {
+        align-items: stretch;
+    }
 }

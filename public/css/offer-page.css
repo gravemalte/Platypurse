@@ -62,7 +62,6 @@
 .offer-area .attribute-list {
     width: 100%;
     flex-grow: 1;
-    margin-bottom: 1em;
 }
 .offer-area .attribute-list div {
     margin: 1em 1em 0;
@@ -75,6 +74,7 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    margin-top: 1em;
 }
 .offer-interactions-container button ~ label {
     border-radius: 5px;

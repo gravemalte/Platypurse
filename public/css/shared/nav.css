@@ -3,6 +3,7 @@ nav {
     display: flex;
     background-color: var(--nav-bg-color);
     box-shadow: 0 0 5px 0 black;
+    justify-content: center;
 }
 
 .nav-container {
