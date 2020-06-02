@@ -1,0 +1,72 @@
+.multi-thumb-slider-container {
+    display: grid;
+    grid-template-rows: max-content 1em;
+    margin: 1em;
+    width: 20em;
+    background: var(--page-input-bg-color);
+    position: relative;
+    border-radius: 25em;
+}
+
+.multi-thumb-slider-container input[type='range'] {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 0;
+    background: none;
+    color: var(--page-text-color);
+    font: inherit;
+    pointer-events: none;
+    outline: none;
+}
+.multi-thumb-slider-container input[type='range']::-webkit-slider-runnable-track,
+.multi-thumb-slider-container input[type='range']::-webkit-slider-thumb,
+.multi-thumb-slider-container input[type='range'] {
+    -webkit-appearance: none;
+}
+.multi-thumb-slider-container input[type='range']::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 100%;
+    background: none;
+}
+.multi-thumb-slider-container input[type='range']::-moz-range-track {
+    width: 100%;
+    height: 100%;
+    background: none;
+}
+.multi-thumb-slider-container input[type='range']::-webkit-slider-thumb {
+    border: none;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    background: currentcolor;
+    pointer-events: auto;
+    margin-top: -0.25em;
+    cursor: grab;
+}
+.multi-thumb-slider-container input[type='range']::-webkit-slider-thumb:active {
+    cursor: grabbing;
+}
+.multi-thumb-slider-container input[type='range']::-moz-range-thumb {
+    border: none;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    background: currentcolor;
+    pointer-events: auto;
+    margin-top: -0.25em;
+    cursor: grab;
+}
+.multi-thumb-slider-container input[type='range']::-moz-range-thumb:active {
+    cursor: grabbing;
+}
+
+/*
+HOW TO USE:
+
+<div class="multi-thumb-slider-container" role="group" aria-labelledby="multi-thumb-slider">
+    <label for="range-1" hidden></label>
+    <input type="range" min="0" max="10" value="1" id="range-1">
+    <label for="range-2" hidden></label>
+    <input type="range" min="0" max="10" value="7" id="range-2">
+</div>
+ */
