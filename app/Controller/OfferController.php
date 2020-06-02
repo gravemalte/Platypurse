@@ -19,7 +19,6 @@ class OfferController extends BaseController
         require APP . 'View/shared/nav.php';
         require APP . 'View/offer/index.php';
         require APP . 'View/shared/footer.php';
-        $_SESSION["offerId"] = $_GET['id'];
     }
 
     public function delete() {
