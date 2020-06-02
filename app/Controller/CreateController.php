@@ -9,6 +9,9 @@ class CreateController extends BaseController
 {
     public function index()
     {
+        if(!(isset($_SESSION['user-ID']))){
+            header('location: ' .URL . 'login');
+        }
         // load views
         require APP . 'View/shared/header.php';
         require APP . 'View/create/header.php';
