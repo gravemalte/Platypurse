@@ -71,7 +71,9 @@ class OfferModel extends BaseModel {
         return "$this->title" .
             "$this->description" .
             "$this->price" .
-            "$this->categories";
+            "$this->sex" .
+            "$this->age" .
+            "$this->size";
     }
 
     public static function getData($searchStr = ""){
