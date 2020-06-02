@@ -1,6 +1,7 @@
 <?php
 
 use Controller\HomeController;
+use Controller\ErrorController;
 
 class Application
 {
@@ -43,12 +44,12 @@ class Application
                 if (strlen($this->url_action) == 0) {
                     $this->url_controller->index();
                 } else {
-                    $error = new \Controller\ErrorController();
+                    $error = new ErrorController();
                     $error->index();
                 }
             }
         } else {
-            $error = new \Controller\ErrorController();
+            $error = new ErrorController();
             $error->index();
         }
     }
