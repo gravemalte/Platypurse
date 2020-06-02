@@ -12,12 +12,12 @@ class FileWriter
      * @param $content
      * @param string $mode
      */
-    public static function writeToFile($path, $content)
+    public static function writeToFile($path, $content, $mode = "a+")
     {
         if (!(file_exists($path))) {
             self::createFile($path);
         }
-        $fileStream = fopen($path, "a+") or die('Opening Error');
+        $fileStream = fopen($path, $mode) or die('Opening Error');
         fwrite($fileStream, $content . "\n");
         fclose($fileStream);
     }
