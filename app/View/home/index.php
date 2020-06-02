@@ -7,7 +7,7 @@ use Model\OfferModel;
 <main class="main-page">
     <div class="main-area">
         <!-- Static hot offer as long there is no proper database -->
-        <?php $hotOffer = DataSerialize::unserializeData(OfferModel::getData("5ed41d3d73535"))[0]?>
+        <?php $hotOffer = DataSerialize::unserializeData(OfferModel::getData())[0]?>
         <a href="offer?id=<?php echo $hotOffer->getId();?>">
             <div class="hot-offer-container card">
                 <div class="annotation">
