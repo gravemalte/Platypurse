@@ -24,17 +24,17 @@
                 <a href="create" class="button">Angebot erstellen</a>
             </div>
             <?php if(isset($_SESSION['user-email'])): ?>
-                <div class="nav-logout-container">
-                    <a href="login/logout" class="button">Abmelden</a>
-                </div>
+            <div class="nav-logout-container">
+                <a href="login/logout" class="button">Abmelden</a>
+            </div>
             <?php else: ?>
-                <div class="nav-login-container">
-                    <a href="login" class="button">Login</a>
-                </div>
+            <div class="nav-login-container">
+                <a href="login" class="button">Login</a>
+            </div>
             <?php endif; ?>
         </div>
         <?php if(isset($_SESSION['user-email'])): ?>
-            <!-- will be used when database integration is ready
+        <!-- will be used when database integration is ready
         <div class="nav-profile-container">
             <a href="profile/<?php echo $_SESSION['user-id'] ?>"
                title="<?php echo $_SESSION['user-display-name'] ?>">
@@ -42,12 +42,12 @@
             </a>
         </div>
         -->
-            <div class="nav-profile-container">
-                <a href="profile"
-                   title="Anzeigename">
-                    <img src="assets/nav/user-circle-solid.svg" alt="user avatar">
-                </a>
-            </div>
+        <div class="nav-profile-container">
+            <a href="profile"
+               title="Anzeigename">
+                <img src="assets/nav/user-circle-solid.svg" alt="user avatar">
+            </a>
+        </div>
         <?php endif; ?>
     </div>
 </nav>

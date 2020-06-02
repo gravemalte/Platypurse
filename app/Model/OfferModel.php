@@ -57,7 +57,7 @@ class OfferModel extends BaseModel {
             $mode = "a+";
         }
 
-        // print_r($dataArray);
+        // print_r($dataArray);*/
         fclose($offerFile);
     }
 

@@ -22,9 +22,7 @@ class OfferController extends BaseController
     }
 
     public function delete() {
-        // print($_SESSION["offerId"]);
-        OfferModel::deleteOfferFromFile($_SESSION["offerId"]);
-        $_SESSION["offerId"] = "";
+        OfferModel::deleteOfferFromFile($_GET["id"]);
         header('location: ' . URL);
         exit();
     }

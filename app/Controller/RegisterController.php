@@ -31,6 +31,7 @@ class RegisterController extends BaseController {
         $userInputMail = $_POST['user-email'];
         $userInputPassswd = $_POST['user-passwd'];
 
+        $userInputPassswd = strtolower($userInputPassswd);
         $userInputMail = strtolower($userInputMail);
 
         $user = new UserModel($userInputDisplayName, $userInputMail, $userInputPassswd);

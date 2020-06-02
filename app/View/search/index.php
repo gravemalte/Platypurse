@@ -6,22 +6,18 @@
     $sexMaleSelected = "";
     $sexFemaleSelected = "";
     $sex = "";
-    $age_bottom = "";
-    $age_top = "";
-    $size_bottom = "";
-    $size_top = "";
+    $age = array(0, 20);
+    $size = array(0, 75);
 
     if(isset($_POST['search'])): $searchText = $_POST['search']; endif;
     if(isset($_POST['filter-button']) && ($_POST['filter-button'] == 'search')):
         if(isset($_POST['sex']) && $_POST['sex'] == "männlich"): $sexMaleSelected = "selected"; $sex = $_POST['sex']; endif;
         if(isset($_POST['sex']) && $_POST['sex'] == "weiblich"): $sexFemaleSelected = "selected"; $sex = $_POST['sex']; endif;
-        if(isset($_POST['age-bottom'])): $age_bottom = $_POST['age-bottom']; endif;
-        if(isset($_POST['age-top'])): $age_top = $_POST['age-top']; endif;
-        if(isset($_POST['size-bottom'])): $size_bottom = $_POST['size-bottom']; endif;
-        if(isset($_POST['size-top'])): $size_top = $_POST['size-top']; endif;
+        if(isset($_POST['age'])): $age = $_POST['age']; endif;
+        if(isset($_POST['size'])): $size = $_POST['size']; endif;
     endif;
 ?>
-<div class="main-page filter-page">
+<main class="main-page filter-page">
     <div class="filter-area">
         <!--
         <div class="filter-container card">
@@ -47,8 +43,8 @@
                         <p>Alter</p>
                     </div>
                     <div class="filter-option-dropdown">
-                        <input type="number" id="age-bottom" name="age-bottom" min="0" max="75" value="<?php echo $age_bottom ?>">
-                        <input type="number" id="age-top" name="age-top" min="0" max="75" value="<?php echo $age_top?>">
+                        <input type="number" id="age-bottom" name="age-bottom" min="0" max="75" value="<?php echo min($age) ?>">
+                        <input type="number" id="age-top" name="age-top" min="0" max="75" value="<?php echo max($age) ?>">
                     </div>
                 </div>
                 <div class="filter-option">
@@ -56,8 +52,8 @@
                         <p>Körpergröße</p>
                     </div>
                     <div class="filter-option-dropdown">
-                        <input type="number" id="size-bottom" name="size-bottom" min="0" max="75" value="<?php echo $size_bottom ?>">
-                        <input type="number" id="size-top" name="size-top" min="0" max="75" value="<?php echo $size_top ?>">
+                        <input type="number" id="size-bottom" name="size-bottom" min="0" max="75" value="<?php echo min($size) ?>">
+                        <input type="number" id="size-top" name="size-top" min="0" max="75" value="<?php echo max($size) ?>">
                     </div>
                 </div>
                 <div class="filter-button-container">
@@ -111,18 +107,18 @@
                         <label for="filter-age-range-1">Alter</label>
                         <div class="multi-thumb-slider-container" role="group" aria-labelledby="multi-thumb-slider">
                             <label for="filter-age-range-1" hidden></label>
-                            <input type="range" min="0" max="20" value="0" id="filter-age-range-1">
+                            <input type="range" min="0" max="20" value="<?php echo min($age) ?>" id="filter-age-range-1" name="age[]">
                             <label for="filter-age-range-2" hidden></label>
-                            <input type="range" min="0" max="20" value="20" id="filter-age-range-2">
+                            <input type="range" min="0" max="20" value="<?php echo max($age) ?>" id="filter-age-range-2" name="age[]">
                         </div>
                     </div>
                     <div>
                         <label for="filter-size-range-1">Größe</label>
                         <div class="multi-thumb-slider-container" role="group" aria-labelledby="multi-thumb-slider">
                             <label for="filter-size-range-1" hidden></label>
-                            <input type="range" min="0" max="75" value="0" id="filter-size-range-1" name="size">
+                            <input type="range" min="0" max="75" value="<?php echo min($size) ?>" id="filter-size-range-1" name="size[]">
                             <label for="filter-size-range-2" hidden></label>
-                            <input type="range" min="0" max="75" value="75" id="filter-size-range-2" name="size">
+                            <input type="range" min="0" max="75" value="<?php echo max($size) ?>" id="filter-size-range-2" name="size[]">
                         </div>
                     </div>
                     <div class="filter-button-container">
@@ -146,13 +142,12 @@
             <div class="offer-list-container">
                 <?php
                 $unserializeData = DataSerialize::unserializeData(OfferModel::getData($searchText));
-
                 foreach($unserializeData as $offer):
                     if (((!empty($sex) && $offer->getSex() == $sex) || empty($sex))
-                        && ((!empty($age_bottom) && $offer->getAge() >= $age_bottom) || empty($age_bottom))
-                        && ((!empty($age_top) && $offer->getAge() <= $age_top) || empty($age_top))
-                        && ((!empty($size_bottom) && $offer->getSize() >= $size_bottom) || empty($size_bottom))
-                        && ((!empty($size_top) && $offer->getSize() <= $size_top) || empty($size_top))):
+                        && ($offer->getAge() >= min($age))
+                        && ($offer->getAge() <= max($age))
+                        && ($offer->getSize() >= min($size))
+                        && ($offer->getSize() <= max($size))):
                         ?>
                     <a class="offer-list-link" href="offer?id=<?php echo $offer->getId();?>">
                         <div class="offer-list-item card">
@@ -170,4 +165,4 @@
             </div>
         </div>
     </div>
-</div>
+</main>
