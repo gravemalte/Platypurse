@@ -1,52 +1,11 @@
-.filter-area {
-    margin: 8px 1em;
-}
-
-.title-container p {
-    margin: 0.2em 0.5em;
-}
-
-.filter-container {
-    padding: 10px 0;
-}
-.filter-option {
-    padding: 5px 0;
-    margin: 10px;
-}
-.filter-option-dropdown {
-    margin: 4px 0;
-    border-radius: 10px;
-    background-color: var(--nav-search-color);
-    width: 100%;
-}
-.filter-button-container {
+.filter-options-container {
     display: flex;
-    justify-content: space-evenly;
-}
-
-.filter-button-container .button {
-    height: 100%;
-}
-.filter-button-container .button div {
-    background-color: var(--nav-button-bg-color);
-    margin: 1.5em 0.25em;
-    height: calc(100% - 2 * 1.5em);
-    display: flex;
-    justify-content: center;
     flex-direction: column;
-    box-sizing: border-box;
 }
-.filter-button-container .button p {
-    color: var(--nav-search-text-color);
-    padding: 0.5em;
-    font-weight: bold;
+.filter-options-container > div {
+    display: flex;
+    flex-direction: column;
 }
-
-@media (max-width: 600px) {
-    .main-page.filter-page {
-        flex-direction: column;
-    }
-    .filter-container {
-        margin-right: 1em;
-    }
+.filter-options-container > div > label {
+    margin-left: 0.6em;
 }

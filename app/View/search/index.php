@@ -23,6 +23,7 @@
 ?>
 <div class="main-page filter-page">
     <div class="filter-area">
+        <!--
         <div class="filter-container card">
             <form action="search" method="post">
                 <input type="hidden" id="search" name="search" value='<?php echo $searchText ?>'>
@@ -64,21 +65,77 @@
                         <button name="filter-button" value="reset" class="button reset-button">
                             <p>Zurücksetzen</p>
                         </button>
-                        <!--<a href="" class="button reset-button">
+                        <a href="" class="button reset-button">
                             <div>
                                 <p>Zurücksetzen</p>
                             </div>
-                        </a>-->
+                        </a>
                     </div>
                     <div class="filter-button-search">
                         <button name="filter-button" value="search" class="button search-button">
                             <p>Suchen</p>
                         </button>
-                        <!--<a href="" class="button search-button">
+                        <a href="" class="button search-button">
                             <div>
                                 <p>Suchen</p>
-                            </div> -->
+                            </div>
                         </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        -->
+        <div class="filter-container card">
+            <form action="search" method="post">
+                <div class="title-container">
+                    <input type="hidden" id="search" name="search" value='<?php echo $searchText ?>'>
+                    <p>Filter</p>
+                </div>
+                <div class="filter-options-container">
+                    <div class="attribute-list dropdown-list">
+                        <div class="attribute-item dropdown-item">
+                            <div class="attribute-item-header dropdown-item-header">
+                                <p>Geschlecht</p>
+                            </div>
+                            <div class="attribute-item-select dropdown-item-select">
+                                <label for="filter-sex" hidden>Geschlecht</label>
+                                <select name="sex" id="filter-sex">
+                                    <option value=""></option>
+                                    <option value="männlich" <?php echo $sexMaleSelected ?>>männlich</option>
+                                    <option value="weiblich" <?php echo $sexFemaleSelected ?>>weiblich</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="filter-age-range-1">Alter</label>
+                        <div class="multi-thumb-slider-container" role="group" aria-labelledby="multi-thumb-slider">
+                            <label for="filter-age-range-1" hidden></label>
+                            <input type="range" min="0" max="20" value="0" id="filter-age-range-1">
+                            <label for="filter-age-range-2" hidden></label>
+                            <input type="range" min="0" max="20" value="20" id="filter-age-range-2">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="filter-size-range-1">Größe</label>
+                        <div class="multi-thumb-slider-container" role="group" aria-labelledby="multi-thumb-slider">
+                            <label for="filter-size-range-1" hidden></label>
+                            <input type="range" min="0" max="75" value="0" id="filter-size-range-1" name="size">
+                            <label for="filter-size-range-2" hidden></label>
+                            <input type="range" min="0" max="75" value="75" id="filter-size-range-2" name="size">
+                        </div>
+                    </div>
+                    <div class="filter-button-container">
+                        <button type="submit" name="filter-button" value="reset">
+                            <span>Zurücksetzen</span>
+                            <span class="fas fa-toilet-paper"></span>
+                        </button>
+                    </div>
+                    <div class="filter-button-container">
+                        <button type="submit" name="filter-button" value="search">
+                            <span>Suchen</span>
+                            <span class="fas fa-search"></span>
+                        </button>
                     </div>
                 </div>
             </form>
