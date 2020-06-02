@@ -76,12 +76,17 @@
     flex-direction: row;
     justify-content: flex-end;
 }
-.offer-interactions-container .button div {
-    margin-left: 1em;
-}
-.offer-interactions-container .button div span {
-    padding: 0.5em;
+.offer-interactions-container button ~ label {
+    border-radius: 5px;
+    background-color: var(--page-button-bg-color);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
     font-size: 2em;
+    padding: 0.5em 0.5em;
+    margin-left: 0.5em;
+    cursor: pointer;
+}
+.offer-interactions-container button ~ label:hover {
+    filter: brightness(0.9);
 }
 
 @media (max-width: 600px) {
