@@ -24,7 +24,7 @@
                 </a>
                 <a href="" class="button report-button">
                     <div>
-                        <?php if(!(isset($_SESSION['user-email']) == isset($_SESSION['user-email']))): ?>
+                        <?php if(!(isset($_SESSION['user-ID']))): ?>
                         <p>Nutzer melden</p>
                         <?php endif; ?>
                     </div>

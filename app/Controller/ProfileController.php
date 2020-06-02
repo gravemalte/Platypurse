@@ -10,6 +10,11 @@ class ProfileController extends BaseController
 {
     public function index($userID = 0){
 
+        if(!(isset($_SESSION['user-ID']))){
+            header('location: ' . URL . 'login');
+        }
+
+
         if(isset($userID) && $userID != 0){
             $this->searchUser($userID);
         }

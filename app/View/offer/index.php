@@ -44,6 +44,7 @@ use Model\OfferModel; ?>
                         <p>Größe: <?php echo $offer->getSize();?></p>
                     </div>
                 </div>
+                    <?php if((isset($_SESSION['user-ID']))): ?>
                 <div class="offer-interactions-container">
                     <form action="offer/delete">
                         <input type="text" id="delete-id" name="id" hidden value="<?php echo $offer->getId();?>">
@@ -60,6 +61,7 @@ use Model\OfferModel; ?>
                         <label for="delete-submit" class="fas fa-pencil-alt" title="Artikel anpassen"></label>
                     </form>
                 </div>
+                <?php endif; ?>
             </div>
             <?php else: ?>
             <div>

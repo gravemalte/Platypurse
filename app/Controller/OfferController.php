@@ -22,6 +22,10 @@ class OfferController extends BaseController
     }
 
     public function delete() {
+        if(!(isset($_SESSION['user-ID']))){
+            header('location: ' . URL . 'login');
+        }
+
         OfferModel::deleteOfferFromFile($_GET["id"]);
         header('location: ' . URL);
         exit();
