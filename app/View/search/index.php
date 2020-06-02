@@ -5,18 +5,21 @@
     $searchText = "";
     $sexMaleSelected = "";
     $sexFemaleSelected = "";
+    $sex = "";
     $age_bottom = "";
     $age_top = "";
     $size_bottom = "";
     $size_top = "";
 
     if(isset($_POST['search'])): $searchText = $_POST['search']; endif;
-    if(isset($_POST['sex']) && $_POST['sex'] == "männlich"): $sexMaleSelected = "selected"; endif;
-    if(isset($_POST['sex']) && $_POST['sex'] == "weiblich"): $sexFemaleSelected = "selected"; endif;
-    if(isset($_POST['age-bottom'])): $age_bottom = $_POST['age-bottom']; endif;
-    if(isset($_POST['age-top'])): $age_top = $_POST['age-top']; endif;
-    if(isset($_POST['size-bottom'])): $size_bottom = $_POST['size-bottom']; endif;
-    if(isset($_POST['size-top'])): $size_top = $_POST['size-top']; endif;
+    if(isset($_POST['filter-button']) && ($_POST['filter-button'] == 'search')):
+        if(isset($_POST['sex']) && $_POST['sex'] == "männlich"): $sexMaleSelected = "selected"; $sex = $_POST['sex']; endif;
+        if(isset($_POST['sex']) && $_POST['sex'] == "weiblich"): $sexFemaleSelected = "selected"; $sex = $_POST['sex']; endif;
+        if(isset($_POST['age-bottom'])): $age_bottom = $_POST['age-bottom']; endif;
+        if(isset($_POST['age-top'])): $age_top = $_POST['age-top']; endif;
+        if(isset($_POST['size-bottom'])): $size_bottom = $_POST['size-bottom']; endif;
+        if(isset($_POST['size-top'])): $size_top = $_POST['size-top']; endif;
+    endif;
 ?>
 <div class="main-page filter-page">
     <div class="filter-area">
@@ -58,7 +61,7 @@
                 </div>
                 <div class="filter-button-container">
                     <div class="filter-button-reset">
-                        <button type="reset" class="button reset-button">
+                        <button name="filter-button" value="reset" class="button reset-button">
                             <p>Zurücksetzen</p>
                         </button>
                         <!--<a href="" class="button reset-button">
@@ -68,7 +71,7 @@
                         </a>-->
                     </div>
                     <div class="filter-button-search">
-                        <button class="button search-button">
+                        <button name="filter-button" value="search" class="button search-button">
                             <p>Suchen</p>
                         </button>
                         <!--<a href="" class="button search-button">
@@ -88,11 +91,11 @@
                 $unserializeData = DataSerialize::unserializeData(OfferModel::getData($searchText));
 
                 foreach($unserializeData as $offer):
-                    if (((!empty($_POST['sex']) && $offer->getSex() == $_POST['sex']) || empty($_POST['sex']))
-                        && ((!empty($_POST['age-bottom']) && $offer->getAge() >= $_POST['age-bottom']) || empty($_POST['age-bottom']))
-                        && ((!empty($_POST['age-top']) && $offer->getAge() <= $_POST['age-top']) || empty($_POST['age-top']))
-                        && ((!empty($_POST['size-bottom']) && $offer->getSize() >= $_POST['size-bottom']) || empty($_POST['size-bottom']))
-                        && ((!empty($_POST['size-top']) && $offer->getSize() <= $_POST['size-top']) || empty($_POST['size-top']))):
+                    if (((!empty($sex) && $offer->getSex() == $sex) || empty($sex))
+                        && ((!empty($age_bottom) && $offer->getAge() >= $age_bottom) || empty($age_bottom))
+                        && ((!empty($age_top) && $offer->getAge() <= $age_top) || empty($age_top))
+                        && ((!empty($size_bottom) && $offer->getSize() >= $size_bottom) || empty($size_bottom))
+                        && ((!empty($size_top) && $offer->getSize() <= $size_top) || empty($size_top))):
                         ?>
                     <a class="offer-list-link" href="offer?id=<?php echo $offer->getId();?>">
                         <div class="offer-list-item card">
