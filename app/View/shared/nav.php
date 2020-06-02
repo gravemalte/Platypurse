@@ -21,10 +21,7 @@
         </div>
         <div class="nav-buttons-container">
             <div class="nav-create-offer-container">
-                <?php if(isset($_SESSION['user-ID'])): ?>
                 <a href="create" class="button">Angebot erstellen</a>
-                <?php endif; ?>
-
             </div>
             <?php if(isset($_SESSION['user-ID'])): ?>
             <div class="nav-logout-container">
