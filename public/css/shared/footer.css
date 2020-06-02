@@ -47,3 +47,6 @@ footer p {
 .footer-copyright-container .designed-by {
     font-size: 0.7em;
 }
+.footer-copyright-container .designed-by a {
+    text-decoration: none;
+}

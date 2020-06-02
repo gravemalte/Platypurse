@@ -8,7 +8,13 @@
         <img src="assets/logo/svg/logo_1tone.svg" alt="footer-logo">
         <p class="copyright">&copy; 2020 Platypurse</p>
         <p class="designed-for">Projekt für das Modul "Webprogrammierung" an der Carl&nbsp;von&nbsp;Ossietzky&nbsp;Universität&nbsp;Oldenburg</p>
-        <p class="designed-by">Gestaltet von <em>Malte&nbsp;Grave, Tim&nbsp;Hesse & Marvin&nbsp;Kuhlmann</em></p>
+        <p class="designed-by">
+            Gestaltet von <em>
+                <a href="https://github.com/Daylien" target="_blank">Malte&nbsp;Grave</a>,
+                <a href="https://github.com/derPiepmatz" target="_blank">Tim&nbsp;Hesse</a> &
+                <a href="https://github.com/Ceitcher" target="_blank">Marvin&nbsp;Kuhlmann</a>
+            </em>
+        </p>
     </div>
 </footer>
 </body>
