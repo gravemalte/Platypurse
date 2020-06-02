@@ -33,7 +33,7 @@ class LoginController extends BaseController
             exit();
         }
         $userSentMail = strtolower($_POST["user-email"]);
-        $userSentPasswd = strtolower($_POST["user-passwd"]);
+        $userSentPasswd = $_POST["user-passwd"];
 
         $userData = UserModel::getData();
         if($userData == false){
@@ -52,7 +52,7 @@ class LoginController extends BaseController
             if ($this->checkCredentials($userSentMail, $userMail,
                 $userSentPasswd, $userPasswd)) {
                 $_SESSION['user-ID'] = $userID;
-                $_SESSION['user-displayName']= $userDisplayName;
+                $_SESSION['user-display-name']= $userDisplayName;
                 $_SESSION['user-email'] = $userMail;
                 $_SESSION['user-passwd'] = $userPasswd;
                 header('location: ' . URL);

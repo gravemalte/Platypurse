@@ -32,7 +32,7 @@
         </div>
         <!-- TODO: Tim wir müssen das noch irgendwie formatieren mit dem Namen-->
         <?php if(isset($_SESSION['user-email'])):  ?>
-            <p>Welcome <?php echo "<a href='profile'>" .$_SESSION['user-displayName'] . "</a>" ?></p>
+            <p>Welcome <?php echo "<a href='profile'>" .$_SESSION['user-display-name'] . "</a>" ?></p>
             <div class="login-container nav-element">
                     <a href="login/logout" class="button login-button">
                         <div>

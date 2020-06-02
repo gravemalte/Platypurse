@@ -7,7 +7,7 @@
                 <img src="assets/nav/user-circle-solid.svg" alt="profile image">
             </div>
             <div class="profile-displayname">
-                <p><?php echo $_SESSION['user-displayName']?></p>
+                <p><?php echo $_SESSION['user-display-name']?></p>
             </div>
             <div class="profile-rating">
                 <span class="fas fa-star checked"></span>
