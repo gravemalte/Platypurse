@@ -22,6 +22,7 @@
                     <div class="img-container main-input-container">
                         <p class="name">Bilder</p>
                         <div class="drag-drop-container">
+                            <!--
                             <p>
                                 Drag'n'Drop<br>
                                 Bilder hier<br>
@@ -29,6 +30,14 @@
                             </p>
                             <label for="image">
                                 <input type="file" multiple accept="image/*" id="image" name="image">
+                            </label>
+                            -->
+                            <input id="create-image" type="file" multiple accept="image/*" name="image" hidden>
+                            <label for="create-image">
+                                <span>Drag'n'Drop</span>
+                                <span>Bilder hier</span>
+                                <span class="far fa-caret-square-down"></span>
+                                <span>Oder hier klicken</span>
                             </label>
                         </div>
                     </div>
