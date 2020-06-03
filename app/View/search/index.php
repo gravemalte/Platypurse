@@ -80,26 +80,32 @@
             <div class="offer-list-container">
                 <?php
                 $unserializeData = DataSerialize::unserializeData(OfferModel::getData($searchText));
-                foreach($unserializeData as $offer):
-                    if (((!empty($sex) && $offer->getSex() == $sex) || empty($sex))
-                        && ($offer->getAge() >= min($age))
-                        && ($offer->getAge() <= max($age))
-                        && ($offer->getSize() >= min($size))
-                        && ($offer->getSize() <= max($size))):
-                        ?>
-                    <a class="offer-list-link" href="offer?id=<?php echo $offer->getId();?>">
-                        <div class="offer-list-item card">
-                            <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                            <p class="name"><?php echo $offer->getTitle();?></p>
-                            <p class="description"><?php echo $offer->getDescription();?></p>
-                            <div class="price-tag-container">
-                                <p class="price-tag"><?php echo $offer->getPrice();?></p>
+                if(count($unserializeData) > 0):
+                    foreach($unserializeData as $offer):
+                        if (((!empty($sex) && $offer->getSex() == $sex) || empty($sex))
+                            && ($offer->getAge() >= min($age))
+                            && ($offer->getAge() <= max($age))
+                            && ($offer->getSize() >= min($size))
+                            && ($offer->getSize() <= max($size))):
+                            ?>
+                        <a class="offer-list-link" href="offer?id=<?php echo $offer->getId();?>">
+                            <div class="offer-list-item card">
+                                <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
+                                <p class="name"><?php echo $offer->getTitle();?></p>
+                                <p class="description"><?php echo $offer->getDescription();?></p>
+                                <div class="price-tag-container">
+                                    <p class="price-tag"><?php echo $offer->getPrice();?></p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                <?php
-                    endif;
-                endforeach;?>
+                        </a>
+                        <?php
+                        endif;
+                    endforeach;
+                else: ?>
+                    <div>
+                        <h1>Sorry, es gibt gerade leider keine Angebote. ¯\_(ツ)_/¯</h1>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
