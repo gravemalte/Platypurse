@@ -34,4 +34,4 @@
     <!-- Link JS in the footer template-->
 
     <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/55820d01a2.js" crossorigin="anonymous"></script>
+    <script src="js/font-awesome.js"></script>

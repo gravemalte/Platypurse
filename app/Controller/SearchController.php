@@ -17,5 +17,4 @@ class SearchController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
-
 }

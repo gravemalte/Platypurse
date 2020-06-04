@@ -42,7 +42,7 @@
 }
 .profile-button-container {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 .profile-button-container .button {

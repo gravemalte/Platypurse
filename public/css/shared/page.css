@@ -2,23 +2,36 @@
 body {
     margin: 0 auto;
     background-color: var(--page-bg-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
-p, span, h1, h2, h3, h4, h5, h6, i, input, textarea, select {
+p,
+span,
+h1, h2, h3, h4, h5, h6,
+i,
+a,
+input,
+textarea,
+select,
+label {
     font-family: sans-serif;
     color: var(--page-text-color);
 }
 p {
     margin: 0;
 }
-.button div {
+.button div, button {
     border-radius: 5px;
     background-color: var(--page-button-bg-color);
     box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+    border: none;
+    cursor: pointer;
 }
-.button div:hover {
+.button div:hover, button:hover {
     filter: brightness(0.9);
 }
-.button, .button p {
+.button, .button p, button span {
     text-decoration: none;
     text-align: center;
 }
@@ -79,6 +92,7 @@ select {
     display: flex;
     justify-content: center;
     margin-top: 2em;
+    flex-grow: 1;
 }
 
 .main-area {

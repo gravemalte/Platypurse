@@ -1,22 +1,22 @@
 <?php
 
-
 use Controller\HomeController;
-
+use Controller\ErrorController;
 
 class Application
 {
+    private static $instance = null;
+
     const CONTROLLER = 'Controller';
     const PHP_FILE_ENDING = '.php';
 
     private $url_controller = null;
-
     private $url_action = null;
-
     private $url_params = array();
 
-    public function __construct()
+    private function __construct()
     {
+
         // splitting up our URL
         $this->splitUrl();
 
@@ -40,19 +40,28 @@ class Application
                 } else {
                     $this->url_controller->{$this->url_action}();
                 }
-            // TODO: Rework the header response #2
             } else {
                 if (strlen($this->url_action) == 0) {
                     $this->url_controller->index();
                 } else {
-                    header('location: ' . URL . 'problem');
+                    $error = new ErrorController();
+                    $error->index();
                 }
             }
         } else {
-            header('location: ' . URL . 'problem');
+            $error = new ErrorController();
+            $error->index();
         }
     }
 
+    public static function getInstance()
+    {
+        if (self::$instance == null) {
+            self::$instance = new Application();
+        }
+
+        return self::$instance;
+    }
 
     private function splitUrl()
     {
@@ -69,16 +78,6 @@ class Application
             unset($url[0], $url[1]);
 
             $this->url_params = array_values($url);
-
-            // debugging dirty as shit
-            /*echo '<div class="debugging">';
-            echo '<h1>DEBUGGING OUTPUT</h1>';
-            echo '<h2>Controller responded the following object:</h2>';
-            echo '<p>Controller: ' . $this->url_controller . '<br>';
-            echo '<p>Action: ' . $this->url_action . '<br>';
-            echo '<p>Parameters: ' . print_r($this->url_params, true) . '<br></p>';
-            echo '</div>';*/
-
         }
     }
 }

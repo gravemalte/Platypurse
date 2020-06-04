@@ -1,11 +1,13 @@
-<div class="main-page profile-page">
+<!--TODO: Eine art Stift zum bearbeiten des Profils wäre cool-->
+
+<main class="main-page profile-page">
     <div class="profile-area">
         <div class="profile-container card">
             <div class="profile-image">
                 <img src="assets/nav/user-circle-solid.svg" alt="profile image">
             </div>
             <div class="profile-displayname">
-                <p>Displayname</p>
+                <p><?php echo $_SESSION['user-display-name']?></p>
             </div>
             <div class="profile-rating">
                 <span class="fas fa-star checked"></span>
@@ -20,11 +22,13 @@
                         <p>Nachricht schreiben</p>
                     </div>
                 </a>
+                <?php if(!(isset($_SESSION['user-ID']))): ?>
                 <a href="" class="button report-button">
                     <div>
                         <p>Nutzer melden</p>
                     </div>
                 </a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -94,4 +98,4 @@
             </div>
         </div>
     </div>
-</div>
+</main>
