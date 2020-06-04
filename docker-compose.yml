@@ -1,0 +1,15 @@
+version: '3.2'
+services:
+  apache:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+      args:
+        user_id: 1000
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      #change the line below with your IP address
+      XDEBUG_CONFIG: remote_host=192.168.188.21

@@ -1,0 +1,166 @@
+.main-page > div {
+    max-width: calc(1920px * 0.33);
+    flex-grow: 1;
+}
+@media (max-width: calc(1920px * 0.33)) {
+    .main-page > div {
+        max-width: 100vw;
+    }
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5em;
+}
+.form-container .title-container p {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+}
+.form-container .description-container p {
+    margin-left: 1.5em;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5em;
+}
+.form-container form > div {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5em;
+    position: relative;
+}
+.form-container form > div > label {
+    font-size: 1.5em;
+    margin-left: 0.2em;
+}
+form > div > input[type=text],
+form > div > input[type=email],
+form > div > input[type=password] {
+    border-radius: 15px;
+    padding: 0.5em;
+    font-size: 1.5em;
+    outline: none;
+    border: none;
+    background-color: var(--page-input-bg-color);
+}
+
+.error-text {
+    text-align: center;
+    color: var(--page-error-color);
+}
+.show-error ~ input {
+    border: 2px solid var(--page-error-color) !important;
+    box-sizing: border-box;
+}
+
+.form-passwd-container label[for=show-passwd],
+.form-passwd-container label[for=show-passwd-1],
+.form-passwd-container label[for=show-passwd-2]{
+    position: absolute;
+    bottom: 0.1em;
+    font-size: 1.5em;
+    padding: 0.5em 0 0.5em 0.5em;
+    height: 1em;
+    right: 0.5em;
+    text-transform: uppercase;
+    visibility: hidden;
+    cursor: pointer;
+}
+.form-passwd-container label.fa-eye-slash {
+    visibility: hidden;
+}
+.form-passwd-container input:checked ~ label.fa-eye-slash {
+    visibility: visible;
+}
+.form-passwd-container label.fa-eye {
+    right: 0.55em;
+    visibility: visible;
+}
+.form-passwd-container input:checked ~ label.fa-eye {
+    visibility: hidden;
+}
+.form-passwd-container input[type=text] {
+    -webkit-text-security: disc;
+}
+.form-passwd-container input:checked ~ input[type=text] {
+    -webkit-text-security: initial;
+}
+
+.form-misc-container {
+    flex-direction: row-reverse !important;
+    justify-content: space-between;
+}
+
+.form-remember-me-container {
+    font-size: 1.2em;
+    user-select: none;
+    display: flex;
+    align-items: center;
+}
+.form-remember-me-container > * {
+    margin: 0.2em;
+}
+.form-remember-me-container label {
+    cursor: pointer;
+}
+.form-remember-me-container input {
+    display: none;
+}
+.form-remember-me-container .fa-check-square {
+    display: none;
+    font-size: 1.5em;
+    color: var(--page-input-bg-color);
+    filter: invert(1);
+}
+.form-remember-me-container input[type=checkbox]:checked ~ label.fa-check-square {
+    display: initial;
+}
+.form-remember-me-container .fa-square {
+    display: initial;
+    font-size: 1.5em;
+    color: var(--page-input-bg-color);
+}
+.form-remember-me-container input[type=checkbox]:checked ~ label.fa-square {
+    display: none;
+}
+
+.form-submit-container {
+    justify-content: center;
+    flex-direction: row !important;
+}
+.form-submit-container button {
+    width: 80%;
+    border-radius: 5px;
+    background-color: var(--page-button-alt-bg-color);
+    border: none;
+    cursor: pointer;
+}
+.form-submit-container button span {
+    margin: 0.3em 0.1em;
+    font-size: 2em;
+    color: var(--page-button-alt-text-color);
+}
+
+.form-forgot-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-no-account-container {
+    flex-direction: row !important;
+    justify-content: center;
+}
+.form-no-account-container > * {
+    margin: 0.5em;
+}
+
+@media (max-width: 450px) {
+    .form-misc-container {
+        flex-direction: column !important;
+        align-items: center;
+    }
+}
