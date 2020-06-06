@@ -4,8 +4,7 @@ namespace Controller;
 
 
 use Hydro\Base\Controller\BaseController;
-use Hydro\Helper\DataSerialize;
-use Model\UserModel;
+use Hydro\Base\Database\Driver\SQLite;
 
 class LoginController extends BaseController
 {
@@ -33,46 +32,34 @@ class LoginController extends BaseController
             exit();
         }
         $userSentMail = strtolower($_POST["user-email"]);
-        $userSentPasswd = strtolower($_POST["user-passwd"]);
+        $userSentPasswd = $_POST['user-passwd'];
 
-        $userData = UserModel::getData();
-        if($userData == false){
-            $_SESSION['user-login-error'] = true;
-            header('location: ' . URL . 'login');
+        $result = $this->checkCredentials($userSentMail, $userSentPasswd);
+
+
+        if($result[0] == true){
+            $_SESSION['user-ID'] = $result["userID"];
+            $_SESSION['user-display-name']= $result["display_name"];
+            $_SESSION['user-email'] = $result["mail"];
+            header('location: ' . URL);
             exit();
-        }
-
-        $unserializeData = DataSerialize::unserializeData($userData);
-
-        foreach ($unserializeData as $user) {
-            $userID = $user->getUserID();
-            $userDisplayName = $user->getDisplayName();
-            $userMail = $user->getEmail();
-            $userPasswd = $user->getPassword();
-            if ($this->checkCredentials($userSentMail, $userMail,
-                $userSentPasswd, $userPasswd)) {
-                $_SESSION['user-ID'] = $userID;
-                $_SESSION['user-display-name']= $userDisplayName;
-                $_SESSION['user-email'] = $userMail;
-                $_SESSION['user-passwd'] = $userPasswd;
-                header('location: ' . URL);
-                exit();
-            }
         }
         $_SESSION['user-login-error'] = true;
         header('location: ' . URL . 'login');
     }
 
-    private function checkCredentials($userEmailInput, $dbEmailInout,
-                                      $userPasswdInput, $dbPasswdInput)
-
-    {
-        if ($userEmailInput == $dbEmailInout && $userPasswdInput == $dbPasswdInput) {
-            return true;
-        } else {
+    private function checkCredentials($userEmail, $userPasswd){
+        $sql_query = "SELECT * FROM user WHERE mail = '$userEmail' AND password = '$userPasswd'";
+        $con = SQLite::connectToSQLite();
+        $query = $con->prepare($sql_query);
+        $query->execute();
+        $obj = $query->fetchObject();
+        if($obj == null){
             return false;
+        }else{
+            return array(true, "userID"=>$obj->ug_id, "display_name"=>$obj->display_name,
+                "mail"=>$obj->mail);
         }
-
     }
 
     private function checkSession()

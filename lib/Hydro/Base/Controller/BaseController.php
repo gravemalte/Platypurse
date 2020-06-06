@@ -14,8 +14,5 @@ class BaseController {
 
     }
 
-    private function openDBConn()
-    {
-        // TODO: Implementing a Database connection
-    }
+
 }

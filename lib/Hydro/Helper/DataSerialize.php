@@ -4,6 +4,11 @@
 namespace Hydro\Helper;
 
 
+/**
+ * Class DataSerialize
+ * @package Hydro\Helper
+ * @deprecated Use the SQLite driver instead
+ */
 class DataSerialize
 {
     /**
@@ -13,6 +18,7 @@ class DataSerialize
      *
      * @param $dataModel
      * @return array
+     * @deprecated
      */
     public static function unserializeData($dataModel)
     {
@@ -28,6 +34,12 @@ class DataSerialize
         return array();
     }
 
+
+    /**
+     * @param $dataModel
+     * @return string
+     * @deprecated
+     */
     public static function serializeData($dataModel)
     {
         return serialize($dataModel);

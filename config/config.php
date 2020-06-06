@@ -6,6 +6,9 @@ if (ENVIRONMENT == 'dev') {
     ini_set("display_errors", 1);
 }
 
+// Database configuration
+define('DB_FILE_NAME', 'platypurse.db');
+define('DB_FILE', DB . DB_FILE_NAME);
 
 define('URL_PUBLIC_FOLDER', 'public');
 define('URL_PROTOCOL', '//');

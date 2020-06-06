@@ -3,15 +3,12 @@
 namespace Model;
 
 use Hydro\Base\Model\BaseModel;
-use Hydro\Helper\DataSerialize;
-use Hydro\Helper\FileWriter;
 
-class UserModel extends BaseModel {
-    const file = DB . 'userData.dat';
-
+class UserModel extends BaseModel
+{
     private $userID;
-    private $displayName;
     private $email;
+    private $displayName;
     private $password;
 
     /**
@@ -20,46 +17,47 @@ class UserModel extends BaseModel {
      * @param $email
      * @param $password
      */
+
     public function __construct($displayName, $email, $password)
     {
-        $this->userID = uniqid();
-        $this->displayName = $displayName;
+        $this->userID = hexdec(uniqid());
         $this->email = $email;
+        $this->displayName = $displayName;
         $this->password = $password;
+        parent::__construct();
     }
 
-    private function writeUserToFile($userSZ){
-        FileWriter::writeToFile(self::file, $userSZ);
-    }
-
-    public function registerUser($user){
-        $userSZ = DataSerialize::serializeData($user);
-        $this->writeUserToFile($userSZ);
-    }
-
-
-    // TODO: Rewrite to a clear update function
-    public static function updateUser($user){
-        $s = serialize($user);
-        FileWriter::writeToFile(self::file, $s);
-
-    }
-
-    public static function getData(){
-        if(!file_exists(self::file)){
-            FileWriter::createFile(self::file);
-        }
-
-        if(FileWriter::fileIsEmpty(self::file)){
+    public function registerUser()
+    {
+        if ($this->checkUser($this->email) == true) {
             return false;
+        } else {
+            $sql_query = "INSERT INTO user (display_name, mail, password, ug_id) VALUES (:display_name, :mail, :password, :user_id)";
+            $query = $this->db->prepare($sql_query);
+            $query->bindParam(":display_name", $this->displayName);
+            $query->bindParam(":mail", $this->email);
+            $query->bindParam(":password", $this->password);
+            $query->bindParam(":user_id", $this->userID);
+            $query->execute();
+            unset($query);
+            return true;
         }
+    }
 
-        $loginFile = fopen(self::file, 'r');
-        $myData = fread($loginFile, filesize(self::file));
-        $data_array = explode("\n", $myData);
 
-        fclose($loginFile);
-        return $data_array;
+    public function checkUser($userEmail)
+    {
+        $sql_query = "SELECT mail From user where mail = :user_email";
+        $stmt = $this->db->prepare($sql_query);
+        $stmt->execute(array($userEmail));
+
+        $obj = $stmt->fetchObject();
+
+        if($obj == null){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     /**
