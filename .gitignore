@@ -1,4 +1,4 @@
 .idea/
 .vscode/
 *.dat
-*.db
+*.sqlite

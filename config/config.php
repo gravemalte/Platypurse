@@ -7,7 +7,7 @@ if (ENVIRONMENT == 'dev') {
 }
 
 // Database configuration
-define('DB_FILE_NAME', 'platypurse.db');
+define('DB_FILE_NAME', 'platypurse.sqlite');
 define('DB_FILE', DB . DB_FILE_NAME);
 
 define('URL_PUBLIC_FOLDER', 'public');

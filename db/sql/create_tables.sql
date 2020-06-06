@@ -5,8 +5,8 @@ CREATE TABLE user_group (
 
 CREATE TABLE user (
   u_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  display_name TEXT NOT NULL,
-  mail TEXT NOT NULL,
+  display_name TEXT UNIQUE NOT NULL,
+  mail TEXT UNIQUE OT NULL,
   password TEXT NOT NULL,
   ug_id INTEGER NOT NULL,
   rating REAL DEFAULT 0,

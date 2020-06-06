@@ -29,7 +29,7 @@ class UserModel extends BaseModel
 
     public function registerUser()
     {
-        if ($this->checkUser($this->email) == true) {
+        if ($this->checkUser($this->email, $this->displayName) == true) {
             return false;
         } else {
             $sql_query = "INSERT INTO user (display_name, mail, password, ug_id) VALUES (:display_name, :mail, :password, :user_id)";
@@ -45,19 +45,18 @@ class UserModel extends BaseModel
     }
 
 
-    public function checkUser($userEmail)
+    public function checkUser($userEmail, $displayName)
     {
-        $sql_query = "SELECT mail From user where mail = :user_email";
+        $sql_query = "SELECT mail, display_name FROM user WHERE mail = '$userEmail' AND display_name = '$displayName'" ;
         $stmt = $this->db->prepare($sql_query);
-        $stmt->execute(array($userEmail));
-
-        $obj = $stmt->fetchObject();
-
-        if($obj == null){
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        if ($count > 0){
             return false;
         }else{
             return true;
         }
+
     }
 
     /**
