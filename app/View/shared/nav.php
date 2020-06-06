@@ -4,9 +4,9 @@
         <label for="expand-nav" hidden>Navigation ausklappen</label>
         <input type="checkbox" id="expand-nav" hidden checked>
         <label for="expand-nav" class="fas fa-bars"></label>
-        <label for="expand-nav" class="fas fa-arrow-up"></label>
+        <label for="expand-nav" class="fas fa-times"></label>
         <div class="nav-logo-container">
-            <a href="/">
+            <a href="/index.php">
                 <img src="assets/logo/svg/logo_text.svg" alt="show/hide menu button">
             </a>
         </div>

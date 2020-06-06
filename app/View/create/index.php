@@ -17,7 +17,14 @@ use Model\OfferModel; ?>
                         <p class="name">Name</p>
                         <div class="input-container">
                             <label for="name">
-                                <input type="text" placeholder="Name" id="name" name="name" value='<?php echo $offer->getTitle();?>'>
+                                <input
+                                    type="text"
+                                    placeholder="Name"
+                                    id="name"
+                                    name="name"
+                                    value="<?php echo $offer->getTitle();?>"
+                                    required
+                                >
                             </label>
                         </div>
                     </div>
@@ -25,7 +32,16 @@ use Model\OfferModel; ?>
                         <p class="name">Preis</p>
                         <div class="input-container">
                             <label for="price">
-                                <input type="number" placeholder="Preis" id="price" name="price" value='<?php echo $offer->getPrice();?>'>
+                                <input
+                                    type="text"
+                                    pattern="\d+([,\.]\d{1,2})?"
+                                    inputmode="decimal"
+                                    placeholder="Preis"
+                                    id="price"
+                                    name="price"
+                                    value="<?php echo $offer->getPrice();?>"
+                                    required
+                                >
                             </label>
                         </div>
                     </div>
@@ -45,7 +61,13 @@ use Model\OfferModel; ?>
                         <p class="name">Beschreibung</p>
                         <div class="input-container">
                             <label for="description">
-                                <textarea placeholder="Beschreibung" id="description" name="description"><?php echo $offer->getDescription();?></textarea>
+                                <textarea
+                                    placeholder="Beschreibung"
+                                    id="description"
+                                    name="description"
+                                >
+                                    <?php echo $offer->getDescription();?>
+                                </textarea>
                             </label>
                         </div>
                     </div>

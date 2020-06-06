@@ -14,7 +14,7 @@ nav {
     position: relative;
 }
 .nav-container .fa-bars,
-.nav-container .fa-arrow-up {
+.nav-container .fa-times {
     display: none;
 }
 
@@ -91,7 +91,7 @@ nav {
     }
 
     .nav-container .fa-bars,
-    .nav-container .fa-arrow-up {
+    .nav-container .fa-times {
         position: absolute;
         top: 0.35em;
         right: 0.3em;
@@ -101,14 +101,15 @@ nav {
     #expand-nav:checked ~ .fa-bars {
         display: block;
     }
-    .nav-container .fa-arrow-up {
+    .nav-container .fa-times {
         display: block;
+        right: 0.4em;
     }
 
     #expand-nav:checked ~ .nav-search-container,
     #expand-nav:checked ~ .nav-buttons-container,
     #expand-nav:checked ~ .nav-profile-container,
-    #expand-nav:checked ~ .fa-arrow-up {
+    #expand-nav:checked ~ .fa-times {
         display: none;
     }
 
