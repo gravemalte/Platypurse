@@ -47,7 +47,7 @@ class UserModel extends BaseModel
 
     public function checkUser($userEmail, $displayName)
     {
-        $sql_query = "SELECT * FROM user WHERE mail = :user_mail OR display_name = :display_name" ;
+        $sql_query = "SELECT mail, display_name FROM user WHERE mail = :user_mail OR display_name = :display_name" ;
         $stmt = $this->db->prepare($sql_query);
         $stmt->bindParam(':user_mail', $userEmail);
         $stmt->bindParam(':display_name', $displayName);
