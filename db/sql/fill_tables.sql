@@ -3,12 +3,12 @@ VALUES
 ("admin"),
 ("default");
 
-INSERT INTO user (display_name, ug_id, mail, password)
+INSERT INTO user (u_id, display_name, ug_id, mail, password)
 VALUES
-("Admin", 1, "admin@platypurse.com", ""),
-("SchnabelFan1337", 2, "schnabelfan@ymail.com", ""),
-("ShadowStabber69_HD", 2, "yrtwk@gmail.com", ""),
-("Harald", 2, "harald.haraldsen@outlook.com", "");
+(1, "Admin", 1, "admin@platypurse.com", ""),
+(2, "SchnabelFan1337", 2, "schnabelfan@ymail.com", ""),
+(3, "ShadowStabber69_HD", 2, "yrtwk@gmail.com", ""),
+(4, "Harald", 2, "harald.haraldsen@outlook.com", "");
 
 INSERT INTO user_rating (from_u_id, for_u_id, rating)
 VALUES
@@ -19,32 +19,55 @@ VALUES
 (4, 2, 5),
 (4, 3, 1);
 
-INSERT INTO platypus (p_id, name, age_years, age_months sex, size)
+INSERT INTO platypus (p_id, name, age_years, age_months, sex, size)
 VALUES
-(7, "männlich", 47),
-(4, "weiblich", 35),
-(11, "männlich", 11),
-(8, "weiblich", 39),
-(15, "männlich", 46),
-(3, "weiblich", 40),
-(5, "männlich", 44),
-(3, "weiblich", 36),
-(5, "männlich", 57),
-(6, "weiblich", 38);
+(1, "Perry", 7, 5, "männlich", 47),
+(2, "Schnabella", 5, 5, "weiblich", 35),
+(3, "Schnabello", 9, 4, "männlich", 11),
+(4, "Daisy", 4, 11, "weiblich", 39),
+(5, "Flap", 17, 1, "männlich", 46),
+(6, "Anatina", 3, 8, "weiblich", 40),
+(7, "Rufus", 4, 7, "männlich", 44),
+(8, "Goal", 2, 3, "weiblich", 36),
+(9, "Bozo", 6, 10, "männlich", 57);
 
-INSERT INTO offer (title, u_id, p_id, price, negotiable, description)
+INSERT INTO offer (o_id, u_id, p_id, price, negotiable, description)
 VALUES
-("Perry", 2, 1, 12999, 0, "Er ist ein Schnabeltier, die machen nicht viel. Ist aber tagsüber immer verschwunden..."),
-("Schnabella", 4, 2, 9900, 0, "Wärst du so freundlich und kaufst dieses Schnabeltier?"),
-("Schnabello", 4, 3, 9900, 1, "Rietlebanchs sesied fauk!"),
-("Daisy", 4, 4, 13300, 1, ""),
-("Flap", 3, 5, 7950, 0, "Ist ein älteres Tier und hat Erinnerungen hinterlassen."),
-("Anatina", 2, 6, 150000, 1, "Selsbterklärend."),
-("Rufus", 3, 7, 550, 0, "Bisschen vertrottelt, besitzt aber Erfindergeist!"),
-("Goal", 2, 8, 11879, 0, "Gutmütiges Vieh. Hat aber gespaltene Persönlichkeiten"),
-("Bozo", 2, 9, 10000, 1, "In Ehrfurcht vor der Größe dieses Jungens. Absolute Einheit."),
-("Deleta", 2, 10, 9999, 0, "Kann gelöscht werden");
+(1, 2, 1, 12999, 0, "Er ist ein Schnabeltier, die machen nicht viel. Ist aber tagsüber immer verschwunden..."),
+(2, 4, 2, 9900, 0, "Wärst du so freundlich und kaufst dieses Schnabeltier?"),
+(3, 4, 3, 9900, 1, "Rietlebanchs sesied fauk!"),
+(4, 4, 4, 13300, 1, ""),
+(5, 3, 5, 7950, 0, "Ist ein älteres Tier und hat Erinnerungen hinterlassen."),
+(6, 2, 6, 150000, 1, "Selsbterklärend."),
+(7, 3, 7, 550, 0, "Bisschen vertrottelt, besitzt aber Erfindergeist!"),
+(8, 2, 8, 11879, 0, "Gutmütiges Vieh. Hat aber gespaltene Persönlichkeiten"),
+(9, 2, 9, 10000, 1, "In Ehrfurcht vor der Größe dieses Jungens. Absolute Einheit.");
 
 INSERT INTO saved_offers (u_id, o_id)
 VALUES
-(2, )
+(2, 1),
+(3, 2),
+(4, 3),
+(2, 4),
+(3, 5),
+(4, 6),
+(2, 7),
+(3, 8),
+(4, 9),
+(2, 8),
+(3, 7),
+(4, 7),
+(2, 5),
+(3, 4),
+(4, 1),
+(2, 2);
+
+/*Tables to fill:
+  - message
+  - msg_thread
+  - report_reason
+  - thread_user
+  - user_reports
+  - offer_reports
+  - log
+  - offer_images*/
