@@ -1,4 +1,8 @@
+<?php
+use Hydro\Helper\CacheBuster;
+?>
+
     <!-- elements per page -->
-    <link rel="stylesheet" href="css/create.css">
+    <link rel="stylesheet" href="<?= CacheBuster::serve("css/create.css") ?>">
 
 </head>
