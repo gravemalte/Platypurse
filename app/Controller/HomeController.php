@@ -40,7 +40,7 @@ class HomeController extends BaseController
     }
 
     public function getHotOffer() {
-        $result = SQLite::select("SELECT o_id, name, price, negotiable, description, sex, age_years, age_month, size, clicks FROM offer as o INNER JOIN platypus as p ON o.p_id = p.p_id WHERE o.active = 1 ORDER BY o.clicks desc LIMIT 1");
+        $result = SQLite::select("SELECT o_id, name, price, negotiable, description, sex, age_years, age_months, size, clicks FROM offer as o INNER JOIN platypus as p ON o.p_id = p.p_id WHERE o.active = 1 ORDER BY o.clicks desc LIMIT 1");
         $return = "";
 
         foreach($result as $row) {
@@ -51,7 +51,7 @@ class HomeController extends BaseController
                 $row['description'],
                 $row['sex'],
                 $row['age_years'],
-                $row['age_month'],
+                $row['age_months'],
                 $row['size'],
                 $row['clicks']);
         }

@@ -7,7 +7,7 @@ use Hydro\Base\Model\BaseModel;
 
 class PlatypusModel extends BaseModel {
     const table = "platypus";
-    const tableColumns = array("p_id", "name", "age_years", "age_month", "sex", "size");
+    const tableColumns = array("p_id", "name", "age_years", "age_months", "sex", "size");
 
     private $id;
     private $name;

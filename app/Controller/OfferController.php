@@ -33,7 +33,7 @@ class OfferController extends BaseController
                     $row['p_id'],
                     $row['name'],
                     $row['age_years'],
-                    $row['age_month'],
+                    $row['age_months'],
                     $row['sex'],
                     $row['size']),
                 $row['price'],

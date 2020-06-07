@@ -33,7 +33,7 @@ CREATE TABLE platypus (
   p_id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   age_years INTEGER NOT NULL,
-  age_month INTEGER DEFAULT 0,
+  age_months INTEGER DEFAULT 0,
   sex TEXT NOT NULL,
   size INTEGER NOT NULL
 );
