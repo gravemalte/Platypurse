@@ -1,30 +1,23 @@
 <?php
 use Hydro\Helper\DataSerialize;
-use Model\OfferModel;
-use Controller\CreateController;
-use Controller\OfferController;
-?>
-
+use Model\OfferModelOld; ?>
 <main class="main-page">
     <div class="main-area">
         <div class="create-offer-container card">
             <?php if(isset($_GET['id'])):
-                $offer = OfferController::getOffer($_GET['id']); ?>
+                $offer = DataSerialize::unserializeData(OfferModelOld::getData($_GET['id']))[0]; ?>
             <form action="create/update" method="post">
                 <input type="hidden" name="offerId" value='<?php echo $offer->getId();?>'>
-                <input type="hidden" name="platypusId" value='<?php echo $offer->getPlatypus()->getId();?>'>
-            <?php else: ?>
+            <?php else:
+                $offer = new OfferModelOld();?>
             <form action="create/create" method="post">
-            <?php endif;?>
+                <?php endif;?>
                 <div class="main-container">
                     <div class="name-container main-input-container">
                         <p class="name">Name</p>
                         <div class="input-container">
                             <label for="name">
-                                <input type="text" placeholder="Name" id="name" name="name"' value="<?php
-                                    if(isset($_GET['id'])):
-                                        echo $offer->getPlatypus()->getName() ;
-                                    endif;?>">
+                                <input type="text" placeholder="Name" id="name" name="name" value='<?php echo $offer->getTitle();?>'>
                             </label>
                         </div>
                     </div>
@@ -32,10 +25,7 @@ use Controller\OfferController;
                         <p class="name">Preis</p>
                         <div class="input-container">
                             <label for="price">
-                                <input type="number" placeholder="Preis" id="price" name="price"' value="<?php
-                                if(isset($_GET['id'])):
-                                    echo $offer->getPrice();
-                                endif;?>">
+                                <input type="number" placeholder="Preis" id="price" name="price" value='<?php echo $offer->getPrice();?>'>
                             </label>
                         </div>
                     </div>
@@ -55,11 +45,7 @@ use Controller\OfferController;
                         <p class="name">Beschreibung</p>
                         <div class="input-container">
                             <label for="description">
-                                <textarea placeholder="Beschreibung" id="description" name="description"><?php
-                                    if(isset($_GET['id'])):
-                                        echo $offer->getDescription();
-                                    endif;?>
-                                </textarea>
+                                <textarea placeholder="Beschreibung" id="description" name="description"><?php echo $offer->getDescription();?></textarea>
                             </label>
                         </div>
                     </div>
@@ -73,14 +59,8 @@ use Controller\OfferController;
                             <div class="attribute-item-select dropdown-item-select">
                                 <label for="sex">
                                     <select name="sex" id="sex" >
-                                        <option value="männlich" <?php
-                                        if(isset($_GET['id']) && $offer->getPlatypus()->getSex() == "männlich"):
-                                            echo "selected";
-                                        endif;?>>Männlich</option>
-                                        <option value="weiblich" <?php
-                                        if(isset($_GET['id']) && $offer->getPlatypus()->getSex() == "weiblich"):
-                                            echo "selected";
-                                        endif;?>>Weiblich</option>
+                                        <option value="männlich" <?php if($offer->getSex() == "männlich"): echo "selected"; endif;?>>Männlich</option>
+                                        <option value="weiblich" <?php if($offer->getSex() == "weiblich"): echo "selected"; endif;?>>Weiblich</option>
                                     </select>
                                 </label>
                             </div>
@@ -91,10 +71,7 @@ use Controller\OfferController;
                             </div>
                             <div class="attribute-item-select dropdown-item-select">
                                 <label for="age" hidden>Alter</label>
-                                <input type="number" id="age" name="age" min="0" max="20" value="<?php
-                                if(isset($_GET['id'])):
-                                    echo $offer->getPlatypus()->getAgeYears();
-                                endif;?>">
+                                <input type="number" id="age" name="age" min="0" max="20" value="<?php echo $offer->getAge();?>">
                                 <p>Jahre</p>
                             </div>
                         </div>
@@ -104,10 +81,7 @@ use Controller\OfferController;
                             </div>
                             <div class="attribute-item-select dropdown-item-select">
                                 <label for="size" hidden>Körpergröße</label>
-                                <input type="number" id="size" name="size" min="0" max="75" value="<?php
-                                if(isset($_GET['id'])):
-                                    echo $offer->getPlatypus()->getSize();
-                                endif;?>">
+                                <input type="number" id="size" name="size" min="0" max="75" value="<?php echo $offer->getSize();?>">
                                 <p>cm</p>
                             </div>
                         </div>
@@ -115,7 +89,13 @@ use Controller\OfferController;
                     <div class="buttons-container">
                         <button type="submit" hidden id="create-submit"></button>
                         <label for="create-submit" class="fas fa-clipboard-check"
-                               title="Angebot erstellen"
+                               title="
+                               <?php if(isset($_GET['id'])): ?>
+                               Angebot anpassen
+                               <?php else: ?>
+                               Angebot erstellen
+                               <?php endif; ?>
+                               "
                         ></label>
                     </div>
                 </div>

@@ -2,97 +2,78 @@
 
 namespace Model;
 
+use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
-use Hydro\Helper\FileWriter;
+use Hydro\Helper\Date;
+use PDO;
 
 class OfferModel extends BaseModel {
-    const file = DB . 'offerData.dat';
+    const table = "offer";
+    const tableColumns = array("o_id", "u_id", "p_id", "price", "negotiable", "description", "clicks", "create_date", "edit_date", "active");
 
     private $id;
-    private $title;
-    private $description;
+    private $userId;
+    private $platypus;
     private $price;
-    private $sex;
-    private $age;
-    private $size;
+    private $negotiable;
+    private $description;
+    private $clicks;
+    private $create_date;
+    private $edit_date;
+    private $active;
 
-    public function __construct($title = "", $description = "", $price = "", $sex = "", $age = "", $size = "", $id = "")
+    /**
+     * OfferModel constructor.
+     * @param $id
+     * @param $userId
+     * @param $platypus
+     * @param $price
+     * @param $negotiable
+     * @param $description
+     */
+    public function __construct($id, $userId, $platypus, $price, $negotiable, $description, $clicks = 0, $create_date = "", $edit_date = "", $active = 1)
     {
-        if(empty($id)): $this->id = uniqid();
-        else: $this->id = $id;
+        if(empty($create_date)):
+            $create_date = Date::now();
         endif;
-        $this->title = $title;
-        $this->description = $description;
+
+        $this->id = $id;
+        $this->userId = $userId;
+        $this->platypus = $platypus;
         $this->price = $price;
-        $this->sex = $sex;
-        $this->age = $age;
-        $this->size = $size;
+        $this->negotiable = $negotiable;
+        $this->description = $description;
+        $this->clicks = $clicks;
+        $this->create_date = $create_date;
+        $this->edit_date = $edit_date;
+        $this->active = $active;
+        parent::__construct();
     }
 
-    private function writeOfferToFile($offer){
-        $s = serialize($offer);
-        FileWriter::writeToFile(self::file, $s);
+    public function writeToDatabase() {
+        $insertValues = array($this->getId(),
+            $this->getUserId(),
+            $this->getPlatypus()->getId(),
+            $this->getPrice(),
+            $this->getNegotiable(),
+            $this->getDescription(),
+            $this->getClicks(),
+            $this->getCreateDate(),
+            $this->getEditDate(),
+            $this->getActive());
+
+        return SQLite::insertInto(self::table, self::tableColumns, $insertValues);
     }
 
-    public function createOffer($offer){
-        $this->writeOfferToFile($offer);
+    public function offerClickPlusOne() {
+        $stmnt = "UPDATE offer SET clicks = ?
+        WHERE o_id = ?;";
+        $values = array(($this->getClicks() + 1), $this->getId());
+        SQLite::update($stmnt, $values);
     }
 
-    public static function deleteOfferFromFile($id) {
-        $offerFile = fopen(self::file, 'r');
-        $myData = fread($offerFile, filesize(self::file));
-        $dataArray = explode("\n", $myData);
-        $mode = "w+";
+    public function deleteOffer() {
 
-        // Searches for id and removes the entry from the array
-        unset($dataArray[sizeof($dataArray) - 1]);
-        foreach ($dataArray as $key => $value) {
-            if (!(false !== stripos($value, $id))) {
-                FileWriter::writeToFile(self::file, $value, $mode);
-                $mode = "a+";
-            }
-        }
-
-        // print_r($dataArray);*/
-        fclose($offerFile);
-    }
-
-    public function updateOffer($offer) {
-        $this->deleteOfferFromFile($offer->getId());
-        $this->writeOfferToFile($offer);
-    }
-
-    public function __toString()
-    {
-        return "$this->title" .
-            "$this->description" .
-            "$this->price" .
-            "$this->sex" .
-            "$this->age" .
-            "$this->size";
-    }
-
-    public static function getData($searchStr = ""){
-        $offerFile = fopen(self::file, 'r');
-        $myData = fread($offerFile, filesize(self::file));
-        $dataArray = explode("\n", $myData);
-        fclose($offerFile);
-
-        // If searchStr is not empty, search the array for matching results and pass them into the return array
-        if($searchStr != "") {
-            $tempArray = array();
-            foreach($dataArray as $data) {
-                if(strpos(strtolower ($data), strtolower ($searchStr)) !== false) {
-                    $tempArray[] = $data;
-                }
-            }
-            // Quick solution as long we don't have a proper database
-            $tempArray[] = "";
-
-            $dataArray = $tempArray;
-        }
-
-        return $dataArray;
     }
 
     /**
@@ -106,41 +87,41 @@ class OfferModel extends BaseModel {
     /**
      * @param mixed $id
      */
-    public function setId($id)
+    public function setId($id): void
     {
-        $this->title = $id;
+        $this->id = $id;
     }
 
     /**
      * @return mixed
      */
-    public function getTitle()
+    public function getUserId()
     {
-        return $this->title;
+        return $this->userId;
     }
 
     /**
-     * @param mixed $title
+     * @param mixed $userId
      */
-    public function setTitle($title)
+    public function setUserId($userId): void
     {
-        $this->title = $title;
+        $this->userId = $userId;
     }
 
     /**
      * @return mixed
      */
-    public function getDescription()
+    public function getPlatypus()
     {
-        return $this->description;
+        return $this->platypus;
     }
 
     /**
-     * @param mixed $description
+     * @param mixed $platypus
      */
-    public function setDescription($description)
+    public function setPlatypus($platypus): void
     {
-        $this->description = $description;
+        $this->platypus = $platypus;
     }
 
     /**
@@ -154,57 +135,104 @@ class OfferModel extends BaseModel {
     /**
      * @param mixed $price
      */
-    public function setPrice($price)
+    public function setPrice($price): void
     {
         $this->price = $price;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getSex(): string
+    public function getNegotiable()
     {
-        return $this->sex;
+        return $this->negotiable;
     }
 
     /**
-     * @param string $sex
+     * @param mixed $negotiable
      */
-    public function setSex(string $sex): void
+    public function setNegotiable($negotiable): void
     {
-        $this->sex = $sex;
+        $this->negotiable = $negotiable;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getAge(): string
+    public function getDescription()
     {
-        return $this->age;
+        return $this->description;
     }
 
     /**
-     * @param string $age
+     * @param mixed $description
      */
-    public function setAge(string $age): void
+    public function setDescription($description): void
     {
-        $this->age = $age;
+        $this->description = $description;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getSize(): string
+    public function getClicks()
     {
-        return $this->size;
+        return $this->clicks;
     }
 
     /**
-     * @param string $size
+     * @param mixed $clicks
      */
-    public function setSize(string $size): void
+    public function setClicks($clicks): void
     {
-        $this->size = $size;
+        $this->clicks = $clicks;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCreateDate()
+    {
+        return $this->create_date;
+    }
+
+    /**
+     * @param mixed $create_date
+     */
+    public function setCreateDate($create_date): void
+    {
+        $this->create_date = $create_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEditDate()
+    {
+        return $this->edit_date;
+    }
+
+    /**
+     * @param mixed $edit_date
+     */
+    public function setEditDate($edit_date): void
+    {
+        $this->edit_date = $edit_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param mixed $active
+     */
+    public function setActive($active): void
+    {
+        $this->active = $active;
+    }
 }
