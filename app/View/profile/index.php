@@ -1,5 +1,6 @@
 <?php
 use Controller\ProfileController;
+use Model\UserModel;
 $id_request = $_GET["id"];
 $user = ProfileController::getUser($id_request);
 ?>
@@ -11,7 +12,7 @@ $user = ProfileController::getUser($id_request);
                 <img src="assets/nav/user-circle-solid.svg" alt="profile image">
             </div>
             <div class="profile-displayname">
-                <p><?php echo $user["display_name"] ?></p>
+                <p><?php echo $user->getDisplayName() ?></p>
             </div>
             <div class="profile-rating">
                 <span class="fas fa-star checked"></span>
@@ -26,7 +27,7 @@ $user = ProfileController::getUser($id_request);
                         <p>Nachricht schreiben</p>
                     </div>
                 </a>
-                <?php if(($_SESSION['user-ID']) !=$id_request): ?>
+                <?php if(($_SESSION['currentUser'])->getId() != $id_request): ?>
                 <a href="" class="button report-button">
                     <div>
                         <p>Nutzer melden</p>

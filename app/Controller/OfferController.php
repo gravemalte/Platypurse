@@ -14,6 +14,13 @@ class OfferController extends BaseController
 
     public function index()
     {
+        if(isset($_GET['id'] )){
+            $offer = self::getOffer($_GET['id']);
+            if($offer == false){
+                header('location: ' . URL . 'error');
+            }
+        }
+
         // load views
         require APP . 'View/shared/header.php';
         require APP . 'View/offer/header.php';
@@ -53,8 +60,11 @@ class OfferController extends BaseController
 
     }
 
+    /**
+     *
+     */
     public function delete() {
-        if(!(isset($_SESSION['user-ID']))){
+        if(!(isset($_SESSION['currentUser']))){
             header('location: ' . URL . 'login');
         }
 

@@ -37,22 +37,30 @@ class PlatypusModel extends BaseModel {
         parent::__construct();
     }
 
-    public function writeToDatabase() {
+    /**
+     * @return bool
+     */
+    public function insertIntoDatabase() {
         $insertValues = array($this->getId(),
             $this->getName(),
             $this->getAgeYears(),
             $this->getSex(),
             $this->getSize());
 
-        return SQLite::insertInto(self::TABLE, self::TABLECOLUMNS, $insertValues);
+        return SQLite::insertBuilder(self::TABLE, self::TABLECOLUMNS, $insertValues);
     }
 
-    public function updatePlatypus($updateValues, $where) {
+    /**
+     *
+     */
+    public function updateInDatabase() {
 
-        return SQLite::update(self::TABLE, self::TABLECOLUMNS, $updateValues, $where);
     }
 
-    public function deletePlatypus() {
+    /**
+     *
+     */
+    public function deleteFromDatabase() {
 
     }
 

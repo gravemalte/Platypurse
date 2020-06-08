@@ -11,7 +11,7 @@ class ProfileController extends BaseController
 {
     public function index(){
 
-        if(!(isset($_SESSION['user-ID']))) {
+        if(!(isset($_SESSION['currentUser']))) {
             header('location: ' . URL . 'login');
         }
 

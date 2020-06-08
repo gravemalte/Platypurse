@@ -12,7 +12,7 @@ class CreateController extends BaseController
 {
     public function index()
     {
-        if(!(isset($_SESSION['user-ID']))){
+        if(!(isset($_SESSION['currentUser']))){
             header('location: ' .URL . 'login');
         }
         // load views
@@ -23,21 +23,28 @@ class CreateController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
+    /**
+     * @param $id
+     * @return OfferModel|string
+     */
     public function getOffer($id) {
         return OfferController::getOffer($id);
     }
 
+    /**
+     *
+     */
     public function create() {
         $platypus = new PlatypusModel(hexdec(uniqid()),
             $_POST["name"],
             $_POST["age"],
             $_POST["sex"],
             $_POST["size"]);
-        $platypus->writeToDatabase();
+        $platypus->insertIntoDatabase();
 
-        if($platypus->writeToDatabase()):
+        if($platypus->insertIntoDatabase()):
             $offer = new OfferModel(hexdec(uniqid()),
-                $_SESSION['user-ID'],
+                $_SESSION['currentUser']->getId(),
                 $platypus,
                 $_POST['price'],
                 0,
@@ -49,6 +56,9 @@ class CreateController extends BaseController
         exit();
     }
 
+    /**
+     *
+     */
     public function update(){
         $preparedSetPlatypus = PlatypusModel::TABLECOLUMNS["name"]." = ?,
             " .PlatypusModel::TABLECOLUMNS["sex"]." = ?,

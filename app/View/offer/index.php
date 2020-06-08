@@ -43,7 +43,7 @@ $offer->offerClickPlusOne();
                         <p>Größe: <?=$offer->getPlatypus()->getSize();?></p>
                     </div>
                 </div>
-                    <?php if((isset($_SESSION['user-ID']))): ?>
+                    <?php if((isset($_SESSION['currentUser']))): ?>
                 <div class="offer-interactions-container">
                     <form action="offer/delete" method="post">
                         <input type="text" id="delete-platypus-id" name="platypusId" hidden value="<?=$offer->getPlatypus()->getId();?>">
