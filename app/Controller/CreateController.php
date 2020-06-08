@@ -23,10 +23,17 @@ class CreateController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
+    /**
+     * @param $id
+     * @return OfferModel|string
+     */
     public function getOffer($id) {
         return OfferController::getOffer($id);
     }
 
+    /**
+     *
+     */
     public function create() {
         $platypus = new PlatypusModel(hexdec(uniqid()),
             $_POST["name"],
@@ -49,6 +56,9 @@ class CreateController extends BaseController
         exit();
     }
 
+    /**
+     *
+     */
     public function update(){
         $preparedSetPlatypus = PlatypusModel::TABLECOLUMNS["name"]." = ?,
             " .PlatypusModel::TABLECOLUMNS["sex"]." = ?,

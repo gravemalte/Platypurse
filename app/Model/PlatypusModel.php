@@ -37,6 +37,9 @@ class PlatypusModel extends BaseModel {
         parent::__construct();
     }
 
+    /**
+     * @return bool
+     */
     public function insertIntoDatabase() {
         $insertValues = array($this->getId(),
             $this->getName(),
@@ -47,10 +50,16 @@ class PlatypusModel extends BaseModel {
         return SQLite::insertBuilder(self::TABLE, self::TABLECOLUMNS, $insertValues);
     }
 
+    /**
+     *
+     */
     public function updateInDatabase() {
 
     }
 
+    /**
+     *
+     */
     public function deleteFromDatabase() {
 
     }

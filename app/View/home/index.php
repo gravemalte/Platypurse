@@ -40,7 +40,7 @@ use \Controller\HomeController;
             <?php $offers = HomeController::getNewestOffers();
             if(!empty($offers)):?>
             <div class="title-container">
-                <p>Neuste Angebote</p>
+                <p>Neuste Angebote<f/p>
             </div>
             <div class="offer-list-container">
                 <?php foreach($offers as $offer): ?>
