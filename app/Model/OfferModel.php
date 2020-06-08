@@ -38,6 +38,10 @@ class OfferModel extends BaseModel {
      * @param $price
      * @param $negotiable
      * @param $description
+     * @param $clicks
+     * @param $create_date
+     * @param $edit_date
+     * @param $active
      */
     public function __construct($id, $userId, $platypus, $price, $negotiable, $description, $clicks = 0, $create_date = "", $edit_date = "", $active = 1)
     {
@@ -62,7 +66,7 @@ class OfferModel extends BaseModel {
         $insertValues = array($this->getId(),
             $this->getUserId(),
             $this->getPlatypus()->getId(),
-            $this->getPrice(),
+            str_replace(',', '', $this->getPrice()),
             $this->getNegotiable(),
             $this->getDescription(),
             $this->getClicks(),
