@@ -82,13 +82,19 @@ class SQLite
         return self::execStmnt($stmnt, $values);
     }
 
-    public static function update($stmnt, $values) {
-        // TODO: Implement query builder for UPDATE
+    public static function updateBuilder($table, $preparedSetClause, $preparedWhereClause, $values) {
+        $stmnt = "UPDATE " .$table. " SET " .$preparedSetClause. " WHERE " .$preparedWhereClause. ";";
+
         return self::execStmnt($stmnt, $values);
     }
 
-    public static function delete($stmnt) {
-        // TODO: Implement query builder for DELETE
-        return self::execStmnt($stmnt);
+    public static function deleteBuilder($table, $preparedWhereClause, $values) {
+        $stmnt = "DELETE FROM " .$table. " WHERE " .$preparedWhereClause.";";
+
+        return self::execStmnt($stmnt, $values);
+    }
+
+    public static function selectBuilder() {
+
     }
 }

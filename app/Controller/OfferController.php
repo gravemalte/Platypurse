@@ -52,11 +52,8 @@ class OfferController extends BaseController
             header('location: ' . URL . 'login');
         }
 
-        $stmntOffer = "DELETE FROM offer WHERE o_id = ".$_POST['offerId'].";";
-        $stmntPlatypus = "DELETE FROM platypus WHERE p_id = ".$_POST['platypusId'].";";
-
-        SQLite::delete($stmntOffer);
-        SQLite::delete($stmntPlatypus);
+        SQLite::deleteBuilder(OfferModel::TABLE, "o_id = ?;", array($_POST['offerId']));
+        SQLite::deleteBuilder(PlatypusModel::TABLE, "p_id = ?;", array($_POST['platypusId']));
 
         header('location: ' . URL);
         exit();

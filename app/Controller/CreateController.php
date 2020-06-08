@@ -51,21 +51,22 @@ class CreateController extends BaseController
     }
 
     public function update(){
-        $stmntPlatypus = "UPDATE platypus SET name = ?,
-            sex = ?,
-            age_years = ?,
-            size = ?
-        WHERE p_id = ".$_POST['platypusId'].";";
-        $valuesPlatypus = array($_POST['name'], $_POST['sex'], $_POST['age'], $_POST['size']);
+        $preparedSetPlatypus = PlatypusModel::TABLECOLUMNS["name"]." = ?,
+            " .PlatypusModel::TABLECOLUMNS["sex"]." = ?,
+            " .PlatypusModel::TABLECOLUMNS["age_years"]." = ?,
+            " .PlatypusModel::TABLECOLUMNS["size"]." = ?";
+        $preparedWherePlatypus = PlatypusModel::TABLECOLUMNS["p_id"]." = ?";
+        $valuesPlatypus = array($_POST['name'], $_POST['sex'], $_POST['age'], $_POST['size'], $_POST['platypusId']);
 
-        $stmntOffer = "UPDATE offer SET price = ?,
-            negotiable = ?,
-            description = ?
-        WHERE o_id = ".$_POST['offerId'].";";
-        $valuesOffer = array($_POST['price'], 0, $_POST['description']);
-            
-        SQLite::update($stmntPlatypus, $valuesPlatypus);
-        SQLite::update($stmntOffer, $valuesOffer);
+        SQLite::updateBuilder(PlatypusModel::TABLE, $preparedSetPlatypus, $preparedWherePlatypus, $valuesPlatypus);
+
+        $preparedSetOffer = OfferModel::TABLECOLUMNS["price"]." = ?,
+            " .OfferModel::TABLECOLUMNS["negotiable"]." = ?,
+            " .OfferModel::TABLECOLUMNS["description"]." = ?";
+        $preparedWhereOffer = PlatypusModel::TABLECOLUMNS["o_id"]." = ?";
+        $valuesOffer = array($_POST['price'], 0, $_POST['description'], $_POST['offerId']);
+
+        SQLite::updateBuilder(OfferModel::TABLE, $preparedSetOffer, $preparedWhereOffer, $valuesOffer);
 
         header('location: ' . URL);
         exit();

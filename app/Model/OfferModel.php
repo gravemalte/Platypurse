@@ -78,10 +78,10 @@ class OfferModel extends BaseModel {
     }
 
     public function offerClickPlusOne() {
-        $stmnt = "UPDATE offer SET clicks = ?
-        WHERE o_id = ?;";
+        $preparedSet = OfferModel::TABLECOLUMNS['clicks']." = ?";
+        $preparedWhere = OfferModel::TABLECOLUMNS['o_id']." = ?;";
         $values = array(($this->getClicks() + 1), $this->getId());
-        SQLite::update($stmnt, $values);
+        SQLite::updateBuilder(OfferModel::TABLE, $preparedSet, $preparedWhere, $values);
     }
 
     public function deleteOffer() {
