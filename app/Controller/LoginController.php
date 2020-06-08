@@ -3,6 +3,7 @@
 namespace Controller;
 
 
+use http\Client\Curl\User;
 use Hydro\Base\Controller\BaseController;
 use Model\UserModel;
 
@@ -11,7 +12,7 @@ class LoginController extends BaseController
 
     public function index()
     {
-        if(isset($_SESSION['user-ID'])){
+        if(isset($_SESSION['currentUser'])){
             header('location: ' . URL . 'error');
             exit();
         }
@@ -36,15 +37,22 @@ class LoginController extends BaseController
         $userSentPasswd = $_POST['user-passwd'];
 
         $result = UserModel::checkCredentials($userSentMail, $userSentPasswd);
-
-
-        if($result[0] == true){
-            $_SESSION['user-ID'] = $result['userID'];
-            $_SESSION['user-display-name'] = $result['display_name'];
-            $_SESSION['user-email'] = $result['mail'];
+        foreach ($result as $row):
+            $user = new UserModel($row[UserModel::TABLECOLUMNS["u_id"]],
+                $row[UserModel::TABLECOLUMNS["display_name"]],
+                $row[UserModel::TABLECOLUMNS["mail"]],
+                $row[UserModel::TABLECOLUMNS["password"]],
+                $row[UserModel::TABLECOLUMNS["ug_id"]],
+                $row[UserModel::TABLECOLUMNS["rating"]],
+                $row[UserModel::TABLECOLUMNS["created_at"]],
+                $row[UserModel::TABLECOLUMNS["display_name"]]);
+            $_SESSION['currentUser'] = $user;
+            // print($_SESSION['currentUser']->getDisplayName());
             header('location: ' . URL);
+            // print_r($_SESSION);
             exit();
-        }
+        endforeach;
+
         $_SESSION['user-login-error'] = true;
         header('location: ' . URL . 'login');
     }

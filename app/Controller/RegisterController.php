@@ -4,6 +4,7 @@ namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 use Model\UserModel;
+use Hydro\Helper\Date;
 
 
 class RegisterController extends BaseController {
@@ -30,7 +31,14 @@ class RegisterController extends BaseController {
         $userInputPassswd = $_POST['user-passwd'];
         $userInputMail = strtolower($userInputMail);
 
-        $user = new UserModel($userInputDisplayName, $userInputMail, $userInputPassswd);
+        $user = new UserModel(hexdec(uniqid()),
+            $userInputDisplayName,
+            $userInputMail,
+            $userInputPassswd,
+            2,
+            0,
+            Date::now(),
+            0);
 
         $check = $user->registerUser();
         if($check){

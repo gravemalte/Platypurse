@@ -7,15 +7,11 @@ use Hydro\Base\Database\Driver\SQLite;
 
 class BaseModel implements IDaoContract {
 
-
-    public $db;
-
     /**
      * BaseModel constructor.
      */
     public function __construct()
     {
-        $this->db = SQLite::connectToSQLite();
     }
 
 

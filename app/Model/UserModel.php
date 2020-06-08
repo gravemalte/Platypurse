@@ -10,103 +10,139 @@ class UserModel extends BaseModel
     // TODO: Write with queryBuilder
     const TABLE = "user";
     const TABLECOLUMNS = array(
-        ":user_id" => "user_id",
-        ":display_name" => "display_name",
-        ":mail" => "mail",
-        ":password" => "password"
-    );
+        "u_id" => "u_id",
+        "display_name" => "display_name",
+        "mail" => "mail",
+        "password" => "password",
+        "ug_id" => "ug_id",
+        "rating" => "rating",
+        "created_at" => "created_at",
+        "disabled" => "disabled");
 
-    private $userID;
-    private $email;
+    private $id;
     private $displayName;
+    private $mail;
     private $password;
+    private $ugId;
+    private $rating;
+    private $createdAt;
+    private $disabled;
 
     /**
      * UserModel constructor.
+     * @param $id
      * @param $displayName
-     * @param $email
+     * @param $mail
      * @param $password
+     * @param $ugId
+     * @param $rating
+     * @param $createdAt
+     * @param $disabled
      */
-
-    public function __construct($displayName, $email, $password)
+    public function __construct($id, $displayName, $mail, $password, $ugId, $rating, $createdAt, $disabled)
     {
-        $this->userID = hexdec(uniqid());
-        $this->email = $email;
+        $this->id = $id;
         $this->displayName = $displayName;
+        $this->mail = $mail;
         $this->password = $password;
+        $this->ugId = $ugId;
+        $this->rating = $rating;
+        $this->createdAt = $createdAt;
+        $this->disabled = $disabled;
         parent::__construct();
     }
 
+
     public function registerUser()
     {
-        if ($this->checkUser($this->email, $this->displayName) == true) {
+        if ($this->checkUser($this->getMail(), $this->getDisplayName()) == true) {
             return false;
         } else {
-            $sql_query = "INSERT INTO user (display_name, mail, password, ug_id) VALUES (:display_name, :mail, :password, :user_id)";
-            $query = $this->db->prepare($sql_query);
-            $query->bindParam(":display_name", $this->displayName);
-            $query->bindParam(":mail", $this->email);
-            $query->bindParam(":password", $this->password);
-            $query->bindParam(":user_id", $this->userID);
-            $query->execute();
-            unset($query);
-            return true;
+            $insertValues = array($this->getId(),
+                $this->getDisplayName(),
+                $this->getMail(),
+                $this->getPassword(),
+                $this->getUgId(),
+                $this->getRating(),
+                $this->getCreatedAt(),
+                $this->getDisabled());
+            return SQLITE::insertBuilder(self::TABLE, self::TABLECOLUMNS, $insertValues);
         }
     }
 
 
     public function checkUser($userEmail, $displayName)
     {
-        $sql_query = "SELECT mail, display_name FROM user WHERE mail = :mail OR display_name = :display_name";
-        $stmt = $this->db->prepare($sql_query);
-        $stmt->bindParam(':mail', $userEmail);
-        $stmt->bindParam(':display_name', $displayName);
-        $stmt->execute();
-        $count = $stmt->rowCount();
-        if ($count > 0) {
+        $selectValues = array(self::TABLECOLUMNS["mail"],
+            self::TABLECOLUMNS["display_name"]);
+        $whereClause = self::TABLECOLUMNS["mail"]. " = ? OR "
+            .self::TABLECOLUMNS["display_name"]. " = ?";
+
+        $result = SQLite::selectBuilder($selectValues,
+            self::TABLE,
+            $whereClause,
+            array($userEmail, $displayName));
+
+        if(sizeof($result) > 0):
             return true;
-        } else {
+        else:
             return false;
-        }
+        endif;
     }
 
     public static function checkCredentials($userEmail, $userPasswd)
     {
-        $sql_query = "SELECT * FROM user WHERE mail = '$userEmail' AND password = '$userPasswd'";
-        $con = SQLite::connectToSQLite();
-        $query = $con->prepare($sql_query);
-        $query->execute();
-        $obj = $query->fetchObject();
-        if ($obj == null) {
+        $whereClause = self::TABLECOLUMNS["mail"]. " = ? AND "
+            .self::TABLECOLUMNS["password"]. " = ?";
+
+        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
+            self::TABLE,
+            $whereClause,
+            array($userEmail, $userPasswd));
+
+        if($result == null):
             return false;
-        } else {
-            return array(true, "userID" => $obj->ug_id, "display_name" => $obj->display_name,
-                "mail" => $obj->mail);
-        }
+        else:
+            return $result;
+        endif;
     }
 
     public static function searchUser($id){
-        $con = SQLite::connectToSQLite();
-        $sql_query = "SELECT * FROM user WHERE ug_id = '$id'";
-        $query = $con->prepare($sql_query);
-        $query->execute();
-        $obj = $query->fetchObject();
-        if($obj == false){
-            return false;
-        }else {
-            return array("userID"=> $obj->ug_id, "display_name" => $obj->display_name,
-                "mail" => $obj->mail);
-        }
+        $whereClause = self::TABLECOLUMNS["u_id"]. " = ?";
+
+        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
+            self::TABLE,
+            $whereClause,
+            array($id));
+
+        foreach ($result as $row):
+            return new UserModel($row[self::TABLECOLUMNS["u_id"]],
+                $row[self::TABLECOLUMNS["display_name"]],
+                $row[self::TABLECOLUMNS["mail"]],
+                $row[self::TABLECOLUMNS["password"]],
+                $row[self::TABLECOLUMNS["ug_id"]],
+                $row[self::TABLECOLUMNS["rating"]],
+                $row[self::TABLECOLUMNS["created_at"]],
+                $row[self::TABLECOLUMNS["display_name"]]);
+        endforeach;
+        return false;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getUserID()
+    public function getId()
     {
-        return $this->userID;
+        return $this->id;
     }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
 
     /**
      * @return mixed
@@ -119,26 +155,25 @@ class UserModel extends BaseModel
     /**
      * @param mixed $displayName
      */
-    public function setDisplayName($displayName)
+    public function setDisplayName($displayName): void
     {
         $this->displayName = $displayName;
     }
 
-
     /**
      * @return mixed
      */
-    public function getEmail()
+    public function getMail()
     {
-        return $this->email;
+        return $this->mail;
     }
 
     /**
-     * @param mixed $email
+     * @param mixed $mail
      */
-    public function setEmail($email)
+    public function setMail($mail): void
     {
-        $this->email = $email;
+        $this->mail = $mail;
     }
 
     /**
@@ -152,8 +187,72 @@ class UserModel extends BaseModel
     /**
      * @param mixed $password
      */
-    public function setPassword($password)
+    public function setPassword($password): void
     {
         $this->password = $password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUgId()
+    {
+        return $this->ugId;
+    }
+
+    /**
+     * @param mixed $ugId
+     */
+    public function setUgId($ugId): void
+    {
+        $this->ugId = $ugId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param mixed $rating
+     */
+    public function setRating($rating): void
+    {
+        $this->rating = $rating;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDisabled()
+    {
+        return $this->disabled;
+    }
+
+    /**
+     * @param mixed $disabled
+     */
+    public function setDisabled($disabled): void
+    {
+        $this->disabled = $disabled;
     }
 }

@@ -12,7 +12,7 @@ class CreateController extends BaseController
 {
     public function index()
     {
-        if(!(isset($_SESSION['user-ID']))){
+        if(!(isset($_SESSION['currentUser']))){
             header('location: ' .URL . 'login');
         }
         // load views
@@ -44,7 +44,7 @@ class CreateController extends BaseController
 
         if($platypus->insertIntoDatabase()):
             $offer = new OfferModel(hexdec(uniqid()),
-                $_SESSION['user-ID'],
+                $_SESSION['currentUser']->getId(),
                 $platypus,
                 $_POST['price'],
                 0,

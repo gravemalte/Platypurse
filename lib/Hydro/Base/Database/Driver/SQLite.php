@@ -93,15 +93,7 @@ class SQLite
         $stmnt = substr($stmnt, 0, -2).") VALUES (";
 
         foreach($values as $val) {
-            if(is_array($val)):
-                $subStmnt = "";
-                foreach($val as $v) {
-                    $subStmnt .= "?, ";
-                }
-                $stmnt .= "(".substr($subStmnt, 0, -2)."), ";
-            else:
-                $stmnt .= "?, ";
-            endif;
+            $stmnt .= "?, ";
         }
 
         $stmnt = substr($stmnt, 0, -2);

@@ -64,7 +64,7 @@ class OfferController extends BaseController
      *
      */
     public function delete() {
-        if(!(isset($_SESSION['user-ID']))){
+        if(!(isset($_SESSION['currentUser']))){
             header('location: ' . URL . 'login');
         }
 

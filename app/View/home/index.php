@@ -1,6 +1,5 @@
 <?php
 use \Controller\HomeController;
-
 ?>
 <main class="main-page">
     <div class="main-area">
