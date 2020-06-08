@@ -43,8 +43,8 @@
         </div>
         -->
         <div class="nav-profile-container">
-            <a href="profile"
-               title="<?php echo $_SESSION['user-display-name'] ?>">
+            <a href="profile?id=<?= $_SESSION['user-ID'] ?>"
+               title="<?= $_SESSION['user-display-name'] ?>">
                 <img src="assets/nav/user-circle-solid.svg" alt="user avatar">
             </a>
         </div>

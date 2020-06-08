@@ -15,6 +15,18 @@ class ProfileController extends BaseController
             header('location: ' . URL . 'login');
         }
 
+        if(!(isset($_GET['id']))){
+            header('location: ' . URL . 'error');
+        }
+
+
+        if(isset($_GET['id'] )){
+            $user = self::getUser($_GET['id']);
+            if($user == false){
+                header('location: ' . URL . 'error');
+            }
+        }
+
         require APP . 'View/shared/header.php';
         require APP . 'View/profile/header.php';
         require APP . 'View/shared/nav.php';
@@ -22,18 +34,8 @@ class ProfileController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
-    public function search(){
-        $searchID = $_GET['id'];
-        $user = UserModel::searchUser($searchID);
-        if($user[0]){
-            $_SESSION['searched-user'] = true;
-            $_SESSION['searched-user-id'] = $user['userID'];
-            $_SESSION['searched-user-display-name'] = $user['display_name'];
-            header('location: ' . URL . 'profile');
-        }else{
-            header('location: ' . URL);
-        }
-
+    public static function getUser($id){
+       return UserModel::searchUser($id);
     }
 
 }

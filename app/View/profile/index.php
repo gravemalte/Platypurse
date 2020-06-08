@@ -1,4 +1,8 @@
-<!--TODO: Eine art Stift zum bearbeiten des Profils wäre cool-->
+<?php
+use Controller\ProfileController;
+$id_request = $_GET["id"];
+$user = ProfileController::getUser($id_request);
+?>
 
 <main class="main-page profile-page">
     <div class="profile-area">
@@ -7,11 +11,7 @@
                 <img src="assets/nav/user-circle-solid.svg" alt="profile image">
             </div>
             <div class="profile-displayname">
-                <p><?php if(isset($_SESSION['searched-user'])){
-                    echo $_SESSION['searched-user-display-name'];
-                    }else{
-                    echo $_SESSION['user-display-name'];
-                }?></p>
+                <p><?php echo $user["display_name"] ?></p>
             </div>
             <div class="profile-rating">
                 <span class="fas fa-star checked"></span>
@@ -26,7 +26,7 @@
                         <p>Nachricht schreiben</p>
                     </div>
                 </a>
-                <?php if((isset($_SESSION['searched-user-id']))): ?>
+                <?php if(($_SESSION['user-ID']) !=$id_request): ?>
                 <a href="" class="button report-button">
                     <div>
                         <p>Nutzer melden</p>
@@ -103,7 +103,3 @@
         </div>
     </div>
 </main>
-
-<?php unset($_SESSION['user-search']) ?>
-<?php unset($_SESSION['searched-user-id']) ?>
-<?php unset($_SESSION['searched-user-display-name']) ?>
