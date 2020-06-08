@@ -106,3 +106,4 @@
 
 <?php unset($_SESSION['user-search']) ?>
 <?php unset($_SESSION['searched-user-id']) ?>
+<?php unset($_SESSION['searched-user-display-name']) ?>
