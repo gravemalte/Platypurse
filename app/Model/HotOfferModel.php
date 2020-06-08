@@ -16,7 +16,6 @@ class HotOfferModel extends BaseModel {
     private $description;
     private $sex;
     private $ageYears;
-    private $ageMonths;
     private $size;
     private $clicks;
 
@@ -29,20 +28,18 @@ class HotOfferModel extends BaseModel {
      * @param $description
      * @param $sex
      * @param $ageYears
-     * @param $ageMonths
      * @param $size
      * @param $clicks
      */
-    public function __construct($o_id, $name, $price, $negotiable, $description, $sex, $ageYears, $ageMonths, $size, $clicks)
+    public function __construct($o_id, $name, $price, $negotiable, $description, $sex, $ageYears, $size, $clicks)
     {
         $this->o_id = $o_id;
         $this->name = $name;
-        $this->price = $price;
+        $this->price = number_format($price/100, 2, ',', '.');
         $this->negotiable = $negotiable;
         $this->description = $description;
         $this->sex = $sex;
         $this->ageYears = $ageYears;
-        $this->ageMonths = $ageMonths;
         $this->size = $size;
         $this->clicks = $clicks;
         parent::__construct();
@@ -158,22 +155,6 @@ class HotOfferModel extends BaseModel {
     public function setAgeYears($ageYears): void
     {
         $this->ageYears = $ageYears;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAgeMonths()
-    {
-        return $this->ageMonths;
-    }
-
-    /**
-     * @param mixed $ageMonths
-     */
-    public function setAgeMonths($ageMonths): void
-    {
-        $this->ageMonths = $ageMonths;
     }
 
     /**

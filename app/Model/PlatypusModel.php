@@ -6,13 +6,16 @@ use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
 
 class PlatypusModel extends BaseModel {
-    const table = "platypus";
-    const tableColumns = array("p_id", "name", "age_years", "age_months", "sex", "size");
+    const TABLE = "platypus";
+    const TABLECOLUMNS = array("p_id" => "p_id",
+        "name" => "name",
+        "age_years" => "age_years",
+        "sex" => "sex",
+        "size" => "size");
 
     private $id;
     private $name;
     private $age_years;
-    private $age_months;
     private $sex;
     private $size;
 
@@ -21,16 +24,14 @@ class PlatypusModel extends BaseModel {
      * @param $id
      * @param $name
      * @param $age_years
-     * @param $age_months
      * @param $sex
      * @param $size
      */
-    public function __construct($id, $name, $age_years, $age_months, $sex, $size)
+    public function __construct($id, $name, $age_years, $sex, $size)
     {
         $this->id = $id;
         $this->name = $name;
         $this->age_years = $age_years;
-        $this->age_months = $age_months;
         $this->sex = $sex;
         $this->size = $size;
         parent::__construct();
@@ -40,16 +41,15 @@ class PlatypusModel extends BaseModel {
         $insertValues = array($this->getId(),
             $this->getName(),
             $this->getAgeYears(),
-            $this->getAgeMonths(),
             $this->getSex(),
             $this->getSize());
 
-        return SQLite::insertInto(self::table, self::tableColumns, $insertValues);
+        return SQLite::insertInto(self::TABLE, self::TABLECOLUMNS, $insertValues);
     }
 
     public function updatePlatypus($updateValues, $where) {
 
-        return SQLite::update(self::table, self::tableColumns, $updateValues, $where);
+        return SQLite::update(self::TABLE, self::TABLECOLUMNS, $updateValues, $where);
     }
 
     public function deletePlatypus() {
@@ -102,22 +102,6 @@ class PlatypusModel extends BaseModel {
     public function setAgeYears($age_years): void
     {
         $this->age_years = $age_years;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAgeMonths()
-    {
-        return $this->age_months;
-    }
-
-    /**
-     * @param mixed $age_months
-     */
-    public function setAgeMonths($age_months): void
-    {
-        $this->age_months = $age_months;
     }
 
     /**

@@ -5,11 +5,19 @@ namespace Model;
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
 use Hydro\Helper\Date;
-use PDO;
 
 class OfferModel extends BaseModel {
-    const table = "offer";
-    const tableColumns = array("o_id", "u_id", "p_id", "price", "negotiable", "description", "clicks", "create_date", "edit_date", "active");
+    const TABLE = "offer";
+    const TABLECOLUMNS = array("o_id" => "o_id",
+        "u_id" => "u_id",
+        "p_id" => "p_id",
+        "price" => "price",
+        "negotiable" => "negotiable",
+        "description" => "description",
+        "clicks" => "clicks",
+        "create_date" => "create_date",
+        "edit_date" => "edit_date",
+        "active" => "active");
 
     private $id;
     private $userId;
@@ -40,7 +48,7 @@ class OfferModel extends BaseModel {
         $this->id = $id;
         $this->userId = $userId;
         $this->platypus = $platypus;
-        $this->price = $price;
+        $this->price = number_format($price/100, 2, ',', '.');
         $this->negotiable = $negotiable;
         $this->description = $description;
         $this->clicks = $clicks;
@@ -62,7 +70,7 @@ class OfferModel extends BaseModel {
             $this->getEditDate(),
             $this->getActive());
 
-        return SQLite::insertInto(self::table, self::tableColumns, $insertValues);
+        return SQLite::insertInto(self::TABLE, self::TABLECOLUMNS, $insertValues);
     }
 
     public function offerClickPlusOne() {

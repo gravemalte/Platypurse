@@ -27,7 +27,7 @@ class OfferGridModel extends BaseModel {
     {
         $this->o_id = $o_id;
         $this->name = $name;
-        $this->price = $price;
+        $this->price = number_format($price/100, 2, ',', '.');
         $this->negotiable = $negotiable;
         $this->description = $description;
         parent::__construct();
