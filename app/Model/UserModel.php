@@ -77,7 +77,7 @@ class UserModel extends BaseModel
         $query = $con->prepare($sql_query);
         $query->execute();
         $obj = $query->fetchObject();
-        if ($obj == null) {
+        if ($obj == false) {
             return false;
         } else {
             return array(true, "userID" => $obj->ug_id, "display_name" => $obj->display_name,
