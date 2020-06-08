@@ -25,7 +25,29 @@ class HomeController extends BaseController
     }
 
     public function getNewestOffers() {
-        $result = SQLite::select("SELECT o_id, name, price, negotiable, description FROM offer as o INNER JOIN platypus as p ON o.p_id = p.p_id WHERE o.active = 1 ORDER BY o.create_date desc LIMIT 9");
+        $selectedValues = array(OfferModel::TABLE.".".OfferModel::TABLECOLUMNS["o_id"],
+            PlatypusModel::TABLECOLUMNS["name"],
+            OfferModel::TABLECOLUMNS["price"],
+            OfferModel::TABLECOLUMNS["negotiable"],
+            OfferModel::TABLECOLUMNS["description"]);
+
+        $fromClause = OfferModel::TABLE." INNER JOIN " .PlatypusModel::TABLE. " ON "
+            .OfferModel::TABLE. "." .OfferModel::TABLECOLUMNS["p_id"]. " = "
+            .PlatypusModel::TABLE. "." .PlatypusModel::TABLECOLUMNS["p_id"];
+
+        $whereClause = OfferModel::TABLECOLUMNS['active']. " = ?";
+        $orderClause = OfferModel::TABLECOLUMNS['create_date']. " desc";
+        $limitClause = "9";
+
+        $values = array(1);
+
+        $result = SQLite::selectBuilder($selectedValues,
+            $fromClause,
+            $whereClause,
+            $values,
+            "",
+            $orderClause,
+            $limitClause);
         $return = array();
 
         foreach($result as $row) {
@@ -40,8 +62,35 @@ class HomeController extends BaseController
     }
 
     public function getHotOffer() {
-        $result = SQLite::select("SELECT o_id, name, price, negotiable, description, sex, age_years, size, clicks FROM offer as o INNER JOIN platypus as p ON o.p_id = p.p_id WHERE o.active = 1 ORDER BY o.clicks desc LIMIT 1");
-        $return = "";
+        // WHERE o.active = 1 ORDER BY o.clicks desc LIMIT 1"
+        $selectedValues = array(OfferModel::TABLE.".".OfferModel::TABLECOLUMNS["o_id"],
+            PlatypusModel::TABLECOLUMNS["name"],
+            OfferModel::TABLECOLUMNS["price"],
+            OfferModel::TABLECOLUMNS["negotiable"],
+            OfferModel::TABLECOLUMNS["description"],
+            PlatypusModel::TABLECOLUMNS["sex"],
+            PlatypusModel::TABLECOLUMNS["age_years"],
+            PlatypusModel::TABLECOLUMNS["size"],
+            OfferModel::TABLECOLUMNS["clicks"]);
+
+        $fromClause = OfferModel::TABLE." INNER JOIN " .PlatypusModel::TABLE. " ON "
+            .OfferModel::TABLE. "." .OfferModel::TABLECOLUMNS["p_id"]. " = "
+            .PlatypusModel::TABLE. "." .PlatypusModel::TABLECOLUMNS["p_id"];
+
+        $whereClause = OfferModel::TABLECOLUMNS['active']. " = ?";
+        $orderClause = OfferModel::TABLECOLUMNS['clicks']. " desc";
+        $limitClause = "1";
+
+        $values = array(1);
+
+        $result = SQLite::selectBuilder($selectedValues,
+            $fromClause,
+            $whereClause,
+            $values,
+            "",
+            $orderClause,
+            $limitClause);
+        $return = array();
 
         foreach($result as $row) {
             $return = new HotOfferModel($row['o_id'],

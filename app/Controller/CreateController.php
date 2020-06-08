@@ -31,7 +31,6 @@ class CreateController extends BaseController
         $platypus = new PlatypusModel(hexdec(uniqid()),
             $_POST["name"],
             $_POST["age"],
-            4,
             $_POST["sex"],
             $_POST["size"]);
         $platypus->writeToDatabase();

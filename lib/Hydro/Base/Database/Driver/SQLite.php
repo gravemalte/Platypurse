@@ -13,11 +13,13 @@ class SQLite
         return new PDO('sqlite:' . DB_FILE);
     }
 
-    public static function queryStmnt($stmnt) {
+    public static function queryStmnt($stmnt, $values) {
         $con = self::connectToSQLite();
         $result = "";
         try {
-            $result = $con->query($stmnt);
+            $command = $con->prepare($stmnt);
+            $command->execute($values);
+            $result = $command->fetchAll();
         }
             // TODO: Error handling db execute
         catch (Exeption $ex) {
@@ -47,9 +49,36 @@ class SQLite
         }
     }
 
-    public static function select($query) {
-        //TODO: Implement query builder for SELECT
-        return self::queryStmnt($query);
+    public static function selectBuilder($selectedValues, $fromClause, $preparedWhereClause = "", $values= "", $groupClause = "",
+                                         $orderClause = "", $limitClause = "") {
+        $stmnt = "SELECT ";
+
+        foreach($selectedValues as $selVal) {
+            $stmnt .= $selVal. ", ";
+        }
+
+        $stmnt = substr($stmnt, 0, -2)." FROM "
+            .$fromClause;
+
+        if(!empty($preparedWhereClause)):
+            $stmnt .= " WHERE " .$preparedWhereClause;
+        endif;
+
+        if(!empty($groupClause)):
+            $stmnt .= " GROUP BY " .$groupClause;
+        endif;
+
+        if(!empty($orderClause)):
+            $stmnt .= " ORDER BY " .$orderClause;
+        endif;
+
+        if(!empty($limitClause)):
+            $stmnt .= " LIMIT " .$limitClause;
+        endif;
+
+        $stmnt .= ";";
+
+        return self::queryStmnt($stmnt, $values);
     }
 
     public static function insertInto($table, $columns, $values) {
@@ -92,9 +121,5 @@ class SQLite
         $stmnt = "DELETE FROM " .$table. " WHERE " .$preparedWhereClause.";";
 
         return self::execStmnt($stmnt, $values);
-    }
-
-    public static function selectBuilder() {
-
     }
 }

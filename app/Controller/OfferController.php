@@ -23,7 +23,13 @@ class OfferController extends BaseController
     }
 
     public static function getOffer($id) {
-        $result = SQLite::select("SELECT * FROM offer INNER JOIN platypus ON offer.p_id = platypus.p_id WHERE o_id = ".$id);
+        $selectedValues = array("*");
+        $fromClause = OfferModel::TABLE." INNER JOIN " .PlatypusModel::TABLE. " ON "
+            .OfferModel::TABLE. "." .OfferModel::TABLECOLUMNS["p_id"]. " = "
+            .PlatypusModel::TABLE. "." .PlatypusModel::TABLECOLUMNS["p_id"];
+        $whereClause = OfferModel::TABLECOLUMNS['o_id']. " = ?";
+
+        $result = SQLite::selectBuilder($selectedValues, $fromClause, $whereClause, array($id));
         $return = "";
 
         foreach($result as $row) {
@@ -52,8 +58,13 @@ class OfferController extends BaseController
             header('location: ' . URL . 'login');
         }
 
-        SQLite::deleteBuilder(OfferModel::TABLE, "o_id = ?;", array($_POST['offerId']));
-        SQLite::deleteBuilder(PlatypusModel::TABLE, "p_id = ?;", array($_POST['platypusId']));
+        // TODO: use table const
+        SQLite::deleteBuilder(OfferModel::TABLE,
+            OfferModel::TABLECOLUMNS['o_id']. " = ?;",
+            array($_POST['offerId']));
+        SQLite::deleteBuilder(PlatypusModel::TABLE,
+            PlatypusModel::TABLECOLUMNS['p_id']." = ?;",
+            array($_POST['platypusId']));
 
         header('location: ' . URL);
         exit();

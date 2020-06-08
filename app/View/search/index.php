@@ -99,7 +99,7 @@
                     <?php endforeach;
                     else: ?>
                         <div>
-                            <h1>Sorry, es gibt gerade leider keine Angebote. ¯\_(ツ)_/¯</h1>
+                            <h1>Sorry, es gibt leider keine passenden Angebote. ¯\_(ツ)_/¯</h1>
                         </div>
                     <?php endif; ?>
             </div>

@@ -7,6 +7,8 @@ namespace Controller;
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\OfferGridModel;
+use Model\OfferModel;
+use Model\PlatypusModel;
 
 class SearchController extends BaseController
 {
@@ -21,17 +23,31 @@ class SearchController extends BaseController
 
 
     public function getOffers($like = "", $sex = "", $age = array(0, 20), $size = array(0, 20)) {
-        $query = "SELECT o_id, name, price, negotiable, description FROM platypus
-            INNER JOIN offer ON platypus.p_id = offer.p_id
-            WHERE name LIKE '%".$like."%'
-            AND age_years BETWEEN ".min($age)." and ".max($age)."
-            AND size BETWEEN ".min($size)." and ".max($size);
+        $selectedValues = array(OfferModel::TABLE.".".OfferModel::TABLECOLUMNS["o_id"],
+            PlatypusModel::TABLECOLUMNS["name"],
+            OfferModel::TABLECOLUMNS["price"],
+            OfferModel::TABLECOLUMNS["negotiable"],
+            OfferModel::TABLECOLUMNS["description"]);
+
+        $fromClause = OfferModel::TABLE." INNER JOIN " .PlatypusModel::TABLE. " ON "
+            .OfferModel::TABLE. "." .OfferModel::TABLECOLUMNS["p_id"]. " = "
+            .PlatypusModel::TABLE. "." .PlatypusModel::TABLECOLUMNS["p_id"];
+
+        $whereClause = PlatypusModel::TABLECOLUMNS['name']. " LIKE ? 
+        AND ".PlatypusModel::TABLECOLUMNS['age_years']." BETWEEN ? and ?
+        AND ".PlatypusModel::TABLECOLUMNS['size']." BETWEEN ? and ?";
+        $values = array("%" .$like. "%", min($age), max($age), min($size), max($size));
 
         if(!empty($sex)):
-            $query .= " AND sex = '".$sex."';";
+            $whereClause .= " AND ".PlatypusModel::TABLECOLUMNS['sex']. " = ?";
+            $values[] = $sex;
         endif;
 
-        $result = SQLite::select($query);
+
+        $result = SQLite::selectBuilder($selectedValues,
+            $fromClause,
+            $whereClause,
+            $values);
         $return = array();
 
         foreach($result as $row) {
