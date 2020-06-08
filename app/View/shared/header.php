@@ -1,3 +1,7 @@
+<?php
+use Hydro\Helper\CacheBuster;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +33,7 @@
     <!-- used https://www.favicon-generator.org/ for that -->
 
     <!-- CSS linking here -->
-    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="<?= CacheBuster::serve("css/shared.css") ?>">
 
     <!-- Link JS in the footer template-->
 
