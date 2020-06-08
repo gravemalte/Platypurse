@@ -21,7 +21,7 @@
         </div>
         <div class="nav-buttons-container">
             <div class="nav-create-offer-container">
-                <a href="create" class="button">Angebot erstellen</a>
+                <a href="create" class="button">Angebot<br>erstellen</a>
             </div>
             <?php if(isset($_SESSION['user-ID'])): ?>
             <div class="nav-logout-container">

@@ -124,16 +124,12 @@ nav {
     }
 
     .nav-buttons-container {
-        flex-direction: column;
+        margin-bottom: 0.5em;
     }
     .nav-buttons-container a {
         margin-top: 0.5em;
         padding-top: 0.5em;
         padding-bottom: 0.5em;
-    }
-
-    .nav-login-container {
-        margin-bottom: 0.5em;
     }
 
     .nav-profile-container img {
