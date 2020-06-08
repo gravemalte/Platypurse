@@ -3,7 +3,10 @@
 namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
+use Hydro\Base\Database\Driver\SQLite;
 use Model\OfferModel;
+use Model\PlatypusModel;
+use Controller\OfferController;
 
 class CreateController extends BaseController
 {
@@ -20,29 +23,50 @@ class CreateController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
-    public function getOfferFromData($id = "") {
-        $offerName = $_POST["name"];
-        $offerDescription = $_POST["description"];
-        $offerPrice = $_POST["price"];
-        $sex = $_POST["sex"];
-        $age = $_POST["age"];
-        $size = $_POST["size"];
-
-        return new OfferModel($offerName, $offerDescription, $offerPrice, $sex, $age, $size, $id);
+    public function getOffer($id) {
+        return OfferController::getOffer($id);
     }
 
     public function create() {
-        $offer = CreateController::getOfferFromData();
+        $platypus = new PlatypusModel(hexdec(uniqid()),
+            $_POST["name"],
+            $_POST["age"],
+            $_POST["sex"],
+            $_POST["size"]);
+        $platypus->writeToDatabase();
 
-        $offer->createOffer($offer);
+        if($platypus->writeToDatabase()):
+            $offer = new OfferModel(hexdec(uniqid()),
+                $_SESSION['user-ID'],
+                $platypus,
+                $_POST['price'],
+                0,
+                $_POST['description']);
+            $offer->writeToDatabase();
+        else:
+        endif;
         header('location: ' . URL);
         exit();
     }
 
     public function update(){
-        $offer = CreateController::getOfferFromData($_POST['offerId']);
+        $preparedSetPlatypus = PlatypusModel::TABLECOLUMNS["name"]." = ?,
+            " .PlatypusModel::TABLECOLUMNS["sex"]." = ?,
+            " .PlatypusModel::TABLECOLUMNS["age_years"]." = ?,
+            " .PlatypusModel::TABLECOLUMNS["size"]." = ?";
+        $preparedWherePlatypus = PlatypusModel::TABLECOLUMNS["p_id"]." = ?";
+        $valuesPlatypus = array($_POST['name'], $_POST['sex'], $_POST['age'], $_POST['size'], $_POST['platypusId']);
 
-        $offer->updateOffer($offer);
+        SQLite::updateBuilder(PlatypusModel::TABLE, $preparedSetPlatypus, $preparedWherePlatypus, $valuesPlatypus);
+
+        $preparedSetOffer = OfferModel::TABLECOLUMNS["price"]." = ?,
+            " .OfferModel::TABLECOLUMNS["negotiable"]." = ?,
+            " .OfferModel::TABLECOLUMNS["description"]." = ?";
+        $preparedWhereOffer = PlatypusModel::TABLECOLUMNS["o_id"]." = ?";
+        $valuesOffer = array($_POST['price'], 0, $_POST['description'], $_POST['offerId']);
+
+        SQLite::updateBuilder(OfferModel::TABLE, $preparedSetOffer, $preparedWhereOffer, $valuesOffer);
+
         header('location: ' . URL);
         exit();
     }

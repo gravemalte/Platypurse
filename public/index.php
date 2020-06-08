@@ -24,7 +24,12 @@ if(!in_array('mod_rewrite', apache_get_modules())){
 
 if(!file_exists(DB_FILE)){
     $database = new PDO('sqlite:' . DB_FILE);
+    // Create tables
     $sql_file_name = DB . 'sql/create_tables.sql';
+    $sql_file = file_get_contents($sql_file_name);
+    $database->exec($sql_file);
+    // Fill tables
+    $sql_file_name = DB . 'sql/fill_tables.sql';
     $sql_file = file_get_contents($sql_file_name);
     $database->exec($sql_file);
     unset($database);
