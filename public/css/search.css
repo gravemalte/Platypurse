@@ -1,5 +1,5 @@
 .filter-container {
-    margin: 1em;
+    margin: 0.5em 1em 1em;
 }
 .filter-container .title-container p {
     margin-bottom: 0;
@@ -28,6 +28,10 @@
 .filter-button-container .search-button {
     background-color: var(--page-button-alt-bg-color);
     color: var(--page-button-alt-text-color);
+}
+
+.main-area {
+    flex-basis: 1500px;
 }
 
 @media (max-width: 800px) {

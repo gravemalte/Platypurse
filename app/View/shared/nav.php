@@ -4,9 +4,9 @@
         <label for="expand-nav" hidden>Navigation ausklappen</label>
         <input type="checkbox" id="expand-nav" hidden checked>
         <label for="expand-nav" class="fas fa-bars"></label>
-        <label for="expand-nav" class="fas fa-arrow-up"></label>
+        <label for="expand-nav" class="fas fa-times"></label>
         <div class="nav-logo-container">
-            <a href="/">
+            <a href="/index.php">
                 <img src="assets/logo/svg/logo_text.svg" alt="show/hide menu button">
             </a>
         </div>
@@ -21,7 +21,7 @@
         </div>
         <div class="nav-buttons-container">
             <div class="nav-create-offer-container">
-                <a href="create" class="button">Angebot erstellen</a>
+                <a href="create" class="button">Angebot<br>erstellen</a>
             </div>
             <?php if(isset($_SESSION['user-ID'])): ?>
             <div class="nav-logout-container">
