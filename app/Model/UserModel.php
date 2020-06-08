@@ -2,10 +2,20 @@
 
 namespace Model;
 
+use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
 
 class UserModel extends BaseModel
 {
+    // TODO: Write with queryBuilder
+    const TABLE = "user";
+    const TABLECOLUMNS = array(
+        ":user_id" => "user_id",
+        ":display_name" => "display_name",
+        ":mail" => "mail",
+        ":password" => "password"
+    );
+
     private $userID;
     private $email;
     private $displayName;
@@ -47,18 +57,46 @@ class UserModel extends BaseModel
 
     public function checkUser($userEmail, $displayName)
     {
-        $sql_query = "SELECT mail, display_name FROM user WHERE mail = :user_mail OR display_name = :display_name" ;
+        $sql_query = "SELECT mail, display_name FROM user WHERE mail = :mail OR display_name = :display_name";
         $stmt = $this->db->prepare($sql_query);
-        $stmt->bindParam(':user_mail', $userEmail);
+        $stmt->bindParam(':mail', $userEmail);
         $stmt->bindParam(':display_name', $displayName);
         $stmt->execute();
         $count = $stmt->rowCount();
-        if ($count >= 0){
+        if ($count > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
+    }
 
+    public static function checkCredentials($userEmail, $userPasswd)
+    {
+        $sql_query = "SELECT * FROM user WHERE mail = '$userEmail' AND password = '$userPasswd'";
+        $con = SQLite::connectToSQLite();
+        $query = $con->prepare($sql_query);
+        $query->execute();
+        $obj = $query->fetchObject();
+        if ($obj == null) {
+            return false;
+        } else {
+            return array(true, "userID" => $obj->ug_id, "display_name" => $obj->display_name,
+                "mail" => $obj->mail);
+        }
+    }
+
+    public static function searchUser($id){
+        $con = SQLite::connectToSQLite();
+        $sql_query = "SELECT * FROM user WHERE ug_id = '$id'";
+        $query = $con->prepare($sql_query);
+        $query->execute();
+        $obj = $query->fetchObject();
+        if($obj == null){
+            return array(false);
+        }else {
+            return array(true, "userID"=> $obj->ug_id,"display_name" => $obj->display_name,
+                "mail" => $obj->mail);
+        }
     }
 
     /**

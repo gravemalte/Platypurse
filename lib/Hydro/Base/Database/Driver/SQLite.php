@@ -22,7 +22,7 @@ class SQLite
             $result = $command->fetchAll();
         }
             // TODO: Error handling db execute
-        catch (Exeption $ex) {
+        catch (PDOException $ex) {
         }
         finally {
             unset($con);

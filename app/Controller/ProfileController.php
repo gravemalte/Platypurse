@@ -5,19 +5,16 @@ namespace Controller;
 
 
 use Hydro\Base\Controller\BaseController;
+use Model\UserModel;
 
 class ProfileController extends BaseController
 {
-    public function index($userID = 0){
+    public function index(){
 
-        if(!(isset($_SESSION['user-ID']))){
+        if(!(isset($_SESSION['user-ID']))) {
             header('location: ' . URL . 'login');
         }
 
-
-        if(isset($userID) && $userID != 0){
-            $this->searchUser($userID);
-        }
         require APP . 'View/shared/header.php';
         require APP . 'View/profile/header.php';
         require APP . 'View/shared/nav.php';
@@ -25,13 +22,17 @@ class ProfileController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
-    // TODO: Profil edit functionality
-    public function edit(){
-        header('location: ' . URL . 'profileedit');
-    }
-
-
-    private function searchUser($userID){
+    public function search(){
+        $searchID = $_GET['id'];
+        $user = UserModel::searchUser($searchID);
+        if($user[0]){
+            $_SESSION['searched-user'] = true;
+            $_SESSION['searched-user-id'] = $user['userID'];
+            $_SESSION['searched-user-display-name'] = $user['display_name'];
+            header('location: ' . URL . 'profile');
+        }else{
+            header('location: ' . URL);
+        }
 
     }
 
