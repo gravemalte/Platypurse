@@ -37,21 +37,23 @@ class LoginController extends BaseController
         $userSentPasswd = $_POST['user-passwd'];
 
         $result = UserModel::checkCredentials($userSentMail, $userSentPasswd);
-        foreach ($result as $row):
-            $user = new UserModel($row[UserModel::TABLECOLUMNS["u_id"]],
-                $row[UserModel::TABLECOLUMNS["display_name"]],
-                $row[UserModel::TABLECOLUMNS["mail"]],
-                $row[UserModel::TABLECOLUMNS["password"]],
-                $row[UserModel::TABLECOLUMNS["ug_id"]],
-                $row[UserModel::TABLECOLUMNS["rating"]],
-                $row[UserModel::TABLECOLUMNS["created_at"]],
-                $row[UserModel::TABLECOLUMNS["display_name"]]);
-            $_SESSION['currentUser'] = $user;
-            // print($_SESSION['currentUser']->getDisplayName());
-            header('location: ' . URL);
-            // print_r($_SESSION);
-            exit();
-        endforeach;
+        if(!empty($result)):
+            foreach ($result as $row):
+                $user = new UserModel($row[UserModel::TABLECOLUMNS["u_id"]],
+                    $row[UserModel::TABLECOLUMNS["display_name"]],
+                    $row[UserModel::TABLECOLUMNS["mail"]],
+                    $row[UserModel::TABLECOLUMNS["password"]],
+                    $row[UserModel::TABLECOLUMNS["ug_id"]],
+                    $row[UserModel::TABLECOLUMNS["rating"]],
+                    $row[UserModel::TABLECOLUMNS["created_at"]],
+                    $row[UserModel::TABLECOLUMNS["display_name"]]);
+                $_SESSION['currentUser'] = $user;
+                // print($_SESSION['currentUser']->getDisplayName());
+                header('location: ' . URL);
+                // print_r($_SESSION);
+                exit();
+            endforeach;
+        endif;
 
         $_SESSION['user-login-error'] = true;
         header('location: ' . URL . 'login');
