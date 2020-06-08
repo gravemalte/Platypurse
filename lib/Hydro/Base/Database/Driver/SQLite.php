@@ -81,7 +81,7 @@ class SQLite
         return self::queryStmnt($stmnt, $values);
     }
 
-    public static function insertInto($table, $columns, $values) {
+    public static function insertBuilder($table, $columns, $values) {
         $stmnt = "INSERT INTO ".$table." (";
 
         // Add inserted columns to statement

@@ -33,9 +33,9 @@ class CreateController extends BaseController
             $_POST["age"],
             $_POST["sex"],
             $_POST["size"]);
-        $platypus->writeToDatabase();
+        $platypus->insertIntoDatabase();
 
-        if($platypus->writeToDatabase()):
+        if($platypus->insertIntoDatabase()):
             $offer = new OfferModel(hexdec(uniqid()),
                 $_SESSION['user-ID'],
                 $platypus,

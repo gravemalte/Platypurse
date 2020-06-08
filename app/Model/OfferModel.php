@@ -74,7 +74,7 @@ class OfferModel extends BaseModel {
             $this->getEditDate(),
             $this->getActive());
 
-        return SQLite::insertInto(self::TABLE, self::TABLECOLUMNS, $insertValues);
+        return SQLite::insertBuilder(self::TABLE, self::TABLECOLUMNS, $insertValues);
     }
 
     public function offerClickPlusOne() {
