@@ -19,22 +19,28 @@ class RegisterController extends BaseController {
     }
 
     public function register(){
-        if(!(isset($_POST["user-email"]) && isset($_POST["user-passwd"])
-        && isset($_POST['user-display-name']))){
+        if(!(isset($_POST["user-email"]) || isset($_POST["user-passwd"])
+        || isset($_POST['user-display-name']) || isset($_POST['user-passwd2']))){
             $_SESSION['register-error'] = true;
             header('location:' . URL . 'register');
         }
 
-        // TODO: Needs more love strtolower can be inlined
         $userInputDisplayName = $_POST['user-display-name'];
-        $userInputMail = $_POST['user-email'];
+        $userInputMail =strtolower($_POST['user-email']);
         $userInputPassswd = $_POST['user-passwd'];
-        $userInputMail = strtolower($userInputMail);
+        $userInputPassswd2 = $_POST['user-passwd2'];
+        echo $userInputPassswd . " " . $userInputPassswd2;
+
+        if($userInputPassswd != $userInputPassswd2){
+            $_SESSION['register-error-password'] = true;
+            header('location:' . URL . 'register');
+            exit();
+        }
 
         $user = new UserModel(hexdec(uniqid()),
             $userInputDisplayName,
             $userInputMail,
-            $userInputPassswd,
+            password_hash($userInputPassswd, PASSWORD_DEFAULT),
             2,
             0,
             Date::now(),
@@ -46,6 +52,7 @@ class RegisterController extends BaseController {
             header('location: '. URL . 'login');
         }else{
             unset($user);
+            $_SESSION['register-error'] = true;
             header('location: '. URL . 'register');
         }
     }
