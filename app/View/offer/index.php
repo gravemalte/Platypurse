@@ -1,6 +1,6 @@
 <?php
 use Controller\OfferController;
-use Hydro\Helper\DateBeautifier;
+use Hydro\Helper\Date;
 
 $offer = OfferController::getOffer($_GET['id']);
 $offer->offerClickPlusOne();
@@ -62,10 +62,11 @@ $seller = $offer->getUser();
                     </div>
                     <div class="attribute-item">
                         <p>Erstellt: <strong>
-                                <?= DateBeautifier::relativeTime($offer->getCreateDate()) ?>
+                                <?= Date::niceDate($offer->getCreateDate()) ?>
                             </strong></p>
                         <?php if(!empty($offer->getEditDate())): ?>
-                        <p>Zuletzt bearbeitet: <strong><?= $offer->getEditDate() ?></strong></p>
+                        <p>Zuletzt bearbeitet: <strong>
+                                <?= Date::niceDate($offer->getEditDate()) ?></strong></p>
                         <?php endif; ?>
                     </div>
                 </div>
