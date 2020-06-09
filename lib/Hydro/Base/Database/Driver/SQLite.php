@@ -106,6 +106,9 @@ class SQLite
     public static function updateBuilder($table, $preparedSetClause, $preparedWhereClause, $values) {
         $stmnt = "UPDATE " .$table. " SET " .$preparedSetClause. " WHERE " .$preparedWhereClause. ";";
 
+        // print($stmnt);
+        // print_r($values);
+
         return self::execStmnt($stmnt, $values);
     }
 

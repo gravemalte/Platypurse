@@ -72,7 +72,7 @@ class CreateController extends BaseController
         $preparedSetOffer = OfferModel::TABLECOLUMNS["price"]." = ?,
             " .OfferModel::TABLECOLUMNS["negotiable"]." = ?,
             " .OfferModel::TABLECOLUMNS["description"]." = ?";
-        $preparedWhereOffer = PlatypusModel::TABLECOLUMNS["o_id"]." = ?";
+        $preparedWhereOffer = OfferModel::TABLECOLUMNS["o_id"]." = ?";
         $valuesOffer = array($_POST['price'], 0, $_POST['description'], $_POST['offerId']);
 
         SQLite::updateBuilder(OfferModel::TABLE, $preparedSetOffer, $preparedWhereOffer, $valuesOffer);
