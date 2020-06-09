@@ -209,6 +209,14 @@ class UserModel extends BaseModel
     }
 
     /**
+     * @return boolean
+     */
+    public function isAdmin()
+    {
+        return $this->ugId == 1;
+    }
+
+    /**
      * @return mixed
      */
     public function getRating()

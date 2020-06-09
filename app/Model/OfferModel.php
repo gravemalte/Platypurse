@@ -166,6 +166,17 @@ class OfferModel extends BaseModel {
     /**
      * @return mixed
      */
+    public function getShortPrice()
+    {
+        if (substr($this->price, -2) == "00") {
+            return substr($this->price, 0, strlen($this->price) - 3);
+        }
+        return $this->price;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getNegotiable()
     {
         return $this->negotiable;
