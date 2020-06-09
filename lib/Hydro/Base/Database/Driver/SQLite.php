@@ -49,7 +49,7 @@ class SQLite
         }
     }
 
-    public static function selectBuilder($selectedValues, $fromClause, $preparedWhereClause = "", $values= "", $groupClause = "",
+    public static function selectBuilder($selectedValues, $fromClause, $preparedWhereClause = "", $values = array(), $groupClause = "",
                                          $orderClause = "", $limitClause = "") {
         $stmnt = "SELECT ";
 
@@ -78,6 +78,7 @@ class SQLite
 
         $stmnt .= ";";
 
+        // print($stmnt);
         return self::queryStmnt($stmnt, $values);
     }
 
@@ -105,9 +106,6 @@ class SQLite
 
     public static function updateBuilder($table, $preparedSetClause, $preparedWhereClause, $values) {
         $stmnt = "UPDATE " .$table. " SET " .$preparedSetClause. " WHERE " .$preparedWhereClause. ";";
-
-        // print($stmnt);
-        // print_r($values);
 
         return self::execStmnt($stmnt, $values);
     }

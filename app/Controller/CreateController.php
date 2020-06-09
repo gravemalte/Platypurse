@@ -3,10 +3,8 @@
 namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
-use Hydro\Base\Database\Driver\SQLite;
 use Model\OfferModel;
 use Model\PlatypusModel;
-use Controller\OfferController;
 
 class CreateController extends BaseController
 {

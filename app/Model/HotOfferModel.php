@@ -8,6 +8,18 @@ use Hydro\Helper\Date;
 use PDO;
 
 class HotOfferModel extends BaseModel {
+    const TABLE = OfferModel::TABLE." INNER JOIN " .PlatypusModel::TABLE. " ON "
+    .OfferModel::TABLE. "." .OfferModel::TABLECOLUMNS["p_id"]. " = "
+    .PlatypusModel::TABLE. "." .PlatypusModel::TABLECOLUMNS["p_id"];
+    const TABLECOLUMNS = array(OfferModel::TABLECOLUMNS["o_id"] => OfferModel::TABLECOLUMNS["o_id"],
+        PlatypusModel::TABLECOLUMNS["name"] => PlatypusModel::TABLECOLUMNS["name"],
+        OfferModel::TABLECOLUMNS["price"] => OfferModel::TABLECOLUMNS["price"],
+        OfferModel::TABLECOLUMNS["negotiable"] => OfferModel::TABLECOLUMNS["negotiable"],
+        OfferModel::TABLECOLUMNS["description"] => OfferModel::TABLECOLUMNS["description"],
+        PlatypusModel::TABLECOLUMNS["sex"] => PlatypusModel::TABLECOLUMNS["sex"],
+        PlatypusModel::TABLECOLUMNS["age_years"] => PlatypusModel::TABLECOLUMNS["age_years"],
+        PlatypusModel::TABLECOLUMNS["size"] => PlatypusModel::TABLECOLUMNS["size"],
+        OfferModel::TABLECOLUMNS["clicks"] => OfferModel::TABLECOLUMNS["clicks"]);
 
     private $o_id;
     private $name;
@@ -43,6 +55,28 @@ class HotOfferModel extends BaseModel {
         $this->size = $size;
         $this->clicks = $clicks;
         parent::__construct();
+    }
+
+    public static function getFromDatabase() {
+        $offer = "";
+        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
+            self::TABLE,
+            OfferModel::TABLECOLUMNS['active']. " = ?",
+            array(1),"", "", "1");
+
+        foreach ($result as $row):
+            $offer = new HotOfferModel($row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["o_id"]]],
+                $row[self::TABLECOLUMNS[PlatypusModel::TABLECOLUMNS["name"]]],
+                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["price"]]],
+                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["negotiable"]]],
+                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["description"]]],
+                $row[self::TABLECOLUMNS[PlatypusModel::TABLECOLUMNS["sex"]]],
+                $row[self::TABLECOLUMNS[PlatypusModel::TABLECOLUMNS["age_years"]]],
+                $row[self::TABLECOLUMNS[PlatypusModel::TABLECOLUMNS["size"]]],
+                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["clicks"]]]);
+        endforeach;
+
+        return $offer;
     }
 
     /**

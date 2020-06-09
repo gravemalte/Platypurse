@@ -62,8 +62,99 @@ class OfferModel extends BaseModel {
         parent::__construct();
     }
 
+    public static function getFromDatabase($preparedWhereClause = "", $values = array(),
+                                           $groupClause = "", $orderClause = "", $limitClause = "") {
+        $offer = array();
+        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
+            self::TABLE,
+            $preparedWhereClause,
+            $values,
+            $groupClause,
+            $orderClause,
+            $limitClause);
+
+        foreach ($result as $row):
+            $offer[] = new OfferModel($row[self::TABLECOLUMNS["o_id"]],
+                $row[self::TABLECOLUMNS["u_id"]],
+                PlatypusModel::getFromDatabase(OfferModel::TABLECOLUMNS["p_id"]. " = ? ",
+                    array($row[OfferModel::TABLECOLUMNS["p_id"]])),
+                $row[self::TABLECOLUMNS["price"]],
+                $row[self::TABLECOLUMNS["negotiable"]],
+                $row[self::TABLECOLUMNS["description"]],
+                $row[self::TABLECOLUMNS["clicks"]],
+                $row[self::TABLECOLUMNS["create_date"]],
+                $row[self::TABLECOLUMNS["edit_date"]],
+                $row[self::TABLECOLUMNS["active"]]);
+        endforeach;
+
+        if(sizeof($offer) <= 1):
+            return array_shift($offer);
+        else:
+            return $offer;
+        endif;
+    }
+
     public function writeToDatabase() {
-        $insertValues = array($this->getId(),
+        // Check if offer exists in database
+        $offerInDatabase = $this->getFromDatabase(self::TABLECOLUMNS["o_id"]. " = ?"
+        , array($this->getId()));
+
+        // If platypus doesn't exist, insert into database. Else update in database
+        if(empty($offerInDatabase)):
+            $this->insertIntoDatabase();
+        else:
+            $this->updateInDatabase();
+        endif;
+    }
+
+    /**
+     * @return bool
+     */
+    public function insertIntoDatabase() {
+        return SQLite::insertBuilder(self::TABLE,
+            self::TABLECOLUMNS,
+            $this->getDatabaseValues());
+    }
+
+    /**
+     *
+     */
+    public function updateInDatabase() {
+        $preparedSetClause = "";
+        foreach (self::TABLECOLUMNS as $tableCol):
+            $preparedSetClause .= $tableCol. " = ?,";
+        endforeach;
+
+        $preparedWhereClause = self::TABLECOLUMNS["o_id"]. " = " .$this->getId();
+
+        return SQLite::updateBuilder(self::TABLE,
+            substr($preparedSetClause, 0, -1),
+            $preparedWhereClause,
+            $this->getDatabaseValues());
+    }
+
+    /**
+     *
+     */
+    public function offerClickPlusOne() {
+        $this->setClicks($this->getClicks() + 1);
+        $this->updateInDatabase();
+    }
+
+    /**
+     *
+     */
+    public function deleteFromDatabase() {
+        return SQLite::deleteBuilder(self::TABLE,
+            self::TABLECOLUMNS['o_id']. " = ?;",
+            array($this->getId()));
+    }
+
+    /**
+     * @return array
+     */
+    public function getDatabaseValues() {
+        return array($this->getId(),
             $this->getUserId(),
             $this->getPlatypus()->getId(),
             $this->getPriceUnformatted(),
@@ -73,22 +164,6 @@ class OfferModel extends BaseModel {
             $this->getCreateDate(),
             $this->getEditDate(),
             $this->getActive());
-
-        return SQLite::insertBuilder(self::TABLE, self::TABLECOLUMNS, $insertValues);
-    }
-
-    /**
-     *
-     */
-    public function offerClickPlusOne() {
-        $preparedSet = OfferModel::TABLECOLUMNS['clicks']." = ?";
-        $preparedWhere = OfferModel::TABLECOLUMNS['o_id']." = ?;";
-        $values = array(($this->getClicks() + 1), $this->getId());
-        SQLite::updateBuilder(OfferModel::TABLE, $preparedSet, $preparedWhere, $values);
-    }
-
-    public function deleteOffer() {
-
     }
 
     /**
@@ -147,11 +222,16 @@ class OfferModel extends BaseModel {
     }
 
     /**
-     * @return mixed
+     * @param bool $sepThousands
+     * @return string
      */
-    public function getPrice()
+    public function getPrice(bool $sepThousands)
     {
-        return number_format($this->price/100, 2, ',', '.');
+        $thousandSep = "";
+        if($sepThousands):
+            $thousandSep = ".";
+        endif;
+        return number_format($this->price/100, 2, ',', $thousandSep);
     }
 
     /**
@@ -175,10 +255,11 @@ class OfferModel extends BaseModel {
      */
     public function getShortPrice()
     {
-        if (substr($this->getPrice(), -2) == "00") {
-            return substr($this->getPrice(), 0, strlen($this->getPrice()) - 3);
+        $price = $this->getPrice(true);
+        if (substr($price, -2) == "00") {
+            return substr($price, 0, strlen($price) - 3);
         }
-        return $this->getPrice();
+        return $price;
     }
 
     /**

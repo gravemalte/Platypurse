@@ -8,7 +8,15 @@ use Hydro\Helper\Date;
 use PDO;
 
 class OfferGridModel extends BaseModel {
-
+    const TABLE = OfferModel::TABLE." INNER JOIN " .PlatypusModel::TABLE. " ON "
+        .OfferModel::TABLE. "." .OfferModel::TABLECOLUMNS["p_id"]. " = "
+        .PlatypusModel::TABLE. "." .PlatypusModel::TABLECOLUMNS["p_id"];
+    const TABLECOLUMNS = array(OfferModel::TABLECOLUMNS["o_id"] => OfferModel::TABLECOLUMNS["o_id"],
+        PlatypusModel::TABLECOLUMNS["name"] => PlatypusModel::TABLECOLUMNS["name"],
+        OfferModel::TABLECOLUMNS["price"] => OfferModel::TABLECOLUMNS["price"],
+        OfferModel::TABLECOLUMNS["negotiable"] => OfferModel::TABLECOLUMNS["negotiable"],
+        OfferModel::TABLECOLUMNS["description"] => OfferModel::TABLECOLUMNS["description"]);
+    
     private $o_id;
     private $name;
     private $price;
@@ -31,6 +39,28 @@ class OfferGridModel extends BaseModel {
         $this->negotiable = $negotiable;
         $this->description = $description;
         parent::__construct();
+    }
+
+    public static function getFromDatabase($preparedWhereClause = "", $values = array(),
+                                           $groupClause = "", $orderClause = "", $limitClause = "") {
+        $offer = array();
+        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
+            self::TABLE,
+            $preparedWhereClause,
+            $values,
+            $groupClause,
+            $orderClause,
+            $limitClause);
+
+        foreach ($result as $row):
+            $offer[] = new OfferGridModel($row[OfferModel::TABLECOLUMNS["o_id"]],
+                $row[self::TABLECOLUMNS[PlatypusModel::TABLECOLUMNS["name"]]],
+                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["price"]]],
+                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["negotiable"]]],
+                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["description"]]]);
+        endforeach;
+
+        return $offer;
     }
 
     /**

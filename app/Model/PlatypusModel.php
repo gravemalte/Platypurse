@@ -37,31 +37,89 @@ class PlatypusModel extends BaseModel {
         parent::__construct();
     }
 
+    public static function getFromDatabase($preparedWhereClause = "", $values = array(),
+                                           $groupClause = "", $orderClause = "", $limitClause = "") {
+        $platypus = array();
+        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
+            self::TABLE,
+            $preparedWhereClause,
+            $values,
+            $groupClause,
+            $orderClause,
+            $limitClause);
+
+        foreach ($result as $row):
+            $platypus[] = new PlatypusModel($row[self::TABLECOLUMNS["p_id"]],
+                $row[self::TABLECOLUMNS["name"]],
+                $row[self::TABLECOLUMNS["age_years"]],
+                $row[self::TABLECOLUMNS["sex"]],
+                $row[self::TABLECOLUMNS["size"]]);
+        endforeach;
+
+        if(sizeof($platypus) <= 1):
+            return array_shift($platypus);
+        else:
+            return $platypus;
+        endif;
+    }
+
+    public function writeToDatabase() {
+        // Check if platypus exists in database
+        $platypusInDatabase = SQLite::selectBuilder(self::TABLECOLUMNS, self::TABLE,
+            self::TABLECOLUMNS["p_id"]. " = ?", array($this->getId()));
+
+        // If platypus doesn't exist, insert into database. Else update in database
+        if(empty($platypusInDatabase)):
+            return $this->insertIntoDatabase();
+        else:
+            return $this->updateInDatabase();
+        endif;
+    }
+
     /**
      * @return bool
      */
     public function insertIntoDatabase() {
-        $insertValues = array($this->getId(),
-            $this->getName(),
-            $this->getAgeYears(),
-            $this->getSex(),
-            $this->getSize());
-
-        return SQLite::insertBuilder(self::TABLE, self::TABLECOLUMNS, $insertValues);
+        return SQLite::insertBuilder(self::TABLE,
+            self::TABLECOLUMNS,
+            $this->getDatabaseValues());
     }
 
     /**
      *
      */
     public function updateInDatabase() {
+        $preparedSetClause = "";
+        foreach (self::TABLECOLUMNS as $tableCol):
+            $preparedSetClause .= $tableCol. " = ?,";
+        endforeach;
 
+        $preparedWhereClause = self::TABLECOLUMNS["p_id"]. " = " .$this->getId();
+
+        return SQLite::updateBuilder(self::TABLE,
+            substr($preparedSetClause, 0, -1),
+            $preparedWhereClause,
+            $this->getDatabaseValues());
     }
 
     /**
      *
      */
     public function deleteFromDatabase() {
+       return SQLite::deleteBuilder(self::TABLE,
+            self::TABLECOLUMNS['p_id']. " = ?;",
+            array($this->getId()));
+    }
 
+    /**
+     * @return array
+     */
+    public function getDatabaseValues() {
+        return array($this->getId(),
+            $this->getName(),
+            $this->getAgeYears(),
+            $this->getSex(),
+            $this->getSize());
     }
 
     /**
@@ -143,6 +201,4 @@ class PlatypusModel extends BaseModel {
     {
         $this->size = $size;
     }
-
-
 }
