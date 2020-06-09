@@ -8,13 +8,11 @@ use Controller\OfferController;
 <main class="main-page">
     <div class="main-area">
         <div class="create-offer-container card">
+            <form action="create/processInput" method="post">
             <?php if(isset($_GET['id'])):
                 $offer = OfferController::getOffer($_GET['id']); ?>
-            <form action="create/update" method="post">
                 <input type="hidden" name="offerId" value='<?php echo $offer->getId();?>'>
                 <input type="hidden" name="platypusId" value='<?php echo $offer->getPlatypus()->getId();?>'>
-            <?php else: ?>
-            <form action="create/create" method="post">
             <?php endif;?>
                 <div class="main-container">
                     <div class="name-container main-input-container">
@@ -42,7 +40,7 @@ use Controller\OfferController;
                                         required
                                         value="<?php
                                 if(isset($_GET['id'])):
-                                    echo $offer->getPrice();
+                                    echo $offer->getPrice(false);
                                 endif;?>">
                             </label>
                         </div>

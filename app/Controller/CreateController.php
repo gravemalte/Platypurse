@@ -31,11 +31,42 @@ class CreateController extends BaseController
         return OfferController::getOffer($id);
     }
 
+    public function processInput() {
+        $platypusId = hexdec(uniqid());
+        $offerId = hexdec(uniqid());
+
+        if(isset($_POST["platypusId"])):
+            $platypusId = $_POST["platypusId"];
+        endif;
+
+        if(isset($_POST["offerId"])):
+            $offerId = $_POST["offerId"];
+        endif;
+
+        $platypus = new PlatypusModel($platypusId,
+            $_POST["name"],
+            $_POST["age"],
+            $_POST["sex"],
+            $_POST["size"]);
+
+        if($platypus->writeToDatabase()):
+            $offer = new OfferModel($offerId,
+                $_SESSION['currentUser']->getId(),
+                $platypus,
+                $this->processInputPrice($_POST["price"]),
+                0,
+                $_POST['description']);
+            $offer->writeToDatabase();
+        endif;
+        header('location: ' . URL);
+        exit();
+    }
+
     /**
-     *
+     * @param $price input price
+     * @return float|int|string formatted price
      */
-    public function create() {
-        $price = $_POST['price'];
+    private function processInputPrice($price) {
         if(strpos($price, ",") || strpos($price, ".")):
             $limiter = "";
             if(strpos($price, ",")): $limiter = ","; endif;
@@ -53,48 +84,7 @@ class CreateController extends BaseController
         else:
             $price *= 100;
         endif;
-        $platypus = new PlatypusModel(hexdec(uniqid()),
-            $_POST["name"],
-            $_POST["age"],
-            $_POST["sex"],
-            $_POST["size"]);
-
-        if($platypus->insertIntoDatabase()):
-            $offer = new OfferModel(hexdec(uniqid()),
-                $_SESSION['currentUser']->getId(),
-                $platypus,
-                $price,
-                0,
-                $_POST['description']);
-            $offer->writeToDatabase();
-        else:
-        endif;
-        header('location: ' . URL);
-        exit();
-    }
-
-    /**
-     *
-     */
-    public function update(){
-        $preparedSetPlatypus = PlatypusModel::TABLECOLUMNS["name"]." = ?,
-            " .PlatypusModel::TABLECOLUMNS["sex"]." = ?,
-            " .PlatypusModel::TABLECOLUMNS["age_years"]." = ?,
-            " .PlatypusModel::TABLECOLUMNS["size"]." = ?";
-        $preparedWherePlatypus = PlatypusModel::TABLECOLUMNS["p_id"]." = ?";
-        $valuesPlatypus = array($_POST['name'], $_POST['sex'], $_POST['age'], $_POST['size'], $_POST['platypusId']);
-
-        SQLite::updateBuilder(PlatypusModel::TABLE, $preparedSetPlatypus, $preparedWherePlatypus, $valuesPlatypus);
-
-        $preparedSetOffer = OfferModel::TABLECOLUMNS["price"]." = ?,
-            " .OfferModel::TABLECOLUMNS["negotiable"]." = ?,
-            " .OfferModel::TABLECOLUMNS["description"]." = ?";
-        $preparedWhereOffer = OfferModel::TABLECOLUMNS["o_id"]." = ?";
-        $valuesOffer = array($_POST['price'], 0, $_POST['description'], $_POST['offerId']);
-
-        SQLite::updateBuilder(OfferModel::TABLE, $preparedSetOffer, $preparedWhereOffer, $valuesOffer);
-
-        header('location: ' . URL);
-        exit();
+        // print($price);
+        return $price;
     }
 }
