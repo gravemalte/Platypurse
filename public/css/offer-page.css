@@ -59,6 +59,35 @@
     background-color: var(--offer-send-message-button-bg-color);
 }
 
+.offer-area .profile-container {
+    display: flex;
+    margin-bottom: 1em;
+}
+.offer-area .profile-container a {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+}
+.offer-area .profile-container img {
+    height: 4em;
+    padding: 0.5em 0 0.5em 0.5em;
+    filter: invert(var(--filter-bright));
+    flex-grow: 1;
+}
+.offer-area .profile-container > div {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em;
+    justify-content: center;
+}
+.offer-area .profile-container > div > * {
+    padding: 0.2em;
+}
+.offer-area .profile-container .rating {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .offer-area .attribute-list {
     width: 100%;
     flex-grow: 1;
@@ -66,8 +95,8 @@
 .offer-area .attribute-list div {
     margin: 1em 1em 0;
 }
-.offer-area .attribute-list p:before {
-    content: "- ";
+.offer-area .attribute-item p {
+    margin-bottom: 0.5em;
 }
 
 .offer-interactions-container {
