@@ -21,7 +21,7 @@ use Controller\OfferController;
                         <p class="name">Name</p>
                         <div class="input-container">
                             <label for="name">
-                                <input type="text" placeholder="Name" id="name" name="name"' value="<?php
+                                <input type="text" placeholder="Name" id="name" name="name" required value="<?php
                                     if(isset($_GET['id'])):
                                         echo $offer->getPlatypus()->getName() ;
                                     endif;?>">
@@ -32,7 +32,15 @@ use Controller\OfferController;
                         <p class="name">Preis</p>
                         <div class="input-container">
                             <label for="price">
-                                <input type="number" placeholder="Preis" id="price" name="price"' value="<?php
+                                <input
+                                        type="text"
+                                        placeholder="Preis"
+                                        id="price"
+                                        pattern="\d+([,\.]\d{1,2})?"
+                                        inputmode="decimal"
+                                        name="price"
+                                        required
+                                        value="<?php
                                 if(isset($_GET['id'])):
                                     echo $offer->getPrice();
                                 endif;?>">
