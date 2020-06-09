@@ -7,43 +7,55 @@ $offer->offerClickPlusOne();
     <div class="main-area">
         <div class="offer-area">
             <div class="offer-container card">
-                    <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="offer image">
-                    <div class="description-container">
-                        <p class="name"><?=$offer->getPlatypus()->getName();?></p>
-                        <p class="description"><?=$offer->getDescription();?></p>
-                    </div>
-                    <div class="price-tag-container">
-                        <div class="price-tag">
-                            <p><?=$offer->getPrice();?></p>
-                        </div>
+                <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="offer image">
+                <div class="description-container">
+                    <p class="name"><?=$offer->getPlatypus()->getName();?></p>
+                    <p class="description"><?=$offer->getDescription();?></p>
+                </div>
+                <div class="price-tag-container">
+                    <div class="price-tag">
+                        <p><?=$offer->getPrice();?></p>
                     </div>
                 </div>
-                <div class="side-container">
-                    <div class="offer-buttons-container">
-                        <a href="chat" class="send-message-button button">
+            </div>
+            <div class="side-container">
+                <div class="offer-buttons-container">
+                    <a href="chat" class="send-message-button button">
                         <div>
                             <p>Nachricht schreiben</p>
                         </div>
-                        </a>
-                        <a href="profile" class="view-profile-button button">
-                        <div>
-                            <p>Verkäuferprofil</p>
-                        </div>
-                        </a>
-                        <a href="profile" class="save-offer-button button">
+                    </a>
+                    <a href="profile" class="save-offer-button button">
                         <div>
                             <p>Zur Merkliste</p>
                         </div>
+                    </a>
+                </div>
+                <div class="profile-container card">
+                    <a href="profile">
+                        <img src="assets/nav/user-circle-solid.svg" alt="user-avatar">
+                    </a>
+                    <div>
+                        <a href="profile">
+                            <p>Display Name</p>
                         </a>
-                    </div>
-                    <div class="attribute-list card">
-                    <div class="attribute-item">
-                        <p>Geschlecht: <?=$offer->getPlatypus()->getSex();?></p>
-                        <p>Alter: <?=$offer->getPlatypus()->getAgeYears();?></p>
-                        <p>Größe: <?=$offer->getPlatypus()->getSize();?></p>
+                        <div class="rating">
+                            <span class="fas fa-star" id="user-rating-1"></span>
+                            <span class="fas fa-star" id="user-rating-2"></span>
+                            <span class="fas fa-star" id="user-rating-3"></span>
+                            <span class="fas fa-star" id="user-rating-4"></span>
+                            <span class="fas fa-star" id="user-rating-5"></span>
+                        </div>
                     </div>
                 </div>
-                    <?php if((isset($_SESSION['user-ID']))): ?>
+                <div class="attribute-list card">
+                    <div class="attribute-item">
+                        <p><strong>Geschlecht:</strong><br>&nbsp;<?=$offer->getPlatypus()->getSex();?></p>
+                        <p><strong>Alter:</strong><br>&nbsp;<?=$offer->getPlatypus()->getAgeYears();?> Jahre</p>
+                        <p><strong>Größe:</strong><br>&nbsp<?=$offer->getPlatypus()->getSize();?> cm</p>
+                    </div>
+                </div>
+                <?php if((isset($_SESSION['user-ID']))): ?>
                 <div class="offer-interactions-container">
                     <form action="offer/delete" method="post">
                         <input type="text" id="delete-platypus-id" name="platypusId" hidden value="<?=$offer->getPlatypus()->getId();?>">
