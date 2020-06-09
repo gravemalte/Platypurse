@@ -5,6 +5,7 @@ namespace Model;
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
 use Hydro\Helper\Date;
+use Model\UserModel;
 
 class OfferModel extends BaseModel {
     const TABLE = "offer";
@@ -121,6 +122,13 @@ class OfferModel extends BaseModel {
     public function setUserId($userId): void
     {
         $this->userId = $userId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser() {
+        return UserModel::searchUser($this->userId);
     }
 
     /**
