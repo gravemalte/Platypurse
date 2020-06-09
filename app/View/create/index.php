@@ -63,11 +63,12 @@ use Controller\OfferController;
                         <p class="name">Beschreibung</p>
                         <div class="input-container">
                             <label for="description">
-                                <textarea placeholder="Beschreibung" id="description" name="description"><?php
-                                    if(isset($_GET['id'])):
-                                        echo $offer->getDescription();
-                                    endif;?>
-                                </textarea>
+                                <?php $description = "";
+                                if(isset($_GET['id'])):
+                                    $description = $offer->getDescription();
+                                endif;?>
+                                <textarea placeholder="Beschreibung" id="description"
+                                          name="description"><?= $description?></textarea>
                             </label>
                         </div>
                     </div>
