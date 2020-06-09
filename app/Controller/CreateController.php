@@ -53,13 +53,11 @@ class CreateController extends BaseController
         else:
             $price *= 100;
         endif;
-
         $platypus = new PlatypusModel(hexdec(uniqid()),
             $_POST["name"],
             $_POST["age"],
             $_POST["sex"],
             $_POST["size"]);
-        $platypus->insertIntoDatabase();
 
         if($platypus->insertIntoDatabase()):
             $offer = new OfferModel(hexdec(uniqid()),

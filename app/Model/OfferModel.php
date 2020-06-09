@@ -66,7 +66,7 @@ class OfferModel extends BaseModel {
         $insertValues = array($this->getId(),
             $this->getUserId(),
             $this->getPlatypus()->getId(),
-            str_replace(',', '', $this->getPrice()),
+            $this->getPriceUnformatted(),
             $this->getNegotiable(),
             $this->getDescription(),
             $this->getClicks(),
@@ -160,6 +160,14 @@ class OfferModel extends BaseModel {
     public function setPrice($price): void
     {
         $this->price = $price;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPriceUnformatted()
+    {
+        return $this->price;
     }
 
     /**
