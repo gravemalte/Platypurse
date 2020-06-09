@@ -35,7 +35,7 @@ class HotOfferModel extends BaseModel {
     {
         $this->o_id = $o_id;
         $this->name = $name;
-        $this->price = number_format($price/100, 2, ',', '.');
+        $this->price = $price;
         $this->negotiable = $negotiable;
         $this->description = $description;
         $this->sex = $sex;
@@ -82,7 +82,7 @@ class HotOfferModel extends BaseModel {
      */
     public function getPrice()
     {
-        return $this->price;
+        return number_format($this->price/100, 2, ',', '.');
     }
 
     /**

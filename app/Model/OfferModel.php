@@ -52,7 +52,7 @@ class OfferModel extends BaseModel {
         $this->id = $id;
         $this->userId = $userId;
         $this->platypus = $platypus;
-        $this->price = number_format($price/100, 2, ',', '.');
+        $this->price = $price;
         $this->negotiable = $negotiable;
         $this->description = $description;
         $this->clicks = $clicks;
@@ -151,7 +151,7 @@ class OfferModel extends BaseModel {
      */
     public function getPrice()
     {
-        return $this->price;
+        return number_format($this->price/100, 2, ',', '.');
     }
 
     /**
@@ -167,10 +167,10 @@ class OfferModel extends BaseModel {
      */
     public function getShortPrice()
     {
-        if (substr($this->price, -2) == "00") {
-            return substr($this->price, 0, strlen($this->price) - 3);
+        if (substr($this->getPrice(), -2) == "00") {
+            return substr($this->getPrice(), 0, strlen($this->getPrice()) - 3);
         }
-        return $this->price;
+        return $this->getPrice();
     }
 
     /**

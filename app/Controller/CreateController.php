@@ -35,6 +35,25 @@ class CreateController extends BaseController
      *
      */
     public function create() {
+        $price = $_POST['price'];
+        if(strpos($price, ",") || strpos($price, ".")):
+            $limiter = "";
+            if(strpos($price, ",")): $limiter = ","; endif;
+            if(strpos($price, ".")): $limiter = "."; endif;
+
+            $priceExploded = explode($limiter, $price);
+            if(end($priceExploded) != "00" || end($priceExploded) != "0"):
+                if(strlen(end($priceExploded)) == 1):
+                    $priceExploded[1] *= 10;
+                endif;
+                $price = implode("", $priceExploded);
+            else:
+                $price = $priceExploded[0]*100;
+            endif;
+        else:
+            $price *= 100;
+        endif;
+
         $platypus = new PlatypusModel(hexdec(uniqid()),
             $_POST["name"],
             $_POST["age"],
@@ -46,7 +65,7 @@ class CreateController extends BaseController
             $offer = new OfferModel(hexdec(uniqid()),
                 $_SESSION['currentUser']->getId(),
                 $platypus,
-                $_POST['price'],
+                $price,
                 0,
                 $_POST['description']);
             $offer->writeToDatabase();
