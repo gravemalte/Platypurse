@@ -107,7 +107,11 @@ class OfferModel extends BaseModel {
     /**
      *
      */
-    public function updateInDatabase() {
+    public function updateInDatabase(bool $editDate = true) {
+        if($editDate):
+            $this->setEditDate(Date::now());
+        endif;
+
         $preparedSetClause = "";
         foreach (COLUMNS_OFFER as $tableCol):
             $preparedSetClause .= $tableCol. " = ?,";
@@ -126,7 +130,7 @@ class OfferModel extends BaseModel {
      */
     public function offerClickPlusOne() {
         $this->setClicks($this->getClicks() + 1);
-        $this->updateInDatabase();
+        $this->updateInDatabase(false);
     }
 
     /**
