@@ -77,8 +77,8 @@ class SQLite
 
         $stmnt .= ";";
 
-        // print($stmnt);
-        // print_r($values);
+        //print($stmnt);
+        //print_r($values);
 
         return self::queryStmnt($stmnt, $values);
     }
@@ -102,11 +102,17 @@ class SQLite
         if(substr($stmnt, -1) != ")"): $stmnt .= ")"; endif;
         $stmnt .= ";";
 
+        //print($stmnt);
+        //print_r($values);
+
         return self::execStmnt($stmnt, $values);
     }
 
     public static function updateBuilder($table, $preparedSetClause, $preparedWhereClause, $values) {
         $stmnt = "UPDATE " .$table. " SET " .$preparedSetClause. " WHERE " .$preparedWhereClause. ";";
+
+        //print($stmnt);
+        //print_r($values);
 
         return self::execStmnt($stmnt, $values);
     }

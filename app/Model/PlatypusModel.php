@@ -115,7 +115,8 @@ class PlatypusModel extends BaseModel {
             $this->getName(),
             $this->getAgeYears(),
             $this->getSex(),
-            $this->getSize());
+            $this->getSize(),
+            $this->getActive());
     }
 
     /**

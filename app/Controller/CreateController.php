@@ -45,7 +45,8 @@ class CreateController extends BaseController
             $_POST["name"],
             $_POST["age"],
             $_POST["sex"],
-            $_POST["size"]);
+            $_POST["size"],
+            1);
 
         if($platypus->writeToDatabase()):
             $offer = new OfferModel($offerId,
