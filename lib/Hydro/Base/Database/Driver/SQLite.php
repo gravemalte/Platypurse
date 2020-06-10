@@ -77,7 +77,6 @@ class SQLite
 
         $stmnt .= ";";
 
-        // print($stmnt);
         return self::queryStmnt($stmnt, $values);
     }
 

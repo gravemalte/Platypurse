@@ -11,6 +11,11 @@ class OfferGridModel extends BaseModel {
     const TABLE = TABLE_OFFER." INNER JOIN " .TABLE_PLATYPUS. " ON "
         .TABLE_OFFER. "." .COLUMNS_OFFER["p_id"]. " = "
         .TABLE_PLATYPUS. "." .COLUMNS_PLATYPUS["p_id"];
+
+    const TABLEJOINSAVEDOFFERS = self::TABLE. " INNER JOIN " .TABLE_SAVED_OFFERS. " ON "
+        .TABLE_OFFER. "." .COLUMNS_OFFER["u_id"]. " = "
+        .TABLE_SAVED_OFFERS. "." .COLUMNS_SAVED_OFFERS["u_id"];
+
     const TABLECOLUMNS = array(COLUMNS_OFFER["o_id"] => COLUMNS_OFFER["o_id"],
         COLUMNS_PLATYPUS["name"] => COLUMNS_PLATYPUS["name"],
         COLUMNS_OFFER["price"] => COLUMNS_OFFER["price"],
@@ -41,11 +46,11 @@ class OfferGridModel extends BaseModel {
         parent::__construct();
     }
 
-    public static function getFromDatabase($preparedWhereClause = "", $values = array(),
+    public static function getFromDatabase($table, $preparedWhereClause = "", $values = array(),
                                            $groupClause = "", $orderClause = "", $limitClause = "") {
         $offer = array();
         $result = SQLite::selectBuilder(self::TABLECOLUMNS,
-            self::TABLE,
+            $table,
             $preparedWhereClause,
             $values,
             $groupClause,

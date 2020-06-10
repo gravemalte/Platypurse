@@ -27,7 +27,8 @@ class HomeController extends BaseController
         $orderClause = COLUMNS_OFFER['create_date']. " desc";
         $limitClause = "9";
 
-        return OfferGridModel::getFromDatabase($whereClause,
+        return OfferGridModel::getFromDatabase(OfferGridModel::TABLE,
+            $whereClause,
             array(1),
             "",
             $orderClause,

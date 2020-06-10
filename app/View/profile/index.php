@@ -1,6 +1,5 @@
 <?php
 use Controller\ProfileController;
-use Model\UserModel;
 $id_request = $_GET["id"];
 $user = ProfileController::getUser($id_request);
 ?>
@@ -40,66 +39,27 @@ $user = ProfileController::getUser($id_request);
     <div class="main-area">
         <div class="search-results-container">
             <div class="offer-list-container">
-                <a class="offer-list-link" href="offer">
-                    <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name">Smol Boi</p>
-                        <p class="description">Total der süße, kleine Boi</p>
-                        <div class="price-tag-container">
-                            <p class="price-tag">22</p>
+                <?php
+                    $offersByUser = ProfileController::getOffersFromUser($id_request);
+                if(!empty($offersByUser)):?>
+                <div class="offer-list-container">
+                    <?php foreach($offersByUser as $offer): ?>
+                        <a class="offer-list-link" href="offer?id=<?= $offer->getOId();?>">
+                            <div class="offer-list-item card">
+                                <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
+                                <p class="name"><?= $offer->getName();?></p>
+                                <p class="description"><?= $offer->getDescription();?></p>
+                                <div class="price-tag-container">
+                                    <p class="price-tag"><?= $offer->getPrice();?></p>
+                                </div>
+                            </div>
+                        </a>
+                    <?php endforeach;
+                    else: ?>
+                        <div>
+                            <h1>Sorry, es gibt leider keine passenden Angebote. ¯\_(ツ)_/¯</h1>
                         </div>
-                    </div>
-                </a>
-                <a class="offer-list-link" href="offer">
-                    <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name">Smol Boi</p>
-                        <p class="description">Total der süße, kleine Boi</p>
-                        <div class="price-tag-container">
-                            <p class="price-tag">23</p>
-                        </div>
-                    </div>
-                </a>
-                <a class="offer-list-link" href="offer">
-                    <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name">Smol Boi</p>
-                        <p class="description">Total der süße, kleine Boi</p>
-                        <div class="price-tag-container">
-                            <p class="price-tag">22</p>
-                        </div>
-                    </div>
-                </a>
-                <a class="offer-list-link" href="offer">
-                    <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name">Smol Boi</p>
-                        <p class="description">Total der süße, kleine Boi</p>
-                        <div class="price-tag-container">
-                            <p class="price-tag">22</p>
-                        </div>
-                    </div>
-                </a>
-                <a class="offer-list-link" href="offer">
-                    <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name">Smol Boi</p>
-                        <p class="description">Total der süße, kleine Boi</p>
-                        <div class="price-tag-container">
-                            <p class="price-tag">22</p>
-                        </div>
-                    </div>
-                </a>
-                <a class="offer-list-link" href="offer">
-                    <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name">Smol Boi</p>
-                        <p class="description">Total der süße, kleine Boi</p>
-                        <div class="price-tag-container">
-                            <p class="price-tag">22</p>
-                        </div>
-                    </div>
-                </a>
+                    <?php endif; ?>
             </div>
         </div>
     </div>
