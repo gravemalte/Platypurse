@@ -5,6 +5,7 @@ use Hydro\Helper\Date;
 $offer = OfferController::getOffer($_GET['id']);
 $offer->offerClickPlusOne();
 $seller = $offer->getUser();
+$isSaved = OfferController::getOfferFromSavedList($_GET['id']);
 ?>
 <main class="main-page">
     <div class="main-area">
@@ -31,11 +32,12 @@ $seller = $offer->getUser();
                             <p>Nachricht schreiben</p>
                         </div>
                     </a>
-                    <form action="offer/offerToSavedList" method="post">
+                    <?php if($isSaved):?>
+                    <form action="offer/removeFromSavedList" method="post">
                         <input type="text" id="save-id" name="offerId" hidden value="<?=$offer->getId();?>">
                         <label for="save-id" hidden>Speicher-ID</label>
                         <button class="save-offer-button button">
-                            Zur Merkliste
+                            Von der Merkliste entfernen
                         </button>
                         <!-- TODO: Remove link and style button
                         <a href="offer/offerToSavedList(<?= $offer->getId()?>)" class="save-offer-button button">
@@ -44,6 +46,21 @@ $seller = $offer->getUser();
                             </div>
                         </a>-->
                     </form>
+                    <?php else: ?>
+                        <form action="offer/offerToSavedList" method="post">
+                            <input type="text" id="save-id" name="offerId" hidden value="<?=$offer->getId();?>">
+                            <label for="save-id" hidden>Speicher-ID</label>
+                            <button class="save-offer-button button">
+                                Zur Merkliste
+                            </button>
+                            <!-- TODO: Remove link and style button
+                        <a href="offer/offerToSavedList(<?= $offer->getId()?>)" class="save-offer-button button">
+                            <div>
+                                <p>Zur Merkliste</p>
+                            </div>
+                        </a>-->
+                        </form>
+                    <?php endif; ?>
                 </div>
                 <div class="profile-container card">
                     <a href="profile?id=<?= $seller->getId() ?>">

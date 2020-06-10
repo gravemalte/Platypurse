@@ -44,6 +44,35 @@ class OfferController extends BaseController
         exit();
     }
 
+    public static function removeFromSavedList() {
+        $values = array($_SESSION["currentUser"]->getId(), $_POST["offerId"], 1);
+        $whereClause = COLUMNS_SAVED_OFFERS["u_id"]. " = ? AND "
+            .COLUMNS_SAVED_OFFERS["o_id"]. " = ? AND "
+            .COLUMNS_SAVED_OFFERS["active"]. " = ?";
+
+        SQLite::deleteBuilder(TABLE_SAVED_OFFERS, $whereClause, $values);
+        header('location: ' . URL);
+        exit();
+    }
+
+    public static function getOfferFromSavedList($offerId) {
+        $values = array($_SESSION["currentUser"]->getId(), $offerId, 1);
+        $whereClause = COLUMNS_SAVED_OFFERS["u_id"]. " = ? AND "
+            .COLUMNS_SAVED_OFFERS["o_id"]. " = ? AND "
+            .COLUMNS_SAVED_OFFERS["active"]. " = ?";
+
+        $result = SQLite::selectBuilder(COLUMNS_SAVED_OFFERS,
+            TABLE_SAVED_OFFERS,
+            $whereClause,
+            $values);
+
+        if($result == null):
+            return false;
+        else:
+            return true;
+        endif;
+    }
+
     /**
      *
      */
