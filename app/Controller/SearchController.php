@@ -25,7 +25,7 @@ class SearchController extends BaseController
         $whereClause = COLUMNS_PLATYPUS['name']. " LIKE ? 
         AND ".COLUMNS_PLATYPUS['age_years']." BETWEEN ? and ?
         AND ".COLUMNS_PLATYPUS['size']." BETWEEN ? and ?
-        AND ".COLUMNS_OFFER['active']." = 1";
+        AND ".TABLE_OFFER.".".COLUMNS_OFFER['active']." = 1";
         $values = array("%" .$like. "%", min($age), max($age), min($size), max($size));
 
         if(!empty($sex)):
@@ -33,6 +33,6 @@ class SearchController extends BaseController
             $values[] = $sex;
         endif;
 
-        return OfferGridModel::getFromDatabase($whereClause, $values);
+        return OfferGridModel::getFromDatabase(OfferGridModel::TABLE, $whereClause, $values);
     }
 }

@@ -61,7 +61,7 @@ class HotOfferModel extends BaseModel {
         $offer = "";
         $result = SQLite::selectBuilder(self::TABLECOLUMNS,
             self::TABLE,
-            COLUMNS_OFFER['active']. " = ?",
+            TABLE_OFFER.".".COLUMNS_OFFER['active']. " = ?",
             array(1),"", "", "1");
 
         foreach ($result as $row):

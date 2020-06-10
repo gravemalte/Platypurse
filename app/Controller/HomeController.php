@@ -23,7 +23,7 @@ class HomeController extends BaseController
     }
 
     public function getNewestOffers() {
-        $whereClause = COLUMNS_OFFER['active']. " = ?";
+        $whereClause = TABLE_OFFER.".".COLUMNS_OFFER['active']. " = ?";
         $orderClause = COLUMNS_OFFER['create_date']. " desc";
         $limitClause = "9";
 

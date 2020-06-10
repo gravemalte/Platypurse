@@ -35,7 +35,8 @@ CREATE TABLE platypus (
   name TEXT NOT NULL,
   age_years INTEGER NOT NULL,
   sex TEXT NOT NULL,
-  size INTEGER NOT NULL
+  size INTEGER NOT NULL,
+  active INTEGER DEFAULT 1
 );
 
 CREATE TABLE offer (
