@@ -93,7 +93,7 @@ CREATE TABLE message (
   CONSTRAINT fk_receiver_user
     FOREIGN KEY (receiver_id)
     REFERENCES user(u_id)
-)
+);
 
 CREATE TABLE report_reason (
   rr_id INTEGER PRIMARY KEY AUTOINCREMENT,
