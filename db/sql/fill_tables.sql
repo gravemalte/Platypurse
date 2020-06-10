@@ -19,17 +19,17 @@ VALUES
 (4, 2, 5),
 (4, 3, 1);
 
-INSERT INTO platypus (p_id, name, age_years, sex, size)
+INSERT INTO platypus (p_id, name, age_years, sex, size, weight)
 VALUES
-(1, "Perry", 7, "männlich", 47),
-(2, "Schnabella", 5, "weiblich", 35),
-(3, "Schnabello", 9, "männlich", 11),
-(4, "Daisy", 4, "weiblich", 39),
-(5, "Flap", 17, "männlich", 46),
-(6, "Anatina", 3, "weiblich", 40),
-(7, "Rufus", 4, "männlich", 44),
-(8, "Goal", 2, "weiblich", 36),
-(9, "Bozo", 6, "männlich", 57);
+(1, "Perry", 7, "männlich", 47, 1350),
+(2, "Schnabella", 5, "weiblich", 35, 999),
+(3, "Schnabello", 9, "männlich", 11, 1111),
+(4, "Daisy", 4, "weiblich", 39, 1292),
+(5, "Flap", 17, "männlich", 46, 1437),
+(6, "Anatina", 3, "weiblich", 40, 1000),
+(7, "Rufus", 4, "männlich", 44, 1200),
+(8, "Goal", 2, "weiblich", 36, 800),
+(9, "Bozo", 6, "männlich", 57, 3000);
 
 INSERT INTO offer (o_id, u_id, p_id, price, negotiable, description)
 VALUES

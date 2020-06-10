@@ -105,9 +105,10 @@ class OfferModel extends BaseModel {
     }
 
     /**
-     *
+     * @param bool $editDate
+     * @return bool
      */
-    public function updateInDatabase(bool $editDate = true) {
+    public function updateInDatabase($editDate = true) {
         if($editDate):
             $this->setEditDate(Date::now());
         endif;

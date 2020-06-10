@@ -19,6 +19,7 @@ class HotOfferModel extends BaseModel {
         COLUMNS_PLATYPUS["sex"] => COLUMNS_PLATYPUS["sex"],
         COLUMNS_PLATYPUS["age_years"] => COLUMNS_PLATYPUS["age_years"],
         COLUMNS_PLATYPUS["size"] => COLUMNS_PLATYPUS["size"],
+        COLUMNS_PLATYPUS["weight"] => COLUMNS_PLATYPUS["weight"],
         COLUMNS_OFFER["clicks"] => COLUMNS_OFFER["clicks"]);
 
     private $o_id;
@@ -29,6 +30,7 @@ class HotOfferModel extends BaseModel {
     private $sex;
     private $ageYears;
     private $size;
+    private $weight;
     private $clicks;
 
     /**
@@ -41,9 +43,11 @@ class HotOfferModel extends BaseModel {
      * @param $sex
      * @param $ageYears
      * @param $size
+     * @param $weight
      * @param $clicks
      */
-    public function __construct($o_id, $name, $price, $negotiable, $description, $sex, $ageYears, $size, $clicks)
+    public function __construct($o_id, $name, $price, $negotiable,
+                                $description, $sex, $ageYears, $size, $weight, $clicks)
     {
         $this->o_id = $o_id;
         $this->name = $name;
@@ -53,6 +57,7 @@ class HotOfferModel extends BaseModel {
         $this->sex = $sex;
         $this->ageYears = $ageYears;
         $this->size = $size;
+        $this->weight = $weight;
         $this->clicks = $clicks;
         parent::__construct();
     }
@@ -75,6 +80,7 @@ class HotOfferModel extends BaseModel {
                 $row[self::TABLECOLUMNS[COLUMNS_PLATYPUS["sex"]]],
                 $row[self::TABLECOLUMNS[COLUMNS_PLATYPUS["age_years"]]],
                 $row[self::TABLECOLUMNS[COLUMNS_PLATYPUS["size"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_PLATYPUS["weight"]]],
                 $row[self::TABLECOLUMNS[COLUMNS_OFFER["clicks"]]]);
         endforeach;
 
@@ -207,6 +213,22 @@ class HotOfferModel extends BaseModel {
     public function setSize($size): void
     {
         $this->size = $size;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWeight()
+    {
+        return $this->weight;
+    }
+
+    /**
+     * @param mixed $size
+     */
+    public function setWeight($weight): void
+    {
+        $this->weight = $weight;
     }
 
     /**

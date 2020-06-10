@@ -46,6 +46,7 @@ class CreateController extends BaseController
             $_POST["age"],
             $_POST["sex"],
             $_POST["size"],
+            $_POST["weight"],
             1);
 
         if($platypus->writeToDatabase()):

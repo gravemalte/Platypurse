@@ -60,6 +60,7 @@ define("COLUMNS_PLATYPUS", array("p_id" => "p_id",
     "age_years" => "age_years",
     "sex" => "sex",
     "size" => "size",
+    "weight" => "weight",
     "active" => "active"));
 
 define("TABLE_REPORT_REASONS", "report_reason");

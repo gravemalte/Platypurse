@@ -11,6 +11,7 @@ class PlatypusModel extends BaseModel {
     private $age_years;
     private $sex;
     private $size;
+    private $weight;
     private $active;
 
     /**
@@ -20,15 +21,17 @@ class PlatypusModel extends BaseModel {
      * @param $age_years
      * @param $sex
      * @param $size
+     * @param $weight
      * @param $active
      */
-    public function __construct($id, $name, $age_years, $sex, $size, $active)
+    public function __construct($id, $name, $age_years, $sex, $size, $weight, $active)
     {
         $this->id = $id;
         $this->name = $name;
         $this->age_years = $age_years;
         $this->sex = $sex;
         $this->size = $size;
+        $this->weight = $weight;
         $this->active = $active;
         parent::__construct();
     }
@@ -50,6 +53,7 @@ class PlatypusModel extends BaseModel {
                 $row[COLUMNS_PLATYPUS["age_years"]],
                 $row[COLUMNS_PLATYPUS["sex"]],
                 $row[COLUMNS_PLATYPUS["size"]],
+                $row[COLUMNS_PLATYPUS["weight"]],
                 $row[COLUMNS_PLATYPUS["active"]]);
         endforeach;
 
@@ -116,6 +120,7 @@ class PlatypusModel extends BaseModel {
             $this->getAgeYears(),
             $this->getSex(),
             $this->getSize(),
+            $this->getWeight(),
             $this->getActive());
     }
 
@@ -197,6 +202,22 @@ class PlatypusModel extends BaseModel {
     public function setSize($size): void
     {
         $this->size = $size;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWeight()
+    {
+        return $this->weight;
+    }
+
+    /**
+     * @param mixed $size
+     */
+    public function setWeight($weight): void
+    {
+        $this->weight = $weight;
     }
 
     /**

@@ -36,6 +36,7 @@ CREATE TABLE platypus (
   age_years INTEGER NOT NULL,
   sex TEXT NOT NULL,
   size INTEGER NOT NULL,
+  weight INTEGER NOT NULL,
   active INTEGER DEFAULT 1
 );
 

@@ -115,6 +115,19 @@ use Controller\OfferController;
                                 <p>cm</p>
                             </div>
                         </div>
+                        <div class="attribute-item dropdown-item">
+                            <div class="attribute-item-header dropdown-item-header">
+                                <p>Gewicht</p>
+                            </div>
+                            <div class="attribute-item-select dropdown-item-select">
+                                <label for="size" hidden>Gewicht</label>
+                                <input type="number" id="weight" name="weight" min="0" max="3000" value="<?php
+                                if(isset($_GET['id'])):
+                                    echo $offer->getPlatypus()->getWeight();
+                                endif;?>">
+                                <p>g</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="buttons-container">
                         <button type="submit" hidden id="create-submit"></button>

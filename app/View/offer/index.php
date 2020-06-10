@@ -51,7 +51,7 @@ endif;
                                 Zur Merkliste
                             </button>
                             <!-- TODO: Remove link (design as it was for reference) and style button -->
-                            <a href="offer/offerToSavedList(<?= $offer->getId()?>)" class="save-offer-button button">
+                            <a href="" class="save-offer-button button">
                                 <div>
                                     <p>Zur Merkliste</p>
                                 </div>
@@ -81,7 +81,7 @@ endif;
                         <p><strong>Geschlecht:</strong><br>&nbsp;<?=$offer->getPlatypus()->getSex();?></p>
                         <p><strong>Alter:</strong><br>&nbsp;<?=$offer->getPlatypus()->getAgeYears();?> Jahre</p>
                         <p><strong>Größe:</strong><br>&nbsp<?=$offer->getPlatypus()->getSize();?> cm</p>
-                        <!--<p><strong>Gewicht:</strong><br>&nbsp<?=$offer->getPlatypus()->getWeight();?> kg</p>-->
+                        <p><strong>Gewicht:</strong><br>&nbsp<?=$offer->getPlatypus()->getWeight();?> g</p>
                     </div>
                     <div class="attribute-item">
                         <p>Erstellt: <strong>
