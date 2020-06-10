@@ -5,7 +5,10 @@ use Hydro\Helper\Date;
 $offer = OfferController::getOffer($_GET['id']);
 $offer->offerClickPlusOne();
 $seller = $offer->getUser();
-$isSaved = OfferController::getOfferFromSavedList($_GET['id']);
+$isSaved = false;
+if(isset($_SESSION['currentUser'])):
+    $isSaved = OfferController::getOfferFromSavedList($_GET['id']);
+endif;
 ?>
 <main class="main-page">
     <div class="main-area">
@@ -78,6 +81,7 @@ $isSaved = OfferController::getOfferFromSavedList($_GET['id']);
                         <p><strong>Geschlecht:</strong><br>&nbsp;<?=$offer->getPlatypus()->getSex();?></p>
                         <p><strong>Alter:</strong><br>&nbsp;<?=$offer->getPlatypus()->getAgeYears();?> Jahre</p>
                         <p><strong>Größe:</strong><br>&nbsp<?=$offer->getPlatypus()->getSize();?> cm</p>
+                        <!--<p><strong>Gewicht:</strong><br>&nbsp<?=$offer->getPlatypus()->getWeight();?> kg</p>-->
                     </div>
                     <div class="attribute-item">
                         <p>Erstellt: <strong>
