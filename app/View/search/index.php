@@ -7,6 +7,7 @@
     $sexFemaleSelected = "";
     $age = array(0, 20);
     $size = array(0, 75);
+    $weight = array(0, 3000);
 
     if(isset($_POST['sex'])): $sex = $_POST['sex']; endif;
     if(isset($_POST['sex'])):
@@ -19,6 +20,9 @@
     endif;
     if(isset($_POST['size'])):
         $size = $_POST['size'];
+    endif;
+    if(isset($_POST['weight'])):
+        $weight = $_POST['weight'];
     endif;?>
 <main class="main-page filter-page">
     <div class="filter-area">
@@ -62,6 +66,15 @@
                             <input type="range" min="0" max="75" value="<?php echo max($size) ?>" id="filter-size-range-2" name="size[]">
                         </div>
                     </div>
+                    <div>
+                        <label for="filter-weight-range-1">Gewicht</label>
+                        <div class="multi-thumb-slider-container" role="group" aria-labelledby="multi-thumb-slider">
+                            <label for="filter-weight-range-1" hidden></label>
+                            <input type="range" min="0" max="3000" value="<?php echo min($weight) ?>" id="filter-weight-range-1" name="weight[]">
+                            <label for="filter-weight-range-2" hidden></label>
+                            <input type="range" min="0" max="3000" value="<?php echo max($weight) ?>" id="filter-weight-range-2" name="weight[]">
+                        </div>
+                    </div>
                     <div class="filter-button-container">
                         <button class="reset-button" type="submit" name="filter-button" value="reset">
                             <span>Zurücksetzen</span>
@@ -82,7 +95,7 @@
         <div class="search-results-container">
             <div class="offer-list-container">
                 <?php
-                $offers = SearchController::getOffers($searchText, $sex, $age, $size);
+                $offers = SearchController::getOffers($searchText, $sex, $age, $size, $weight);
                 if(!empty($offers)):?>
                 <div class="offer-list-container">
                     <?php foreach($offers as $offer): ?>
