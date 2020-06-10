@@ -78,15 +78,14 @@ class UserModel extends BaseModel
         endif;
     }
 
-    public static function checkCredentials($userEmail, $userPasswd)
+    public static function searchUserEmail($userEmail)
     {
-        $whereClause = COLUMNS_USER["mail"]. " = ? AND "
-            .COLUMNS_USER["password"]. " = ?";
+        $whereClause = COLUMNS_USER["mail"]. " = ?";
 
         $result = SQLite::selectBuilder(COLUMNS_USER,
             TABLE_USER,
             $whereClause,
-            array($userEmail, $userPasswd));
+            array($userEmail));
 
         if($result == null):
             return false;
@@ -127,7 +126,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $id
      */
-    public function setId($id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -143,7 +142,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $displayName
      */
-    public function setDisplayName($displayName): void
+    public function setDisplayName($displayName)
     {
         $this->displayName = $displayName;
     }
@@ -159,7 +158,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $mail
      */
-    public function setMail($mail): void
+    public function setMail($mail)
     {
         $this->mail = $mail;
     }
@@ -175,7 +174,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $password
      */
-    public function setPassword($password): void
+    public function setPassword($password)
     {
         $this->password = $password;
     }
@@ -191,7 +190,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $ugId
      */
-    public function setUgId($ugId): void
+    public function setUgId($ugId)
     {
         $this->ugId = $ugId;
     }
@@ -215,7 +214,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $rating
      */
-    public function setRating($rating): void
+    public function setRating($rating)
     {
         $this->rating = $rating;
     }
@@ -231,7 +230,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $createdAt
      */
-    public function setCreatedAt($createdAt): void
+    public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
@@ -247,7 +246,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $disabled
      */
-    public function setDisabled($disabled): void
+    public function setDisabled($disabled)
     {
         $this->disabled = $disabled;
     }
