@@ -6,7 +6,7 @@
         <label for="expand-nav" class="fas fa-bars"></label>
         <label for="expand-nav" class="fas fa-times"></label>
         <div class="nav-logo-container">
-            <a href="/index.php">
+            <a href="<?= URL ?>">
                 <img src="assets/logo/svg/logo_text.svg" alt="show/hide menu button">
             </a>
         </div>
