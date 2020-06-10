@@ -40,14 +40,14 @@ class LoginController extends BaseController
         $result = UserModel::searchUserEmail($userSentMail);
         if (!empty($result)):
             foreach ($result as $row):
-                $user = new UserModel($row[UserModel::TABLECOLUMNS["u_id"]],
-                    $row[UserModel::TABLECOLUMNS["display_name"]],
-                    $row[UserModel::TABLECOLUMNS["mail"]],
-                    $row[UserModel::TABLECOLUMNS["password"]],
-                    $row[UserModel::TABLECOLUMNS["ug_id"]],
-                    $row[UserModel::TABLECOLUMNS["rating"]],
-                    $row[UserModel::TABLECOLUMNS["created_at"]],
-                    $row[UserModel::TABLECOLUMNS["display_name"]]);
+                $user = new UserModel($row[COLUMNS_USER["u_id"]],
+                    $row[COLUMNS_USER["display_name"]],
+                    $row[COLUMNS_USER["mail"]],
+                    $row[COLUMNS_USER["password"]],
+                    $row[COLUMNS_USER["ug_id"]],
+                    $row[COLUMNS_USER["rating"]],
+                    $row[COLUMNS_USER["created_at"]],
+                    $row[COLUMNS_USER["display_name"]]);
                 if (password_verify($userSentPasswd, $user->getPassword())) {
                     $_SESSION['currentUser'] = $user;
                     header('location: ' . URL);

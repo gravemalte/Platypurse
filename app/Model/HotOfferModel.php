@@ -8,6 +8,18 @@ use Hydro\Helper\Date;
 use PDO;
 
 class HotOfferModel extends BaseModel {
+    const TABLE = TABLE_OFFER." INNER JOIN " .TABLE_PLATYPUS. " ON "
+        .TABLE_OFFER. "." .COLUMNS_OFFER["p_id"]. " = "
+        .TABLE_PLATYPUS. "." .COLUMNS_PLATYPUS["p_id"];
+    const TABLECOLUMNS = array(COLUMNS_OFFER["o_id"] => COLUMNS_OFFER["o_id"],
+        COLUMNS_PLATYPUS["name"] => COLUMNS_PLATYPUS["name"],
+        COLUMNS_OFFER["price"] => COLUMNS_OFFER["price"],
+        COLUMNS_OFFER["negotiable"] => COLUMNS_OFFER["negotiable"],
+        COLUMNS_OFFER["description"] => COLUMNS_OFFER["description"],
+        COLUMNS_PLATYPUS["sex"] => COLUMNS_PLATYPUS["sex"],
+        COLUMNS_PLATYPUS["age_years"] => COLUMNS_PLATYPUS["age_years"],
+        COLUMNS_PLATYPUS["size"] => COLUMNS_PLATYPUS["size"],
+        COLUMNS_OFFER["clicks"] => COLUMNS_OFFER["clicks"]);
 
     private $o_id;
     private $name;
@@ -35,7 +47,7 @@ class HotOfferModel extends BaseModel {
     {
         $this->o_id = $o_id;
         $this->name = $name;
-        $this->price = number_format($price/100, 2, ',', '.');
+        $this->price = $price;
         $this->negotiable = $negotiable;
         $this->description = $description;
         $this->sex = $sex;
@@ -43,6 +55,30 @@ class HotOfferModel extends BaseModel {
         $this->size = $size;
         $this->clicks = $clicks;
         parent::__construct();
+    }
+
+    public static function getFromDatabase() {
+        $offer = "";
+        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
+            self::TABLE,
+            TABLE_OFFER.".".COLUMNS_OFFER['active']. " = ?",
+            array(1),"",
+            COLUMNS_OFFER['clicks']. " desc",
+            "1");
+
+        foreach ($result as $row):
+            $offer = new HotOfferModel($row[self::TABLECOLUMNS[COLUMNS_OFFER["o_id"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_PLATYPUS["name"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_OFFER["price"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_OFFER["negotiable"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_OFFER["description"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_PLATYPUS["sex"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_PLATYPUS["age_years"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_PLATYPUS["size"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_OFFER["clicks"]]]);
+        endforeach;
+
+        return $offer;
     }
 
     /**
@@ -82,7 +118,7 @@ class HotOfferModel extends BaseModel {
      */
     public function getPrice()
     {
-        return $this->price;
+        return number_format($this->price/100, 2, ',', '.');
     }
 
     /**

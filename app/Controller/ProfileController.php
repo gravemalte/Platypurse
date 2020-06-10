@@ -5,6 +5,8 @@ namespace Controller;
 
 
 use Hydro\Base\Controller\BaseController;
+use Model\OfferGridModel;
+use Model\OfferModel;
 use Model\UserModel;
 
 class ProfileController extends BaseController
@@ -36,6 +38,19 @@ class ProfileController extends BaseController
 
     public static function getUser($id){
        return UserModel::searchUser($id);
+    }
+
+    public static function getOffersFromUser($id) {
+        $whereClause = COLUMNS_OFFER["u_id"]. " = ? AND "
+            .TABLE_OFFER.".".COLUMNS_OFFER["active"]. " = ?";
+        return OfferGridModel::getFromDatabase(OfferGridModel::TABLE, $whereClause, array($id, 1));
+    }
+
+    public static function getSavedOffers($id) {
+        $whereClause = TABLE_SAVED_OFFERS.".".COLUMNS_SAVED_OFFERS["u_id"]. " = ?";
+        return OfferGridModel::getFromDatabase(OfferGridModel::TABLEJOINSAVEDOFFERS,
+            $whereClause,
+            array($id));
     }
 
 }

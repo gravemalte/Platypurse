@@ -13,6 +13,10 @@ body {
     --page-button-bg-color: #444;
     --page-button-alt-bg-color: #0074FF;
     --page-button-alt-text-color: white;
+    --page-button-danger-bg-color: #D32F2F;
+    --page-button-danger-text-color: white;
+    --page-button-report-bg-color: #FF9900;
+    --page-button-report-text-color: white;
     --page-input-bg-color: #222;
     --page-dropdown-bg-color: #222;
     --page-error-color: #D32F2F;
@@ -28,6 +32,8 @@ body {
 
     --hot-offer-annotation-bg-color: #FE6D09;
     --hot-offer-annotation-color: white;
+
+    --profile-star-highlight-color: yellow;
 
     --offer-send-message-button-bg-color: #0074FF;
     --create-done-button-bg-color: #0074FF;

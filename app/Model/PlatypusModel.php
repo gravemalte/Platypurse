@@ -6,18 +6,12 @@ use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
 
 class PlatypusModel extends BaseModel {
-    const TABLE = "platypus";
-    const TABLECOLUMNS = array("p_id" => "p_id",
-        "name" => "name",
-        "age_years" => "age_years",
-        "sex" => "sex",
-        "size" => "size");
-
     private $id;
     private $name;
     private $age_years;
     private $sex;
     private $size;
+    private $active;
 
     /**
      * PlatypusModel constructor.
@@ -26,42 +20,103 @@ class PlatypusModel extends BaseModel {
      * @param $age_years
      * @param $sex
      * @param $size
+     * @param $active
      */
-    public function __construct($id, $name, $age_years, $sex, $size)
+    public function __construct($id, $name, $age_years, $sex, $size, $active)
     {
         $this->id = $id;
         $this->name = $name;
         $this->age_years = $age_years;
         $this->sex = $sex;
         $this->size = $size;
+        $this->active = $active;
         parent::__construct();
+    }
+
+    public static function getFromDatabase($preparedWhereClause = "", $values = array(),
+                                           $groupClause = "", $orderClause = "", $limitClause = "") {
+        $platypus = array();
+        $result = SQLite::selectBuilder(COLUMNS_PLATYPUS,
+            TABLE_PLATYPUS,
+            $preparedWhereClause,
+            $values,
+            $groupClause,
+            $orderClause,
+            $limitClause);
+
+        foreach ($result as $row):
+            $platypus[] = new PlatypusModel($row[COLUMNS_PLATYPUS["p_id"]],
+                $row[COLUMNS_PLATYPUS["name"]],
+                $row[COLUMNS_PLATYPUS["age_years"]],
+                $row[COLUMNS_PLATYPUS["sex"]],
+                $row[COLUMNS_PLATYPUS["size"]],
+                $row[COLUMNS_PLATYPUS["active"]]);
+        endforeach;
+
+        if(sizeof($platypus) <= 1):
+            return array_shift($platypus);
+        else:
+            return $platypus;
+        endif;
+    }
+
+    public function writeToDatabase() {
+        // Check if platypus exists in database
+        $platypusInDatabase = SQLite::selectBuilder(COLUMNS_PLATYPUS, TABLE_PLATYPUS,
+            COLUMNS_PLATYPUS["p_id"]. " = ?", array($this->getId()));
+
+        // If platypus doesn't exist, insert into database. Else update in database
+        if(empty($platypusInDatabase)):
+            return $this->insertIntoDatabase();
+        else:
+            return $this->updateInDatabase();
+        endif;
     }
 
     /**
      * @return bool
      */
     public function insertIntoDatabase() {
-        $insertValues = array($this->getId(),
-            $this->getName(),
-            $this->getAgeYears(),
-            $this->getSex(),
-            $this->getSize());
-
-        return SQLite::insertBuilder(self::TABLE, self::TABLECOLUMNS, $insertValues);
+        return SQLite::insertBuilder(TABLE_PLATYPUS,
+            COLUMNS_PLATYPUS,
+            $this->getDatabaseValues());
     }
 
     /**
      *
      */
     public function updateInDatabase() {
+        $preparedSetClause = "";
+        foreach (COLUMNS_PLATYPUS as $tableCol):
+            $preparedSetClause .= $tableCol. " = ?,";
+        endforeach;
 
+        $preparedWhereClause = COLUMNS_PLATYPUS["p_id"]. " = " .$this->getId();
+
+        return SQLite::updateBuilder(TABLE_PLATYPUS,
+            substr($preparedSetClause, 0, -1),
+            $preparedWhereClause,
+            $this->getDatabaseValues());
     }
 
     /**
-     *
+     * Set active to 0 and update database
      */
     public function deleteFromDatabase() {
+        $this->setActive(0);
+        return $this->updateInDatabase();
+    }
 
+    /**
+     * @return array
+     */
+    public function getDatabaseValues() {
+        return array($this->getId(),
+            $this->getName(),
+            $this->getAgeYears(),
+            $this->getSex(),
+            $this->getSize(),
+            $this->getActive());
     }
 
     /**
@@ -144,5 +199,19 @@ class PlatypusModel extends BaseModel {
         $this->size = $size;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
 
+    /**
+     * @param mixed $active
+     */
+    public function setActive($active): void
+    {
+        $this->active = $active;
+    }
 }

@@ -3,10 +3,8 @@
 namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
-use Hydro\Base\Database\Driver\SQLite;
 use Model\OfferModel;
 use Model\PlatypusModel;
-use Controller\OfferController;
 
 class CreateController extends BaseController
 {
@@ -31,53 +29,61 @@ class CreateController extends BaseController
         return OfferController::getOffer($id);
     }
 
-    /**
-     *
-     */
-    public function create() {
-        $platypus = new PlatypusModel(hexdec(uniqid()),
+    public function processInput() {
+        $platypusId = hexdec(uniqid());
+        $offerId = hexdec(uniqid());
+
+        if(isset($_POST["platypusId"])):
+            $platypusId = $_POST["platypusId"];
+        endif;
+
+        if(isset($_POST["offerId"])):
+            $offerId = $_POST["offerId"];
+        endif;
+
+        $platypus = new PlatypusModel($platypusId,
             $_POST["name"],
             $_POST["age"],
             $_POST["sex"],
-            $_POST["size"]);
-        $platypus->insertIntoDatabase();
+            $_POST["size"],
+            1);
 
-        if($platypus->insertIntoDatabase()):
-            $offer = new OfferModel(hexdec(uniqid()),
+        if($platypus->writeToDatabase()):
+            $offer = new OfferModel($offerId,
                 $_SESSION['currentUser']->getId(),
                 $platypus,
-                $_POST['price'],
+                $this->processInputPrice($_POST["price"]),
                 0,
                 $_POST['description']);
             $offer->writeToDatabase();
-        else:
         endif;
         header('location: ' . URL);
         exit();
     }
 
     /**
-     *
+     * @param $price input price
+     * @return float|int|string formatted price
      */
-    public function update(){
-        $preparedSetPlatypus = PlatypusModel::TABLECOLUMNS["name"]." = ?,
-            " .PlatypusModel::TABLECOLUMNS["sex"]." = ?,
-            " .PlatypusModel::TABLECOLUMNS["age_years"]." = ?,
-            " .PlatypusModel::TABLECOLUMNS["size"]." = ?";
-        $preparedWherePlatypus = PlatypusModel::TABLECOLUMNS["p_id"]." = ?";
-        $valuesPlatypus = array($_POST['name'], $_POST['sex'], $_POST['age'], $_POST['size'], $_POST['platypusId']);
+    private function processInputPrice($price) {
+        if(strpos($price, ",") || strpos($price, ".")):
+            $limiter = "";
+            if(strpos($price, ",")): $limiter = ","; endif;
+            if(strpos($price, ".")): $limiter = "."; endif;
 
-        SQLite::updateBuilder(PlatypusModel::TABLE, $preparedSetPlatypus, $preparedWherePlatypus, $valuesPlatypus);
-
-        $preparedSetOffer = OfferModel::TABLECOLUMNS["price"]." = ?,
-            " .OfferModel::TABLECOLUMNS["negotiable"]." = ?,
-            " .OfferModel::TABLECOLUMNS["description"]." = ?";
-        $preparedWhereOffer = PlatypusModel::TABLECOLUMNS["o_id"]." = ?";
-        $valuesOffer = array($_POST['price'], 0, $_POST['description'], $_POST['offerId']);
-
-        SQLite::updateBuilder(OfferModel::TABLE, $preparedSetOffer, $preparedWhereOffer, $valuesOffer);
-
-        header('location: ' . URL);
-        exit();
+            $priceExploded = explode($limiter, $price);
+            if(end($priceExploded) != "00" || end($priceExploded) != "0"):
+                if(strlen(end($priceExploded)) == 1):
+                    $priceExploded[1] *= 10;
+                endif;
+                $price = implode("", $priceExploded);
+            else:
+                $price = $priceExploded[0]*100;
+            endif;
+        else:
+            $price *= 100;
+        endif;
+        // print($price);
+        return $price;
     }
 }

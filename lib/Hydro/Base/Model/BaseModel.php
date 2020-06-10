@@ -5,25 +5,12 @@ namespace Hydro\Base\Model;
 use Hydro\Base\Database\Driver\SQLite;
 
 
-class BaseModel implements IDaoContract {
+class BaseModel {
 
     /**
      * BaseModel constructor.
      */
     public function __construct()
-    {
-    }
-
-
-    public static function getData()
-    {
-    }
-
-    public function writeData()
-    {
-    }
-
-    public function updateData()
     {
     }
 }

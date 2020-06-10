@@ -21,6 +21,7 @@ CREATE TABLE user_rating (
   from_u_id INTEGER NOT NULL,
   for_u_id INTEGER NOT NULL,
   rating INTEGER NOT NULL,
+  PRIMARY KEY(from_u_id, for_u_id),
   CONSTRAINT fk_from_user
     FOREIGN KEY (from_u_id)
     REFERENCES user(u_id),
@@ -34,7 +35,8 @@ CREATE TABLE platypus (
   name TEXT NOT NULL,
   age_years INTEGER NOT NULL,
   sex TEXT NOT NULL,
-  size INTEGER NOT NULL
+  size INTEGER NOT NULL,
+  active INTEGER DEFAULT 1
 );
 
 CREATE TABLE offer (
@@ -57,6 +59,7 @@ CREATE TABLE offer (
 );
 
 CREATE TABLE offer_images (
+  oi_id INTEGER NOT NULL,
   o_id INTEGER NOT NULL,
   picture_position INTEGER NOT NULL,
   image BLOB NOT NULL,
@@ -96,7 +99,7 @@ CREATE TABLE message (
   msg_id INTEGER PRIMARY KEY AUTOINCREMENT,
   mt_id INTEGER NOT NULL,
   send_date TEXT DEFAULT (datetime('now','localtime')),
-  TEXT text NOT NULL,
+  text text NOT NULL,
   sending_u_id INTEGER NOT NULL,
   CONSTRAINT fk_message_thread
     FOREIGN KEY (mt_id)

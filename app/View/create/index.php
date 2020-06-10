@@ -1,27 +1,22 @@
 <?php
-use Hydro\Helper\DataSerialize;
-use Model\OfferModel;
-use Controller\CreateController;
 use Controller\OfferController;
 ?>
 
 <main class="main-page">
     <div class="main-area">
         <div class="create-offer-container card">
+            <form action="create/processInput" method="post">
             <?php if(isset($_GET['id'])):
                 $offer = OfferController::getOffer($_GET['id']); ?>
-            <form action="create/update" method="post">
                 <input type="hidden" name="offerId" value='<?php echo $offer->getId();?>'>
                 <input type="hidden" name="platypusId" value='<?php echo $offer->getPlatypus()->getId();?>'>
-            <?php else: ?>
-            <form action="create/create" method="post">
             <?php endif;?>
                 <div class="main-container">
                     <div class="name-container main-input-container">
                         <p class="name">Name</p>
                         <div class="input-container">
                             <label for="name">
-                                <input type="text" placeholder="Name" id="name" name="name"' value="<?php
+                                <input type="text" placeholder="Name" id="name" name="name" required value="<?php
                                     if(isset($_GET['id'])):
                                         echo $offer->getPlatypus()->getName() ;
                                     endif;?>">
@@ -32,9 +27,17 @@ use Controller\OfferController;
                         <p class="name">Preis</p>
                         <div class="input-container">
                             <label for="price">
-                                <input type="number" placeholder="Preis" id="price" name="price"' value="<?php
+                                <input
+                                        type="text"
+                                        placeholder="Preis"
+                                        id="price"
+                                        pattern="\d+([,\.]\d{1,2})?"
+                                        inputmode="decimal"
+                                        name="price"
+                                        required
+                                        value="<?php
                                 if(isset($_GET['id'])):
-                                    echo $offer->getPrice();
+                                    echo $offer->getPrice(false);
                                 endif;?>">
                             </label>
                         </div>
@@ -55,11 +58,12 @@ use Controller\OfferController;
                         <p class="name">Beschreibung</p>
                         <div class="input-container">
                             <label for="description">
-                                <textarea placeholder="Beschreibung" id="description" name="description"><?php
-                                    if(isset($_GET['id'])):
-                                        echo $offer->getDescription();
-                                    endif;?>
-                                </textarea>
+                                <?php $description = "";
+                                if(isset($_GET['id'])):
+                                    $description = $offer->getDescription();
+                                endif;?>
+                                <textarea placeholder="Beschreibung" id="description"
+                                          name="description"><?= $description?></textarea>
                             </label>
                         </div>
                     </div>
