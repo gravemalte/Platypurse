@@ -29,7 +29,6 @@ class RegisterController extends BaseController {
         $userInputMail =strtolower($_POST['user-email']);
         $userInputPassswd = $_POST['user-passwd'];
         $userInputPassswd2 = $_POST['user-passwd2'];
-        echo $userInputPassswd . " " . $userInputPassswd2;
 
         if($userInputPassswd != $userInputPassswd2){
             $_SESSION['register-error-password'] = true;
