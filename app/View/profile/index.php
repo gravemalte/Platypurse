@@ -37,8 +37,10 @@ $user = ProfileController::getUser($id_request);
         </div>
     </div>
     <div class="main-area">
+        <?php if($id_request == $_SESSION['currentUser']->getId()): ?>
         <div class="saved-offers-container">
             <div class="offer-list-container">
+                <h2>Merkliste</h2>
                 <?php
                     $savedOffers = ProfileController::getSavedOffers($id_request);
                 if(!empty($savedOffers)):?>
@@ -57,13 +59,15 @@ $user = ProfileController::getUser($id_request);
                     <?php endforeach;
                     else: ?>
                         <div>
-                            <h1>Sorry, der Benutzer hat leider keine Angebote. ¯\_(ツ)_/¯</h1>
+                            <h1>Sorry, du hast leider keine Angebote gespeichert. ¯\_(ツ)_/¯</h1>
                         </div>
                     <?php endif; ?>
             </div>
         </div>
+        <?php endif; ?>
         <div class="user-offers-container">
             <div class="offer-list-container">
+                <h2>Vom Nutzer angeboten</h2>
                 <?php
                 $offersByUser = ProfileController::getOffersFromUser($id_request);
                 if(!empty($offersByUser)):?>
@@ -82,7 +86,7 @@ $user = ProfileController::getUser($id_request);
                     <?php endforeach;
                     else: ?>
                         <div>
-                            <h1>Sorry, du hast leider keine Angebote gespeichert. ¯\_(ツ)_/¯</h1>
+                            <h1>Sorry, der Benutzer hat leider keine Angebote. ¯\_(ツ)_/¯</h1>
                         </div>
                     <?php endif; ?>
                 </div>

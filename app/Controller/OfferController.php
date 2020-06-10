@@ -35,6 +35,10 @@ class OfferController extends BaseController
             "1");
     }
 
+    public static function offerToSavedList() {
+
+    }
+
     /**
      *
      */
