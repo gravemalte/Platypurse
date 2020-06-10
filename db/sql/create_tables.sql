@@ -81,34 +81,19 @@ CREATE TABLE saved_offers (
     REFERENCES offer(o_id)
 );
 
-CREATE TABLE msg_thread (
-  mt_id INTEGER PRIMARY KEY AUTOINCREMENT
-);
-
-CREATE TABLE thread_user (
-  u_id INTEGER NOT NULL,
-  mt_id INTEGER NOT NULL,
-  CONSTRAINT fk_user
-    FOREIGN KEY (u_id)
-    REFERENCES user(u_id),
-  CONSTRAINT fk_msg_thread
-    FOREIGN KEY (mt_id)
-    REFERENCES msg_thread(mt_id)
-);
-
 CREATE TABLE message (
   msg_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  mt_id INTEGER NOT NULL,
-  send_date TEXT DEFAULT (datetime('now','localtime')),
-  text text NOT NULL,
-  sending_u_id INTEGER NOT NULL,
-  CONSTRAINT fk_message_thread
-    FOREIGN KEY (mt_id)
-    REFERENCES msg_thread(mt_id),
-  CONSTRAINT fk_user
-    FOREIGN KEY (sending_u_id)
+  sender_id INTEGER NOT NULL,
+  receiver_id INTEGER NOT NULL,
+  message TEXT NOT NULL,
+  send_date DEFAULT (datetime('now','localtime')),
+  CONSTRAINT fk_sender_user
+    FOREIGN KEY (sender_id)
+    REFERENCES user(u_id),
+  CONSTRAINT fk_receiver_user
+    FOREIGN KEY (receiver_id)
     REFERENCES user(u_id)
-);
+)
 
 CREATE TABLE report_reason (
   rr_id INTEGER PRIMARY KEY AUTOINCREMENT,

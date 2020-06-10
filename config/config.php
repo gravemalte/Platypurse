@@ -23,13 +23,10 @@ define("COLUMNS_LOG", array("l_id" => "l_id",
 
 define("TABLE_MESSAGE", "message");
 define("COLUMNS_MESSAGE", array("msg_id" => "msg_id",
-    "mt_id" => "mt_id",
-    "send_date" => "send_date",
-    "text" => "text",
-    "sending_u_id" => "sending_u_id"));
-
-define("TABLE_MSG_THREAD", "msg_thread");
-define("COLUMNS_MSG_THREAD", array("mt_id" => "mt_id"));
+    "sender_id" => "sender_id",
+    "receiver_id" => "receiver_id",
+    "message" => "message",
+    "send_date" => "send_date"));
 
 define("TABLE_OFFER", "offer");
 define("COLUMNS_OFFER", array("o_id" => "o_id",
@@ -73,10 +70,6 @@ define("TABLE_SAVED_OFFERS", "saved_offers");
 define("COLUMNS_SAVED_OFFERS", array("u_id" => "u_id",
     "o_id" => "o_id",
     "active" => "active"));
-
-define("TABLE_THREAD_USER", "thread_user");
-define("COLUMNS_THREAD_USER", array("u_id" => "u_id",
-    "mt_id" => "mt_id"));
 
 define("TABLE_USER", "user");
 define("COLUMNS_USER", array(
