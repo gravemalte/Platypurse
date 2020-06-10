@@ -134,7 +134,7 @@ class OfferModel extends BaseModel {
     }
 
     /**
-     *
+     * 
      */
     public function offerClickPlusOne() {
         $this->setClicks($this->getClicks() + 1);
@@ -142,12 +142,11 @@ class OfferModel extends BaseModel {
     }
 
     /**
-     *
+     * Set active to 0 and update database
      */
     public function deleteFromDatabase() {
-        return SQLite::deleteBuilder(self::TABLE,
-            self::TABLECOLUMNS['o_id']. " = ?;",
-            array($this->getId()));
+        $this->setActive(0);
+        return $this->updateInDatabase();
     }
 
     /**
