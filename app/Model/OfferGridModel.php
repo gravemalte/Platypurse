@@ -8,14 +8,14 @@ use Hydro\Helper\Date;
 use PDO;
 
 class OfferGridModel extends BaseModel {
-    const TABLE = OfferModel::TABLE." INNER JOIN " .PlatypusModel::TABLE. " ON "
-        .OfferModel::TABLE. "." .OfferModel::TABLECOLUMNS["p_id"]. " = "
-        .PlatypusModel::TABLE. "." .PlatypusModel::TABLECOLUMNS["p_id"];
-    const TABLECOLUMNS = array(OfferModel::TABLECOLUMNS["o_id"] => OfferModel::TABLECOLUMNS["o_id"],
-        PlatypusModel::TABLECOLUMNS["name"] => PlatypusModel::TABLECOLUMNS["name"],
-        OfferModel::TABLECOLUMNS["price"] => OfferModel::TABLECOLUMNS["price"],
-        OfferModel::TABLECOLUMNS["negotiable"] => OfferModel::TABLECOLUMNS["negotiable"],
-        OfferModel::TABLECOLUMNS["description"] => OfferModel::TABLECOLUMNS["description"]);
+    const TABLE = TABLE_OFFER." INNER JOIN " .TABLE_PLATYPUS. " ON "
+        .TABLE_OFFER. "." .COLUMNS_OFFER["p_id"]. " = "
+        .TABLE_PLATYPUS. "." .COLUMNS_PLATYPUS["p_id"];
+    const TABLECOLUMNS = array(COLUMNS_OFFER["o_id"] => COLUMNS_OFFER["o_id"],
+        COLUMNS_PLATYPUS["name"] => COLUMNS_PLATYPUS["name"],
+        COLUMNS_OFFER["price"] => COLUMNS_OFFER["price"],
+        COLUMNS_OFFER["negotiable"] => COLUMNS_OFFER["negotiable"],
+        COLUMNS_OFFER["description"] => COLUMNS_OFFER["description"]);
     
     private $o_id;
     private $name;
@@ -53,11 +53,11 @@ class OfferGridModel extends BaseModel {
             $limitClause);
 
         foreach ($result as $row):
-            $offer[] = new OfferGridModel($row[OfferModel::TABLECOLUMNS["o_id"]],
-                $row[self::TABLECOLUMNS[PlatypusModel::TABLECOLUMNS["name"]]],
-                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["price"]]],
-                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["negotiable"]]],
-                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["description"]]]);
+            $offer[] = new OfferGridModel($row[COLUMNS_OFFER["o_id"]],
+                $row[self::TABLECOLUMNS[COLUMNS_PLATYPUS["name"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_OFFER["price"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_OFFER["negotiable"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_OFFER["description"]]]);
         endforeach;
 
         return $offer;

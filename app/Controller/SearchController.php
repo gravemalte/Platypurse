@@ -22,14 +22,14 @@ class SearchController extends BaseController
 
 
     public function getOffers($like = "", $sex = "", $age = array(0, 20), $size = array(0, 20)) {
-        $whereClause = PlatypusModel::TABLECOLUMNS['name']. " LIKE ? 
-        AND ".PlatypusModel::TABLECOLUMNS['age_years']." BETWEEN ? and ?
-        AND ".PlatypusModel::TABLECOLUMNS['size']." BETWEEN ? and ?
-        AND ".OfferModel::TABLECOLUMNS['active']." = 1";
+        $whereClause = COLUMNS_PLATYPUS['name']. " LIKE ? 
+        AND ".COLUMNS_PLATYPUS['age_years']." BETWEEN ? and ?
+        AND ".COLUMNS_PLATYPUS['size']." BETWEEN ? and ?
+        AND ".COLUMNS_OFFER['active']." = 1";
         $values = array("%" .$like. "%", min($age), max($age), min($size), max($size));
 
         if(!empty($sex)):
-            $whereClause .= " AND ".PlatypusModel::TABLECOLUMNS['sex']. " = ?";
+            $whereClause .= " AND ".COLUMNS_PLATYPUS['sex']. " = ?";
             $values[] = $sex;
         endif;
 

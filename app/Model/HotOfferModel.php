@@ -8,18 +8,18 @@ use Hydro\Helper\Date;
 use PDO;
 
 class HotOfferModel extends BaseModel {
-    const TABLE = OfferModel::TABLE." INNER JOIN " .PlatypusModel::TABLE. " ON "
-    .OfferModel::TABLE. "." .OfferModel::TABLECOLUMNS["p_id"]. " = "
-    .PlatypusModel::TABLE. "." .PlatypusModel::TABLECOLUMNS["p_id"];
-    const TABLECOLUMNS = array(OfferModel::TABLECOLUMNS["o_id"] => OfferModel::TABLECOLUMNS["o_id"],
-        PlatypusModel::TABLECOLUMNS["name"] => PlatypusModel::TABLECOLUMNS["name"],
-        OfferModel::TABLECOLUMNS["price"] => OfferModel::TABLECOLUMNS["price"],
-        OfferModel::TABLECOLUMNS["negotiable"] => OfferModel::TABLECOLUMNS["negotiable"],
-        OfferModel::TABLECOLUMNS["description"] => OfferModel::TABLECOLUMNS["description"],
-        PlatypusModel::TABLECOLUMNS["sex"] => PlatypusModel::TABLECOLUMNS["sex"],
-        PlatypusModel::TABLECOLUMNS["age_years"] => PlatypusModel::TABLECOLUMNS["age_years"],
-        PlatypusModel::TABLECOLUMNS["size"] => PlatypusModel::TABLECOLUMNS["size"],
-        OfferModel::TABLECOLUMNS["clicks"] => OfferModel::TABLECOLUMNS["clicks"]);
+    const TABLE = TABLE_OFFER." INNER JOIN " .TABLE_PLATYPUS. " ON "
+        .TABLE_OFFER. "." .COLUMNS_OFFER["p_id"]. " = "
+        .TABLE_PLATYPUS. "." .COLUMNS_PLATYPUS["p_id"];
+    const TABLECOLUMNS = array(COLUMNS_OFFER["o_id"] => COLUMNS_OFFER["o_id"],
+        COLUMNS_PLATYPUS["name"] => COLUMNS_PLATYPUS["name"],
+        COLUMNS_OFFER["price"] => COLUMNS_OFFER["price"],
+        COLUMNS_OFFER["negotiable"] => COLUMNS_OFFER["negotiable"],
+        COLUMNS_OFFER["description"] => COLUMNS_OFFER["description"],
+        COLUMNS_PLATYPUS["sex"] => COLUMNS_PLATYPUS["sex"],
+        COLUMNS_PLATYPUS["age_years"] => COLUMNS_PLATYPUS["age_years"],
+        COLUMNS_PLATYPUS["size"] => COLUMNS_PLATYPUS["size"],
+        COLUMNS_OFFER["clicks"] => COLUMNS_OFFER["clicks"]);
 
     private $o_id;
     private $name;
@@ -61,19 +61,19 @@ class HotOfferModel extends BaseModel {
         $offer = "";
         $result = SQLite::selectBuilder(self::TABLECOLUMNS,
             self::TABLE,
-            OfferModel::TABLECOLUMNS['active']. " = ?",
+            COLUMNS_OFFER['active']. " = ?",
             array(1),"", "", "1");
 
         foreach ($result as $row):
-            $offer = new HotOfferModel($row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["o_id"]]],
-                $row[self::TABLECOLUMNS[PlatypusModel::TABLECOLUMNS["name"]]],
-                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["price"]]],
-                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["negotiable"]]],
-                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["description"]]],
-                $row[self::TABLECOLUMNS[PlatypusModel::TABLECOLUMNS["sex"]]],
-                $row[self::TABLECOLUMNS[PlatypusModel::TABLECOLUMNS["age_years"]]],
-                $row[self::TABLECOLUMNS[PlatypusModel::TABLECOLUMNS["size"]]],
-                $row[self::TABLECOLUMNS[OfferModel::TABLECOLUMNS["clicks"]]]);
+            $offer = new HotOfferModel($row[self::TABLECOLUMNS[COLUMNS_OFFER["o_id"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_PLATYPUS["name"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_OFFER["price"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_OFFER["negotiable"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_OFFER["description"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_PLATYPUS["sex"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_PLATYPUS["age_years"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_PLATYPUS["size"]]],
+                $row[self::TABLECOLUMNS[COLUMNS_OFFER["clicks"]]]);
         endforeach;
 
         return $offer;

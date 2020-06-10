@@ -6,13 +6,6 @@ use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
 
 class PlatypusModel extends BaseModel {
-    const TABLE = "platypus";
-    const TABLECOLUMNS = array("p_id" => "p_id",
-        "name" => "name",
-        "age_years" => "age_years",
-        "sex" => "sex",
-        "size" => "size");
-
     private $id;
     private $name;
     private $age_years;
@@ -40,8 +33,8 @@ class PlatypusModel extends BaseModel {
     public static function getFromDatabase($preparedWhereClause = "", $values = array(),
                                            $groupClause = "", $orderClause = "", $limitClause = "") {
         $platypus = array();
-        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
-            self::TABLE,
+        $result = SQLite::selectBuilder(COLUMNS_PLATYPUS,
+            TABLE_PLATYPUS,
             $preparedWhereClause,
             $values,
             $groupClause,
@@ -49,11 +42,11 @@ class PlatypusModel extends BaseModel {
             $limitClause);
 
         foreach ($result as $row):
-            $platypus[] = new PlatypusModel($row[self::TABLECOLUMNS["p_id"]],
-                $row[self::TABLECOLUMNS["name"]],
-                $row[self::TABLECOLUMNS["age_years"]],
-                $row[self::TABLECOLUMNS["sex"]],
-                $row[self::TABLECOLUMNS["size"]]);
+            $platypus[] = new PlatypusModel($row[COLUMNS_PLATYPUS["p_id"]],
+                $row[COLUMNS_PLATYPUS["name"]],
+                $row[COLUMNS_PLATYPUS["age_years"]],
+                $row[COLUMNS_PLATYPUS["sex"]],
+                $row[COLUMNS_PLATYPUS["size"]]);
         endforeach;
 
         if(sizeof($platypus) <= 1):
@@ -65,8 +58,8 @@ class PlatypusModel extends BaseModel {
 
     public function writeToDatabase() {
         // Check if platypus exists in database
-        $platypusInDatabase = SQLite::selectBuilder(self::TABLECOLUMNS, self::TABLE,
-            self::TABLECOLUMNS["p_id"]. " = ?", array($this->getId()));
+        $platypusInDatabase = SQLite::selectBuilder(COLUMNS_PLATYPUS, TABLE_PLATYPUS,
+            COLUMNS_PLATYPUS["p_id"]. " = ?", array($this->getId()));
 
         // If platypus doesn't exist, insert into database. Else update in database
         if(empty($platypusInDatabase)):
@@ -80,8 +73,8 @@ class PlatypusModel extends BaseModel {
      * @return bool
      */
     public function insertIntoDatabase() {
-        return SQLite::insertBuilder(self::TABLE,
-            self::TABLECOLUMNS,
+        return SQLite::insertBuilder(TABLE_PLATYPUS,
+            COLUMNS_PLATYPUS,
             $this->getDatabaseValues());
     }
 
@@ -90,13 +83,13 @@ class PlatypusModel extends BaseModel {
      */
     public function updateInDatabase() {
         $preparedSetClause = "";
-        foreach (self::TABLECOLUMNS as $tableCol):
+        foreach (COLUMNS_PLATYPUS as $tableCol):
             $preparedSetClause .= $tableCol. " = ?,";
         endforeach;
 
-        $preparedWhereClause = self::TABLECOLUMNS["p_id"]. " = " .$this->getId();
+        $preparedWhereClause = COLUMNS_PLATYPUS["p_id"]. " = " .$this->getId();
 
-        return SQLite::updateBuilder(self::TABLE,
+        return SQLite::updateBuilder(TABLE_PLATYPUS,
             substr($preparedSetClause, 0, -1),
             $preparedWhereClause,
             $this->getDatabaseValues());
@@ -106,8 +99,8 @@ class PlatypusModel extends BaseModel {
      *
      */
     public function deleteFromDatabase() {
-       return SQLite::deleteBuilder(self::TABLE,
-            self::TABLECOLUMNS['p_id']. " = ?;",
+       return SQLite::deleteBuilder(TABLE_PLATYPUS,
+            COLUMNS_PLATYPUS['p_id']. " = ?;",
             array($this->getId()));
     }
 

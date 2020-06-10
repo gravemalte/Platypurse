@@ -7,18 +7,6 @@ use Hydro\Base\Model\BaseModel;
 use Hydro\Helper\Date;
 
 class OfferModel extends BaseModel {
-    const TABLE = "offer";
-    const TABLECOLUMNS = array("o_id" => "o_id",
-        "u_id" => "u_id",
-        "p_id" => "p_id",
-        "price" => "price",
-        "negotiable" => "negotiable",
-        "description" => "description",
-        "clicks" => "clicks",
-        "create_date" => "create_date",
-        "edit_date" => "edit_date",
-        "active" => "active");
-
     private $id;
     private $userId;
     private $platypus;
@@ -65,8 +53,8 @@ class OfferModel extends BaseModel {
     public static function getFromDatabase($preparedWhereClause = "", $values = array(),
                                            $groupClause = "", $orderClause = "", $limitClause = "") {
         $offer = array();
-        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
-            self::TABLE,
+        $result = SQLite::selectBuilder(COLUMNS_OFFER,
+            TABLE_OFFER,
             $preparedWhereClause,
             $values,
             $groupClause,
@@ -74,17 +62,17 @@ class OfferModel extends BaseModel {
             $limitClause);
 
         foreach ($result as $row):
-            $offer[] = new OfferModel($row[self::TABLECOLUMNS["o_id"]],
-                $row[self::TABLECOLUMNS["u_id"]],
-                PlatypusModel::getFromDatabase(OfferModel::TABLECOLUMNS["p_id"]. " = ? ",
-                    array($row[OfferModel::TABLECOLUMNS["p_id"]])),
-                $row[self::TABLECOLUMNS["price"]],
-                $row[self::TABLECOLUMNS["negotiable"]],
-                $row[self::TABLECOLUMNS["description"]],
-                $row[self::TABLECOLUMNS["clicks"]],
-                $row[self::TABLECOLUMNS["create_date"]],
-                $row[self::TABLECOLUMNS["edit_date"]],
-                $row[self::TABLECOLUMNS["active"]]);
+            $offer[] = new OfferModel($row[COLUMNS_OFFER["o_id"]],
+                $row[COLUMNS_OFFER["u_id"]],
+                PlatypusModel::getFromDatabase(COLUMNS_OFFER["p_id"]. " = ? ",
+                    array($row[COLUMNS_OFFER["p_id"]])),
+                $row[COLUMNS_OFFER["price"]],
+                $row[COLUMNS_OFFER["negotiable"]],
+                $row[COLUMNS_OFFER["description"]],
+                $row[COLUMNS_OFFER["clicks"]],
+                $row[COLUMNS_OFFER["create_date"]],
+                $row[COLUMNS_OFFER["edit_date"]],
+                $row[COLUMNS_OFFER["active"]]);
         endforeach;
 
         if(sizeof($offer) <= 1):
@@ -96,7 +84,7 @@ class OfferModel extends BaseModel {
 
     public function writeToDatabase() {
         // Check if offer exists in database
-        $offerInDatabase = $this->getFromDatabase(self::TABLECOLUMNS["o_id"]. " = ?"
+        $offerInDatabase = $this->getFromDatabase(COLUMNS_OFFER["o_id"]. " = ?"
         , array($this->getId()));
 
         // If platypus doesn't exist, insert into database. Else update in database
@@ -111,8 +99,8 @@ class OfferModel extends BaseModel {
      * @return bool
      */
     public function insertIntoDatabase() {
-        return SQLite::insertBuilder(self::TABLE,
-            self::TABLECOLUMNS,
+        return SQLite::insertBuilder(TABLE_OFFER,
+            COLUMNS_OFFER,
             $this->getDatabaseValues());
     }
 
@@ -121,20 +109,20 @@ class OfferModel extends BaseModel {
      */
     public function updateInDatabase() {
         $preparedSetClause = "";
-        foreach (self::TABLECOLUMNS as $tableCol):
+        foreach (COLUMNS_OFFER as $tableCol):
             $preparedSetClause .= $tableCol. " = ?,";
         endforeach;
 
-        $preparedWhereClause = self::TABLECOLUMNS["o_id"]. " = " .$this->getId();
+        $preparedWhereClause = COLUMNS_OFFER["o_id"]. " = " .$this->getId();
 
-        return SQLite::updateBuilder(self::TABLE,
+        return SQLite::updateBuilder(TABLE_OFFER,
             substr($preparedSetClause, 0, -1),
             $preparedWhereClause,
             $this->getDatabaseValues());
     }
 
     /**
-     * 
+     *
      */
     public function offerClickPlusOne() {
         $this->setClicks($this->getClicks() + 1);

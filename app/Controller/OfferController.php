@@ -28,7 +28,7 @@ class OfferController extends BaseController
     }
 
     public static function getOffer($id) {
-        return OfferModel::getFromDatabase(OfferModel::TABLECOLUMNS["o_id"]. " = ?",
+        return OfferModel::getFromDatabase(COLUMNS_OFFER["o_id"]. " = ?",
             array($id),
             "",
             "",

@@ -7,18 +7,6 @@ use Hydro\Base\Model\BaseModel;
 
 class NewUserModel extends BaseModel
 {
-    // TODO: Write with queryBuilder
-    const TABLE = "user";
-    const TABLECOLUMNS = array(
-        "u_id" => "u_id",
-        "display_name" => "display_name",
-        "mail" => "mail",
-        "password" => "password",
-        "ug_id" => "ug_id",
-        "rating" => "rating",
-        "created_at" => "created_at",
-        "disabled" => "disabled");
-
     private $id;
     private $displayName;
     private $mail;
@@ -66,20 +54,20 @@ class NewUserModel extends BaseModel
                 $this->getRating(),
                 $this->getCreatedAt(),
                 $this->getDisabled());
-            return SQLITE::insertBuilder(self::TABLE, self::TABLECOLUMNS, $insertValues);
+            return SQLITE::insertBuilder(TABLE_USER, COLUMNS_USER, $insertValues);
         }
     }
 
 
     public function checkUser($userEmail, $displayName)
     {
-        $selectValues = array(self::TABLECOLUMNS["mail"],
-            self::TABLECOLUMNS["display_name"]);
-        $whereClause = self::TABLECOLUMNS["mail"]. " = ? OR "
-            .self::TABLECOLUMNS["display_name"]. " = ?";
+        $selectValues = array(COLUMNS_USER["mail"],
+            COLUMNS_USER["display_name"]);
+        $whereClause = COLUMNS_USER["mail"]. " = ? OR "
+            .COLUMNS_USER["display_name"]. " = ?";
 
         $result = SQLite::selectBuilder($selectValues,
-            self::TABLE,
+            TABLE_USER,
             $whereClause,
             array($userEmail, $displayName));
 
@@ -92,11 +80,11 @@ class NewUserModel extends BaseModel
 
     public static function checkCredentials($userEmail, $userPasswd)
     {
-        $whereClause = self::TABLECOLUMNS["mail"]. " = ? AND "
-            .self::TABLECOLUMNS["password"]. " = ?";
+        $whereClause = COLUMNS_USER["mail"]. " = ? AND "
+            .COLUMNS_USER["password"]. " = ?";
 
-        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
-            self::TABLE,
+        $result = SQLite::selectBuilder(COLUMNS_USER,
+            TABLE_USER,
             $whereClause,
             array($userEmail, $userPasswd));
 
@@ -108,22 +96,22 @@ class NewUserModel extends BaseModel
     }
 
     public static function searchUser($id){
-        $whereClause = self::TABLECOLUMNS["u_id"]. " = ?";
+        $whereClause = COLUMNS_USER["u_id"]. " = ?";
 
-        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
-            self::TABLE,
+        $result = SQLite::selectBuilder(COLUMNS_USER,
+            TABLE_USER,
             $whereClause,
             array($id));
 
         foreach ($result as $row):
-            return new UserModel($row[self::TABLECOLUMNS["u_id"]],
-                $row[self::TABLECOLUMNS["display_name"]],
-                $row[self::TABLECOLUMNS["mail"]],
-                $row[self::TABLECOLUMNS["password"]],
-                $row[self::TABLECOLUMNS["ug_id"]],
-                $row[self::TABLECOLUMNS["rating"]],
-                $row[self::TABLECOLUMNS["created_at"]],
-                $row[self::TABLECOLUMNS["display_name"]]);
+            return new UserModel($row[COLUMNS_USER["u_id"]],
+                $row[COLUMNS_USER["display_name"]],
+                $row[COLUMNS_USER["mail"]],
+                $row[COLUMNS_USER["password"]],
+                $row[COLUMNS_USER["ug_id"]],
+                $row[COLUMNS_USER["rating"]],
+                $row[COLUMNS_USER["created_at"]],
+                $row[COLUMNS_USER["display_name"]]);
         endforeach;
         return false;
     }
@@ -135,8 +123,8 @@ class NewUserModel extends BaseModel
     public static function getFromDatabase($preparedWhereClause = "", $values = array(),
                                            $groupClause = "", $orderClause = "", $limitClause = "") {
         $user = array();
-        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
-            self::TABLE,
+        $result = SQLite::selectBuilder(COLUMNS_USER,
+            TABLE_USER,
             $preparedWhereClause,
             $values,
             $groupClause,
@@ -144,14 +132,14 @@ class NewUserModel extends BaseModel
             $limitClause);
 
         foreach ($result as $row):
-            $user[] = new NewUserModel($row[self::TABLECOLUMNS["u_id"]],
-                $row[self::TABLECOLUMNS["display_name"]],
-                $row[self::TABLECOLUMNS["mail"]],
-                $row[self::TABLECOLUMNS["password"]],
-                $row[self::TABLECOLUMNS["ug_id"]],
-                $row[self::TABLECOLUMNS["rating"]],
-                $row[self::TABLECOLUMNS["created_at"]],
-                $row[self::TABLECOLUMNS["disabled"]]);
+            $user[] = new NewUserModel($row[COLUMNS_USER["u_id"]],
+                $row[COLUMNS_USER["display_name"]],
+                $row[COLUMNS_USER["mail"]],
+                $row[COLUMNS_USER["password"]],
+                $row[COLUMNS_USER["ug_id"]],
+                $row[COLUMNS_USER["rating"]],
+                $row[COLUMNS_USER["created_at"]],
+                $row[COLUMNS_USER["disabled"]]);
         endforeach;
 
         if(sizeof($user) <= 1):
@@ -163,8 +151,8 @@ class NewUserModel extends BaseModel
 
     public function writeToDatabase() {
         // Check if user exists in database
-        $userInDatabase = SQLite::selectBuilder(self::TABLECOLUMNS, self::TABLE,
-            self::TABLECOLUMNS["u_id"]. " = ?", array($this->getId()));
+        $userInDatabase = SQLite::selectBuilder(COLUMNS_USER, TABLE_USER,
+            COLUMNS_USER["u_id"]. " = ?", array($this->getId()));
 
         // If platypus doesn't exist, insert into database. Else update in database
         if(empty($userInDatabase)):
@@ -178,8 +166,8 @@ class NewUserModel extends BaseModel
      * @return bool
      */
     public function insertIntoDatabase() {
-        return SQLite::insertBuilder(self::TABLE,
-            self::TABLECOLUMNS,
+        return SQLite::insertBuilder(TABLE_USER,
+            COLUMNS_USER,
             $this->getDatabaseValues());
     }
 
@@ -188,13 +176,13 @@ class NewUserModel extends BaseModel
      */
     public function updateInDatabase() {
         $preparedSetClause = "";
-        foreach (self::TABLECOLUMNS as $tableCol):
+        foreach (COLUMNS_USER as $tableCol):
             $preparedSetClause .= $tableCol. " = ?,";
         endforeach;
 
-        $preparedWhereClause = self::TABLECOLUMNS["u_id"]. " = " .$this->getId();
+        $preparedWhereClause = COLUMNS_USER["u_id"]. " = " .$this->getId();
 
-        return SQLite::updateBuilder(self::TABLE,
+        return SQLite::updateBuilder(TABLE_USER,
             substr($preparedSetClause, 0, -1),
             $preparedWhereClause,
             $this->getDatabaseValues());
@@ -204,8 +192,8 @@ class NewUserModel extends BaseModel
      *
      */
     public function deleteFromDatabase() {
-        return SQLite::deleteBuilder(self::TABLE,
-            self::TABLECOLUMNS['u_id']. " = ?;",
+        return SQLite::deleteBuilder(TABLE_USER,
+            COLUMNS_USER['u_id']. " = ?;",
             array($this->getId()));
     }
 

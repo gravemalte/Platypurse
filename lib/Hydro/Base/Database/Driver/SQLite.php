@@ -57,8 +57,7 @@ class SQLite
             $stmnt .= $selVal. ", ";
         }
 
-        $stmnt = substr($stmnt, 0, -2)." FROM "
-            .$fromClause;
+        $stmnt = substr($stmnt, 0, -2)." FROM " .$fromClause;
 
         if(!empty($preparedWhereClause)):
             $stmnt .= " WHERE " .$preparedWhereClause;

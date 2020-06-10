@@ -23,11 +23,15 @@ class HomeController extends BaseController
     }
 
     public function getNewestOffers() {
-        $whereClause = OfferModel::TABLECOLUMNS['active']. " = ?";
-        $orderClause = OfferModel::TABLECOLUMNS['create_date']. " desc";
+        $whereClause = COLUMNS_OFFER['active']. " = ?";
+        $orderClause = COLUMNS_OFFER['create_date']. " desc";
         $limitClause = "9";
 
-        return OfferGridModel::getFromDatabase($whereClause, array(1), "", $orderClause, $limitClause);
+        return OfferGridModel::getFromDatabase($whereClause,
+            array(1),
+            "",
+            $orderClause,
+            $limitClause);
     }
 
     public function getHotOffer() {

@@ -7,18 +7,6 @@ use Hydro\Base\Model\BaseModel;
 
 class UserModel extends BaseModel
 {
-    // TODO: Write with queryBuilder
-    const TABLE = "user";
-    const TABLECOLUMNS = array(
-        "u_id" => "u_id",
-        "display_name" => "display_name",
-        "mail" => "mail",
-        "password" => "password",
-        "ug_id" => "ug_id",
-        "rating" => "rating",
-        "created_at" => "created_at",
-        "disabled" => "disabled");
-
     private $id;
     private $displayName;
     private $mail;
@@ -66,20 +54,20 @@ class UserModel extends BaseModel
                 $this->getRating(),
                 $this->getCreatedAt(),
                 $this->getDisabled());
-            return SQLITE::insertBuilder(self::TABLE, self::TABLECOLUMNS, $insertValues);
+            return SQLITE::insertBuilder(TABLE_USER, COLUMNS_USER, $insertValues);
         }
     }
 
 
     public function checkUser($userEmail, $displayName)
     {
-        $selectValues = array(self::TABLECOLUMNS["mail"],
-            self::TABLECOLUMNS["display_name"]);
-        $whereClause = self::TABLECOLUMNS["mail"]. " = ? OR "
-            .self::TABLECOLUMNS["display_name"]. " = ?";
+        $selectValues = array(COLUMNS_USER["mail"],
+            COLUMNS_USER["display_name"]);
+        $whereClause = COLUMNS_USER["mail"]. " = ? OR "
+            .COLUMNS_USER["display_name"]. " = ?";
 
         $result = SQLite::selectBuilder($selectValues,
-            self::TABLE,
+            TABLE_USER,
             $whereClause,
             array($userEmail, $displayName));
 
@@ -92,11 +80,11 @@ class UserModel extends BaseModel
 
     public static function checkCredentials($userEmail, $userPasswd)
     {
-        $whereClause = self::TABLECOLUMNS["mail"]. " = ? AND "
-            .self::TABLECOLUMNS["password"]. " = ?";
+        $whereClause = COLUMNS_USER["mail"]. " = ? AND "
+            .COLUMNS_USER["password"]. " = ?";
 
-        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
-            self::TABLE,
+        $result = SQLite::selectBuilder(COLUMNS_USER,
+            TABLE_USER,
             $whereClause,
             array($userEmail, $userPasswd));
 
@@ -108,22 +96,22 @@ class UserModel extends BaseModel
     }
 
     public static function searchUser($id){
-        $whereClause = self::TABLECOLUMNS["u_id"]. " = ?";
+        $whereClause = COLUMNS_USER["u_id"]. " = ?";
 
-        $result = SQLite::selectBuilder(self::TABLECOLUMNS,
-            self::TABLE,
+        $result = SQLite::selectBuilder(COLUMNS_USER,
+            TABLE_USER,
             $whereClause,
             array($id));
 
         foreach ($result as $row):
-            return new UserModel($row[self::TABLECOLUMNS["u_id"]],
-                $row[self::TABLECOLUMNS["display_name"]],
-                $row[self::TABLECOLUMNS["mail"]],
-                $row[self::TABLECOLUMNS["password"]],
-                $row[self::TABLECOLUMNS["ug_id"]],
-                $row[self::TABLECOLUMNS["rating"]],
-                $row[self::TABLECOLUMNS["created_at"]],
-                $row[self::TABLECOLUMNS["display_name"]]);
+            return new UserModel($row[COLUMNS_USER["u_id"]],
+                $row[COLUMNS_USER["display_name"]],
+                $row[COLUMNS_USER["mail"]],
+                $row[COLUMNS_USER["password"]],
+                $row[COLUMNS_USER["ug_id"]],
+                $row[COLUMNS_USER["rating"]],
+                $row[COLUMNS_USER["created_at"]],
+                $row[COLUMNS_USER["display_name"]]);
         endforeach;
         return false;
     }
