@@ -4,7 +4,6 @@ namespace Model;
 
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
-use Hydro\Helper\Date;
 use PDO;
 
 class OfferGridModel extends BaseModel {
@@ -13,10 +12,10 @@ class OfferGridModel extends BaseModel {
         .TABLE_PLATYPUS. "." .COLUMNS_PLATYPUS["p_id"];
 
     const TABLEJOINSAVEDOFFERS = self::TABLE. " INNER JOIN " .TABLE_SAVED_OFFERS. " ON "
-        .TABLE_OFFER. "." .COLUMNS_OFFER["u_id"]. " = "
-        .TABLE_SAVED_OFFERS. "." .COLUMNS_SAVED_OFFERS["u_id"];
+        .TABLE_OFFER. "." .COLUMNS_OFFER["o_id"]. " = "
+        .TABLE_SAVED_OFFERS. "." .COLUMNS_SAVED_OFFERS["o_id"];
 
-    const TABLECOLUMNS = array(COLUMNS_OFFER["o_id"] => COLUMNS_OFFER["o_id"],
+    const TABLECOLUMNS = array(COLUMNS_OFFER["o_id"] => TABLE_OFFER.".".COLUMNS_OFFER["o_id"],
         COLUMNS_PLATYPUS["name"] => COLUMNS_PLATYPUS["name"],
         COLUMNS_OFFER["price"] => COLUMNS_OFFER["price"],
         COLUMNS_OFFER["negotiable"] => COLUMNS_OFFER["negotiable"],
@@ -46,11 +45,11 @@ class OfferGridModel extends BaseModel {
         parent::__construct();
     }
 
-    public static function getFromDatabase($table, $preparedWhereClause = "", $values = array(),
+    public static function getFromDatabase($fromClause, $preparedWhereClause = "", $values = array(),
                                            $groupClause = "", $orderClause = "", $limitClause = "") {
         $offer = array();
         $result = SQLite::selectBuilder(self::TABLECOLUMNS,
-            $table,
+            $fromClause,
             $preparedWhereClause,
             $values,
             $groupClause,

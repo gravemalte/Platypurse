@@ -41,7 +41,7 @@ class ProfileController extends BaseController
     }
 
     public static function getOffersFromUser($id) {
-        $whereClause = COLUMNS_OFFER["u_id"]. " = ? AND "
+        $whereClause = COLUMNS_OFFER["o_id"]. " = ? AND "
             .TABLE_OFFER.".".COLUMNS_OFFER["active"]. " = ?";
         return OfferGridModel::getFromDatabase(OfferGridModel::TABLE, $whereClause, array($id, 1));
     }
