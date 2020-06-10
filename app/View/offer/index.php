@@ -39,12 +39,6 @@ $isSaved = OfferController::getOfferFromSavedList($_GET['id']);
                         <button class="save-offer-button button">
                             Von der Merkliste entfernen
                         </button>
-                        <!-- TODO: Remove link and style button
-                        <a href="offer/offerToSavedList(<?= $offer->getId()?>)" class="save-offer-button button">
-                            <div>
-                                <p>Zur Merkliste</p>
-                            </div>
-                        </a>-->
                     </form>
                     <?php else: ?>
                         <form action="offer/offerToSavedList" method="post">
@@ -53,12 +47,12 @@ $isSaved = OfferController::getOfferFromSavedList($_GET['id']);
                             <button class="save-offer-button button">
                                 Zur Merkliste
                             </button>
-                            <!-- TODO: Remove link and style button
-                        <a href="offer/offerToSavedList(<?= $offer->getId()?>)" class="save-offer-button button">
-                            <div>
-                                <p>Zur Merkliste</p>
-                            </div>
-                        </a>-->
+                            <!-- TODO: Remove link (design as it was for reference) and style button -->
+                            <a href="offer/offerToSavedList(<?= $offer->getId()?>)" class="save-offer-button button">
+                                <div>
+                                    <p>Zur Merkliste</p>
+                                </div>
+                            </a>
                         </form>
                     <?php endif; ?>
                 </div>
