@@ -72,6 +72,7 @@ CREATE TABLE saved_offers (
   u_id INTEGER NOT NULL,
   o_id INTEGER NOT NULL,
   active INTEGER DEFAULT 1,
+  PRIMARY KEY (u_id, o_id),
   CONSTRAINT fk_user
     FOREIGN KEY (u_id)
     REFERENCES user(u_id),

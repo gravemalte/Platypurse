@@ -31,11 +31,19 @@ $seller = $offer->getUser();
                             <p>Nachricht schreiben</p>
                         </div>
                     </a>
-                    <a href="profile" class="save-offer-button button">
-                        <div>
-                            <p>Zur Merkliste</p>
-                        </div>
-                    </a>
+                    <form action="offer/offerToSavedList" method="post">
+                        <input type="text" id="save-id" name="offerId" hidden value="<?=$offer->getId();?>">
+                        <label for="save-id" hidden>Speicher-ID</label>
+                        <button class="save-offer-button button">
+                            Zur Merkliste
+                        </button>
+                        <!-- TODO: Remove link and style button
+                        <a href="offer/offerToSavedList(<?= $offer->getId()?>)" class="save-offer-button button">
+                            <div>
+                                <p>Zur Merkliste</p>
+                            </div>
+                        </a>-->
+                    </form>
                 </div>
                 <div class="profile-container card">
                     <a href="profile?id=<?= $seller->getId() ?>">

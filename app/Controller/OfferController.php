@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
+use Hydro\Base\Database\Driver\SQLite;
 use Model\OfferModel;
 
 class OfferController extends BaseController
@@ -36,7 +37,11 @@ class OfferController extends BaseController
     }
 
     public static function offerToSavedList() {
+        $values = array($_SESSION["currentUser"]->getId(), $_POST["offerId"], 1);
 
+        SQLite::insertBuilder(TABLE_SAVED_OFFERS, COLUMNS_SAVED_OFFERS, $values);
+        header('location: ' . URL);
+        exit();
     }
 
     /**
