@@ -107,7 +107,7 @@ class OfferModel extends BaseModel {
     /**
      *
      */
-    public function updateInDatabase(bool $editDate = true) {
+    public function updateInDatabase($editDate = true) {
         if($editDate):
             $this->setEditDate(Date::now());
         endif;
@@ -168,7 +168,7 @@ class OfferModel extends BaseModel {
     /**
      * @param mixed $id
      */
-    public function setId($id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -184,7 +184,7 @@ class OfferModel extends BaseModel {
     /**
      * @param mixed $userId
      */
-    public function setUserId($userId): void
+    public function setUserId($userId)
     {
         $this->userId = $userId;
     }
@@ -207,7 +207,7 @@ class OfferModel extends BaseModel {
     /**
      * @param mixed $platypus
      */
-    public function setPlatypus($platypus): void
+    public function setPlatypus($platypus)
     {
         $this->platypus = $platypus;
     }
@@ -216,7 +216,7 @@ class OfferModel extends BaseModel {
      * @param bool $sepThousands
      * @return string
      */
-    public function getPrice(bool $sepThousands)
+    public function getPrice($sepThousands)
     {
         $thousandSep = "";
         if($sepThousands):
@@ -228,7 +228,7 @@ class OfferModel extends BaseModel {
     /**
      * @param mixed $price
      */
-    public function setPrice($price): void
+    public function setPrice($price)
     {
         $this->price = $price;
     }
@@ -264,7 +264,7 @@ class OfferModel extends BaseModel {
     /**
      * @param mixed $negotiable
      */
-    public function setNegotiable($negotiable): void
+    public function setNegotiable($negotiable)
     {
         $this->negotiable = $negotiable;
     }
@@ -280,7 +280,7 @@ class OfferModel extends BaseModel {
     /**
      * @param mixed $description
      */
-    public function setDescription($description): void
+    public function setDescription($description)
     {
         $this->description = $description;
     }
@@ -296,7 +296,7 @@ class OfferModel extends BaseModel {
     /**
      * @param mixed $clicks
      */
-    public function setClicks($clicks): void
+    public function setClicks($clicks)
     {
         $this->clicks = $clicks;
     }
@@ -312,7 +312,7 @@ class OfferModel extends BaseModel {
     /**
      * @param mixed $create_date
      */
-    public function setCreateDate($create_date): void
+    public function setCreateDate($create_date)
     {
         $this->create_date = $create_date;
     }
@@ -328,7 +328,7 @@ class OfferModel extends BaseModel {
     /**
      * @param mixed $edit_date
      */
-    public function setEditDate($edit_date): void
+    public function setEditDate($edit_date)
     {
         $this->edit_date = $edit_date;
     }
@@ -344,7 +344,7 @@ class OfferModel extends BaseModel {
     /**
      * @param mixed $active
      */
-    public function setActive($active): void
+    public function setActive($active)
     {
         $this->active = $active;
     }

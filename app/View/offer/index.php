@@ -30,7 +30,7 @@ endif;
             </div>
             <div class="side-container">
                 <div class="offer-buttons-container">
-                    <a href="chat" class="send-message-button button">
+                    <a href="chat?id=<?=$offer->getUserId() ?>" class="send-message-button button">
                         <div>
                             <p>Nachricht schreiben</p>
                         </div>
