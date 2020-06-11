@@ -20,13 +20,14 @@ $user = ProfileController::getUser($id_request);
                 <span class="fas fa-star checked"></span>
                 <span class="far fa-star"></span>
             </div>
+            <?php if(($_SESSION['currentUser'])->getId() != $id_request): ?>
             <div class="profile-button-container">
-                <a href="chat" class="button message-button">
+                <a href="chat?id=<?=$id_request ?>" class="button message-button">
                     <div>
                         <p>Nachricht schreiben</p>
                     </div>
                 </a>
-                <?php if(($_SESSION['currentUser'])->getId() != $id_request): ?>
+
                 <a href="" class="button report-button">
                     <div>
                         <p>Nutzer melden</p>

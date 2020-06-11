@@ -5,10 +5,13 @@ VALUES
 
 INSERT INTO user (u_id, display_name, ug_id, mail, password)
 VALUES
-(1, "Admin", 1, "admin@platypurse.com", ""),
-(2, "SchnabelFan1337", 2, "schnabelfan@ymail.com", ""),
-(3, "ShadowStabber69_HD", 2, "yrtwk@gmail.com", ""),
-(4, "Harald", 2, "harald.haraldsen@outlook.com", "");
+(1, "Admin", 1, "admin@platypurse.com", "$2y$10$LwVfecVMxhs91PiCTgq0reP0ZgiOIGUAmsot2.RnLZgAQ10Zg25Bu"),
+(2, "SchnabelFan1337", 2, "schnabelfan@ymail.com", "$2y$10$LwVfecVMxhs91PiCTgq0reP0ZgiOIGUAmsot2.RnLZgAQ10Zg25Bu"),
+(3, "ShadowStabber69_HD", 2, "yrtwk@gmail.com", "$2y$10$LwVfecVMxhs91PiCTgq0reP0ZgiOIGUAmsot2.RnLZgAQ10Zg25Bu"),
+(4, "Harald", 2, "harald.haraldsen@outlook.com", "$2y$10$LwVfecVMxhs91PiCTgq0reP0ZgiOIGUAmsot2.RnLZgAQ10Zg25Bu");
+/*
+$2y$10$LwVfecVMxhs91PiCTgq0reP0ZgiOIGUAmsot2.RnLZgAQ10Zg25Bu == 123
+*/
 
 INSERT INTO user_rating (from_u_id, for_u_id, rating)
 VALUES
@@ -61,6 +64,13 @@ VALUES
 (3, 4),
 (4, 1),
 (2, 2);
+
+
+INSERT INTO message (sender_id, receiver_id, message) VALUES
+(1, 2, 'Das ist ein Test'),
+(1, 1, 'Das ist ein Test'),
+(1, 1, 'Das ist ein Test'),
+(1, 1, 'Das ist ein Test');
 
 /*Tables to fill:
   - message
