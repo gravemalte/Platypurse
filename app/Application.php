@@ -21,6 +21,7 @@ class Application
         $this->splitUrl();
 
         // checks if the current controller is null
+        // Rewriting the logic see issue #13
         if (!$this->url_controller) {
 
             $page = new HomeController();

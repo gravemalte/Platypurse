@@ -14,9 +14,14 @@ $show_error = false;
             </div>
             <form action="register/register" method="post" class="register-form">
                 <p class="error-text">
-                    <?php if(isset($_SESSION['register-error-email'])) : ?>
-                        Die angegebenen Daten sind ungültig.
+                    <?php if(isset($_SESSION['register-error'])) : ?>
+                        Die angegebenen Daten existiert schon, bitte erneut versuchen.
                     <?php endif; ?>
+
+                    <?php if(isset($_SESSION['register-error-password'])) : ?>
+                        Die angegebenen Passwörter stimmen nicht überein.
+                    <?php endif; ?>
+
                 </p>
                 <div class="form-user-display-name-container">
                     <?php if(isset($_SESSION['register-error'])) : ?>
@@ -26,14 +31,14 @@ $show_error = false;
                     <input type="text" id="user-display-name" name="user-display-name" placeholder="Anzeigename" required autofocus>
                 </div>
                 <div class="form-email-container">
-                    <?php if(isset($_SESSION['register-error-email'])) : ?>
+                    <?php if(isset($_SESSION['register-error'])) : ?>
                         <div class="show-error"></div>
                     <?php endif; ?>
                     <label for="user-email">Email Adresse</label>
                     <input type="email" id="user-email" name="user-email" placeholder="Email Adresse" required>
                 </div>
                 <div class="form-passwd-container">
-                    <?php if(isset($_SESSION['register-error'])) : ?>
+                    <?php if(isset($_SESSION['register-error-password'])) : ?>
                         <div class="show-error"></div>
                     <?php endif; ?>
                     <?php if(strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== false): ?>
@@ -49,7 +54,7 @@ $show_error = false;
                     <?php endif; ?>
                 </div>
                 <div class="form-passwd-container">
-                    <?php if(isset($_SESSION['register-error'])) : ?>
+                    <?php if(isset($_SESSION['register-error-password'])) : ?>
                         <div class="show-error"></div>
                     <?php endif; ?>
                     <?php if(strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== false): ?>
@@ -58,10 +63,10 @@ $show_error = false;
                     <label for="show-passwd-2" class="fas fa-eye"></label>
                     <label for="show-passwd-2" class="fas fa-eye-slash"></label>
                     <label for="user-passwd-2">Passwort wiederholen</label>
-                    <input type="text" id="user-passwd-2" name="user-passwd" placeholder="Passwort wiederholen" required>
+                    <input type="text" id="user-passwd-2" name="user-passwd2" placeholder="Passwort wiederholen" required>
                     <?php else: ?>
                     <label for="user-passwd-2">Passwort wiederholen</label>
-                    <input type="password" id="user-passwd-2" name="user-passwd" placeholder="Passwort wiederholen" required>
+                    <input type="password" id="user-passwd-2" name="user-passwd2" placeholder="Passwort wiederholen" required>
                     <?php endif; ?>
                 </div>
                 <div class="form-submit-container">

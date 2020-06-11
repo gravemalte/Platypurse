@@ -2,7 +2,6 @@
 
 
 define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
-
 define('APP', ROOT . 'app' . DIRECTORY_SEPARATOR);
 define('LIB', ROOT . 'lib' . DIRECTORY_SEPARATOR);
 define('CONFIG',  ROOT . 'config' . DIRECTORY_SEPARATOR);
@@ -21,6 +20,19 @@ require APP . 'Application.php';
 if(!in_array('mod_rewrite', apache_get_modules())){
     exit("<b>Please enable mod_rewrite in you Apache!
     Stopping startup.</b>");
+}
+
+if(!file_exists(DB_FILE)){
+    $database = new PDO('sqlite:' . DB_FILE);
+    // Create tables
+    $sql_file_name = DB . 'sql/create_tables.sql';
+    $sql_file = file_get_contents($sql_file_name);
+    $database->exec($sql_file);
+    // Fill tables
+    $sql_file_name = DB . 'sql/fill_tables.sql';
+    $sql_file = file_get_contents($sql_file_name);
+    $database->exec($sql_file);
+    unset($database);
 }
 
 ini_set('session.gc_maxlifetime', 3600);

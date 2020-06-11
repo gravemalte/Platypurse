@@ -3,8 +3,8 @@
 namespace Controller;
 
 
+use http\Client\Curl\User;
 use Hydro\Base\Controller\BaseController;
-use Hydro\Helper\DataSerialize;
 use Model\UserModel;
 
 class LoginController extends BaseController
@@ -12,7 +12,7 @@ class LoginController extends BaseController
 
     public function index()
     {
-        if(isset($_SESSION['user-ID'])){
+        if (isset($_SESSION['currentUser'])) {
             header('location: ' . URL . 'error');
             exit();
         }
@@ -27,59 +27,44 @@ class LoginController extends BaseController
 
     public function login()
     {
-        if(!(isset($_POST["user-email"]) && isset($_POST["user-passwd"]))){
-            $_SESSION['user-login-error'] = true;
-            header('location: '. URL . 'login');
-            exit();
-        }
-        $userSentMail = strtolower($_POST["user-email"]);
-        $userSentPasswd = strtolower($_POST["user-passwd"]);
-
-        $userData = UserModel::getData();
-        if($userData == false){
+        if (!(isset($_POST['user-email']) && isset($_POST['user-passwd']))) {
             $_SESSION['user-login-error'] = true;
             header('location: ' . URL . 'login');
             exit();
         }
 
-        $unserializeData = DataSerialize::unserializeData($userData);
 
-        foreach ($unserializeData as $user) {
-            $userID = $user->getUserID();
-            $userDisplayName = $user->getDisplayName();
-            $userMail = $user->getEmail();
-            $userPasswd = $user->getPassword();
-            if ($this->checkCredentials($userSentMail, $userMail,
-                $userSentPasswd, $userPasswd)) {
-                $_SESSION['user-ID'] = $userID;
-                $_SESSION['user-display-name']= $userDisplayName;
-                $_SESSION['user-email'] = $userMail;
-                $_SESSION['user-passwd'] = $userPasswd;
-                header('location: ' . URL);
-                exit();
-            }
-        }
+        $userSentMail = strtolower($_POST['user-email']);
+        $userSentPasswd = $_POST['user-passwd'];
+
+        $result = UserModel::searchUserEmail($userSentMail);
+        if (!empty($result)):
+            foreach ($result as $row):
+                $user = new UserModel($row[COLUMNS_USER["u_id"]],
+                    $row[COLUMNS_USER["display_name"]],
+                    $row[COLUMNS_USER["mail"]],
+                    $row[COLUMNS_USER["password"]],
+                    $row[COLUMNS_USER["ug_id"]],
+                    $row[COLUMNS_USER["rating"]],
+                    $row[COLUMNS_USER["created_at"]],
+                    $row[COLUMNS_USER["display_name"]]);
+                if (password_verify($userSentPasswd, $user->getPassword())) {
+                    $_SESSION['currentUser'] = $user;
+                    header('location: ' . URL);
+                    exit();
+                }
+            endforeach;
+        endif;
         $_SESSION['user-login-error'] = true;
         header('location: ' . URL . 'login');
-    }
-
-    private function checkCredentials($userEmailInput, $dbEmailInout,
-                                      $userPasswdInput, $dbPasswdInput)
-
-    {
-        if ($userEmailInput == $dbEmailInout && $userPasswdInput == $dbPasswdInput) {
-            return true;
-        } else {
-            return false;
-        }
-
     }
 
     private function checkSession()
     {
     }
 
-    public function logout(){
+    public function logout()
+    {
         session_destroy();
         header('location: ' . URL);
     }

@@ -2,97 +2,160 @@
 
 namespace Model;
 
+use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
-use Hydro\Helper\FileWriter;
+use Hydro\Helper\Date;
 
 class OfferModel extends BaseModel {
-    const file = DB . 'offerData.dat';
-
     private $id;
-    private $title;
-    private $description;
+    private $userId;
+    private $platypus;
     private $price;
-    private $sex;
-    private $age;
-    private $size;
+    private $negotiable;
+    private $description;
+    private $clicks;
+    private $create_date;
+    private $edit_date;
+    private $active;
 
-    public function __construct($title = "", $description = "", $price = "", $sex = "", $age = "", $size = "", $id = "")
+    /**
+     * OfferModel constructor.
+     * @param $id
+     * @param $userId
+     * @param $platypus
+     * @param $price
+     * @param $negotiable
+     * @param $description
+     * @param $clicks
+     * @param $create_date
+     * @param $edit_date
+     * @param $active
+     */
+    public function __construct($id, $userId, $platypus, $price, $negotiable, $description, $clicks = 0, $create_date = "", $edit_date = "", $active = 1)
     {
-        if(empty($id)): $this->id = uniqid();
-        else: $this->id = $id;
+        if(empty($create_date)):
+            $create_date = Date::now();
         endif;
-        $this->title = $title;
-        $this->description = $description;
+
+        $this->id = $id;
+        $this->userId = $userId;
+        $this->platypus = $platypus;
         $this->price = $price;
-        $this->sex = $sex;
-        $this->age = $age;
-        $this->size = $size;
+        $this->negotiable = $negotiable;
+        $this->description = $description;
+        $this->clicks = $clicks;
+        $this->create_date = $create_date;
+        $this->edit_date = $edit_date;
+        $this->active = $active;
+        parent::__construct();
     }
 
-    private function writeOfferToFile($offer){
-        $s = serialize($offer);
-        FileWriter::writeToFile(self::file, $s);
+    public static function getFromDatabase($preparedWhereClause = "", $values = array(),
+                                           $groupClause = "", $orderClause = "", $limitClause = "") {
+        $offer = array();
+        $result = SQLite::selectBuilder(COLUMNS_OFFER,
+            TABLE_OFFER,
+            $preparedWhereClause,
+            $values,
+            $groupClause,
+            $orderClause,
+            $limitClause);
+
+        foreach ($result as $row):
+            $offer[] = new OfferModel($row[COLUMNS_OFFER["o_id"]],
+                $row[COLUMNS_OFFER["u_id"]],
+                PlatypusModel::getFromDatabase(COLUMNS_OFFER["p_id"]. " = ? ",
+                    array($row[COLUMNS_OFFER["p_id"]])),
+                $row[COLUMNS_OFFER["price"]],
+                $row[COLUMNS_OFFER["negotiable"]],
+                $row[COLUMNS_OFFER["description"]],
+                $row[COLUMNS_OFFER["clicks"]],
+                $row[COLUMNS_OFFER["create_date"]],
+                $row[COLUMNS_OFFER["edit_date"]],
+                $row[COLUMNS_OFFER["active"]]);
+        endforeach;
+
+        if(sizeof($offer) <= 1):
+            return array_shift($offer);
+        else:
+            return $offer;
+        endif;
     }
 
-    public function createOffer($offer){
-        $this->writeOfferToFile($offer);
+    public function writeToDatabase() {
+        // Check if offer exists in database
+        $offerInDatabase = $this->getFromDatabase(COLUMNS_OFFER["o_id"]. " = ?"
+        , array($this->getId()));
+
+        // If platypus doesn't exist, insert into database. Else update in database
+        if(empty($offerInDatabase)):
+            $this->insertIntoDatabase();
+        else:
+            $this->updateInDatabase();
+        endif;
     }
 
-    public static function deleteOfferFromFile($id) {
-        $offerFile = fopen(self::file, 'r');
-        $myData = fread($offerFile, filesize(self::file));
-        $dataArray = explode("\n", $myData);
-        $mode = "w+";
-
-        // Searches for id and removes the entry from the array
-        unset($dataArray[sizeof($dataArray) - 1]);
-        foreach ($dataArray as $key => $value) {
-            if (!(false !== stripos($value, $id))) {
-                FileWriter::writeToFile(self::file, $value, $mode);
-                $mode = "a+";
-            }
-        }
-
-        // print_r($dataArray);*/
-        fclose($offerFile);
+    /**
+     * @return bool
+     */
+    public function insertIntoDatabase() {
+        return SQLite::insertBuilder(TABLE_OFFER,
+            COLUMNS_OFFER,
+            $this->getDatabaseValues());
     }
 
-    public function updateOffer($offer) {
-        $this->deleteOfferFromFile($offer->getId());
-        $this->writeOfferToFile($offer);
+    /**
+     * @param bool $editDate
+     * @return bool
+     */
+    public function updateInDatabase($editDate = true) {
+        if($editDate):
+            $this->setEditDate(Date::now());
+        endif;
+
+        $preparedSetClause = "";
+        foreach (COLUMNS_OFFER as $tableCol):
+            $preparedSetClause .= $tableCol. " = ?,";
+        endforeach;
+
+        $preparedWhereClause = COLUMNS_OFFER["o_id"]. " = " .$this->getId();
+
+        return SQLite::updateBuilder(TABLE_OFFER,
+            substr($preparedSetClause, 0, -1),
+            $preparedWhereClause,
+            $this->getDatabaseValues());
     }
 
-    public function __toString()
-    {
-        return "$this->title" .
-            "$this->description" .
-            "$this->price" .
-            "$this->sex" .
-            "$this->age" .
-            "$this->size";
+    /**
+     *
+     */
+    public function offerClickPlusOne() {
+        $this->setClicks($this->getClicks() + 1);
+        $this->updateInDatabase(false);
     }
 
-    public static function getData($searchStr = ""){
-        $offerFile = fopen(self::file, 'r');
-        $myData = fread($offerFile, filesize(self::file));
-        $dataArray = explode("\n", $myData);
-        fclose($offerFile);
+    /**
+     * Set active to 0 and update database
+     */
+    public function deleteFromDatabase() {
+        $this->setActive(0);
+        return $this->updateInDatabase();
+    }
 
-        // If searchStr is not empty, search the array for matching results and pass them into the return array
-        if($searchStr != "") {
-            $tempArray = array();
-            foreach($dataArray as $data) {
-                if(strpos(strtolower ($data), strtolower ($searchStr)) !== false) {
-                    $tempArray[] = $data;
-                }
-            }
-            // Quick solution as long we don't have a proper database
-            $tempArray[] = "";
-
-            $dataArray = $tempArray;
-        }
-
-        return $dataArray;
+    /**
+     * @return array
+     */
+    public function getDatabaseValues() {
+        return array($this->getId(),
+            $this->getUserId(),
+            $this->getPlatypus()->getId(),
+            $this->getPriceUnformatted(),
+            $this->getNegotiable(),
+            $this->getDescription(),
+            $this->getClicks(),
+            $this->getCreateDate(),
+            $this->getEditDate(),
+            $this->getActive());
     }
 
     /**
@@ -108,23 +171,103 @@ class OfferModel extends BaseModel {
      */
     public function setId($id)
     {
-        $this->title = $id;
+        $this->id = $id;
     }
 
     /**
      * @return mixed
      */
-    public function getTitle()
+    public function getUserId()
     {
-        return $this->title;
+        return $this->userId;
     }
 
     /**
-     * @param mixed $title
+     * @param mixed $userId
      */
-    public function setTitle($title)
+    public function setUserId($userId)
     {
-        $this->title = $title;
+        $this->userId = $userId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser() {
+        return UserModel::searchUser($this->userId);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlatypus()
+    {
+        return $this->platypus;
+    }
+
+    /**
+     * @param mixed $platypus
+     */
+    public function setPlatypus($platypus)
+    {
+        $this->platypus = $platypus;
+    }
+
+    /**
+     * @param bool $sepThousands
+     * @return string
+     */
+    public function getPrice($sepThousands)
+    {
+        $thousandSep = "";
+        if($sepThousands):
+            $thousandSep = ".";
+        endif;
+        return number_format($this->price/100, 2, ',', $thousandSep);
+    }
+
+    /**
+     * @param mixed $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPriceUnformatted()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShortPrice()
+    {
+        $price = $this->getPrice(true);
+        if (substr($price, -2) == "00") {
+            return substr($price, 0, strlen($price) - 3);
+        }
+        return $price;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNegotiable()
+    {
+        return $this->negotiable;
+    }
+
+    /**
+     * @param mixed $negotiable
+     */
+    public function setNegotiable($negotiable)
+    {
+        $this->negotiable = $negotiable;
     }
 
     /**
@@ -146,65 +289,64 @@ class OfferModel extends BaseModel {
     /**
      * @return mixed
      */
-    public function getPrice()
+    public function getClicks()
     {
-        return $this->price;
+        return $this->clicks;
     }
 
     /**
-     * @param mixed $price
+     * @param mixed $clicks
      */
-    public function setPrice($price)
+    public function setClicks($clicks)
     {
-        $this->price = $price;
+        $this->clicks = $clicks;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getSex(): string
+    public function getCreateDate()
     {
-        return $this->sex;
+        return $this->create_date;
     }
 
     /**
-     * @param string $sex
+     * @param mixed $create_date
      */
-    public function setSex(string $sex): void
+    public function setCreateDate($create_date)
     {
-        $this->sex = $sex;
+        $this->create_date = $create_date;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getAge(): string
+    public function getEditDate()
     {
-        return $this->age;
+        return $this->edit_date;
     }
 
     /**
-     * @param string $age
+     * @param mixed $edit_date
      */
-    public function setAge(string $age): void
+    public function setEditDate($edit_date)
     {
-        $this->age = $age;
+        $this->edit_date = $edit_date;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getSize(): string
+    public function getActive()
     {
-        return $this->size;
+        return $this->active;
     }
 
     /**
-     * @param string $size
+     * @param mixed $active
      */
-    public function setSize(string $size): void
+    public function setActive($active)
     {
-        $this->size = $size;
+        $this->active = $active;
     }
-
 }

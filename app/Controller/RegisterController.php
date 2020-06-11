@@ -3,8 +3,8 @@
 namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
-use Hydro\Helper\DataSerialize;
 use Model\UserModel;
+use Hydro\Helper\Date;
 
 
 class RegisterController extends BaseController {
@@ -19,39 +19,42 @@ class RegisterController extends BaseController {
     }
 
     public function register(){
-        if(!(isset($_POST["user-email"]) && isset($_POST["user-passwd"])
-        && isset($_POST['user-display-name']))){
+        if(!(isset($_POST["user-email"]) || isset($_POST["user-passwd"])
+        || isset($_POST['user-display-name']) || isset($_POST['user-passwd2']))){
             $_SESSION['register-error'] = true;
             header('location:' . URL . 'register');
         }
 
-
-        // TODO: Needs more love strtolower can be inlined
         $userInputDisplayName = $_POST['user-display-name'];
-        $userInputMail = $_POST['user-email'];
+        $userInputMail =strtolower($_POST['user-email']);
         $userInputPassswd = $_POST['user-passwd'];
+        $userInputPassswd2 = $_POST['user-passwd2'];
 
-        $userInputMail = strtolower($userInputMail);
-
-        $user = new UserModel($userInputDisplayName, $userInputMail, $userInputPassswd);
-        if($this->checkExistingUser($user) != true){
-            $user->registerUser($user);
-            header('location: ' . URL . 'login');
+        if($userInputPassswd != $userInputPassswd2){
+            $_SESSION['register-error-password'] = true;
+            header('location:' . URL . 'register');
             exit();
         }
-        header('location: ' . URL . 'register');
+
+        $user = new UserModel(hexdec(uniqid()),
+            $userInputDisplayName,
+            $userInputMail,
+            password_hash($userInputPassswd, PASSWORD_DEFAULT),
+            2,
+            0,
+            Date::now(),
+            0);
+
+        $check = $user->registerUser();
+        if($check){
+            unset($user);
+            header('location: '. URL . 'login');
+        }else{
+            unset($user);
+            $_SESSION['register-error'] = true;
+            header('location: '. URL . 'register');
+        }
     }
 
-    private function checkExistingUser($newUser){
-        $userModel = UserModel::getData();
-        $unserializeUserModel = DataSerialize::unserializeData($userModel);
-        foreach ($unserializeUserModel as $user){
-            if ($user->getEmail() == $newUser->getEmail()){
-                $_SESSION['register-error-email'] = true;
-                return true;
-            }
-        }
-        return false;
-    }
 
 }

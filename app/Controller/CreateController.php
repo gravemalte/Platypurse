@@ -4,12 +4,13 @@ namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 use Model\OfferModel;
+use Model\PlatypusModel;
 
 class CreateController extends BaseController
 {
     public function index()
     {
-        if(!(isset($_SESSION['user-ID']))){
+        if(!(isset($_SESSION['currentUser']))){
             header('location: ' .URL . 'login');
         }
         // load views
@@ -20,30 +21,70 @@ class CreateController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
-    public function getOfferFromData($id = "") {
-        $offerName = $_POST["name"];
-        $offerDescription = $_POST["description"];
-        $offerPrice = $_POST["price"];
-        $sex = $_POST["sex"];
-        $age = $_POST["age"];
-        $size = $_POST["size"];
-
-        return new OfferModel($offerName, $offerDescription, $offerPrice, $sex, $age, $size, $id);
+    /**
+     * @param $id
+     * @return OfferModel|string
+     */
+    public function getOffer($id) {
+        return OfferController::getOffer($id);
     }
 
-    public function create() {
-        $offer = CreateController::getOfferFromData();
+    public function processInput() {
+        $platypusId = hexdec(uniqid());
+        $offerId = hexdec(uniqid());
 
-        $offer->createOffer($offer);
+        if(isset($_POST["platypusId"])):
+            $platypusId = $_POST["platypusId"];
+        endif;
+
+        if(isset($_POST["offerId"])):
+            $offerId = $_POST["offerId"];
+        endif;
+
+        $platypus = new PlatypusModel($platypusId,
+            $_POST["name"],
+            $_POST["age"],
+            $_POST["sex"],
+            $_POST["size"],
+            $_POST["weight"],
+            1);
+
+        if($platypus->writeToDatabase()):
+            $offer = new OfferModel($offerId,
+                $_SESSION['currentUser']->getId(),
+                $platypus,
+                $this->processInputPrice($_POST["price"]),
+                0,
+                $_POST['description']);
+            $offer->writeToDatabase();
+        endif;
         header('location: ' . URL);
         exit();
     }
 
-    public function update(){
-        $offer = CreateController::getOfferFromData($_POST['offerId']);
+    /**
+     * @param $price input price
+     * @return float|int|string formatted price
+     */
+    private function processInputPrice($price) {
+        if(strpos($price, ",") || strpos($price, ".")):
+            $limiter = "";
+            if(strpos($price, ",")): $limiter = ","; endif;
+            if(strpos($price, ".")): $limiter = "."; endif;
 
-        $offer->updateOffer($offer);
-        header('location: ' . URL);
-        exit();
+            $priceExploded = explode($limiter, $price);
+            if(end($priceExploded) != "00" || end($priceExploded) != "0"):
+                if(strlen(end($priceExploded)) == 1):
+                    $priceExploded[1] *= 10;
+                endif;
+                $price = implode("", $priceExploded);
+            else:
+                $price = $priceExploded[0]*100;
+            endif;
+        else:
+            $price *= 100;
+        endif;
+        // print($price);
+        return $price;
     }
 }
