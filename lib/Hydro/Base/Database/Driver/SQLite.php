@@ -9,15 +9,24 @@ use PDOException;
 class SQLite
 {
 
+    /** Opens a connection to the database.
+     * @return PDO
+     */
     public static function connectToSQLite(){
         return new PDO('sqlite:' . DB_FILE);
     }
 
-    public static function queryStmnt($stmnt, $values) {
+    /**
+     * @param string $statement to execute.
+     * @param array $values to insert in prepared statement. Optional.
+     * @return array|string
+     */
+    public static function queryStatement($statement, $values=array()) {
+        // TODO: Merge with execStatement()
         $con = self::connectToSQLite();
         $result = "";
         try {
-            $command = $con->prepare($stmnt);
+            $command = $con->prepare($statement);
             $command->execute($values);
             $result = $command->fetchAll();
         }
@@ -30,11 +39,17 @@ class SQLite
         }
     }
 
-    public static function execStmnt($stmnt, $values=array()) {
+    /**
+     * @param string $statement
+     * @param array $values Optional.
+     * @return bool
+     */
+    public static function execStatement($statement, $values=array()) {
+        // TODO: Merge with queryStatement()
         $con = self::connectToSQLite();
         try {
             $con->beginTransaction();
-            $command = $con->prepare($stmnt);
+            $command = $con->prepare($statement);
             $command->execute($values);
             $con->commit();
         }
@@ -49,77 +64,110 @@ class SQLite
         }
     }
 
-    public static function selectBuilder($selectedValues, $fromClause, $preparedWhereClause = "", $values = array(), $groupClause = "",
+    /** Build a SELECT query from the given parameters
+     *
+     * @param array $columns to query.
+     * @param string $whereClause contains table to select from.
+     * @param string $preparedWhereClause Optional.
+     * @param array $values Optional, necessary if $preparedWhereClause is given.
+     * @param string $groupClause Optional.
+     * @param string $orderClause Optional.
+     * @param string $limitClause Optional
+     * @return array|string
+     */
+    public static function selectBuilder($columns, $whereClause, $preparedWhereClause = "", $values = array(), $groupClause = "",
                                          $orderClause = "", $limitClause = "") {
-        $stmnt = "SELECT ";
+        $statement = "SELECT ";
 
-        foreach($selectedValues as $selVal) {
-            $stmnt .= $selVal. ", ";
+        foreach($columns as $selVal) {
+            $statement .= $selVal. ", ";
         }
 
-        $stmnt = substr($stmnt, 0, -2)." FROM " .$fromClause;
+        $statement = substr($statement, 0, -2)." FROM " .$whereClause;
 
         if(!empty($preparedWhereClause)):
-            $stmnt .= " WHERE " .$preparedWhereClause;
+            $statement .= " WHERE " .$preparedWhereClause;
         endif;
 
         if(!empty($groupClause)):
-            $stmnt .= " GROUP BY " .$groupClause;
+            $statement .= " GROUP BY " .$groupClause;
         endif;
 
         if(!empty($orderClause)):
-            $stmnt .= " ORDER BY " .$orderClause;
+            $statement .= " ORDER BY " .$orderClause;
         endif;
 
         if(!empty($limitClause)):
-            $stmnt .= " LIMIT " .$limitClause;
+            $statement .= " LIMIT " .$limitClause;
         endif;
 
-        $stmnt .= ";";
+        $statement .= ";";
 
-        //print($stmnt);
+        //print($statement);
         //print_r($values);
 
-        return self::queryStmnt($stmnt, $values);
+        return self::queryStatement($statement, $values);
     }
 
+    /** Buils a INSERT query from the given parameters.
+     *
+     * @param string $table to execute query on.
+     * @param array $columns to insert values in.
+     * @param array $values to insert into columns.
+     * @return bool
+     */
     public static function insertBuilder($table, $columns, $values) {
-        $stmnt = "INSERT INTO ".$table." (";
+        $statement = "INSERT INTO ".$table." (";
 
         // Add inserted columns to statement
         foreach($columns as $col) {
-            $stmnt .= $col. ", ";
+            $statement .= $col. ", ";
         }
 
         // Edit statement to match 'VALUES (col1, col2, ...)' pattern
-        $stmnt = substr($stmnt, 0, -2).") VALUES (";
+        $statement = substr($statement, 0, -2).") VALUES (";
 
         foreach($values as $val) {
-            $stmnt .= "?, ";
+            $statement .= "?, ";
         }
 
-        $stmnt = substr($stmnt, 0, -2);
-        if(substr($stmnt, -1) != ")"): $stmnt .= ")"; endif;
-        $stmnt .= ";";
+        $statement = substr($statement, 0, -2);
+        if(substr($statement, -1) != ")"): $statement .= ")"; endif;
+        $statement .= ";";
 
-        //print($stmnt);
+        //print($statement);
         //print_r($values);
 
-        return self::execStmnt($stmnt, $values);
+        return self::execStatement($statement, $values);
     }
 
+    /** Buils a UPDATE query from the given parameters.
+     *
+     * @param string $table to execute query on.
+     * @param string $preparedSetClause to update on.
+     * @param string $preparedWhereClause to update on.
+     * @param array $values to update.
+     * @return bool
+     */
     public static function updateBuilder($table, $preparedSetClause, $preparedWhereClause, $values) {
-        $stmnt = "UPDATE " .$table. " SET " .$preparedSetClause. " WHERE " .$preparedWhereClause. ";";
+        $statement = "UPDATE " .$table. " SET " .$preparedSetClause. " WHERE " .$preparedWhereClause. ";";
 
-        //print($stmnt);
+        //print($statement);
         //print_r($values);
 
-        return self::execStmnt($stmnt, $values);
+        return self::execStatement($statement, $values);
     }
 
+    /** Buils a DELETE query from the given parameters.
+     *
+     * @param string $table to execute query on.
+     * @param string $preparedWhereClause to define the deleting rows.
+     * @param array $values to define the deleting rows.
+     * @return bool
+     */
     public static function deleteBuilder($table, $preparedWhereClause, $values) {
-        $stmnt = "DELETE FROM " .$table. " WHERE " .$preparedWhereClause.";";
+        $statement = "DELETE FROM " .$table. " WHERE " .$preparedWhereClause.";";
 
-        return self::execStmnt($stmnt, $values);
+        return self::execStatement($statement, $values);
     }
 }
