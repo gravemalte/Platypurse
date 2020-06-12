@@ -23,11 +23,17 @@ class SQLite
      */
     public static function queryStatement($statement, $values=array()) {
         // TODO: Merge with execStatement()
+
+        $htmlSpecialCharsValue = array();
+        foreach ($values as $val):
+            $htmlSpecialCharsValue[] = htmlspecialchars($val);
+        endforeach;
+
         $con = self::connectToSQLite();
         $result = "";
         try {
-            $command = $con->prepare($statement);
-            $command->execute($values);
+            $command = $con->prepare(htmlspecialchars($statement));
+            $command->execute($htmlSpecialCharsValue);
             $result = $command->fetchAll();
         }
             // TODO: Error handling db execute
@@ -46,11 +52,17 @@ class SQLite
      */
     public static function execStatement($statement, $values=array()) {
         // TODO: Merge with queryStatement()
+
+        $htmlSpecialCharsValue = array();
+        foreach ($values as $val):
+            $htmlSpecialCharsValue[] = htmlspecialchars($val);
+        endforeach;
+
         $con = self::connectToSQLite();
         try {
             $con->beginTransaction();
-            $command = $con->prepare($statement);
-            $command->execute($values);
+            $command = $con->prepare(htmlspecialchars($statement));
+            $command->execute($htmlSpecialCharsValue);
             $con->commit();
         }
         // TODO: Error handling db execute
