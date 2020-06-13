@@ -16,63 +16,38 @@ class SQLite
         return new PDO('sqlite:' . DB_FILE);
     }
 
-    /**
-     * @param string $statement to execute.
-     * @param array $values to insert in prepared statement. Optional.
-     * @return array|string
+    /** Run statement on the database.
+     * @param string $statement to run.
+     * @param array $values to insert into prepared statement. Optional
+     * @return array|bool
      */
-    public static function queryStatement($statement, $values=array()) {
-        // TODO: Merge with execStatement()
-
+    public static function runStatement($statement, $values=array()) {
         $htmlSpecialCharsValue = array();
         foreach ($values as $val):
             $htmlSpecialCharsValue[] = htmlspecialchars($val);
         endforeach;
 
         $con = self::connectToSQLite();
-        $result = "";
+        $result = array();
+
         try {
+            $con->beginTransaction();
             $command = $con->prepare(htmlspecialchars($statement));
-            $command->execute($htmlSpecialCharsValue);
-            $result = $command->fetchAll();
+            $result = $command->execute($htmlSpecialCharsValue);
+
+            if(substr($statement, 0, 6) == "SELECT"):
+                $result = $command->fetchAll();
+            endif;
+
+            $con->commit();
         }
-            // TODO: Error handling db execute
         catch (PDOException $ex) {
+            $con->rollback();
+            return $result;
         }
         finally {
             unset($con);
             return $result;
-        }
-    }
-
-    /**
-     * @param string $statement
-     * @param array $values Optional.
-     * @return bool
-     */
-    public static function execStatement($statement, $values=array()) {
-        // TODO: Merge with queryStatement()
-
-        $htmlSpecialCharsValue = array();
-        foreach ($values as $val):
-            $htmlSpecialCharsValue[] = htmlspecialchars($val);
-        endforeach;
-
-        $con = self::connectToSQLite();
-        try {
-            $con->beginTransaction();
-            $command = $con->prepare(htmlspecialchars($statement));
-            $command->execute($htmlSpecialCharsValue);
-            $con->commit();
-        }
-        // TODO: Error handling db execute
-        catch (PDOException $ex) {
-            $con->rollback();
-            return false;
-        }
-        finally {
-            unset($con);
-            return true;
         }
     }
 
@@ -118,7 +93,7 @@ class SQLite
         //print($statement);
         //print_r($values);
 
-        return self::queryStatement($statement, $values);
+        return self::runStatement($statement, $values);
     }
 
     /** Buils a INSERT query from the given parameters.
@@ -150,10 +125,10 @@ class SQLite
         //print($statement);
         //print_r($values);
 
-        return self::execStatement($statement, $values);
+        return self::runStatement($statement, $values);
     }
 
-    /** Buils a UPDATE query from the given parameters.
+    /** Builds a UPDATE query from the given parameters.
      *
      * @param string $table to execute query on.
      * @param string $preparedSetClause to update on.
@@ -167,7 +142,7 @@ class SQLite
         //print($statement);
         //print_r($values);
 
-        return self::execStatement($statement, $values);
+        return self::runStatement($statement, $values);
     }
 
     /** Buils a DELETE query from the given parameters.
@@ -180,6 +155,6 @@ class SQLite
     public static function deleteBuilder($table, $preparedWhereClause, $values) {
         $statement = "DELETE FROM " .$table. " WHERE " .$preparedWhereClause.";";
 
-        return self::execStatement($statement, $values);
+        return self::runStatement($statement, $values);
     }
 }
