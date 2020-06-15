@@ -86,7 +86,6 @@ class OfferController extends BaseController
             header('location: ' . URL . 'login');
         }
 
-        // TODO: use table const
         $offer = $this->getOffer($_POST['offerId']);
         if($offer->getPlatypus()->deleteFromDatabase()):
             $offer->deleteFromDatabase();

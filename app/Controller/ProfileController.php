@@ -5,9 +5,8 @@ namespace Controller;
 
 
 use Hydro\Base\Controller\BaseController;
-use Model\OfferGridModel;
-use Model\OfferModel;
 use Model\UserModel;
+use Model\OfferGridModel;
 
 class ProfileController extends BaseController
 {
@@ -27,7 +26,8 @@ class ProfileController extends BaseController
     }
 
     public static function getUser($id){
-       return UserModel::searchUser($id);
+        $whereClause = COLUMNS_USER["u_id"]. " = ?";
+        return UserModel::getFromDatabase($whereClause, array($id));
     }
 
     public static function getDisplayUser() {
@@ -50,6 +50,21 @@ class ProfileController extends BaseController
         return OfferGridModel::getFromDatabase(OfferGridModel::TABLEJOINSAVEDOFFERS,
             $whereClause,
             array($id));
+    }
+
+    public function banHammerGo() {
+        $user = UserModel::getFromDatabase(COLUMNS_USER['u_id']. " = ?",
+            array($_POST['user']));
+        $disabled = 0;
+
+        if($user->isDisabled() == 0):
+            $disabled = 1;
+        endif;
+
+        $user->setDisabled($disabled);
+        $user->writeToDatabase();
+        header('location: ' . URL . 'profile?id=' .$user->getId());
+        exit();
     }
 
 }
