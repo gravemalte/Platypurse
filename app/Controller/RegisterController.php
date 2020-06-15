@@ -45,7 +45,7 @@ class RegisterController extends BaseController {
             Date::now(),
             0);
 
-        $check = $user->registerUser();
+        $check = $user->writeToDatabase();
         if($check){
             unset($user);
             header('location: '. URL . 'login');

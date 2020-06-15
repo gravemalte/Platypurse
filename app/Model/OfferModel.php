@@ -194,7 +194,8 @@ class OfferModel extends BaseModel {
      * @return mixed
      */
     public function getUser() {
-        return UserModel::searchUser($this->userId);
+        $whereClause = COLUMNS_USER["u_id"]. " = ?";
+        return UserModel::getFromDatabase($whereClause, array($this->userId));
     }
 
     /**
