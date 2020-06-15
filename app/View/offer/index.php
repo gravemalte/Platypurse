@@ -40,23 +40,17 @@ endif;
                         <input type="text" id="save-id" name="offerId" hidden value="<?=$offer->getId();?>">
                         <label for="save-id" hidden>Speicher-ID</label>
                         <button class="save-offer-button button">
-                            Von der Merkliste entfernen
+                            <span>Von der Merkliste entfernen</span>
                         </button>
                     </form>
                     <?php else: ?>
-                        <form action="offer/offerToSavedList" method="post">
-                            <input type="text" id="save-id" name="offerId" hidden value="<?=$offer->getId();?>">
-                            <label for="save-id" hidden>Speicher-ID</label>
-                            <button class="save-offer-button button">
-                                Zur Merkliste
-                            </button>
-                            <!-- TODO: Remove link (design as it was for reference) and style button -->
-                            <a href="" class="save-offer-button button">
-                                <div>
-                                    <p>Zur Merkliste</p>
-                                </div>
-                            </a>
-                        </form>
+                    <form action="offer/offerToSavedList" method="post">
+                        <input type="text" id="save-id" name="offerId" hidden value="<?=$offer->getId();?>">
+                        <label for="save-id" hidden>Speicher-ID</label>
+                        <button class="save-offer-button button">
+                            <span>Zur Merkliste</span>
+                        </button>
+                    </form>
                     <?php endif; ?>
                 </div>
                 <div class="profile-container card">
@@ -67,7 +61,7 @@ endif;
                         <a href="profile?id=<?= $seller->getId() ?>">
                             <p><?= $seller->getDisplayName() ?></p>
                         </a>
-                        <div class="rating">
+                        <div class="user-rating">
                             <span class="fas fa-star" id="user-rating-5"></span>
                             <span class="fas fa-star" id="user-rating-4"></span>
                             <span class="fas fa-star" id="user-rating-3"></span>
@@ -80,8 +74,8 @@ endif;
                     <div class="attribute-item">
                         <p><strong>Geschlecht:</strong><br>&nbsp;<?=$offer->getPlatypus()->getSex();?></p>
                         <p><strong>Alter:</strong><br>&nbsp;<?=$offer->getPlatypus()->getAgeYears();?> Jahre</p>
-                        <p><strong>Größe:</strong><br>&nbsp<?=$offer->getPlatypus()->getSize();?> cm</p>
-                        <p><strong>Gewicht:</strong><br>&nbsp<?=$offer->getPlatypus()->getWeight();?> g</p>
+                        <p><strong>Größe:</strong><br>&nbsp<?=$offer->getPlatypus()->getSize();?>cm</p>
+                        <p><strong>Gewicht:</strong><br>&nbsp<?=$offer->getPlatypus()->getWeight();?>g</p>
                     </div>
                     <div class="attribute-item">
                         <p>Erstellt: <strong>

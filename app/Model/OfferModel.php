@@ -155,7 +155,7 @@ class OfferModel extends BaseModel {
             $this->getClicks(),
             $this->getCreateDate(),
             $this->getEditDate(),
-            $this->getActive());
+            $this->isActive());
     }
 
     /**
@@ -194,7 +194,8 @@ class OfferModel extends BaseModel {
      * @return mixed
      */
     public function getUser() {
-        return UserModel::searchUser($this->userId);
+        $whereClause = COLUMNS_USER["u_id"]. " = ?";
+        return UserModel::getFromDatabase($whereClause, array($this->userId));
     }
 
     /**
@@ -337,7 +338,7 @@ class OfferModel extends BaseModel {
     /**
      * @return mixed
      */
-    public function getActive()
+    public function isActive()
     {
         return $this->active;
     }

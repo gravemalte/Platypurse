@@ -118,6 +118,18 @@ class OfferGridModel extends BaseModel {
     /**
      * @return mixed
      */
+    public function getShortPrice()
+    {
+        $price = $this->getPrice();
+        if (substr($price, -2) == "00") {
+            return substr($price, 0, strlen($price) - 3);
+        }
+        return $price;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getNegotiable()
     {
         return $this->negotiable;

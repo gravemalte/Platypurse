@@ -1,7 +1,22 @@
 <?php
+
 use Controller\ProfileController;
-$id_request = $_GET["id"];
-$user = ProfileController::getUser($id_request);
+
+$displayUser = ProfileController::getDisplayUser();
+
+$userItself = false;
+$viewHasAdmin = false;
+$loggedIn = false;
+if (isset($_SESSION['currentUser'])) {
+    $currentUser = $_SESSION['currentUser'];
+    if ($currentUser->getId() == $displayUser->getId()) $userItself = true;
+    if ($currentUser->isAdmin()) $viewHasAdmin = true;
+    $loggedIn = true;
+}
+
+$savedOffers = ProfileController::getSavedOffers();
+$offersByUser = ProfileController::getOffersFromUser();
+
 ?>
 
 <main class="main-page profile-page">
@@ -10,87 +25,114 @@ $user = ProfileController::getUser($id_request);
             <div class="profile-image">
                 <img src="assets/nav/user-circle-solid.svg" alt="profile image">
             </div>
-            <div class="profile-displayname">
-                <p><?php echo $user->getDisplayName() ?></p>
-            </div>
-            <div class="profile-rating">
-                <span class="fas fa-star checked"></span>
-                <span class="fas fa-star checked"></span>
-                <span class="fas fa-star checked"></span>
-                <span class="fas fa-star checked"></span>
-                <span class="far fa-star"></span>
-            </div>
-            <?php if(($_SESSION['currentUser'])->getId() != $id_request): ?>
-            <div class="profile-button-container">
-                <a href="chat?id=<?=$id_request ?>" class="button message-button">
-                    <div>
-                        <p>Nachricht schreiben</p>
-                    </div>
-                </a>
+            <div class="profile-display-name">
+                <span><?= $displayUser->getDisplayName() ?></span>
+                <?php if ($displayUser->isDisabled()): ?>
 
-                <a href="" class="button report-button">
-                    <div>
-                        <p>Nutzer melden</p>
-                    </div>
+                <span><strong>[Account deaktiviert]</strong></span>
+
+                <?php endif; ?>
+            </div>
+            <div class="user-rating">
+                <span class="fas fa-star" id="user-rating-5"></span>
+                <span class="fas fa-star" id="user-rating-4"></span>
+                <span class="fas fa-star" id="user-rating-3"></span>
+                <span class="fas fa-star" id="user-rating-2"></span>
+                <span class="fas fa-star" id="user-rating-1"></span>
+            </div>
+            <div class="profile-button-container">
+                <?php if (!$userItself): ?>
+                <a href="chat?u=<?= $displayUser->getId() ?>">
+                    <button class="send-message-button button">
+                        <span>Nachricht schreiben</span>
+                    </button>
+                </a>
+                <?php endif; ?>
+                <?php if ($userItself || $viewHasAdmin): ?>
+                <a href="">
+                    <button class="edit-profile-button button">
+                        <span>Profil bearbeiten</span>
+                    </button>
                 </a>
                 <?php endif; ?>
             </div>
         </div>
+        <?php if (!$userItself && $loggedIn): ?>
+            <div class="profile-addon-button-container">
+                <?php if ($viewHasAdmin): ?>
+                    <form action="profile/banHammerGo" method="post" class="user-suspend-container">
+                        <input type="text" name="user" hidden value='<?= $displayUser->getId();?>'>
+                        <button id="submit-suspend" type="submit" hidden></button>
+                        <label for="submit-suspend" hidden>Nutzer sperren</label>
+                        <?php if ($displayUser->isDisabled()):?>
+                        <!-- TODO: Add icon for unban -->
+                            <label for="submit-suspend" class="fas fa-gavel" title="Nutzer entsperren"></label>
+                        <?php else:?>
+                            <label for="submit-suspend" class="fas fa-gavel" title="Nutzer sperren"></label>
+                        <?php endif; ?>
+                    </form>
+                <?php endif; ?>
+                <form action="" class="user-report-container">
+                    <button id="submit-report" type="submit" hidden></button>
+                    <label for="submit-report" hidden>Nutzer melden</label>
+                    <label for="submit-report" class="fas fa-exclamation-triangle" title="Nutzer melden"></label>
+                </form>
+            </div>
+        <?php endif; ?>
     </div>
-    <div class="main-area">
-        <?php if($id_request == $_SESSION['currentUser']->getId()): ?>
+    <div class="offer-area">
+        <?php if (!empty($savedOffers) && $userItself): ?>
         <div class="saved-offers-container">
+            <p class="title">Deine Merkliste</p>
             <div class="offer-list-container">
-                <h2>Merkliste</h2>
-                <?php
-                    $savedOffers = ProfileController::getSavedOffers($id_request);
-                if(!empty($savedOffers)):?>
-                <div class="offer-list-container">
-                    <?php foreach($savedOffers as $offer): ?>
-                        <a class="offer-list-link" href="offer?id=<?= $offer->getOId();?>">
-                            <div class="offer-list-item card">
-                                <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                                <p class="name"><?= $offer->getName();?></p>
-                                <p class="description"><?= $offer->getDescription();?></p>
-                                <div class="price-tag-container">
-                                    <p class="price-tag"><?= $offer->getPrice();?></p>
-                                </div>
-                            </div>
-                        </a>
-                    <?php endforeach;
-                    else: ?>
-                        <div>
-                            <h1>Sorry, du hast leider keine Angebote gespeichert. ¯\_(ツ)_/¯</h1>
+                <?php foreach($savedOffers as $offer): ?>
+                <a class="offer-list-link" href="offer?id=<?= $offer->getOId();?>">
+                    <div class="offer-list-item card">
+                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
+                        <p class="name"><?= $offer->getName();?></p>
+                        <p class="description"><?= $offer->getDescription();?></p>
+                        <div class="price-tag-container">
+                            <p class="price-tag"><?= $offer->getShortPrice();?></p>
                         </div>
-                    <?php endif; ?>
+                    </div>
+                </a>
+                <?php endforeach; ?>
             </div>
         </div>
         <?php endif; ?>
+        <?php if (!empty($offersByUser)): ?>
         <div class="user-offers-container">
+            <p class="title">
+                <?php if ($userItself): ?>Deine <?php endif; ?>Angebote
+            </p>
             <div class="offer-list-container">
-                <h2>Vom Nutzer angeboten</h2>
-                <?php
-                $offersByUser = ProfileController::getOffersFromUser($id_request);
-                if(!empty($offersByUser)):?>
-                <div class="offer-list-container">
-                    <?php foreach($offersByUser as $offer): ?>
-                        <a class="offer-list-link" href="offer?id=<?= $offer->getOId();?>">
-                            <div class="offer-list-item card">
-                                <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                                <p class="name"><?= $offer->getName();?></p>
-                                <p class="description"><?= $offer->getDescription();?></p>
-                                <div class="price-tag-container">
-                                    <p class="price-tag"><?= $offer->getPrice();?></p>
-                                </div>
-                            </div>
-                        </a>
-                    <?php endforeach;
-                    else: ?>
-                        <div>
-                            <h1>Sorry, der Benutzer hat leider keine Angebote. ¯\_(ツ)_/¯</h1>
+                <?php foreach($offersByUser as $offer): ?>
+                <a class="offer-list-link" href="offer?id=<?= $offer->getOId();?>">
+                    <div class="offer-list-item card">
+                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
+                        <p class="name"><?= $offer->getName();?></p>
+                        <p class="description"><?= $offer->getDescription();?></p>
+                        <div class="price-tag-container">
+                            <p class="price-tag"><?= $offer->getShortPrice();?></p>
                         </div>
-                    <?php endif; ?>
-                </div>
+                    </div>
+                </a>
+                <?php endforeach; ?>
             </div>
+        </div>
+        <?php endif; ?>
+        <?php if (empty($savedOffers) && empty($offersByUser)): ?>
+        <div>
+            <h1>
+                <?php if ($userItself): ?>
+                <span>Sieht hier ja so leer aus...</span>
+                <span class="fas fa-ghost"></span>
+                <?php else: ?>
+                <span>Der Nutzer hat leider noch keine Angebote.</span>
+                <span class="fas fa-box-open"></span>
+                <?php endif; ?>
+            </h1>
+        </div>
+        <?php endif; ?>
     </div>
 </main>
