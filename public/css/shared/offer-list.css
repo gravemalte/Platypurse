@@ -1,13 +1,15 @@
 .offer-list-container {
     width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 300px);
+    grid-gap: 1em;
+    justify-content: center;
 }
 
 .offer-list-link {
     text-decoration: none;
-    margin: 0.5em 0.5em;
+    display: flex;
+    justify-content: center;
 }
 
 .offer-list-item {

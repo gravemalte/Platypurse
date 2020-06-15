@@ -61,6 +61,17 @@
     background-color: var(--offer-send-message-button-bg-color);
 }
 
+.offer-buttons-container form button {
+    border-radius: 5px;
+    background-color: var(--page-button-bg-color);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+    font-size: 2em;
+    padding: 0.5em 0.5em;
+    margin-bottom: 0.5em;
+    cursor: pointer;
+    width: 100%;
+}
+
 .offer-area .profile-container {
     display: flex;
     margin-bottom: 1em;
@@ -84,15 +95,6 @@
 }
 .offer-area .profile-container > div > * {
     padding: 0.2em;
-}
-.offer-area .profile-container .rating {
-    display: flex;
-    justify-content: space-evenly;
-    flex-direction: row-reverse;
-}
-.rating span:hover,
-.rating span:hover ~ span {
-    color: var(--profile-star-highlight-color);
 }
 
 .offer-area .attribute-list {

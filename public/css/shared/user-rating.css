@@ -1,0 +1,9 @@
+.user-rating {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row-reverse;
+}
+.user-rating span:hover,
+.user-rating span:hover ~ span {
+    color: var(--profile-star-highlight-color);
+}

@@ -155,7 +155,7 @@ class OfferModel extends BaseModel {
             $this->getClicks(),
             $this->getCreateDate(),
             $this->getEditDate(),
-            $this->getActive());
+            $this->isActive());
     }
 
     /**
@@ -337,7 +337,7 @@ class OfferModel extends BaseModel {
     /**
      * @return mixed
      */
-    public function getActive()
+    public function isActive()
     {
         return $this->active;
     }

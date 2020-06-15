@@ -20,8 +20,8 @@ use \Controller\HomeController;
                             <div class="attribute-list">
                                 <p>Geschlecht: <?= $hotOffer->getSex();?></p>
                                 <p>Alter: <?= $hotOffer->getAgeYears();?> Jahre</p>
-                                <p>Größe: <?= $hotOffer->getSize();?> cm</p>
-                                <p>Gewicht: <?= $hotOffer->getWeight();?> g</p>
+                                <p>Größe: <?= $hotOffer->getSize();?>cm</p>
+                                <p>Gewicht: <?= $hotOffer->getWeight();?>g</p>
                             </div>
                             <h2 class="view-counter"><?= $hotOffer->getClicks();?></h2>
                             <p class="view-description">Aufrufe in den letzten 24H</p>
