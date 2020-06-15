@@ -55,7 +55,13 @@ class ProfileController extends BaseController
     public function banHammerGo() {
         $user = UserModel::getFromDatabase(COLUMNS_USER['u_id']. " = ?",
             array($_POST['user']));
-        $user->setDisabled(!$user->isDisabled());
+        $disabled = 0;
+
+        if($user->isDisabled() == 0):
+            $disabled = 1;
+        endif;
+
+        $user->setDisabled($disabled);
         $user->writeToDatabase();
         header('location: ' . URL . 'profile?id=' .$user->getId());
         exit();
