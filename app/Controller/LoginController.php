@@ -37,8 +37,9 @@ class LoginController extends BaseController
         $userSentMail = strtolower($_POST['user-email']);
         $userSentPasswd = $_POST['user-passwd'];
 
-        $whereClause = COLUMNS_USER["mail"]. " = ?";
-        $user = UserModel::getFromDatabase($whereClause, array($userSentMail));
+        $whereClause = COLUMNS_USER["mail"]. " = ? AND "
+            .COLUMNS_USER["disabled"]. " = ?";
+        $user = UserModel::getFromDatabase($whereClause, array($userSentMail, 0));
         if (!empty($user)):
             if (password_verify($userSentPasswd, $user->getPassword())) {
                 $_SESSION['currentUser'] = $user;
