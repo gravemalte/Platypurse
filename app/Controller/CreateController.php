@@ -58,7 +58,7 @@ class CreateController extends BaseController
                 $_POST['description']);
             $offer->writeToDatabase();
         endif;
-        header('location: ' . URL);
+        header('location: ' . URL . 'offer?id='.$offerId);
         exit();
     }
 
