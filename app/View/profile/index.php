@@ -75,7 +75,7 @@ $offersByUser = ProfileController::getOffersFromUser();
         <?php endif; ?>
     </div>
     <div class="offer-area">
-        <?php if (!empty($savedOffers)): ?>
+        <?php if (!empty($savedOffers) && $userItself): ?>
         <div class="saved-offers-container">
             <p class="title">Deine Merkliste</p>
             <div class="offer-list-container">
