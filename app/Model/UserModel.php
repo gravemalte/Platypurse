@@ -128,7 +128,7 @@ class UserModel extends BaseModel
             $this->getUgId(),
             $this->getRating(),
             $this->getCreatedAt(),
-            $this->getDisabled());
+            $this->isDisabled());
     }
 
     /**
@@ -254,7 +254,7 @@ class UserModel extends BaseModel
     /**
      * @return mixed
      */
-    public function getDisabled()
+    public function isDisabled()
     {
         return $this->disabled;
     }
