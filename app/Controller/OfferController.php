@@ -37,9 +37,10 @@ class OfferController extends BaseController
     }
 
     public static function offerToSavedList() {
-        $values = array($_SESSION["currentUser"]->getId(), $_POST["offerId"], 1);
-
-        SQLite::insertBuilder(TABLE_SAVED_OFFERS, COLUMNS_SAVED_OFFERS, $values);
+        if(isset($_SESSION["currentUser"])):
+            $values = array($_SESSION["currentUser"]->getId(), $_POST["offerId"], 1);
+            SQLite::insertBuilder(TABLE_SAVED_OFFERS, COLUMNS_SAVED_OFFERS, $values);
+        endif;
         header('location: ' . URL);
         exit();
     }
