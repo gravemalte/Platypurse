@@ -34,4 +34,48 @@ class EditProfileController extends BaseController {
         return ProfileController::getUser($id);
     }
 
+    public static function update() {
+
+        if (!isset($_GET['id']) || !isset($_SESSION['currentUser'])) {
+            header('location: ' . URL . 'error');
+            exit();
+        }
+
+        $id = $_GET['id'];
+        $user = ProfileController::getUser($id);
+        $currentUser = $_SESSION['currentUser'];
+
+        if (!($currentUser->isAdmin() || $id == $currentUser->getId())) {
+            header('location: ' . URL . 'login');
+            exit();
+        }
+
+        $possibleChanges = array('display-name', 'email', 'password');
+        foreach ($possibleChanges as $possibleChange) {
+            if (isset($_GET[$possibleChange])) {
+                if (!empty($_GET[$possibleChange])) {
+                    switch ($possibleChange) {
+                        case $possibleChanges[0]:
+                            $user->setDisplayName($_GET[$possibleChange]);
+                            break;
+                        case $possibleChanges[1]:
+                            $user->setEmail($_GET[$possibleChange]);
+                            break;
+                        case $possibleChanges[2]:
+                            $user->setPassword($_GET[$possibleChange]);
+                            break;
+                    }
+                }
+            }
+        }
+
+        $user->updateInDatabase();
+
+        if ($currentUser->getId() == $id) {
+            $_SESSION['currentUser'] = $user;
+        }
+
+        header('location: ' . URL . 'profile/edit?id=' . $id);
+    }
+
 }

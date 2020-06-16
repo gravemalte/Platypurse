@@ -73,6 +73,7 @@
     cursor: pointer;
 }
 .profile-addon-button-container label[for=submit-report] {
+    padding: 0.5em 0.45em;
     background-color: var(--page-button-report-bg-color);
     color: var(--page-button-report-text-color);
 }
@@ -80,9 +81,16 @@
     background-color: var(--page-button-danger-bg-color);
     color: var(--page-button-danger-text-color);
 }
+.profile-addon-button-container label[for=submit-suspend].enable {
+    padding: 0.5em 0.55em;
+    background-color: var(--page-button-alt-bg-color);
+    color: var(--page-button-alt-text-color);
+}
 
 .offer-area {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 .offer-area > div {
     margin-top: 4em;
@@ -94,6 +102,23 @@
     text-align: center;
     font-size: 2em;
     font-weight: bold;
+    margin: 0.5em;
+}
+
+.empty-box {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.empty-box h1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: center;
+}
+.empty-box h1 span:last-of-type {
+    font-size: 3em;
     margin: 0.5em;
 }
 
