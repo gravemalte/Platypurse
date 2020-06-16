@@ -60,16 +60,17 @@ $offersByUser = ProfileController::getOffersFromUser();
         <?php if (!$userItself && $loggedIn): ?>
             <div class="profile-addon-button-container">
                 <?php if ($viewHasAdmin): ?>
-                    <form action="profile/banHammerGo" method="post" class="user-suspend-container">
+                <?php if ($displayUser->isDisabled()):?>
+                        <form action="profile/enableUser" method="post" class="user-suspend-container">
+                            <!-- TODO: Add icon for unban -->
+                            <label for="submit-suspend" class="fas fa-gavel" title="Nutzer entsperren"></label>
+                    <?php else:?>
+                        <form action="profile/disableUser" method="post" class="user-suspend-container">
+                            <label for="submit-suspend" class="fas fa-gavel" title="Nutzer sperren"></label>
+                    <?php endif; ?>
                         <input type="text" name="user" hidden value='<?= $displayUser->getId();?>'>
                         <button id="submit-suspend" type="submit" hidden></button>
                         <label for="submit-suspend" hidden>Nutzer sperren</label>
-                        <?php if ($displayUser->isDisabled()):?>
-                        <!-- TODO: Add icon for unban -->
-                            <label for="submit-suspend" class="fas fa-gavel" title="Nutzer entsperren"></label>
-                        <?php else:?>
-                            <label for="submit-suspend" class="fas fa-gavel" title="Nutzer sperren"></label>
-                        <?php endif; ?>
                     </form>
                 <?php endif; ?>
                 <form action="" class="user-report-container">

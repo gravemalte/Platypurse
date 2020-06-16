@@ -52,19 +52,24 @@ class ProfileController extends BaseController
             array($id));
     }
 
-    public function banHammerGo() {
+    public static function disableUser() {
         $user = UserModel::getFromDatabase(COLUMNS_USER['u_id']. " = ?",
             array($_POST['user']));
-        $disabled = 0;
 
-        if($user->isDisabled() == 0):
-            $disabled = 1;
-        endif;
-
-        $user->setDisabled($disabled);
+        $user->setDisabled(1);
         $user->writeToDatabase();
         header('location: ' . URL . 'profile?id=' .$user->getId());
         exit();
     }
 
+    public static function enableUser() {
+        $user = UserModel::getFromDatabase(COLUMNS_USER['u_id']. " = ?",
+            array($_POST['user']));
+
+        $user->setDisabled(0);
+        $user->writeToDatabase();
+        header('location: ' . URL . 'profile?id=' .$user->getId());
+        exit();
+
+    }
 }
