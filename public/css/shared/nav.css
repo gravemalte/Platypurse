@@ -4,6 +4,8 @@ nav {
     background-color: var(--nav-bg-color);
     box-shadow: 0 0 5px 0 black;
     justify-content: center;
+    position: relative;
+    z-index: 2;
 }
 
 .nav-container {
@@ -82,6 +84,23 @@ nav {
 }
 .nav-profile-container img[src$=svg] {
     filter: invert(var(--filter-bright));
+}
+
+.nav-admin-container {
+    background-color: var(--page-error-color);
+    display: flex;
+    flex-direction: column;
+    font-size: 1.3em;
+    align-items: center;
+    box-shadow: 0 0 5px 0 black;
+    padding: 0.5em;
+    position: relative;
+    z-index: 1;
+}
+
+.nav-admin-container p:first-of-type {
+    font-size: 1.4em;
+    font-weight: bold;
 }
 
 @media (max-width: 750px) {
