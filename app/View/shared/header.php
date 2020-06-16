@@ -33,7 +33,7 @@ use Hydro\Helper\CacheBuster;
     <!-- used https://www.favicon-generator.org/ for that -->
 
     <!-- CSS linking here -->
-    <link rel="stylesheet" href="<?= CacheBuster::serve("css/shared.css") ?>">
+    <?= CacheBuster::embedCSSImports('css/shared.css') ?>
 
     <!-- Link JS in the footer template-->
 
