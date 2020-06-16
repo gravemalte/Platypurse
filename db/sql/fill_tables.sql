@@ -41,7 +41,7 @@ VALUES
 (3, 4, 3, 9900, 1, "Rietlebanchs sesied fauk!"),
 (4, 4, 4, 13300, 1, ""),
 (5, 3, 5, 7950, 0, "Ist ein älteres Tier und hat Erinnerungen hinterlassen."),
-(6, 2, 6, 150000, 1, "Selsbterklärend."),
+(6, 2, 6, 150000, 1, "Selbsterklärend."),
 (7, 3, 7, 550, 0, "Bisschen vertrottelt, besitzt aber Erfindergeist!"),
 (8, 2, 8, 11879, 0, "Gutmütiges Vieh. Hat aber gespaltene Persönlichkeiten"),
 (9, 2, 9, 10000, 1, "In Ehrfurcht vor der Größe dieses Jungens. Absolute Einheit.");
