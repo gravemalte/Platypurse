@@ -59,7 +59,7 @@ class EditProfileController extends BaseController {
                             $user->setDisplayName($_GET[$possibleChange]);
                             break;
                         case $possibleChanges[1]:
-                            $user->setEmail($_GET[$possibleChange]);
+                            $user->setMail($_GET[$possibleChange]);
                             break;
                         case $possibleChanges[2]:
                             $user->setPassword($_GET[$possibleChange]);
