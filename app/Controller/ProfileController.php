@@ -25,6 +25,14 @@ class ProfileController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
+    public static function edit() {
+        if (isset($_GET['id'])) {
+            header('location: ' . URL . 'editProfile?id=' . $_GET['id']);
+            exit();
+        }
+        header('location: ' . URL . 'editProfile');
+    }
+
     public static function getUser($id){
         $whereClause = COLUMNS_USER["u_id"]. " = ?";
         return UserModel::getFromDatabase($whereClause, array($id));

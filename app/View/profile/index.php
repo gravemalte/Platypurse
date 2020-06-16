@@ -49,7 +49,7 @@ $offersByUser = ProfileController::getOffersFromUser();
                 </a>
                 <?php endif; ?>
                 <?php if ($userItself || $viewHasAdmin): ?>
-                <a href="">
+                <a href="profile/edit?id=<?= $displayUser->getId(); ?>">
                     <button class="edit-profile-button button">
                         <span>Profil bearbeiten</span>
                     </button>
