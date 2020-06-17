@@ -1,15 +1,22 @@
 <?php
 use Controller\OfferController;
+
+$currentUser = $_SESSION['currentUser'];
+$isUpdate = isset($_GET['id']);
+if($isUpdate):
+    $offerId = $_GET['id'];
+    $offer = OfferController::getOffer($offerId);
+    $userIsOwner = $currentUser->getId() == $offer->getUserId();
+    $userIsAdmin = $currentUser->isAdmin();
+endif;
 ?>
 
 <main class="main-page">
     <div class="main-area">
         <div class="create-offer-container card">
             <form action="create/processInput" method="post">
-            <?php if(isset($_GET['id'])):
-                $offer = OfferController::getOffer($_GET['id']); ?>
+            <?php if($isUpdate && ($userIsOwner || $userIsAdmin)):?>
                 <input type="hidden" name="offerId" value='<?php echo $offer->getId();?>'>
-                <input type="hidden" name="platypusId" value='<?php echo $offer->getPlatypus()->getId();?>'>
             <?php endif;?>
                 <div class="main-container">
                     <div class="name-container main-input-container">
@@ -17,7 +24,7 @@ use Controller\OfferController;
                         <div class="input-container">
                             <label for="name">
                                 <input type="text" placeholder="Name" id="name" name="name" required value="<?php
-                                    if(isset($_GET['id'])):
+                                    if($isUpdate && ($userIsOwner || $userIsAdmin)):
                                         echo $offer->getPlatypus()->getName() ;
                                     endif;?>">
                             </label>
@@ -36,7 +43,7 @@ use Controller\OfferController;
                                         name="price"
                                         required
                                         value="<?php
-                                if(isset($_GET['id'])):
+                                if($isUpdate && ($userIsOwner || $userIsAdmin)):
                                     echo $offer->getPrice(false);
                                 endif;?>">
                             </label>
@@ -59,7 +66,7 @@ use Controller\OfferController;
                         <div class="input-container">
                             <label for="description">
                                 <?php $description = "";
-                                if(isset($_GET['id'])):
+                                if($isUpdate && ($userIsOwner || $userIsAdmin)):
                                     $description = $offer->getDescription();
                                 endif;?>
                                 <textarea placeholder="Beschreibung" id="description"
@@ -78,11 +85,13 @@ use Controller\OfferController;
                                 <label for="sex">
                                     <select name="sex" id="sex" >
                                         <option value="männlich" <?php
-                                        if(isset($_GET['id']) && $offer->getPlatypus()->getSex() == "männlich"):
+                                        if(($isUpdate && ($userIsOwner || $userIsAdmin))
+                                            && $offer->getPlatypus()->getSex() == "männlich"):
                                             echo "selected";
                                         endif;?>>Männlich</option>
                                         <option value="weiblich" <?php
-                                        if(isset($_GET['id']) && $offer->getPlatypus()->getSex() == "weiblich"):
+                                        if(($isUpdate && ($userIsOwner || $userIsAdmin))
+                                            && $offer->getPlatypus()->getSex() == "weiblich"):
                                             echo "selected";
                                         endif;?>>Weiblich</option>
                                     </select>
@@ -96,7 +105,7 @@ use Controller\OfferController;
                             <div class="attribute-item-select dropdown-item-select">
                                 <label for="age" hidden>Alter</label>
                                 <input type="number" id="age" name="age" min="0" max="20" value="<?php
-                                if(isset($_GET['id'])):
+                                if($isUpdate && ($userIsOwner || $userIsAdmin)):
                                     echo $offer->getPlatypus()->getAgeYears();
                                 endif;?>">
                                 <p>Jahre</p>
@@ -109,7 +118,7 @@ use Controller\OfferController;
                             <div class="attribute-item-select dropdown-item-select">
                                 <label for="size" hidden>Körpergröße</label>
                                 <input type="number" id="size" name="size" min="0" max="75" value="<?php
-                                if(isset($_GET['id'])):
+                                if($isUpdate && ($userIsOwner || $userIsAdmin)):
                                     echo $offer->getPlatypus()->getSize();
                                 endif;?>">
                                 <p>cm</p>
@@ -122,7 +131,7 @@ use Controller\OfferController;
                             <div class="attribute-item-select dropdown-item-select">
                                 <label for="size" hidden>Gewicht</label>
                                 <input type="number" id="weight" name="weight" min="0" max="3000" value="<?php
-                                if(isset($_GET['id'])):
+                                if($isUpdate && ($userIsOwner || $userIsAdmin)):
                                     echo $offer->getPlatypus()->getWeight();
                                 endif;?>">
                                 <p>g</p>
