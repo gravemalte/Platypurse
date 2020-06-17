@@ -9,8 +9,8 @@ if(isset($_GET['id'])){
     $to = $_GET['id'];
 }
 
-$json = ChatController::getMessage($userID, $to);
-echo substr($json, 1, -1);
+// $json = ChatController::getMessage($userID, $to);
+// echo substr($json, 1, -1);
 ?>
 
 <main class="main-page">
