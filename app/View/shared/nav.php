@@ -35,16 +35,8 @@
             <?php endif; ?>
         </div>
         <?php if(isset($_SESSION['currentUser'])): ?>
-        <!-- will be used when database integration is ready
         <div class="nav-profile-container">
-            <a href="profile/<?php echo $_SESSION['currentUser']->getId() ?>"
-               title="<?php echo $_SESSION['currentUser']->getDisplayName() ?>">
-                <img src="assets/nav/user-circle-solid.svg" alt="user avatar">
-            </a>
-        </div>
-        -->
-        <div class="nav-profile-container">
-            <a href="profile?id=<?= $_SESSION['currentUser']->getId() ?>"
+            <a href="profile"
                title="<?= $_SESSION['currentUser']->getDisplayName() ?>">
                 <img src="assets/nav/user-circle-solid.svg" alt="user avatar">
             </a>

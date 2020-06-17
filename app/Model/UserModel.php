@@ -189,9 +189,11 @@ class UserModel extends BaseModel
 
     /**
      * @param mixed $password
+     * @param boolean $shallHash
      */
-    public function setPassword($password): void
+    public function setPassword($password, bool $shallHash = true): void
     {
+        if ($shallHash) $password = password_hash($password, PASSWORD_DEFAULT);
         $this->password = $password;
     }
 

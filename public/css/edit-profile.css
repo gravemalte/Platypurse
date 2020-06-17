@@ -1,0 +1,90 @@
+.edit-profile-container form {
+    display: flex;
+    margin: 1em;
+}
+.edit-profile-container form > * {
+    margin: 1em;
+}
+
+.avatar-upload-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.avatar-upload-container label {
+    height: 12em;
+    width: 12em;
+    position: relative;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.avatar-upload-container label img {
+    object-fit: cover;
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    position: relative;
+}
+.avatar-upload-container label img[src$=svg] {
+    filter: invert(var(--filter-bright));
+}
+.avatar-upload-container label:hover img {
+    filter: brightness(0.8);
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.avatar-upload-container label:hover img[src$=svg] {
+    filter: invert(var(--filter-bright)) brightness(0.8);
+}
+.avatar-upload-container label span {
+    position: absolute;
+    height: inherit;
+    width: inherit;
+    text-align: center;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    font-size: 1.5em;
+    text-shadow: 0 0 0.5em black;
+}
+.avatar-upload-container label:hover span {
+    visibility: visible;
+}
+
+.text-inputs-container div {
+    margin-bottom: 1.5em;
+}
+.text-inputs-container div:last-of-type {
+    margin-bottom: 0;
+}
+.text-inputs-container div p {
+    font-size: 1.5em;
+    margin-left: 0.5em;
+}
+.text-inputs-container div input {
+    border-radius: 15px;
+    background-color: var(--page-input-bg-color);
+    font-size: 1.5em;
+    padding: 0.5em;
+    outline: none;
+    border: none;
+}
+
+.submit-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: end;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+.submit-container button {
+    border-radius: 5px;
+    background-color: var(--page-button-alt-bg-color);
+    color: var(--page-button-alt-text-color);
+    font-size: 2em;
+    padding: 0.5em 0.6em;
+}

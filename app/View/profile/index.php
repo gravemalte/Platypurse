@@ -49,7 +49,7 @@ $offersByUser = ProfileController::getOffersFromUser();
                 </a>
                 <?php endif; ?>
                 <?php if ($userItself || $viewHasAdmin): ?>
-                <a href="">
+                <a href="profile/edit?id=<?= $displayUser->getId(); ?>">
                     <button class="edit-profile-button button">
                         <span>Profil bearbeiten</span>
                     </button>
@@ -63,10 +63,10 @@ $offersByUser = ProfileController::getOffersFromUser();
                 <?php if ($displayUser->isDisabled()):?>
                         <form action="profile/enableUser" method="post" class="user-suspend-container">
                             <!-- TODO: Add icon for unban -->
-                            <label for="submit-suspend" class="fas fa-gavel" title="Nutzer entsperren"></label>
+                            <label for="submit-suspend" class="fas fa-unlock enable" title="Nutzer entsperren"></label>
                     <?php else:?>
                         <form action="profile/disableUser" method="post" class="user-suspend-container">
-                            <label for="submit-suspend" class="fas fa-gavel" title="Nutzer sperren"></label>
+                            <label for="submit-suspend" class="fas fa-gavel disable" title="Nutzer sperren"></label>
                     <?php endif; ?>
                         <input type="text" name="user" hidden value='<?= $displayUser->getId();?>'>
                         <button id="submit-suspend" type="submit" hidden></button>
@@ -123,7 +123,7 @@ $offersByUser = ProfileController::getOffersFromUser();
         </div>
         <?php endif; ?>
         <?php if (empty($savedOffers) && empty($offersByUser)): ?>
-        <div>
+        <div class="empty-box">
             <h1>
                 <?php if ($userItself): ?>
                 <span>Sieht hier ja so leer aus...</span>
