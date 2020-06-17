@@ -6,9 +6,20 @@ if (ENVIRONMENT == 'dev') {
     ini_set("display_errors", 1);
 }
 
-// Database configuration
-define('DB_FILE_NAME', 'platypurse.sqlite');
-define('DB_FILE', DB . DB_FILE_NAME);
+
+/**
+ * Constant definitions for our directories
+ */
+
+define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
+define('APP', ROOT . 'app' . DIRECTORY_SEPARATOR);
+define('LIB', ROOT . 'lib' . DIRECTORY_SEPARATOR);
+define('CONFIG',  ROOT . 'config' . DIRECTORY_SEPARATOR);
+define('DB', ROOT . 'db' . DIRECTORY_SEPARATOR);
+
+/**
+ * URL configuration for the web server
+ */
 
 define('URL_PUBLIC_FOLDER', 'public');
 define('URL_PROTOCOL', '//');
@@ -16,7 +27,18 @@ define('URL_DOMAIN', $_SERVER['HTTP_HOST']);
 define('URL_SUB_FOLDER', str_replace(URL_PUBLIC_FOLDER, '', dirname($_SERVER['SCRIPT_NAME'])));
 define('URL', URL_PROTOCOL . URL_DOMAIN . URL_SUB_FOLDER);
 
-// Database tablenames and rows
+
+/**
+ * Database configuration
+ */
+
+define('DB_FILE_NAME', 'platypurse.sqlite');
+define('DB_FILE', DB . DB_FILE_NAME);
+
+/**
+ * Database definition's for tables and rows
+ */
+
 /** Table name for table "log" */
 define("TABLE_LOG", "log");
 /** Table columns for table "log" */
