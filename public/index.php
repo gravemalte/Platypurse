@@ -7,7 +7,7 @@ if(!in_array('mod_rewrite', apache_get_modules())){
     exit("<b>Please enable mod_rewrite in you Apache!
     Stopping startup.</b>");
 }
-
+define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
 define('CONFIG',  ROOT . 'config' . DIRECTORY_SEPARATOR);
 
 // load the application config (error reporting, constants, etc.)
