@@ -8,6 +8,8 @@ if(!in_array('mod_rewrite', apache_get_modules())){
     Stopping startup.</b>");
 }
 
+define('CONFIG',  ROOT . 'config' . DIRECTORY_SEPARATOR);
+
 // load the application config (error reporting, constants, etc.)
 require CONFIG . 'config.php';
 

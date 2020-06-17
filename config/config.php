@@ -14,7 +14,6 @@ if (ENVIRONMENT == 'dev') {
 define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
 define('APP', ROOT . 'app' . DIRECTORY_SEPARATOR);
 define('LIB', ROOT . 'lib' . DIRECTORY_SEPARATOR);
-define('CONFIG',  ROOT . 'config' . DIRECTORY_SEPARATOR);
 define('DB', ROOT . 'db' . DIRECTORY_SEPARATOR);
 
 /**
