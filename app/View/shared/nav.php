@@ -52,3 +52,9 @@
         <?php endif; ?>
     </div>
 </nav>
+<?php if (isset($_SESSION['currentUser'])) if ($_SESSION['currentUser']->isAdmin()): ?>
+<div class="nav-admin-container">
+    <p>Achtung!</p>
+    <p>Du bist als Admin angemeldet.</p>
+</div>
+<?php endif; ?>
