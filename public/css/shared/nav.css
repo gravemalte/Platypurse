@@ -86,8 +86,7 @@ nav {
     filter: invert(var(--filter-bright));
 }
 
-.nav-admin-container {
-    background-color: var(--page-error-color);
+.nav-notification-container {
     display: flex;
     flex-direction: column;
     font-size: 1.3em;
@@ -96,6 +95,19 @@ nav {
     padding: 0.5em;
     position: relative;
     z-index: 1;
+}
+
+.nav-wip-container {
+    background-color: var(--hot-offer-annotation-bg-color);
+}
+
+.nav-wip-container p:first-of-type {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.nav-admin-container {
+    background-color: var(--page-error-color);
 }
 
 .nav-admin-container p:first-of-type {

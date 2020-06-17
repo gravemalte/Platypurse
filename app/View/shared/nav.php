@@ -45,7 +45,7 @@
     </div>
 </nav>
 <?php if (isset($_SESSION['currentUser'])) if ($_SESSION['currentUser']->isAdmin()): ?>
-<div class="nav-admin-container">
+<div class="nav-notification-container nav-admin-container">
     <p>Achtung!</p>
     <p>Du bist als Admin angemeldet.</p>
 </div>
