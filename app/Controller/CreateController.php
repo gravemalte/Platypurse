@@ -30,33 +30,45 @@ class CreateController extends BaseController
     }
 
     public function processInput() {
+        $currentUser = $_SESSION['currentUser'];
         $platypusId = hexdec(uniqid());
         $offerId = hexdec(uniqid());
-
-        if(isset($_POST["platypusId"])):
-            $platypusId = $_POST["platypusId"];
-        endif;
+        $userId = $currentUser->getId();
 
         if(isset($_POST["offerId"])):
             $offerId = $_POST["offerId"];
+            $offer = OfferModel::getFromDatabase(COLUMNS_OFFER['o_id']. " = ?",
+                array($offerId));
+
+            if(!empty($offer)):
+                $platypusId = $offer->getPlatypus()->getId();
+                $userId = $offer->getUserId();
+            endif;
         endif;
 
-        $platypus = new PlatypusModel($platypusId,
-            $_POST["name"],
-            $_POST["age"],
-            $_POST["sex"],
-            $_POST["size"],
-            $_POST["weight"],
-            1);
+        if(empty($offer) || $currentUser->getId() == $offer->getUserId()
+            || $currentUser->isAdmin()):
 
-        if($platypus->writeToDatabase()):
+            $platypus = new PlatypusModel($platypusId,
+                $_POST["name"],
+                $_POST["age"],
+                $_POST["sex"],
+                $_POST["size"],
+                $_POST["weight"],
+                1);
+
             $offer = new OfferModel($offerId,
-                $_SESSION['currentUser']->getId(),
+                $userId,
                 $platypus,
                 $this->processInputPrice($_POST["price"]),
                 0,
                 $_POST['description']);
-            $offer->writeToDatabase();
+
+
+
+            if($platypus->writeToDatabase()):
+                $offer->writeToDatabase();
+            endif;
         endif;
         header('location: ' . URL . 'offer?id='.$offerId);
         exit();
