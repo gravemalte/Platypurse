@@ -82,12 +82,6 @@ form > div > input[type=password] {
 .form-passwd-container input:checked ~ label.fa-eye {
     visibility: hidden;
 }
-.form-passwd-container input[type=text] {
-    -webkit-text-security: disc;
-}
-.form-passwd-container input:checked ~ input[type=text] {
-    -webkit-text-security: initial;
-}
 
 .form-misc-container {
     flex-direction: row-reverse !important;

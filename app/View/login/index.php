@@ -21,17 +21,12 @@
                     <?php if(isset($_SESSION['user-login-error'])) : ?>
                         <div class="show-error"></div>
                     <?php endif; ?>
-                    <?php if(strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') !== false): ?>
                     <label for="show-passwd" hidden>Passwort anzeigen</label>
-                    <input type="checkbox" id="show-passwd" hidden>
+                    <input type="checkbox" id="show-passwd" data-toggle-password="user-passwd" hidden>
                     <label for="show-passwd" class="fas fa-eye"></label>
                     <label for="show-passwd" class="fas fa-eye-slash"></label>
                     <label for="user-passwd">Passwort</label>
-                    <input type="text" id="user-passwd" name="user-passwd" placeholder="Passwort" required>
-                    <?php else: ?>
-                    <label for="user-passwd">Passwort</label>
                     <input type="password" id="user-passwd" name="user-passwd" placeholder="Passwort" required>
-                    <?php endif; ?>
                 </div>
                 <div class="form-misc-container">
                     <div class="form-remember-me-container">
