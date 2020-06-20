@@ -5,7 +5,7 @@
     let confirmContainer = null;
     let confirmDiff = new Map();
 
-    window.addEventListener("load", event => {
+    window.addEventListener("load", async event => {
         confirmContainer = document
             .getElementById("confirm-changes-container");
         if (confirmContainer === null) return;
@@ -19,7 +19,7 @@
         }
     });
 
-    window.addEventListener("submit", event => {
+    window.addEventListener("submit", async event => {
         if (confirmContainer === null) return;
         if (event.target?.dataset?.needsConfirmation !== "") return;
         event.preventDefault();
@@ -31,7 +31,10 @@
             if (typeof diffElement === "undefined") continue;
             diffElement.hidden = false;
             if (typeof diffElement.firstChild === "undefined") continue;
-            diffElement.children[0].innerHTML = element.value;
+            for (let child of diffElement.children) {
+                if (child.dataset.confirmNew !== "") continue;
+                child.innerHTML = element.value;
+            }
             if (diffElement.dataset?.confirmOgValue.trim() === element.value.trim()) {
                 diffElement.hidden = true;
             }
