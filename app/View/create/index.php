@@ -96,8 +96,7 @@ if ($showUpdateData) {
                                         placeholder="Beschreibung"
                                         id="description"
                                         name="description"
-                                ><?= $showDescription?>
-                                </textarea>
+                                ><?= $showDescription?></textarea>
                             </label>
                         </div>
                     </div>
@@ -195,8 +194,8 @@ if ($showUpdateData) {
                             data-confirm-diff="name"
                             data-confirm-og-value="<?= $showName ?>"
                     >
-                        Neuer Name:
-                        <span></span>
+                        <strong>Neuer Name:</strong>
+                        <span data-confirm-new></span>
                         <?php if ($showUpdateData): ?>
                         (<?= $showName ?>)
                         <?php endif; ?>
@@ -205,8 +204,8 @@ if ($showUpdateData) {
                             data-confirm-diff="price"
                             data-confirm-og-value="<?= $showPrice ?>"
                     >
-                        Neuer Preis:
-                        <span></span>
+                        <strong>Neuer Preis:</strong>
+                        <span data-confirm-new></span>
                         <?php if ($showUpdateData): ?>
                         (<?= $showPrice ?>)
                         <?php endif; ?>
@@ -215,8 +214,8 @@ if ($showUpdateData) {
                             data-confirm-diff="description"
                             data-confirm-og-value="<?= $showDescription ?>"
                     >
-                        Neue Beschreibung:
-                        <span></span>
+                        <strong>Neue Beschreibung:</strong>
+                        <span data-confirm-new></span>
                         <?php if ($showUpdateData): ?>
                         (<?= $showDescription ?>)
                         <?php endif; ?>
@@ -225,8 +224,8 @@ if ($showUpdateData) {
                             data-confirm-diff="sex"
                             data-confirm-og-value="<?= $showSex ?>"
                     >
-                        Neues Geschlecht:
-                        <span></span>
+                        <strong>Neues Geschlecht:</strong>
+                        <span data-confirm-new></span>
                         <?php if ($showUpdateData): ?>
                         (<?= $showSex ?>)
                         <?php endif; ?>
@@ -235,8 +234,8 @@ if ($showUpdateData) {
                             data-confirm-diff="age"
                             data-confirm-og-value="<?= $showAge ?>"
                     >
-                        Neues Alter:
-                        <span></span>
+                        <strong>Neues Alter:</strong>
+                        <span data-confirm-new></span>
                         <?php if ($showUpdateData): ?>
                         (<?= $showAge ?>)
                         <?php endif; ?>
@@ -245,8 +244,8 @@ if ($showUpdateData) {
                             data-confirm-diff="size"
                             data-confirm-og-value="<?= $showSize ?>"
                     >
-                        Neue Größe:
-                        <span></span>
+                        <strong>Neue Größe:</strong>
+                        <span data-confirm-new></span>
                         <?php if ($showUpdateData): ?>
                         (<?= $showSize ?>)
                         <?php endif; ?>
@@ -255,8 +254,8 @@ if ($showUpdateData) {
                             data-confirm-diff="weight"
                             data-confirm-og-value="<?= $showWeight ?>"
                     >
-                        Neues Gewicht:
-                        <span></span>
+                        <strong>Neues Gewicht:</strong>
+                        <span data-confirm-new></span>
                         <?php if ($showUpdateData): ?>
                         (<?= $showWeight ?>)
                         <?php endif; ?>

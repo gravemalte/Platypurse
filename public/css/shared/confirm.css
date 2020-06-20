@@ -36,6 +36,10 @@ main.main-page {
     background-color: var(--page-button-alt-bg-color);
     color: var(--page-button-alt-text-color);
 }
+.confirm-changes-container button.delete {
+    background-color: var(--page-button-danger-bg-color);
+    color: var(--page-button-danger-text-color);
+}
 
 @media (min-width: 1921px) {
     .confirm-changes-container {
