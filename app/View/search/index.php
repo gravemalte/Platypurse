@@ -97,7 +97,7 @@
             $offers = SearchController::getOffers($searchText, $sex, $age, $size, $weight);
             if(!empty($offers)):?>
             <div class="offer-list-container">
-            <?php foreach($offers as $offer): ?>
+                <?php foreach($offers as $offer): ?>
                 <a class="offer-list-link" href="offer?id=<?= $offer->getOId();?>">
                     <div class="offer-list-item card">
                         <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
