@@ -36,6 +36,7 @@ use Hydro\Helper\CacheBuster;
     <?= CacheBuster::embedCSSImports('css/shared.css') ?>
 
     <!-- Link JS in the footer template-->
+    <script src="<?= CacheBuster::serve('js/color-mode-switch.js') ?>"></script>
 
     <!-- Font Awesome -->
     <script src="js/font-awesome.js"></script>

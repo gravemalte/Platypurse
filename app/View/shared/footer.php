@@ -16,6 +16,14 @@
             </em>
         </p>
     </div>
+    <div class="footer-light-mode-switch-container" id="light-mode-switch">
+        <button title="Licht an" id="light-mode-switch-on">
+            <span class="fas fa-sun"></span>
+        </button>
+        <button title="Licht aus" id="light-mode-switch-off" hidden>
+            <span class="fas fa-moon"></span>
+        </button>
+    </div>
 </footer>
 </body>
 </html>

@@ -58,7 +58,11 @@
     font-size: 1.5em;
 }
 .offer-buttons-container .send-message-button div {
-    background-color: var(--offer-send-message-button-bg-color);
+    background-color: var(--page-button-alt-bg-color);
+    color: var(--page-button-alt-text-color);
+}
+.offer-buttons-container .send-message-button div p {
+    color: inherit;
 }
 
 .offer-buttons-container form button {

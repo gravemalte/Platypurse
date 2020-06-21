@@ -29,14 +29,13 @@ body {
     --nav-search-text-color: var(--quite-white);
     --nav-search-go-filter: var(--filter-bright);
     --nav-button-bg-color: #444;
+    --nav-banner-admin-bg-color: var(--page-error-color);
+    --nav-banner-admin-text-color: white;
 
     --hot-offer-annotation-bg-color: #FE6D09;
     --hot-offer-annotation-color: white;
 
     --profile-star-highlight-color: yellow;
-
-    --offer-send-message-button-bg-color: #0074FF;
-    --create-done-button-bg-color: #0074FF;
 
     --chat-list-bg-color: #252525;
     --chat-contact-bg-color: #333;
@@ -46,17 +45,30 @@ body {
     --chat-send-message-bg-color: #0074FF;
 
     --footer-bg-color: #111;
+    --footer-text-color: var(--quite-white);
     --footer-logo-filter: var(--filter-bright);
+
+    --light-switch-bg-color: #222;
+    --light-switch-text-color: #AAA;
 }
 
 /* light colors (fry your eyes) */
 body.light {
-    --page-bg-color: white;
-    --page-p-color: black;
-    --nav-bg-color: #CCC;
-    --nav-a-color: black;
-    --nav-search-color: white;
-    --nav-search-text-color: black;
-    --nav-search-go-filter: var(--filter-dark);
-    --nav-button-color: black;
+    --page-bg-color: #33819D;
+    --page-text-color: #111;
+    --page-button-bg-color: #EEE;
+    --page-input-bg-color: #BBB;
+    --page-button-alt-bg-color: #F5B642;
+    --page-button-alt-text-color: black;
+    --page-dropdown-bg-color: #BBB;
+    --page-error-color: #FF073A;
+
+    --nav-bg-color: #222;
+    --nav-search-color: #EEE;
+
+    --main-container-bg-color: #EEE;
+
+    --footer-bg-color: #222;
+
+    --light-switch-bg-color: #111;
 }

@@ -33,7 +33,7 @@ nav {
     position: relative;
 }
 .nav-search-container input {
-    background-color: var(--page-input-bg-color);
+    background-color: var(--nav-search-color);
     border: none;
     outline: none;
     border-radius: 15px;
@@ -107,8 +107,11 @@ nav {
 }
 
 .nav-admin-container {
-    background-color: var(--page-error-color);
+    background-color: var(--nav-banner-admin-bg-color);
     z-index: 2;
+}
+.nav-admin-container p {
+    color: var(--nav-banner-admin-text-color);
 }
 
 .nav-admin-container p:first-of-type {
