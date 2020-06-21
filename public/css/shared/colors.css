@@ -31,6 +31,7 @@ body {
     --nav-button-bg-color: #444;
     --nav-banner-admin-bg-color: var(--page-error-color);
     --nav-banner-admin-text-color: white;
+    --nav-burger-button-color: white;
 
     --hot-offer-annotation-bg-color: #FE6D09;
     --hot-offer-annotation-color: white;

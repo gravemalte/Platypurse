@@ -132,6 +132,7 @@ nav {
         right: 0.3em;
         font-size: 3em;
         cursor: pointer;
+        color: var(--nav-burger-button-color);
     }
     #expand-nav:checked ~ .fa-bars {
         display: block;
