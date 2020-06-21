@@ -3,7 +3,7 @@
 // shows all elements that are exclusively working with js
 
 (function() {
-    window.addEventListener("load", async event => {
+    window.addEventListener("DOMContentLoaded", async event => {
         let hiddenElements = document.getElementsByClassName("no-js-hide");
         for (let hiddenElement of hiddenElements) {
             hiddenElement.classList.remove("no-js-hide");

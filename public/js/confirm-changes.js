@@ -5,7 +5,7 @@
     let confirmContainer = null;
     let confirmDiff = new Map();
 
-    window.addEventListener("load", async event => {
+    window.addEventListener("DOMContentLoaded", async event => {
         confirmContainer = document
             .getElementById("confirm-changes-container");
         if (confirmContainer === null) return;
