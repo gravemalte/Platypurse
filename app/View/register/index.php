@@ -43,8 +43,8 @@ $show_error = false;
                     <?php endif; ?>
                     <label for="show-passwd-1" hidden>Passwort anzeigen</label>
                     <input type="checkbox" id="show-passwd-1" data-toggle-password="user-passwd-1" hidden>
-                    <label for="show-passwd-1" class="fas fa-eye"></label>
-                    <label for="show-passwd-1" class="fas fa-eye-slash"></label>
+                    <label for="show-passwd-1" class="fas fa-eye no-js-hide"></label>
+                    <label for="show-passwd-1" class="fas fa-eye-slash no-js-hide"></label>
                     <label for="user-passwd-1">Passwort</label>
                     <input type="password" id="user-passwd-1" name="user-passwd" placeholder="Passwort" required>
                 </div>
@@ -54,8 +54,8 @@ $show_error = false;
                     <?php endif; ?>
                     <label for="show-passwd-2" hidden>Passwort anzeigen</label>
                     <input type="checkbox" id="show-passwd-2" data-toggle-password="user-passwd-2" hidden>
-                    <label for="show-passwd-2" class="fas fa-eye"></label>
-                    <label for="show-passwd-2" class="fas fa-eye-slash"></label>
+                    <label for="show-passwd-2" class="fas fa-eye no-js-hide"></label>
+                    <label for="show-passwd-2" class="fas fa-eye-slash no-js-hide"></label>
                     <label for="user-passwd-2">Passwort wiederholen</label>
                     <input type="password" id="user-passwd-2" name="user-passwd2" placeholder="Passwort wiederholen" required>
                 </div>

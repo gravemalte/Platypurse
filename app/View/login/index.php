@@ -23,8 +23,8 @@
                     <?php endif; ?>
                     <label for="show-passwd" hidden>Passwort anzeigen</label>
                     <input type="checkbox" id="show-passwd" data-toggle-password="user-passwd" hidden>
-                    <label for="show-passwd" class="fas fa-eye"></label>
-                    <label for="show-passwd" class="fas fa-eye-slash"></label>
+                    <label for="show-passwd" class="fas fa-eye no-js-hide"></label>
+                    <label for="show-passwd" class="fas fa-eye-slash no-js-hide"></label>
                     <label for="user-passwd">Passwort</label>
                     <input type="password" id="user-passwd" name="user-passwd" placeholder="Passwort" required>
                 </div>
@@ -32,8 +32,8 @@
                     <div class="form-remember-me-container">
                         <label for="remember-me">Anmeldung merken</label>
                         <input type="checkbox" id="remember-me" name="user-remember-me">
-                        <label for="remember-me" class="fas fa-square"></label>
-                        <label for="remember-me" class="fas fa-check-square"></label>
+                        <label for="remember-me" class="fas fa-square no-js-hide"></label>
+                        <label for="remember-me" class="fas fa-check-square no-js-hide"></label>
                     </div>
                     <div class="form-forgot-container">
                         <a href="">Passwort vergessen?</a>
