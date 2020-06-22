@@ -14,6 +14,13 @@ if (isset($_SESSION['currentUser'])) {
     $loggedIn = true;
 }
 
+$userRating = $displayUser->getUserRatingFromDatabase();
+if(empty($userRating)):
+    $ratingString = "Dude hat noch nichts bewertet bekommen";
+else:
+    $ratingString = "Geiles Rating von $userRating hat der Dude";
+endif;
+
 $savedOffers = ProfileController::getSavedOffers();
 $offersByUser = ProfileController::getOffersFromUser();
 
@@ -34,7 +41,7 @@ $offersByUser = ProfileController::getOffersFromUser();
                 <?php endif; ?>
             </div>
             <div class="user-rating">
-                <span>Geiles Rating von <?= $displayUser->getUserRatingFromDatabase() ?> hat der Dude</span>
+                <span><?= $ratingString ?></span>
             </div>
             <div class="user-rating">
                 <span class="fas fa-star" id="user-rating-5"></span>
