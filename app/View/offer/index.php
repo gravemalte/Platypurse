@@ -14,7 +14,7 @@ endif;
     <div class="main-area">
         <div class="offer-area">
             <div class="offer-container card">
-                <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="offer image">
+                <img src="<?= $offer->getPictureOnPosition(0); ?>" alt="offer image">
                 <div class="description-container">
                     <p class="name"><?=$offer->getPlatypus()->getName();?></p>
                     <p class="description"><?=$offer->getDescription();?></p>

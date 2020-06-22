@@ -72,6 +72,7 @@ define("TABLE_OFFER_IMAGES", "offer_images");
 define("COLUMNS_OFFER_IMAGES", array("oi_id" => "oi_id",
     "o_id" => "o_id",
     "picture_position" => "picture_position",
+    "mime" => "mime",
     "image" => "image"));
 
 /** Table name for table "offer_reports" */

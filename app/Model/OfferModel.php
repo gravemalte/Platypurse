@@ -130,12 +130,13 @@ class OfferModel extends BaseModel {
             endforeach;
             $statement = substr($statement, 0, -2) .") VALUES ";
             $valueArray = array();
-            foreach ($this->getPictures() as $key => $value):
-                $statement .= "(?, ?, ?, ?), ";
+            foreach ($this->getPictures() as $key=>$value):
+                $statement .= "(?, ?, ?, ?, ?), ";
                 $valueArray[] = hexdec(uniqid());
                 $valueArray[] = $this->getId();
                 $valueArray[] = $key;
-                $valueArray[] = $value;
+                $valueArray[] = $value[COLUMNS_OFFER_IMAGES['mime']];
+                $valueArray[] = $value[COLUMNS_OFFER_IMAGES['image']];
             endforeach;
             $statement = substr($statement, 0, -2) .";";
 
@@ -157,9 +158,12 @@ class OfferModel extends BaseModel {
 
         $command = $con->prepare($statement);
         $command->execute(array($id));
-
         foreach ($command->fetchAll() as $row):
-            $picturesArray[$row[COLUMNS_OFFER_IMAGES['picture_position']]] = $row[COLUMNS_OFFER_IMAGES['image']];
+            $contentArray = array();
+            $contentArray[COLUMNS_OFFER_IMAGES['mime']] = $row[COLUMNS_OFFER_IMAGES['mime']];
+            $contentArray[COLUMNS_OFFER_IMAGES['image']] = $row[COLUMNS_OFFER_IMAGES['image']];
+
+            $picturesArray[$row[COLUMNS_OFFER_IMAGES['picture_position']]] = $contentArray;
         endforeach;
 
         return $picturesArray;
@@ -340,6 +344,17 @@ class OfferModel extends BaseModel {
     public function setPictures($pictures)
     {
         $this->pictures = $pictures;
+    }
+
+    public function getPictureOnPosition($pos) {
+        $pictures = $this->getPictures();
+        if(!empty($pictures) && count($pictures) >= $pos):
+            $picture = $pictures[$pos];
+            return "data:" .$picture[COLUMNS_OFFER_IMAGES['mime']].
+                ";base64," .$picture[COLUMNS_OFFER_IMAGES['image']];
+        else:
+            return null;
+        endif;
     }
 
     /**
