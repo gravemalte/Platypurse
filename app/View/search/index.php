@@ -1,7 +1,7 @@
 <?php
     use Controller\SearchController;
 
-    $searchText = $_POST['search'];
+    $searchText = $_GET['search'];
     $sex = "";
     $sexMaleSelected = "";
     $sexFemaleSelected = "";
@@ -9,25 +9,25 @@
     $size = array(0, 75);
     $weight = array(0, 3000);
 
-    if(isset($_POST['sex'])): $sex = $_POST['sex']; endif;
-    if(isset($_POST['sex'])):
-        $sex = $_POST['sex'];
+    if(isset($_GET['sex'])): $sex = $_GET['sex']; endif;
+    if(isset($_GET['sex'])):
+        $sex = $_GET['sex'];
         if($sex == "männlich"): $sexMaleSelected = "selected"; endif;
         if($sex == "weiblich"): $sexFemaleSelected = "selected"; endif;
     endif;
-    if(isset($_POST['age'])):
-        $age = $_POST['age'];
+    if(isset($_GET['age'])):
+        $age = $_GET['age'];
     endif;
-    if(isset($_POST['size'])):
-        $size = $_POST['size'];
+    if(isset($_GET['size'])):
+        $size = $_GET['size'];
     endif;
-    if(isset($_POST['weight'])):
-        $weight = $_POST['weight'];
+    if(isset($_GET['weight'])):
+        $weight = $_GET['weight'];
     endif;?>
 <main class="main-page filter-page">
     <div class="filter-area">
         <div class="filter-container card">
-            <form action="search" method="post">
+            <form action="search" method="get">
                 <div class="title-container">
                     <input type="hidden" name="search" value='<?php echo $searchText ?>'>
                     <p>Filter</p>
