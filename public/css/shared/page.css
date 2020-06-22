@@ -1,12 +1,14 @@
 /* styles for whole page */
+* {
+    transition-property: background-color, color;
+    transition-duration: .5s;
+}
 body {
     margin: 0 auto;
     background-color: var(--page-bg-color);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    transition-property: background-color, color;
-    transition-duration: .5s;
 }
 p,
 span,

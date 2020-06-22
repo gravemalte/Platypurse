@@ -31,6 +31,8 @@ body {
     --nav-button-bg-color: #444;
     --nav-banner-admin-bg-color: var(--page-error-color);
     --nav-banner-admin-text-color: white;
+    --nav-banner-wip-bg-color: #FE6D09;
+    --nav-banner-wip-text-color: black;
     --nav-burger-button-color: white;
 
     --hot-offer-annotation-bg-color: #FE6D09;
@@ -55,19 +57,33 @@ body {
 
 /* light colors (fry your eyes) */
 body.light {
-    --page-bg-color: #33819D;
+    --page-bg-color: #FEDEAF;
     --page-text-color: #111;
     --page-button-bg-color: #EEE;
     --page-input-bg-color: #BBB;
-    --page-button-alt-bg-color: #F5B642;
+    --page-button-alt-bg-color: #eaa829;
     --page-button-alt-text-color: black;
     --page-dropdown-bg-color: #BBB;
     --page-error-color: #FF073A;
+    --page-button-danger-bg-color: #FF073A;
+    --page-button-danger-text-color: var(--page-text-color);
+    --page-button-report-bg-color: #ffb129;
+    --page-button-report-text-color: var(--page-text-color);
 
     --nav-bg-color: #222;
     --nav-search-color: #EEE;
 
+    --hot-offer-annotation-bg-color: #0A0A0A;
+    --hot-offer-annotation-color: white;
+
     --main-container-bg-color: #EEE;
+
+    --chat-list-bg-color: #BBB;
+    --chat-contact-bg-color: #EEE;
+    --chat-contact-select-bg-color: #0074FF;
+    --chat-unread-messages-bg-color: #CC0000;
+    --chat-receive-message-bg-color: #999;
+    --chat-send-message-bg-color: #0074FF;
 
     --footer-bg-color: #222;
 

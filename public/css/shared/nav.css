@@ -98,7 +98,11 @@ nav {
 }
 
 .nav-wip-container {
-    background-color: var(--hot-offer-annotation-bg-color);
+    background-color: var(--nav-banner-wip-bg-color);
+    color: var(--nav-banner-wip-text-color);
+}
+.nav-wip-container * {
+    color: inherit;
 }
 
 .nav-wip-container p:first-of-type {
