@@ -34,6 +34,9 @@ $offersByUser = ProfileController::getOffersFromUser();
                 <?php endif; ?>
             </div>
             <div class="user-rating">
+                <span>Geiles Rating von <?= $displayUser->getUserRatingFromDatabase() ?> hat der Dude</span>
+            </div>
+            <div class="user-rating">
                 <span class="fas fa-star" id="user-rating-5"></span>
                 <span class="fas fa-star" id="user-rating-4"></span>
                 <span class="fas fa-star" id="user-rating-3"></span>
