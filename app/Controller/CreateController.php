@@ -3,8 +3,10 @@
 namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
+use Hydro\Base\Database\Driver\SQLite;
 use Model\OfferModel;
 use Model\PlatypusModel;
+use Hydro\Helper\Date;
 
 class CreateController extends BaseController
 {
@@ -30,23 +32,22 @@ class CreateController extends BaseController
     }
 
     public function processInput() {
+        $existingOffer = null;
+
+
         $currentUser = $_SESSION['currentUser'];
         $platypusId = hexdec(uniqid());
         $offerId = hexdec(uniqid());
         $userId = $currentUser->getId();
+        $createDate = Date::now();
 
         if(isset($_POST["offerId"])):
             $offerId = $_POST["offerId"];
-            $offer = OfferModel::getFromDatabase(COLUMNS_OFFER['o_id']. " = ?",
-                array($offerId));
-
-            if(!empty($offer)):
-                $platypusId = $offer->getPlatypus()->getId();
-                $userId = $offer->getUserId();
-            endif;
+            $existingOffer = OfferModel::getFromDatabase(SQLite::connectToSQLite(), "WHERE " .COLUMNS_OFFER['o_id']. " = ?",
+                array($offerId))[0];
         endif;
 
-        if(empty($offer) || $currentUser->getId() == $offer->getUserId()
+        if(!isset($existingOffer) ||$currentUser->getId() == $existingOffer->getUser()->getId()
             || $currentUser->isAdmin()):
 
             $platypus = new PlatypusModel($platypusId,
@@ -58,19 +59,23 @@ class CreateController extends BaseController
                 1);
 
             $offer = new OfferModel($offerId,
-                $userId,
+                $currentUser,
                 $platypus,
                 $this->processInputPrice($_POST["price"]),
                 0,
-                $_POST['description']);
+                $_POST['description'],
+                array());
 
+            if(!empty($existingOffer)):
+                $platypus->setId($existingOffer->getPlatypus()->getId());
 
-
-            if($platypus->writeToDatabase()):
-                $offer->writeToDatabase();
+                $offer->setClicks($existingOffer->getClicks());
+                $offer->setCreateDate($existingOffer->getCreateDate());
             endif;
+
+            $offer->writeToDatabase();
         endif;
-        header('location: ' . URL . 'offer?id='.$offerId);
+        header('location: ' . URL . 'offer?id=' .$offerId);
         exit();
     }
 

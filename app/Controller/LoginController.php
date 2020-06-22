@@ -5,6 +5,7 @@ namespace Controller;
 
 use http\Client\Curl\User;
 use Hydro\Base\Controller\BaseController;
+use Hydro\Base\Database\Driver\SQLite;
 use Model\UserModel;
 
 class LoginController extends BaseController
@@ -37,9 +38,9 @@ class LoginController extends BaseController
         $userSentMail = strtolower($_POST['user-email']);
         $userSentPasswd = $_POST['user-passwd'];
 
-        $whereClause = COLUMNS_USER["mail"]. " = ? AND "
+        $whereClause = "WHERE " .COLUMNS_USER["mail"]. " = ? AND "
             .COLUMNS_USER["disabled"]. " = ?";
-        $user = UserModel::getFromDatabase($whereClause, array($userSentMail, 0));
+        $user = UserModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($userSentMail, 0));
         if (!empty($user)):
             if (password_verify($userSentPasswd, $user->getPassword())) {
                 $_SESSION['currentUser'] = $user;
