@@ -4,9 +4,9 @@ function buildChatThreadMap(modules) {
     const ChatThread = modules.ChatThread;
 
     class ChatThreadMap extends Map {
-        constructor(threads) {
+        constructor() {
             super();
-            this._container = document.getElementById("chat-list-container");
+            this.container = document.getElementById("chat-list-container");
         }
     }
 

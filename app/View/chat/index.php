@@ -18,7 +18,7 @@ if(isset($_GET['id'])){
     <div class="chat-container card" id="chat-container">
         <span id="chat-user-id" hidden><?= $userID ?></span>
         <div class="chat-list-container" id="chat-list-container">
-            <a href="">
+            <div>
                 <div class="chat-contact-container select">
                     <div class="chat-contact-icon-container">
                         <img src="assets/nav/user-circle-solid.svg" alt="user icon">
@@ -32,8 +32,8 @@ if(isset($_GET['id'])){
                         <p>12</p>
                     </div>
                 </div>
-            </a>
-            <a href="">
+            </div>
+            <div>
                 <div class="chat-contact-container">
                     <div class="chat-contact-icon-container">
                         <img src="assets/nav/user-circle-solid.svg" alt="user icon">
@@ -47,15 +47,15 @@ if(isset($_GET['id'])){
                         <p>12</p>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
         <div class="chat-main-container">
-            <div class="chat-title-container">
+            <div class="chat-title-container" id="chat-title-container">
                 <a href="profile">
                     <p>SchnabelFan1</p>
                 </a>
             </div>
-            <div class="chat-text-container">
+            <div class="chat-text-container" id="chat-text-container">
                 <div class="chat-message-container receive">
                     <div>
                         <h1>Hey, ich fand dein Schnabeltier voll cute und so</h1>

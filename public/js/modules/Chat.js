@@ -11,6 +11,11 @@ function buildChat(modules) {
             this.chatThreadMap = new ChatThreadMap;
             this.userId = document.getElementById("chat-user-id").innerHTML;
             this.messages = [];
+            this.currentThreadId = null;
+        }
+
+        get currentThread() {
+            return this.chatThreadMap.get(this.currentThreadId);
         }
 
         async fetchMessages() {
@@ -19,7 +24,7 @@ function buildChat(modules) {
 
             this.chatThreadMap = new ChatThreadMap;
             this.messages = [];
-            let messageLoader = [];
+            let nameLoader = [];
             for (let message of messages) {
                 let chatMessage = new ChatMessage(message);
                 this.messages.push(chatMessage);
@@ -27,22 +32,62 @@ function buildChat(modules) {
                 let recipientId = chatMessage.senderId;
                 if (recipientId === this.userId) recipientId = chatMessage.receiverId;
                 if (!this.chatThreadMap.has(recipientId)) {
-                    this.chatThreadMap.set(recipientId, new ChatThread());
+                    this.chatThreadMap.set(recipientId, new ChatThread(recipientId));
                 }
 
                 let thread = this.chatThreadMap.get(recipientId);
                 thread.push(chatMessage);
 
-                if (typeof thread.recipientName === "undefined") {
-                    thread.recipientName = "";
-                    messageLoader.push((async () => {
+                if (thread.recipientName === "") {
+                    nameLoader.push((async () => {
                         let recipientNameResponse = await fetch("./chat/getUserDisplayName?id=" + recipientId);
                         thread.recipientName = await recipientNameResponse.text();
                     })());
                 }
             }
-            await Promise.all(messageLoader);
-            console.log(this);
+            await Promise.all(nameLoader);
+        }
+
+        setThreads() {
+            this.chatThreadMap.container.innerHTML = "";
+            for (let chatThread of this.chatThreadMap.values()) {
+                let isSelected = chatThread.id === this.currentThreadId;
+                this.chatThreadMap.container.appendChild(chatThread.createElement(isSelected));
+            }
+        }
+
+        setTitle() {
+            let titleContainer = document.getElementById("chat-title-container");
+            let titleLink = titleContainer.children[0];
+            let titleName = titleLink.children[0];
+
+            if (this.currentThreadId === null) {
+                titleLink.href = "";
+                titleName.innerHTML = "&nbsp;";
+                return;
+            }
+
+            titleLink.href = "profile?id=" + this.currentThreadId;
+            titleName.innerHTML = this.chatThreadMap.get(this.currentThreadId).recipientName;
+        }
+
+        setChatLog() {
+            let textContainer = document.getElementById("chat-text-container");
+            textContainer.innerHTML = "";
+            if (this.currentThreadId === null) return;
+            let thread = this.currentThread;
+            for (let message of thread) {
+                textContainer.appendChild(message.createElement(this.userId));
+            }
+        }
+
+        init() {
+            const urlParams = new URLSearchParams(window.location.search);
+            this.currentThreadId = urlParams.get('id');
+
+            this.setThreads();
+            this.setTitle();
+            this.setChatLog();
         }
     }
 

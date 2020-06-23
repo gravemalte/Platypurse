@@ -9,13 +9,15 @@ use Hydro\Base\Model\BaseModel;
 
 class ChatModel extends BaseModel
 {
+    private $msgID;
     private $from;
     private $to;
     private $message;
     private $date;
 
-    public function __construct($fromID, $senderID, $message, $date)
+    public function __construct($msgID, $fromID, $senderID, $message, $date)
     {
+        $this->msgID = $msgID;
         $this->from = $fromID;
         $this->to = $senderID;
         $this->message = $message;
@@ -34,6 +36,7 @@ class ChatModel extends BaseModel
         $messages = array();
         foreach ($result as $row){
             $messages[] = new ChatModel(
+                $row[COLUMNS_MESSAGE['msg_id']],
                 $row[COLUMNS_MESSAGE['sender_id']],
                 $row[COLUMNS_MESSAGE['receiver_id']],
                 $row[COLUMNS_MESSAGE['message']],
@@ -62,11 +65,12 @@ class ChatModel extends BaseModel
 
     public function getId()
     {
-        // TODO: Implement getId() method.
+        return $this->msgID;
     }
 
     public function sendMessageToDatabase(){
         $insertValues = array(
+            $this->getId(),
             $this->getFrom(),
             $this->getTo(),
             $this->getMessage(),

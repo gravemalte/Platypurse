@@ -44,11 +44,13 @@ class ChatController extends BaseController
         $result = array();
 
         foreach ($messages as $message){
-            $result[] = array(COLUMNS_MESSAGE['sender_id'] => $message->getFrom(),
+            $result[] = array(
+                COLUMNS_MESSAGE['msg_id'] => $message->getId(),
+                COLUMNS_MESSAGE['sender_id'] => $message->getFrom(),
                 COLUMNS_MESSAGE['receiver_id'] => $message->getTo(),
-                "receiver_name" => UserModel::getUser($message->getTo())->getDisplayName(),
                 COLUMNS_MESSAGE['message']=>$message->getMessage(),
-                COLUMNS_MESSAGE['send_date']=>$message->getDate());
+                COLUMNS_MESSAGE['send_date']=>$message->getDate()
+            );
         }
 
         echo json_encode($result);
