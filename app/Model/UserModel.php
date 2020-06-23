@@ -68,7 +68,9 @@ class UserModel extends BaseModel
     }
 
     public function updateInDatabase($con, $editDate = true) {
-        return $this->update($con);;
+        $updateValues = $this->getDatabaseValues();
+        $updateValues[] = $this->getId();
+        return $this->update($con, $updateValues);;
     }
 
     /**
@@ -76,6 +78,14 @@ class UserModel extends BaseModel
      */
     public function deactivateInDatabase() {
         $this->setDisabled(1);
+        $this->updateInDatabase(SQLite::connectToSQLite());
+    }
+
+    /**
+     * Set active to 0 and update database
+     */
+    public function activateInDatabase() {
+        $this->setDisabled(0);
         $this->updateInDatabase(SQLite::connectToSQLite());
     }
 

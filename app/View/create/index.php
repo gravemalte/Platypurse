@@ -52,7 +52,8 @@ endif;
                     <div class="img-container main-input-container">
                         <p class="name">Bilder</p>
                         <div class="drag-drop-container">
-                            <input id="create-image" type="file" multiple accept="image/*" name="image" hidden>
+                            <input id="create-image" type="file" multiple accept="image/*" name="image"
+                                   enctype="multipart/form-data" hidden>
                             <label for="create-image">
                                 <span>Drag'n'Drop</span>
                                 <span>Bilder hier</span>
