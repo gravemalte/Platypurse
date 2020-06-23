@@ -9,7 +9,7 @@ $user = EditProfileController::getUser();
 <main class="main-page edit-profile-page">
     <div class="edit-profile-area">
         <div class="edit-profile-container card">
-            <form action="editProfile/update">
+            <form action="editProfile/update" method="post">
                 <input type="hidden" name="id" value="<?= $user->getId() ?>">
                 <div class="avatar-upload-container">
                     <input type="file" accept="image/*" id="image-upload" alt="user avatar upload" hidden>
