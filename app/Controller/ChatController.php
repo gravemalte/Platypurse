@@ -30,7 +30,10 @@ class ChatController extends BaseController
             return;
         }
 
-        $messages = ChatModel::getMessages($_SESSION['currentUser']->getId());
+        $whereClause = "WHERE " . COLUMNS_MESSAGE["sender_id"] . " = ? OR " . COLUMNS_MESSAGE["receiver_id"] . " = ?";
+        $userID = $_SESSION['currentUser']->getId();
+
+        $messages = ChatModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($userID, $userID));
         $result = array();
 
         foreach ($messages as $message){
@@ -64,23 +67,4 @@ class ChatController extends BaseController
         $chat->sendMessageToDatabase();
 
     }
-
-    public static function getMessage(){
-        $userID = $_SESSION['currentUser']->getId();
-        $whereClause = "WHERE " .COLUMNS_MESSAGE["sender_id"].  " = ? ";
-
-        $result = array();
-        $messages = ChatModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($userID));
-
-        foreach ($messages as $message){
-            $result[] = array(COLUMNS_MESSAGE['sender_id'] => $message->getFrom(),
-                COLUMNS_MESSAGE['receiver_id'] => $message->getTo(),
-                COLUMNS_MESSAGE['message']=>$message->getMessage(),
-                COLUMNS_MESSAGE['send_date']=>$message->getDate());
-        }
-
-        echo json_encode($result);
-    }
-
-
 }

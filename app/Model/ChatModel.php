@@ -65,24 +65,7 @@ class ChatModel extends BaseModel
         // TODO: Implement getId() method.
     }
 
-    public static function getMessages($userID){
-        $whereClause = COLUMNS_MESSAGE["sender_id"] .  " = ? AND " . COLUMNS_MESSAGE["receiver_id"] .  " = ?";
-        $chat = array();
-        $result = null;
-
-        //SQLite::selectBuilder(COLUMNS_MESSAGE, TABLE_MESSAGE, $whereClause, array($userID));
-        foreach ($result as $row){
-            $chat[] = new ChatModel(
-                $row[COLUMNS_MESSAGE['sender_id']],
-                $row[COLUMNS_MESSAGE['receiver_id']],
-                $row[COLUMNS_MESSAGE['message']],
-                $row[COLUMNS_MESSAGE['send_date']]);
-        }
-
-        return $chat;
-    }
-
-    public function sentMessageToDatabase(){
+    public function sendMessageToDatabase(){
         $insertValues = array(
             $this->getFrom(),
             $this->getTo(),
