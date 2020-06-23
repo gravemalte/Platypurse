@@ -88,6 +88,14 @@ class UserModel extends BaseModel
     }
 
     /**
+     * Set active to 0 and update database
+     */
+    public function activateInDatabase() {
+        $this->setDisabled(0);
+        $this->updateInDatabase(SQLite::connectToSQLite());
+    }
+
+    /**
      * @return array
      */
     public function getDatabaseValues() {
