@@ -230,4 +230,9 @@ class UserModel extends BaseModel
     {
         $this->disabled = $disabled;
     }
+
+    public static function getUser($id) {
+        $whereClause = "WHERE " .COLUMNS_USER["u_id"]. " = ?";
+        return self::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($id));
+    }
 }

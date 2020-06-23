@@ -8,6 +8,7 @@ use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Helper\Date;
 use Model\ChatModel;
+use Model\UserModel;
 
 class ChatController extends BaseController
 {
@@ -30,7 +31,13 @@ class ChatController extends BaseController
             return;
         }
 
-        $whereClause = "WHERE " . COLUMNS_MESSAGE["sender_id"] . " = ? OR " . COLUMNS_MESSAGE["receiver_id"] . " = ?";
+        $whereClause = "WHERE "
+            . COLUMNS_MESSAGE["sender_id"]
+            . " = ? OR "
+            . COLUMNS_MESSAGE["receiver_id"]
+            . " = ? ORDER BY "
+            . COLUMNS_MESSAGE["send_date"]
+            . " ASC";
         $userID = $_SESSION['currentUser']->getId();
 
         $messages = ChatModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($userID, $userID));
@@ -39,11 +46,22 @@ class ChatController extends BaseController
         foreach ($messages as $message){
             $result[] = array(COLUMNS_MESSAGE['sender_id'] => $message->getFrom(),
                 COLUMNS_MESSAGE['receiver_id'] => $message->getTo(),
+                "receiver_name" => UserModel::getUser($message->getTo())->getDisplayName(),
                 COLUMNS_MESSAGE['message']=>$message->getMessage(),
                 COLUMNS_MESSAGE['send_date']=>$message->getDate());
         }
 
         echo json_encode($result);
+    }
+
+    public static function getUserDisplayName() {
+        if (!isset($_GET['id'])) {
+            http_response_code(400);
+            echo 0;
+            return;
+        }
+
+        echo UserModel::getUser($_GET['id'])->getDisplayName();
     }
 
 

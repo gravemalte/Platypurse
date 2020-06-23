@@ -67,10 +67,11 @@ VALUES
 
 
 INSERT INTO message (sender_id, receiver_id, message) VALUES
-(1, 2, 'Das ist ein Test'),
-(1, 1, 'Das ist ein Test'),
-(1, 1, 'Das ist ein Test'),
-(1, 1, 'Das ist ein Test');
+(1, 2, 'Ich bin der Test 1'),
+(1, 3, 'Ich bin auch ein Test'),
+(3, 1, 'Das ist ein Test'),
+(2, 1, 'Oha, so viele Tests'),
+(2, 3, 'Hihi, das sieht der Admin nich');
 
 /*Tables to fill:
   - message

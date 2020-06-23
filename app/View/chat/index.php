@@ -16,6 +16,7 @@ if(isset($_GET['id'])){
 </div>
 <main class="main-page">
     <div class="chat-container card" id="chat-container">
+        <span id="chat-user-id" hidden><?= $userID ?></span>
         <div class="chat-list-container" id="chat-list-container">
             <a href="">
                 <div class="chat-contact-container select">
