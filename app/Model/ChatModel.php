@@ -20,27 +20,37 @@ class ChatModel extends BaseModel
         $this->to = $senderID;
         $this->message = $message;
         $this->date = $date;
-        parent::__construct();
+        parent::__construct(TABLE_MESSAGE, COLUMNS_MESSAGE);
     }
 
-    public function create()
+    public function insertIntoDatabase($con)
     {
-        // TODO: Implement create() method.
+        // TODO: Implement insertIntoDatabase() method.
     }
 
-    public function read()
+    public static function getFromDatabase($con, $whereClause, $value)
     {
-        // TODO: Implement read() method.
+        // TODO: Implement getFromDatabase() method.
     }
 
-    public function update()
+    public function updateInDatabase($con, $editDate = true)
     {
-        // TODO: Implement update() method.
+        // TODO: Implement updateInDatabase() method.
     }
 
-    public function delete()
+    public function deactivateInDatabase()
     {
-        // TODO: Implement delete() method.
+        // TODO: Implement deactivateInDatabase() method.
+    }
+
+    public function getDatabaseValues()
+    {
+        // TODO: Implement getDatabaseValues() method.
+    }
+
+    public function getId()
+    {
+        // TODO: Implement getId() method.
     }
 
     public static function getMessages($userID, $receiverID){
