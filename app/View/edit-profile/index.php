@@ -9,10 +9,10 @@ $user = EditProfileController::getUser();
 <main class="main-page edit-profile-page">
     <div class="edit-profile-area">
         <div class="edit-profile-container card">
-            <form action="editProfile/update" method="post">
+            <form action="editProfile/update" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?= $user->getId() ?>">
                 <div class="avatar-upload-container">
-                    <input type="file" accept="image/*" id="image-upload" alt="user avatar upload" hidden>
+                    <input type="file" name="image" accept="image/*" id="image-upload" alt="user avatar upload" hidden>
                     <label for="image-upload">
                         <img src="assets/nav/user-circle-solid.svg" alt="user avatar">
                         <span>Wähle neuen Avatar</span>
