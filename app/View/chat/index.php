@@ -16,8 +16,8 @@ if(isset($_GET['id'])){
     <p>WIP! Hier entsteht etwas. Schau später nochmal vorbei. <span class="fas fa-wrench"></span></p>
 </div>
 <main class="main-page">
-    <div class="chat-container card">
-        <div class="chat-list-container">
+    <div class="chat-container card" id="chat-container">
+        <div class="chat-list-container" id="chat-list-container">
             <a href="">
                 <div class="chat-contact-container select">
                     <div class="chat-contact-icon-container">

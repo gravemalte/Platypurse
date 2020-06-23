@@ -4,7 +4,7 @@
     window.addEventListener("DOMContentLoaded", async event => {
 
         // importing cache-busted Chat module
-        const moduleList  = ["Chat", "ChatThreadList"];
+        const moduleList  = ["Chat", "ChatThreadList", "ChatMessage"];
         const moduleBuilders = {};
         const modules = {};
         for (let moduleEntry of moduleList) {
@@ -18,5 +18,6 @@
         }
 
         let chat = new modules.Chat();
+        await chat.fetchMessages();
     });
 })();

@@ -23,23 +23,7 @@ class ChatModel extends BaseModel
         parent::__construct();
     }
 
-    public static function getMessages($userID, $receiverID){
-        $whereClause = COLUMNS_MESSAGE["sender_id"] .  " = ? AND " . COLUMNS_MESSAGE["receiver_id"] .  " = ?";
-        $chat = array();
-        $result = SQLite::selectBuilder(COLUMNS_MESSAGE, TABLE_MESSAGE,
-            $whereClause, array($userID, $receiverID));
-        foreach ($result as $row){
-            $chat[] = new ChatModel(
-                $row[COLUMNS_MESSAGE['sender_id']],
-                $row[COLUMNS_MESSAGE['receiver_id']],
-                $row[COLUMNS_MESSAGE['message']],
-                $row[COLUMNS_MESSAGE['send_date']]);
-        }
-
-        return $chat;
-    }
-
-    public function sentMessageToDatabase(){
+    public function sendMessageToDatabase(){
         $insertValues = array(
             $this->getFrom(),
             $this->getTo(),
@@ -112,6 +96,22 @@ class ChatModel extends BaseModel
     public function setDate($date)
     {
         $this->date = $date;
+    }
+
+    public static function getMessages($userID){
+        $whereClause = COLUMNS_MESSAGE["sender_id"] .  " = ? OR " . COLUMNS_MESSAGE["receiver_id"] .  " = ?";
+        $chat = array();
+        $result = SQLite::selectBuilder(COLUMNS_MESSAGE, TABLE_MESSAGE,
+            $whereClause, array($userID, $userID));
+        foreach ($result as $row){
+            $chat[] = new ChatModel(
+                $row[COLUMNS_MESSAGE['sender_id']],
+                $row[COLUMNS_MESSAGE['receiver_id']],
+                $row[COLUMNS_MESSAGE['message']],
+                $row[COLUMNS_MESSAGE['send_date']]);
+        }
+
+        return $chat;
     }
 
 }
