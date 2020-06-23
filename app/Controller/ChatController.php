@@ -5,6 +5,7 @@ namespace Controller;
 
 
 use Hydro\Base\Controller\BaseController;
+use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Helper\Date;
 use Model\ChatModel;
 
@@ -64,12 +65,12 @@ class ChatController extends BaseController
 
     }
 
-    /*
-    public function getMessage($userID, $receiverID){
+    public static function getMessage(){
+        $userID = $_SESSION['currentUser']->getId();
+        $whereClause = "WHERE " .COLUMNS_MESSAGE["sender_id"].  " = ? ";
 
         $result = array();
-        $messages = ChatModel::getMessages($userID);
-
+        $messages = ChatModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($userID));
 
         foreach ($messages as $message){
             $result[] = array(COLUMNS_MESSAGE['sender_id'] => $message->getFrom(),
@@ -78,12 +79,8 @@ class ChatController extends BaseController
                 COLUMNS_MESSAGE['send_date']=>$message->getDate());
         }
 
-        return json_encode($result);
+        echo json_encode($result);
     }
 
-    public function getMyMessage(){
-
-    }
-    */
 
 }

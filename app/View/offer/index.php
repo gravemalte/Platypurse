@@ -7,7 +7,7 @@ $offer->offerClickPlusOne();
 $seller = $offer->getUser();
 $isSaved = false;
 if(isset($_SESSION['currentUser'])):
-    $isSaved = OfferController::getOfferFromSavedList($_GET['id']);
+    $isSaved = OfferController::isOfferInSavedList($_GET['id']);
 endif;
 ?>
 <main class="main-page">
@@ -30,7 +30,7 @@ endif;
             </div>
             <div class="side-container">
                 <div class="offer-buttons-container">
-                    <a href="chat?id=<?=$offer->getUserId() ?>" class="send-message-button button">
+                    <a href="chat?id=<?=$offer->getUser()->getId() ?>" class="send-message-button button">
                         <div>
                             <p>Nachricht schreiben</p>
                         </div>

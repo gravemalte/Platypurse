@@ -5,9 +5,8 @@ namespace Controller;
 
 
 use Hydro\Base\Controller\BaseController;
-use Model\OfferGridModel;
+use Hydro\Base\Database\Driver\SQLite;
 use Model\OfferModel;
-use Model\PlatypusModel;
 
 class SearchController extends BaseController
 {
@@ -22,7 +21,7 @@ class SearchController extends BaseController
 
 
     public static function getOffers($like = "", $sex = "", $age = array(0, 20), $size = array(0, 20), $weight = array(0, 3000)) {
-        $whereClause = COLUMNS_PLATYPUS['name']. " LIKE ? 
+        $whereClause = "INNER JOIN platypus ON platypus.p_id = offer.p_id WHERE " .COLUMNS_PLATYPUS['name']. " LIKE ? 
         AND ".COLUMNS_PLATYPUS['age_years']." BETWEEN ? and ?
         AND ".COLUMNS_PLATYPUS['size']." BETWEEN ? and ?
         AND ".COLUMNS_PLATYPUS['weight']." BETWEEN ? and ?
@@ -34,6 +33,6 @@ class SearchController extends BaseController
             $values[] = $sex;
         endif;
 
-        return OfferGridModel::getFromDatabase(OfferGridModel::TABLE, $whereClause, $values);
+        return OfferModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause, $values);
     }
 }

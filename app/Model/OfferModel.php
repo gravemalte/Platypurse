@@ -2,17 +2,19 @@
 
 namespace Model;
 
+use PDOException;
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
 use Hydro\Helper\Date;
 
 class OfferModel extends BaseModel {
     private $id;
-    private $userId;
+    private $user;
     private $platypus;
     private $price;
     private $negotiable;
     private $description;
+    private $pictures;
     private $clicks;
     private $create_date;
     private $edit_date;
@@ -21,109 +23,162 @@ class OfferModel extends BaseModel {
     /**
      * OfferModel constructor.
      * @param $id
-     * @param $userId
+     * @param $user
      * @param $platypus
      * @param $price
      * @param $negotiable
      * @param $description
+     * @param $pictures
      * @param $clicks
      * @param $create_date
      * @param $edit_date
      * @param $active
      */
-    public function __construct($id, $userId, $platypus, $price, $negotiable, $description, $clicks = 0, $create_date = "", $edit_date = "", $active = 1)
+    public function __construct($id, $user, $platypus, $price, $negotiable, $description, $pictures, $clicks = 0, $create_date = "", $edit_date = "", $active = 1)
     {
         if(empty($create_date)):
             $create_date = Date::now();
         endif;
 
         $this->id = $id;
-        $this->userId = $userId;
+        $this->user = $user;
         $this->platypus = $platypus;
         $this->price = $price;
         $this->negotiable = $negotiable;
         $this->description = $description;
+        $this->pictures = $pictures;
         $this->clicks = $clicks;
         $this->create_date = $create_date;
         $this->edit_date = $edit_date;
         $this->active = $active;
-        parent::__construct();
+        parent::__construct(TABLE_OFFER, COLUMNS_OFFER);
     }
 
-    public static function getFromDatabase($preparedWhereClause = "", $values = array(),
-                                           $groupClause = "", $orderClause = "", $limitClause = "") {
-        $offer = array();
-        $result = SQLite::selectBuilder(COLUMNS_OFFER,
-            TABLE_OFFER,
-            $preparedWhereClause,
-            $values,
-            $groupClause,
-            $orderClause,
-            $limitClause);
+    public function insertIntoDatabase($con) {
+        $result = false;
+        if($this->getPlatypus()->insertIntoDatabase($con)):
+            if($this->create($con)):
+                $result = $this->insertImagesIntoDatabase($con);
+            else:
+                throw new PDOException();
+            endif;
+        else:
+            throw new PDOException();
+        endif;
+        return $result;
+    }
 
+    public static function getFromDatabase($con, $whereClause, $values) {
+        $result = parent::read($con, TABLE_OFFER. " " .$whereClause, $values);
+        $offer = array();
         foreach ($result as $row):
             $offer[] = new OfferModel($row[COLUMNS_OFFER["o_id"]],
-                $row[COLUMNS_OFFER["u_id"]],
-                PlatypusModel::getFromDatabase(COLUMNS_OFFER["p_id"]. " = ? ",
-                    array($row[COLUMNS_OFFER["p_id"]])),
+                UserModel::getFromDatabase($con, "WHERE " .COLUMNS_USER['u_id']. " = ?", array($row[COLUMNS_OFFER["u_id"]])),
+                PlatypusModel::getFromDatabase($con, "WHERE " .COLUMNS_PLATYPUS['p_id']. " = ?", array($row[COLUMNS_OFFER["p_id"]])),
                 $row[COLUMNS_OFFER["price"]],
                 $row[COLUMNS_OFFER["negotiable"]],
                 $row[COLUMNS_OFFER["description"]],
+                OfferModel::getImagesFromDatabase($con, $row[COLUMNS_OFFER['o_id']]),
                 $row[COLUMNS_OFFER["clicks"]],
                 $row[COLUMNS_OFFER["create_date"]],
                 $row[COLUMNS_OFFER["edit_date"]],
                 $row[COLUMNS_OFFER["active"]]);
         endforeach;
 
-        if(sizeof($offer) <= 1):
-            return array_shift($offer);
-        else:
-            return $offer;
-        endif;
+        return $offer;
     }
 
-    public function writeToDatabase() {
-        // Check if offer exists in database
-        $offerInDatabase = $this->getFromDatabase(COLUMNS_OFFER["o_id"]. " = ?"
-        , array($this->getId()));
+    public function updateInDatabase($con, $editDate = true) {
+        $result = false;
 
-        // If platypus doesn't exist, insert into database. Else update in database
-        if(empty($offerInDatabase)):
-            $this->insertIntoDatabase();
-        else:
-            $this->updateInDatabase();
-        endif;
-    }
-
-    /**
-     * @return bool
-     */
-    public function insertIntoDatabase() {
-        return SQLite::insertBuilder(TABLE_OFFER,
-            COLUMNS_OFFER,
-            $this->getDatabaseValues());
-    }
-
-    /**
-     * @param bool $editDate
-     * @return bool
-     */
-    public function updateInDatabase($editDate = true) {
         if($editDate):
             $this->setEditDate(Date::now());
         endif;
 
-        $preparedSetClause = "";
-        foreach (COLUMNS_OFFER as $tableCol):
-            $preparedSetClause .= $tableCol. " = ?,";
+        try {
+            if($this->getPlatypus()->updateInDatabase($con)):
+                $updateValues = $this->getDatabaseValues();
+                $updateValues[] = $this->getId();
+                $result = $this->update($con, $updateValues);
+            else:
+                throw new PDOException();
+            endif;
+        }
+        catch (PDOException $ex) {
+            $result = false;
+        }
+        finally {
+            return $result;
+        }
+    }
+
+    /**
+     * Set active to 0 and update database
+     */
+    public function deactivateInDatabase() {
+        $this->setActive(0);
+        $this->setEditDate(Date::now());
+        $this->getPlatypus()->setActive(0);
+        $this->updateInDatabase(SQLite::connectToSQLite(), false);
+    }
+
+    public function insertImagesIntoDatabase($con) {
+        if(!empty($this->getPictures())):
+            $statement = "INSERT INTO " .TABLE_OFFER_IMAGES. "(";
+            foreach (COLUMNS_OFFER_IMAGES as $col):
+                $statement .= $col .", ";
+            endforeach;
+            $statement = substr($statement, 0, -2) .") VALUES ";
+            $valueArray = array();
+            foreach ($this->getPictures() as $key => $value):
+                $statement .= "(?, ?, ?, ?), ";
+                $valueArray[] = hexdec(uniqid());
+                $valueArray[] = $this->getId();
+                $valueArray[] = $key;
+                $valueArray[] = $value;
+            endforeach;
+            $statement = substr($statement, 0, -2) .";";
+
+            //print($statement);
+            //print_r($valueArray);
+
+            $command = $con->prepare($statement);
+            return $command->execute($valueArray);
+        else:
+            return true;
+        endif;
+    }
+
+    public static function getImagesFromDatabase($con, $id) {
+        $picturesArray = array();
+
+        $statement = "SELECT * FROM " .TABLE_OFFER_IMAGES. " WHERE " .COLUMNS_OFFER_IMAGES['o_id']. " = ? 
+            ORDER BY " .COLUMNS_OFFER_IMAGES['picture_position']. " desc;";
+
+        $command = $con->prepare($statement);
+        $command->execute(array($id));
+
+        foreach ($command->fetchAll() as $row):
+            $picturesArray[$row[COLUMNS_OFFER_IMAGES['picture_position']]] = $row[COLUMNS_OFFER_IMAGES['image']];
         endforeach;
 
-        $preparedWhereClause = COLUMNS_OFFER["o_id"]. " = " .$this->getId();
+        return $picturesArray;
+    }
 
-        return SQLite::updateBuilder(TABLE_OFFER,
-            substr($preparedSetClause, 0, -1),
-            $preparedWhereClause,
-            $this->getDatabaseValues());
+    public static function getNewestOffers() {
+        $con = SQLite::connectToSQLite();
+        $whereClause = "WHERE " .COLUMNS_OFFER['active']. " = ? ORDER BY "
+            .COLUMNS_OFFER['create_date']. " desc LIMIT 9";
+
+        return OfferModel::getFromDatabase($con, $whereClause, array(1));
+    }
+
+    public static function getHotOffer() {
+        $con = SQLite::connectToSQLite();
+        $whereClause = "WHERE " .COLUMNS_OFFER['active']. " = ? ORDER BY "
+            .COLUMNS_OFFER['clicks']. " desc LIMIT 1";
+
+        return OfferModel::getFromDatabase($con, $whereClause, array(1))[0];
     }
 
     /**
@@ -131,15 +186,7 @@ class OfferModel extends BaseModel {
      */
     public function offerClickPlusOne() {
         $this->setClicks($this->getClicks() + 1);
-        $this->updateInDatabase(false);
-    }
-
-    /**
-     * Set active to 0 and update database
-     */
-    public function deleteFromDatabase() {
-        $this->setActive(0);
-        return $this->updateInDatabase();
+        $this->updateInDatabase(SQLite::connectToSQLite(), false);
     }
 
     /**
@@ -147,7 +194,7 @@ class OfferModel extends BaseModel {
      */
     public function getDatabaseValues() {
         return array($this->getId(),
-            $this->getUserId(),
+            $this->getUser()->getId(),
             $this->getPlatypus()->getId(),
             $this->getPriceUnformatted(),
             $this->getNegotiable(),
@@ -177,25 +224,17 @@ class OfferModel extends BaseModel {
     /**
      * @return mixed
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
     }
 
     /**
-     * @param mixed $userId
+     * @param mixed $user
      */
-    public function setUserId($userId)
+    public function setUser($user)
     {
-        $this->userId = $userId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUser() {
-        $whereClause = COLUMNS_USER["u_id"]. " = ?";
-        return UserModel::getFromDatabase($whereClause, array($this->userId));
+        $this->user = $user;
     }
 
     /**
@@ -218,7 +257,7 @@ class OfferModel extends BaseModel {
      * @param bool $sepThousands
      * @return string
      */
-    public function getPrice($sepThousands)
+    public function getPrice($sepThousands = "")
     {
         $thousandSep = "";
         if($sepThousands):
@@ -285,6 +324,22 @@ class OfferModel extends BaseModel {
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPictures()
+    {
+        return $this->pictures;
+    }
+
+    /**
+     * @param mixed $pictures
+     */
+    public function setPictures($pictures)
+    {
+        $this->pictures = $pictures;
     }
 
     /**

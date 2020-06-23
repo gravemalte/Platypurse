@@ -4,6 +4,7 @@ namespace Model;
 
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
+use Hydro\Helper\Date;
 
 class UserModel extends BaseModel
 {
@@ -37,20 +38,17 @@ class UserModel extends BaseModel
         $this->rating = $rating;
         $this->createdAt = $createdAt;
         $this->disabled = $disabled;
-        parent::__construct();
+        parent::__construct(TABLE_USER, COLUMNS_USER);
     }
 
-    public static function getFromDatabase($preparedWhereClause = "", $values = array(),
-                                           $groupClause = "", $orderClause = "", $limitClause = "") {
-        $user = array();
-        $result = SQLite::selectBuilder(COLUMNS_USER,
-            TABLE_USER,
-            $preparedWhereClause,
-            $values,
-            $groupClause,
-            $orderClause,
-            $limitClause);
+    public function insertIntoDatabase($con) {
+        return $this->create($con);
+    }
 
+    public static function getFromDatabase($con, $whereClause, $values) {
+
+        $result = parent::read($con, TABLE_USER. " " .$whereClause, $values);
+        $user = array();
         foreach ($result as $row):
             $user[] = new UserModel($row[COLUMNS_USER["u_id"]],
                 $row[COLUMNS_USER["display_name"]],
@@ -62,59 +60,23 @@ class UserModel extends BaseModel
                 $row[COLUMNS_USER["disabled"]]);
         endforeach;
 
-        if(sizeof($user) <= 1):
-            return array_shift($user);
-        else:
-            return $user;
+        if(count($user) == 1):
+            $user = array_shift($user);
         endif;
+
+        return $user;
     }
 
-    public function writeToDatabase() {
-        // Check if offer exists in database
-        $userInDatabase = $this->getFromDatabase(COLUMNS_OFFER["u_id"]. " = ?"
-            , array($this->getId()));
-
-        // If platypus doesn't exist, insert into database. Else update in database
-        if(empty($userInDatabase)):
-            return $this->insertIntoDatabase();
-        else:
-            return $this->updateInDatabase();
-        endif;
+    public function updateInDatabase($con, $editDate = true) {
+        return $this->update($con);;
     }
 
     /**
-     * @return bool
+     * Set active to 0 and update database
      */
-    public function insertIntoDatabase() {
-        return SQLite::insertBuilder(TABLE_USER,
-            COLUMNS_USER,
-            $this->getDatabaseValues());
-    }
-
-    /**
-     *
-     */
-    public function updateInDatabase() {
-        $preparedSetClause = "";
-        foreach (COLUMNS_USER as $tableCol):
-            $preparedSetClause .= $tableCol. " = ?,";
-        endforeach;
-
-        $preparedWhereClause = COLUMNS_USER["u_id"]. " = " .$this->getId();
-
-        return SQLite::updateBuilder(TABLE_USER,
-            substr($preparedSetClause, 0, -1),
-            $preparedWhereClause,
-            $this->getDatabaseValues());
-    }
-
-    /**
-     *
-     */
-    public function deleteFromDatabase() {
-        return SQLite::deleteBuilder(TABLE_USER,
-            COLUMNS_USER['u_id']. " = ?;",
-            array($this->getId()));
+    public function deactivateInDatabase() {
+        $this->setDisabled(1);
+        $this->updateInDatabase(SQLite::connectToSQLite());
     }
 
     /**
@@ -142,7 +104,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $id
      */
-    public function setId($id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -158,7 +120,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $displayName
      */
-    public function setDisplayName($displayName): void
+    public function setDisplayName($displayName)
     {
         $this->displayName = $displayName;
     }
@@ -174,7 +136,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $mail
      */
-    public function setMail($mail): void
+    public function setMail($mail)
     {
         $this->mail = $mail;
     }
@@ -191,7 +153,7 @@ class UserModel extends BaseModel
      * @param mixed $password
      * @param boolean $shallHash
      */
-    public function setPassword($password, bool $shallHash = true): void
+    public function setPassword($password, $shallHash = true)
     {
         if ($shallHash) $password = password_hash($password, PASSWORD_DEFAULT);
         $this->password = $password;
@@ -208,7 +170,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $ugId
      */
-    public function setUgId($ugId): void
+    public function setUgId($ugId)
     {
         $this->ugId = $ugId;
     }
@@ -232,7 +194,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $rating
      */
-    public function setRating($rating): void
+    public function setRating($rating)
     {
         $this->rating = $rating;
     }
@@ -248,7 +210,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $createdAt
      */
-    public function setCreatedAt($createdAt): void
+    public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
@@ -264,7 +226,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $disabled
      */
-    public function setDisabled($disabled): void
+    public function setDisabled($disabled)
     {
         $this->disabled = $disabled;
     }

@@ -6,7 +6,7 @@ $isUpdate = isset($_GET['id']);
 if($isUpdate) {
     $offerId = $_GET['id'];
     $offer = OfferController::getOffer($offerId);
-    $userIsOwner = $currentUser->getId() == $offer->getUserId();
+    $userIsOwner = $currentUser->getId() == $offer->getUser()->getId();
     $userIsAdmin = $currentUser->isAdmin();
 }
 

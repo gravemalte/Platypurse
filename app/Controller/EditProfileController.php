@@ -69,7 +69,7 @@ class EditProfileController extends BaseController {
             }
         }
 
-        $user->updateInDatabase();
+        $user->writeToDatabase();
 
         if ($currentUser->getId() == $id) {
             $_SESSION['currentUser'] = $user;
