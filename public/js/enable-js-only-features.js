@@ -4,7 +4,7 @@
 
 (function() {
     window.addEventListener("DOMContentLoaded", async event => {
-        let hiddenElements = document.getElementsByClassName("no-js-hide");
+        let hiddenElements = document.querySelectorAll(".no-js-hide");
         for (let hiddenElement of hiddenElements) {
             hiddenElement.classList.remove("no-js-hide");
         }
