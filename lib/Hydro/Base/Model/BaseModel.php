@@ -125,7 +125,7 @@ abstract class BaseModel extends AbstractBaseClass implements DAOContract  {
     /**
      * @param mixed $table
      */
-    public function setTable($table): void
+    public function setTable($table)
     {
         $this->table = $table;
     }
@@ -141,7 +141,7 @@ abstract class BaseModel extends AbstractBaseClass implements DAOContract  {
     /**
      * @param mixed $tableColumns
      */
-    public function setTableColumns($tableColumns): void
+    public function setTableColumns($tableColumns)
     {
         $this->tableColumns = $tableColumns;
     }
