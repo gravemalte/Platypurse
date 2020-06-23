@@ -61,9 +61,11 @@ class CreateController extends BaseController
             $mockImageArray = array('https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg');
             $imageArray = array();
 
-            $imageDataArray[COLUMNS_OFFER_IMAGES['mime']] =$_FILES['image']['type'];
-            $imageDataArray[COLUMNS_OFFER_IMAGES['image']] = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
-            $imageArray[] = $imageDataArray;
+            if(file_exists($_FILES['image']['tmp_name'])):
+                $imageDataArray[COLUMNS_OFFER_IMAGES['mime']] =$_FILES['image']['type'];
+                $imageDataArray[COLUMNS_OFFER_IMAGES['image']] = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
+                $imageArray[] = $imageDataArray;
+            endif;
 
             $offer = new OfferModel($offerId,
                 $currentUser,
