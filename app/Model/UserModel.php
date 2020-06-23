@@ -65,7 +65,6 @@ class UserModel extends BaseModel
                 $picture,
                 $row[COLUMNS_USER["disabled"]]);
         endforeach;
-
         if(count($user) == 1):
             $user = array_shift($user);
         endif;
