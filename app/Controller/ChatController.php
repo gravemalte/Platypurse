@@ -66,23 +66,25 @@ class ChatController extends BaseController
         echo UserModel::getUser($_GET['id'])->getDisplayName();
     }
 
-
-
-    public function sendMessage(){
-        if(!(isset($_SESSION['currentUser']))){
-            header('location: ' .URL . 'login');
+    public static function sendMessage(){
+        if(!(isset($_SESSION['currentUser']))) {
+            http_response_code(401);
+            echo json_encode(array());
+            return;
         }
 
-        if(!(isset($_POST['message']))){
-            header('location: ' .URL . 'chat');
+        if (!(isset($_POST['message']) && isset($_POST['to-id']))) {
+            http_response_code(400);
+            echo json_encode(array());
+            return;
         }
 
-        $fromID = $_POST['from-id'];
+        $fromID = $_SESSION['currentUser']->getId();
         $toID = $_POST['to-id'];
         $message = $_POST['message'];
         $date = Date::now();
 
-        $chat = new ChatModel($fromID, $toID, $message, $date);
+        $chat = new ChatModel(null, $fromID, $toID, $message, $date);
 
         $chat->sendMessageToDatabase();
 

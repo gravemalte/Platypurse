@@ -29,7 +29,6 @@
         // run 3 times to allow all classes to import their modules
 
         let chat = new modules.Chat();
-        await chat.fetchMessages();
-        chat.init();
+        await chat.init();
     });
 })();

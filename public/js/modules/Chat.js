@@ -50,7 +50,9 @@ function buildChat(modules) {
 
         setThreads() {
             this.chatThreadMap.container.innerHTML = "";
-            for (let chatThread of this.chatThreadMap.values()) {
+
+            let chatThreads = Array.from(this.chatThreadMap.values()).sort(ChatThread.compareDate);
+            for (let chatThread of chatThreads) {
                 let isSelected = chatThread.id === this.currentThreadId;
                 this.chatThreadMap.container.appendChild(chatThread.createElement(isSelected));
             }
@@ -68,7 +70,7 @@ function buildChat(modules) {
             }
 
             titleLink.href = "profile?id=" + this.currentThreadId;
-            titleName.innerHTML = this.chatThreadMap.get(this.currentThreadId).recipientName;
+            titleName.innerHTML = this.currentThread.recipientName;
         }
 
         setChatLog() {
@@ -81,13 +83,40 @@ function buildChat(modules) {
             }
         }
 
-        init() {
+        async init() {
             const urlParams = new URLSearchParams(window.location.search);
             this.currentThreadId = urlParams.get('id');
+
+            await this.fetchMessages();
+
+            if (!this.chatThreadMap.has(this.currentThreadId)) {
+                let recipientNameResponse = await fetch("./chat/getUserDisplayName?id=" + this.currentThreadId);
+                let recipientName = await recipientNameResponse.text();
+                let chatThread = new ChatThread();
+                chatThread.recipientName = recipientName;
+                chatThread.id = this.currentThreadId;
+                this.chatThreadMap.set(this.currentThreadId, chatThread);
+            }
 
             this.setThreads();
             this.setTitle();
             this.setChatLog();
+
+            for (let thread of this.chatThreadMap.values()) {
+                let chat = this;
+                let threadElement = thread.getElement();
+                threadElement.addEventListener("click", event => {
+                    chat.currentThread.unselect();
+                    thread.select();
+                    chat.currentThreadId = thread.id;
+                    this.setTitle();
+                    this.setChatLog();
+                });
+            }
+        }
+
+        async sendMessage(messageText) {
+
         }
     }
 

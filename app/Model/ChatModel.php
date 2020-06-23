@@ -70,7 +70,6 @@ class ChatModel extends BaseModel
 
     public function sendMessageToDatabase(){
         $insertValues = array(
-            $this->getId(),
             $this->getFrom(),
             $this->getTo(),
             $this->getMessage(),

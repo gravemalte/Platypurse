@@ -51,11 +51,15 @@ function buildChatThread(modules) {
 
             let lastMessage =
                 document.createElement("P");
-            lastMessage.innerHTML = this.latestMessage.message;
+            if (this.latestMessage !== null) {
+                lastMessage.innerHTML = this.latestMessage.message;
+            }
 
             let date =
                 document.createElement("P");
-            date.innerHTML = (new NiceDate(this.latestMessage.sendDate)).getNiceDate();
+            if (this.latestMessage !== null) {
+                date.innerHTML = (new NiceDate(this.latestMessageDate)).getNiceDate();
+            }
 
             iconContainer.appendChild(icon);
             textContainer.appendChild(displayName);
@@ -66,6 +70,28 @@ function buildChatThread(modules) {
             element.appendChild(contactContainer);
 
             return element;
+        }
+
+        getElement() {
+            return document.getElementById("chat-thread-" + this.id);
+        }
+
+        unselect() {
+            this.getElement().children[0].classList.remove("select");
+        }
+
+        select() {
+            this.getElement().children[0].classList.add("select");
+        }
+
+        static compareDate(a, b) {
+            let aDate = a.latestMessageDate;
+            let bDate = b.latestMessageDate;
+            if (aDate === null) return -1;
+            if (bDate === null) return 1;
+            if (aDate.getTime() > bDate.getTime()) return -1;
+            if (bDate.getTime() < bDate.getTime()) return 1;
+            return 0;
         }
     }
 

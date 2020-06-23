@@ -13,8 +13,8 @@
     border-radius: 15px 0 0 15px;
     min-width: 20em;
 }
-.chat-list-container a {
-    text-decoration: none;
+.chat-list-container div {
+    cursor: pointer;
 }
 
 .chat-contact-container {
