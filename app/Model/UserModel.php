@@ -74,7 +74,9 @@ class UserModel extends BaseModel
     }
 
     public function updateInDatabase($con, $editDate = true) {
-        return $this->update($con);;
+        $updateValues = $this->getDatabaseValues();
+        $updateValues[] = $this->getId();
+        return $this->update($con, $updateValues);;
     }
 
     /**
