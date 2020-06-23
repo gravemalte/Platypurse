@@ -40,6 +40,27 @@ class UserModel extends BaseModel
         parent::__construct();
     }
 
+    public function create()
+    {
+        // TODO: Implement create() method.
+    }
+
+    public function read()
+    {
+        // TODO: Implement read() method.
+    }
+
+    public function update()
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function delete()
+    {
+        // TODO: Implement delete() method.
+    }
+
+
     public static function getFromDatabase($preparedWhereClause = "", $values = array(),
                                            $groupClause = "", $orderClause = "", $limitClause = "") {
         $user = array();
@@ -142,7 +163,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $id
      */
-    public function setId($id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -158,7 +179,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $displayName
      */
-    public function setDisplayName($displayName): void
+    public function setDisplayName($displayName)
     {
         $this->displayName = $displayName;
     }
@@ -174,7 +195,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $mail
      */
-    public function setMail($mail): void
+    public function setMail($mail)
     {
         $this->mail = $mail;
     }
@@ -191,7 +212,7 @@ class UserModel extends BaseModel
      * @param mixed $password
      * @param boolean $shallHash
      */
-    public function setPassword($password, bool $shallHash = true): void
+    public function setPassword($password, $shallHash = true)
     {
         if ($shallHash) $password = password_hash($password, PASSWORD_DEFAULT);
         $this->password = $password;
@@ -208,7 +229,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $ugId
      */
-    public function setUgId($ugId): void
+    public function setUgId($ugId)
     {
         $this->ugId = $ugId;
     }
@@ -232,7 +253,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $rating
      */
-    public function setRating($rating): void
+    public function setRating($rating)
     {
         $this->rating = $rating;
     }
@@ -248,7 +269,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $createdAt
      */
-    public function setCreatedAt($createdAt): void
+    public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
     }
@@ -264,7 +285,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $disabled
      */
-    public function setDisabled($disabled): void
+    public function setDisabled($disabled)
     {
         $this->disabled = $disabled;
     }

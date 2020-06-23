@@ -23,6 +23,26 @@ class ChatModel extends BaseModel
         parent::__construct();
     }
 
+    public function create()
+    {
+        // TODO: Implement create() method.
+    }
+
+    public function read()
+    {
+        // TODO: Implement read() method.
+    }
+
+    public function update()
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function delete()
+    {
+        // TODO: Implement delete() method.
+    }
+
     public static function getMessages($userID, $receiverID){
         $whereClause = COLUMNS_MESSAGE["sender_id"] .  " = ? AND " . COLUMNS_MESSAGE["receiver_id"] .  " = ?";
         $chat = array();
@@ -113,5 +133,4 @@ class ChatModel extends BaseModel
     {
         $this->date = $date;
     }
-
 }

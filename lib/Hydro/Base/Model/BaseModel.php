@@ -2,10 +2,10 @@
 
 namespace Hydro\Base\Model;
 
-use Hydro\Base\Database\Driver\SQLite;
+use Hydro\Base\Contracts\DAOContract;
 
 
-class BaseModel {
+abstract class BaseModel implements DAOContract {
 
     /**
      * BaseModel constructor.
