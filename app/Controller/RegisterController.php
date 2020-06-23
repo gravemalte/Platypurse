@@ -36,6 +36,8 @@ class RegisterController extends BaseController {
             exit();
         }
 
+        //TODO: Implement first user image assets/logo/svg/logo_text.svg
+
         $user = new UserModel(hexdec(uniqid()),
             $userInputDisplayName,
             $userInputMail,
