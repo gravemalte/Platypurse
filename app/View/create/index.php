@@ -14,7 +14,7 @@ endif;
 <main class="main-page">
     <div class="main-area">
         <div class="create-offer-container card">
-            <form action="create/processInput" method="post">
+            <form action="create/processInput" method="post" enctype="multipart/form-data" >
             <?php if($isUpdate && ($userIsOwner || $userIsAdmin)):?>
                 <input type="hidden" name="offerId" value='<?php echo $offer->getId();?>'>
             <?php endif;?>
