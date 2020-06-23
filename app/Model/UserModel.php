@@ -106,8 +106,8 @@ class UserModel extends BaseModel
             $this->getUgId(),
             $this->getRating(),
             $this->getCreatedAt(),
-            $this->getPicture()[COLUMNS_SAVED_OFFERS['mime']],
-            $this->getPicture()[COLUMNS_SAVED_OFFERS['image']],
+            $this->getPictureArray()[COLUMNS_USER['mime']],
+            $this->getPictureArray()[COLUMNS_USER['image']],
             $this->isDisabled());
     }
 
@@ -297,7 +297,7 @@ class UserModel extends BaseModel
     }
 
     public function getPicture() {
-        $picture = $this->getPicture();
+        $picture = $this->getPictureArray();
         if(!empty($picture)):
             return "data:" .$picture[COLUMNS_USER['mime']].
                 ";base64," .$picture[COLUMNS_USER['image']];

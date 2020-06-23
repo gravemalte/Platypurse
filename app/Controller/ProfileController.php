@@ -78,7 +78,7 @@ class ProfileController extends BaseController
     }
 
     public static function enableUser() {
-        $user = UserModel::getFromDatabase(SQLite::connectToSQLite(),"WHERE " .COLUMNS_USER['u_id']. " = ?",
+        $user = UserModel::getFromDatabase(SQLite::connectToSQLite(), "WHERE " .COLUMNS_USER['u_id']. " = ?",
             array($_POST['user']));
 
         $user->activateInDatabase();
