@@ -3,7 +3,6 @@
 namespace Controller;
 
 
-use http\Client\Curl\User;
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\UserModel;

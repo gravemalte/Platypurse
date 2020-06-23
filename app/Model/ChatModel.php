@@ -25,12 +25,21 @@ class ChatModel extends BaseModel
 
     public function insertIntoDatabase($con)
     {
-        // TODO: Implement insertIntoDatabase() method.
+        return $this->create($con);
     }
 
     public static function getFromDatabase($con, $whereClause, $value)
     {
-        // TODO: Implement getFromDatabase() method.
+        $result = parent::read($con, TABLE_MESSAGE. " " .$whereClause, $value);
+        $messages = array();
+        foreach ($result as $row){
+            $messages[] = new ChatModel(
+                $row[COLUMNS_MESSAGE['sender_id']],
+                $row[COLUMNS_MESSAGE['receiver_id']],
+                $row[COLUMNS_MESSAGE['message']],
+                $row[COLUMNS_MESSAGE['send_date']]);
+        }
+        return $messages;
     }
 
     public function updateInDatabase($con, $editDate = true)
@@ -45,7 +54,10 @@ class ChatModel extends BaseModel
 
     public function getDatabaseValues()
     {
-        // TODO: Implement getDatabaseValues() method.
+        return array($this->getFrom(),
+            $this->getTo(),
+            $this->getMessage(),
+            $this->getDate());
     }
 
     public function getId()
@@ -53,11 +65,12 @@ class ChatModel extends BaseModel
         // TODO: Implement getId() method.
     }
 
-    public static function getMessages($userID, $receiverID){
+    public static function getMessages($userID){
         $whereClause = COLUMNS_MESSAGE["sender_id"] .  " = ? AND " . COLUMNS_MESSAGE["receiver_id"] .  " = ?";
         $chat = array();
-        $result = SQLite::selectBuilder(COLUMNS_MESSAGE, TABLE_MESSAGE,
-            $whereClause, array($userID, $receiverID));
+        $result = null;
+
+        //SQLite::selectBuilder(COLUMNS_MESSAGE, TABLE_MESSAGE, $whereClause, array($userID));
         foreach ($result as $row){
             $chat[] = new ChatModel(
                 $row[COLUMNS_MESSAGE['sender_id']],
@@ -77,7 +90,7 @@ class ChatModel extends BaseModel
             $this->getDate()
         );
 
-        SQLite::insertBuilder(TABLE_MESSAGE, COLUMNS_MESSAGE, $insertValues);
+        //SQLite::insertBuilder(TABLE_MESSAGE, COLUMNS_MESSAGE, $insertValues);
     }
 
     /**
