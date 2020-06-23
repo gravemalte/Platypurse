@@ -39,6 +39,7 @@ class UserModel extends BaseModel
         $this->ugId = $ugId;
         $this->rating = $rating;
         $this->createdAt = $createdAt;
+        $this->picture = $picture;
         $this->disabled = $disabled;
         parent::__construct(TABLE_USER, COLUMNS_USER);
     }
@@ -301,7 +302,7 @@ class UserModel extends BaseModel
             return "data:" .$picture[COLUMNS_USER['mime']].
                 ";base64," .$picture[COLUMNS_USER['image']];
         else:
-            return null;
+            return "lol";
         endif;
     }
 
