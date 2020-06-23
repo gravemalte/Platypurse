@@ -43,6 +43,7 @@ class RegisterController extends BaseController {
             2,
             0,
             Date::now(),
+            array(),
             0);
 
         $check = $user->writeToDatabase();

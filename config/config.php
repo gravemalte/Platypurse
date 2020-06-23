@@ -121,6 +121,8 @@ define("COLUMNS_USER", array(
     "ug_id" => "ug_id",
     "rating" => "rating",
     "created_at" => "created_at",
+    "mime" => "mime",
+    "image" => "image",
     "disabled" => "disabled"));
 
 /** Table name for table "user_group" */

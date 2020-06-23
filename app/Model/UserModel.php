@@ -15,6 +15,7 @@ class UserModel extends BaseModel
     private $ugId;
     private $rating;
     private $createdAt;
+    private $picture;
     private $disabled;
 
     /**
@@ -26,9 +27,10 @@ class UserModel extends BaseModel
      * @param $ugId
      * @param $rating
      * @param $createdAt
+     * @param $picture;
      * @param $disabled
      */
-    public function __construct($id, $displayName, $mail, $password, $ugId, $rating, $createdAt, $disabled)
+    public function __construct($id, $displayName, $mail, $password, $ugId, $rating, $createdAt, $picture, $disabled)
     {
         $this->id = $id;
         $this->displayName = $displayName;
@@ -50,6 +52,9 @@ class UserModel extends BaseModel
         $result = parent::read($con, TABLE_USER. " " .$whereClause, $values);
         $user = array();
         foreach ($result as $row):
+            $picture[COLUMNS_USER['mime']] = $row[COLUMNS_USER["mime"]];
+            $picture[COLUMNS_USER['image']] = $row[COLUMNS_USER["image"]];
+
             $user[] = new UserModel($row[COLUMNS_USER["u_id"]],
                 $row[COLUMNS_USER["display_name"]],
                 $row[COLUMNS_USER["mail"]],
@@ -57,6 +62,7 @@ class UserModel extends BaseModel
                 $row[COLUMNS_USER["ug_id"]],
                 $row[COLUMNS_USER["rating"]],
                 $row[COLUMNS_USER["created_at"]],
+                $picture,
                 $row[COLUMNS_USER["disabled"]]);
         endforeach;
 
@@ -90,6 +96,8 @@ class UserModel extends BaseModel
             $this->getUgId(),
             $this->getRating(),
             $this->getCreatedAt(),
+            $this->getPicture()[COLUMNS_SAVED_OFFERS['mime']],
+            $this->getPicture()[COLUMNS_SAVED_OFFERS['image']],
             $this->isDisabled());
     }
 
@@ -260,6 +268,32 @@ class UserModel extends BaseModel
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPictureArray()
+    {
+        return $this->picture;
+    }
+
+    /**
+     * @param mixed $picture
+     */
+    public function setPictureArray($picture)
+    {
+        $this->picture = $picture;
+    }
+
+    public function getPicture() {
+        $picture = $this->getPicture();
+        if(!empty($picture)):
+            return "data:" .$picture[COLUMNS_USER['mime']].
+                ";base64," .$picture[COLUMNS_USER['image']];
+        else:
+            return null;
+        endif;
     }
 
     /**
