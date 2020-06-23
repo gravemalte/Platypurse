@@ -5,15 +5,18 @@
 
         // importing cache-busted Chat module
         const moduleList  = ["Chat", "ChatThreadList"];
+        const moduleBuilders = {};
         const modules = {};
         for (let moduleEntry of moduleList) {
-            let moduleEntryVersionFetch = await fetch(`./js/modules/moduleVersion.php?module=${moduleEntry}`);
+            let moduleEntryVersionFetch = await fetch(`./js/modules/moduleVersion.php?module=${moduleEntry}.js`);
             let moduleEntryVersion = await moduleEntryVersionFetch.text();
-            modules[moduleEntry] = (await import(`./modules/${moduleEntry}.js?t=${moduleEntryVersion}`)).default;
+            moduleBuilders[moduleEntry] = (await import(`./modules/${moduleEntry}.js?t=${moduleEntryVersion}`)).default;
+            modules[moduleEntry] = moduleBuilders[moduleEntry](modules);
+        }
+        for (let moduleEntry of moduleList) {
+            modules[moduleEntry] = moduleBuilders[moduleEntry](modules);
         }
 
-        let Chat = modules["Chat"](modules);
-        let chat = new Chat();
-        console.log(chat);
+        let chat = new modules.Chat();
     });
 })();

@@ -6,6 +6,7 @@ function buildChat(modules) {
     class Chat {
         constructor() {
             console.log(ChatThreadList);
+            this.chatThreadList = new ChatThreadList;
         }
     }
 
