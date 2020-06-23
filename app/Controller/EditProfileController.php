@@ -69,6 +69,12 @@ class EditProfileController extends BaseController {
             }
         }
 
+        if(file_exists($_FILES['image']['tmp_name'])):
+            $imageDataArray[COLUMNS_USER['mime']] =$_FILES['image']['type'];
+            $imageDataArray[COLUMNS_USER['image']] = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
+            $user->setPictureArray($imageDataArray);
+        endif;
+
         $user->writeToDatabase();
 
         if ($currentUser->getId() == $id) {

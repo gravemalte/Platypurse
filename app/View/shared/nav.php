@@ -43,7 +43,7 @@
         <div class="nav-profile-container">
             <a href="profile"
                title="<?= $_SESSION['currentUser']->getDisplayName() ?>">
-                <img src="assets/nav/user-circle-solid.svg" alt="user avatar">
+                <img src="<?= $_SESSION['currentUser']->getPicture() ?>" alt="user avatar">
             </a>
         </div>
         <?php endif; ?>

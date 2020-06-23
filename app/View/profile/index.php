@@ -30,7 +30,7 @@ $offersByUser = ProfileController::getOffersFromUser();
     <div class="profile-area">
         <div class="profile-container card">
             <div class="profile-image">
-                <img src="assets/nav/user-circle-solid.svg" alt="profile image">
+                <img src="<?= $displayUser->getPicture(); ?>" alt="profile image">
             </div>
             <div class="profile-display-name">
                 <span><?= $displayUser->getDisplayName() ?></span>

@@ -55,7 +55,7 @@ endif;
                 </div>
                 <div class="profile-container card">
                     <a href="profile?id=<?= $seller->getId() ?>">
-                        <img src="assets/nav/user-circle-solid.svg" alt="user-avatar">
+                        <img src="<?= $seller->getPicture(); ?>" alt="user-avatar">
                     </a>
                     <div>
                         <a href="profile?id=<?= $seller->getId() ?>">

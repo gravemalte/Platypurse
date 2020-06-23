@@ -14,7 +14,7 @@ $user = EditProfileController::getUser();
                 <div class="avatar-upload-container">
                     <input type="file" name="image" accept="image/*" id="image-upload" alt="user avatar upload" hidden>
                     <label for="image-upload">
-                        <img src="assets/nav/user-circle-solid.svg" alt="user avatar">
+                        <img src="<?= $user->getPicture(); ?>" alt="user avatar">
                         <span>Wähle neuen Avatar</span>
                     </label>
                 </div>
