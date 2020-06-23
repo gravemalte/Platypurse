@@ -58,12 +58,15 @@ class CreateController extends BaseController
                 $_POST["weight"],
                 1);
 
-            $mockImageArray = array('https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg');
             $imageArray = array();
-
             if(file_exists($_FILES['image']['tmp_name'])):
                 $imageDataArray[COLUMNS_OFFER_IMAGES['mime']] =$_FILES['image']['type'];
                 $imageDataArray[COLUMNS_OFFER_IMAGES['image']] = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
+                $imageArray[] = $imageDataArray;
+            else:
+                $defaultImagePath = "https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg";
+                $imageDataArray[COLUMNS_OFFER_IMAGES['mime']] =pathinfo($defaultImagePath)['extension'];
+                $imageDataArray[COLUMNS_OFFER_IMAGES['image']] = base64_encode(file_get_contents($defaultImagePath));
                 $imageArray[] = $imageDataArray;
             endif;
 
