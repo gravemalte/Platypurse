@@ -74,12 +74,10 @@ function buildChat(modules) {
                     this.setTitle();
                     this.setChatLog();
 
-                    chatInput.focus();
                     chatInput.select();
                 });
             }
 
-            chatInput.focus();
             chatInput.select();
         }
 
