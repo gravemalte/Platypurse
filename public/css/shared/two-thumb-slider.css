@@ -1,3 +1,11 @@
+.multi-thumb-slider-show-data {
+    display: flex;
+    justify-content: space-between;
+}
+.multi-thumb-slider-show-data span {
+    margin: 0 1em;
+}
+
 .multi-thumb-slider-container {
     display: grid;
     grid-template-rows: max-content 1em;

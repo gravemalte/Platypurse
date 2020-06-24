@@ -3,19 +3,37 @@ use Controller\OfferController;
 
 $currentUser = $_SESSION['currentUser'];
 $isUpdate = isset($_GET['id']);
-if($isUpdate):
+if($isUpdate) {
     $offerId = $_GET['id'];
     $offer = OfferController::getOffer($offerId);
     $userIsOwner = $currentUser->getId() == $offer->getUserId();
     $userIsAdmin = $currentUser->isAdmin();
-endif;
+}
+
+$showUpdateData = $isUpdate && ($userIsOwner || $userIsAdmin);
+$showName = "";
+$showPrice = "";
+$showDescription = "";
+$showSex = "";
+$showAge = "";
+$showSize = "";
+$showWeight = "";
+if ($showUpdateData) {
+    $showName = $offer->getPlatypus()->getName();
+    $showPrice = $offer->getPrice(false);
+    $showDescription = $offer->getDescription();
+    $showSex = $offer->getPlatypus()->getSex();
+    $showAge = $offer->getPlatypus()->getAgeYears();
+    $showSize = $offer->getPlatypus()->getSize();
+    $showWeight = $offer->getPlatypus()->getWeight();
+}
 ?>
 
 <main class="main-page">
     <div class="main-area">
         <div class="create-offer-container card">
-            <form action="create/processInput" method="post">
-            <?php if($isUpdate && ($userIsOwner || $userIsAdmin)):?>
+            <form action="create/processInput" method="post" data-needs-confirmation>
+            <?php if($showUpdateData):?>
                 <input type="hidden" name="offerId" value='<?php echo $offer->getId();?>'>
             <?php endif;?>
                 <div class="main-container">
@@ -23,10 +41,14 @@ endif;
                         <p class="name">Name</p>
                         <div class="input-container">
                             <label for="name">
-                                <input type="text" placeholder="Name" id="name" name="name" required value="<?php
-                                    if($isUpdate && ($userIsOwner || $userIsAdmin)):
-                                        echo $offer->getPlatypus()->getName() ;
-                                    endif;?>">
+                                <input
+                                        type="text"
+                                        placeholder="Name"
+                                        id="name"
+                                        name="name"
+                                        required
+                                        value="<?= $showName ?>"
+                                >
                             </label>
                         </div>
                     </div>
@@ -42,17 +64,22 @@ endif;
                                         inputmode="decimal"
                                         name="price"
                                         required
-                                        value="<?php
-                                if($isUpdate && ($userIsOwner || $userIsAdmin)):
-                                    echo $offer->getPrice(false);
-                                endif;?>">
+                                        value="<?= $showPrice ?>"
+                                >
                             </label>
                         </div>
                     </div>
                     <div class="img-container main-input-container">
                         <p class="name">Bilder</p>
                         <div class="drag-drop-container">
-                            <input id="create-image" type="file" multiple accept="image/*" name="image" hidden>
+                            <input
+                                    id="create-image"
+                                    type="file"
+                                    multiple
+                                    accept="image/*"
+                                    name="image"
+                                    hidden
+                            >
                             <label for="create-image">
                                 <span>Drag'n'Drop</span>
                                 <span>Bilder hier</span>
@@ -65,12 +92,11 @@ endif;
                         <p class="name">Beschreibung</p>
                         <div class="input-container">
                             <label for="description">
-                                <?php $description = "";
-                                if($isUpdate && ($userIsOwner || $userIsAdmin)):
-                                    $description = $offer->getDescription();
-                                endif;?>
-                                <textarea placeholder="Beschreibung" id="description"
-                                          name="description"><?= $description?></textarea>
+                                <textarea
+                                        placeholder="Beschreibung"
+                                        id="description"
+                                        name="description"
+                                ><?= $showDescription?></textarea>
                             </label>
                         </div>
                     </div>
@@ -85,13 +111,13 @@ endif;
                                 <label for="sex">
                                     <select name="sex" id="sex" >
                                         <option value="männlich" <?php
-                                        if(($isUpdate && ($userIsOwner || $userIsAdmin))
-                                            && $offer->getPlatypus()->getSex() == "männlich"):
+                                        if(($showUpdateData)
+                                            && $showSex == "männlich"):
                                             echo "selected";
                                         endif;?>>Männlich</option>
                                         <option value="weiblich" <?php
-                                        if(($isUpdate && ($userIsOwner || $userIsAdmin))
-                                            && $offer->getPlatypus()->getSex() == "weiblich"):
+                                        if(($showUpdateData)
+                                            && $showSex == "weiblich"):
                                             echo "selected";
                                         endif;?>>Weiblich</option>
                                     </select>
@@ -104,10 +130,14 @@ endif;
                             </div>
                             <div class="attribute-item-select dropdown-item-select">
                                 <label for="age" hidden>Alter</label>
-                                <input type="number" id="age" name="age" min="0" max="20" value="<?php
-                                if($isUpdate && ($userIsOwner || $userIsAdmin)):
-                                    echo $offer->getPlatypus()->getAgeYears();
-                                endif;?>">
+                                <input
+                                        type="number"
+                                        id="age"
+                                        name="age"
+                                        min="0"
+                                        max="20"
+                                        value="<?= $showAge ?>"
+                                >
                                 <p>Jahre</p>
                             </div>
                         </div>
@@ -117,10 +147,13 @@ endif;
                             </div>
                             <div class="attribute-item-select dropdown-item-select">
                                 <label for="size" hidden>Körpergröße</label>
-                                <input type="number" id="size" name="size" min="0" max="75" value="<?php
-                                if($isUpdate && ($userIsOwner || $userIsAdmin)):
-                                    echo $offer->getPlatypus()->getSize();
-                                endif;?>">
+                                <input
+                                        type="number"
+                                        id="size"
+                                        name="size"
+                                        min="0"
+                                        max="75"
+                                        value="<?= $showSize ?>">
                                 <p>cm</p>
                             </div>
                         </div>
@@ -129,11 +162,15 @@ endif;
                                 <p>Gewicht</p>
                             </div>
                             <div class="attribute-item-select dropdown-item-select">
-                                <label for="size" hidden>Gewicht</label>
-                                <input type="number" id="weight" name="weight" min="0" max="3000" value="<?php
-                                if($isUpdate && ($userIsOwner || $userIsAdmin)):
-                                    echo $offer->getPlatypus()->getWeight();
-                                endif;?>">
+                                <label for="weight" hidden>Gewicht</label>
+                                <input
+                                        type="number"
+                                        id="weight"
+                                        name="weight"
+                                        min="0"
+                                        max="3000"
+                                        value="<?= $showWeight ?>"
+                                >
                                 <p>g</p>
                             </div>
                         </div>
@@ -146,6 +183,91 @@ endif;
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+    <div class="confirm-changes-container-background" id="confirm-changes-container" hidden>
+        <div>
+            <div class="confirm-changes-container card">
+                <h2>Änderungen anwenden?</h2>
+                <div class="confirm-changes-diff-container" id="confirm-changes-diff">
+                    <p
+                            data-confirm-diff="name"
+                            data-confirm-og-value="<?= $showName ?>"
+                    >
+                        <strong>Neuer Name:</strong>
+                        <span data-confirm-new></span>
+                        <?php if ($showUpdateData): ?>
+                        (<?= $showName ?>)
+                        <?php endif; ?>
+                    </p>
+                    <p
+                            data-confirm-diff="price"
+                            data-confirm-og-value="<?= $showPrice ?>"
+                    >
+                        <strong>Neuer Preis:</strong>
+                        <span data-confirm-new></span>
+                        <?php if ($showUpdateData): ?>
+                        (<?= $showPrice ?>)
+                        <?php endif; ?>
+                    </p>
+                    <p
+                            data-confirm-diff="description"
+                            data-confirm-og-value="<?= $showDescription ?>"
+                    >
+                        <strong>Neue Beschreibung:</strong>
+                        <span data-confirm-new></span>
+                        <?php if ($showUpdateData): ?>
+                        (<?= $showDescription ?>)
+                        <?php endif; ?>
+                    </p>
+                    <p
+                            data-confirm-diff="sex"
+                            data-confirm-og-value="<?= $showSex ?>"
+                    >
+                        <strong>Neues Geschlecht:</strong>
+                        <span data-confirm-new></span>
+                        <?php if ($showUpdateData): ?>
+                        (<?= $showSex ?>)
+                        <?php endif; ?>
+                    </p>
+                    <p
+                            data-confirm-diff="age"
+                            data-confirm-og-value="<?= $showAge ?>"
+                    >
+                        <strong>Neues Alter:</strong>
+                        <span data-confirm-new></span>
+                        <?php if ($showUpdateData): ?>
+                        (<?= $showAge ?>)
+                        <?php endif; ?>
+                    </p>
+                    <p
+                            data-confirm-diff="size"
+                            data-confirm-og-value="<?= $showSize ?>"
+                    >
+                        <strong>Neue Größe:</strong>
+                        <span data-confirm-new></span>
+                        <?php if ($showUpdateData): ?>
+                        (<?= $showSize ?>)
+                        <?php endif; ?>
+                    </p>
+                    <p
+                            data-confirm-diff="weight"
+                            data-confirm-og-value="<?= $showWeight ?>"
+                    >
+                        <strong>Neues Gewicht:</strong>
+                        <span data-confirm-new></span>
+                        <?php if ($showUpdateData): ?>
+                        (<?= $showWeight ?>)
+                        <?php endif; ?>
+                    </p>
+                </div>
+                <button title="Änderungen anwenden" data-confirm="confirm">
+                    <span class="fas fa-check-double"></span>
+                </button>
+                <button title="Abbrechen" data-confirm="cancel">
+                    <span class="fas fa-times"></span>
+                </button>
+            </div>
         </div>
     </div>
 </main>

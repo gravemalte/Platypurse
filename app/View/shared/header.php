@@ -37,6 +37,8 @@ use Hydro\Helper\CacheBuster;
 
     <!-- Link JS in the footer template-->
     <script src="<?= CacheBuster::serve('js/color-mode-switch.js') ?>"></script>
+    <script src="<?= CacheBuster::serve("js/enable-js-only-features.js") ?>"></script>
+    <script src="<?= CacheBuster::serve("js/confirm-changes.js") ?>"></script>
 
     <!-- Font Awesome -->
     <script src="js/font-awesome.js"></script>

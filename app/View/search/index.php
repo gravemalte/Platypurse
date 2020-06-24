@@ -50,6 +50,10 @@
                     </div>
                     <div>
                         <label for="filter-age-range-1">Alter</label>
+                        <div class="multi-thumb-slider-show-data">
+                            <span data-show-multi-thumb-slider="filter-age-range-1"></span>
+                            <span data-show-multi-thumb-slider="filter-age-range-2"></span>
+                        </div>
                         <div class="multi-thumb-slider-container" role="group" aria-labelledby="multi-thumb-slider">
                             <label for="filter-age-range-1" hidden></label>
                             <input type="range" min="0" max="20" value="<?php echo min($age) ?>" id="filter-age-range-1" name="age[]">
@@ -59,6 +63,10 @@
                     </div>
                     <div>
                         <label for="filter-size-range-1">Größe</label>
+                        <div class="multi-thumb-slider-show-data">
+                            <span data-show-multi-thumb-slider="filter-size-range-1"></span>
+                            <span data-show-multi-thumb-slider="filter-size-range-2"></span>
+                        </div>
                         <div class="multi-thumb-slider-container" role="group" aria-labelledby="multi-thumb-slider">
                             <label for="filter-size-range-1" hidden></label>
                             <input type="range" min="0" max="75" value="<?php echo min($size) ?>" id="filter-size-range-1" name="size[]">
@@ -68,6 +76,10 @@
                     </div>
                     <div>
                         <label for="filter-weight-range-1">Gewicht</label>
+                        <div class="multi-thumb-slider-show-data">
+                            <span data-show-multi-thumb-slider="filter-weight-range-1"></span>
+                            <span data-show-multi-thumb-slider="filter-weight-range-2"></span>
+                        </div>
                         <div class="multi-thumb-slider-container" role="group" aria-labelledby="multi-thumb-slider">
                             <label for="filter-weight-range-1" hidden></label>
                             <input type="range" min="0" max="3000" value="<?php echo min($weight) ?>" id="filter-weight-range-1" name="weight[]">
@@ -93,28 +105,27 @@
     </div>
     <div class="main-area">
         <div class="search-results-container">
+            <?php
+            $offers = SearchController::getOffers($searchText, $sex, $age, $size, $weight);
+            if(!empty($offers)):?>
             <div class="offer-list-container">
-                <?php
-                $offers = SearchController::getOffers($searchText, $sex, $age, $size, $weight);
-                if(!empty($offers)):?>
-                <div class="offer-list-container">
-                    <?php foreach($offers as $offer): ?>
-                        <a class="offer-list-link" href="offer?id=<?= $offer->getOId();?>">
-                            <div class="offer-list-item card">
-                                <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                                <p class="name"><?= $offer->getName();?></p>
-                                <p class="description"><?= $offer->getDescription();?></p>
-                                <div class="price-tag-container">
-                                    <p class="price-tag"><?= $offer->getPrice();?></p>
-                                </div>
-                            </div>
-                        </a>
-                    <?php endforeach;
-                    else: ?>
-                        <div>
-                            <h1>Sorry, es gibt leider keine passenden Angebote. ¯\_(ツ)_/¯</h1>
+                <?php foreach($offers as $offer): ?>
+                <a class="offer-list-link" href="offer?id=<?= $offer->getOId();?>">
+                    <div class="offer-list-item card">
+                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
+                        <p class="name"><?= $offer->getName();?></p>
+                        <p class="description"><?= $offer->getDescription();?></p>
+                        <div class="price-tag-container">
+                            <p class="price-tag"><?= $offer->getPrice();?></p>
                         </div>
-                    <?php endif; ?>
+                    </div>
+                </a>
+                <?php endforeach;
+                else: ?>
+                <div>
+                    <h1>Sorry, es gibt leider keine passenden Angebote. ¯\_(ツ)_/¯</h1>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
