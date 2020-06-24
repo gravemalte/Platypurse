@@ -117,15 +117,25 @@ function buildChat(modules) {
             this.setChatLog();
             this.setThreads();
 
+            let chatInputForm = document.getElementById("chat-input-form");
+            let chatInput = document.getElementById("chat-input");
+            let chatInputButton = document.getElementById("chat-input-fire");
+            chatInputForm.addEventListener("submit", event => {
+                event.preventDefault();
+                if (chatInput.value === "") return;
+                this.sendMessage(chatInput.value);
+                chatInput.value = "";
+            });
+            chatInputButton.addEventListener("click", event => {
+                chatInputForm.dispatchEvent(new Event("submit"));
+            });
+
             await (async () => {
-                console.log("initiate loop");
                 const callFunction = () => {
                     const callNext = () => {
-                        console.log("callback");
                         callFunction();
                     }
                     setTimeout(() => {
-                        console.log("fetching now");
                         this.fetchNewMessages().then(callNext);
                     }, 1000);
                 }
@@ -134,7 +144,16 @@ function buildChat(modules) {
         }
 
         async sendMessage(messageText) {
-
+            let payload = new URLSearchParams();
+            payload.set("message", messageText);
+            payload.set("to-id", this.currentThreadId);
+            let sendMessageResponse = await fetch("./chat/sendMessage", {
+                method: "POST",
+                body: payload
+            });
+            console.log(sendMessageResponse);
+            let sendMessage = await sendMessageResponse.json();
+            console.log(sendMessage);
         }
 
         async fetchNewMessages() {
@@ -167,11 +186,8 @@ function buildChat(modules) {
                 }
             }
             if (this.messages.length !== messageAmount) {
-                console.log(this.messages);
                 this.setThreads();
             }
-
-            console.log(messages);
         }
     }
 

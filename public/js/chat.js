@@ -30,20 +30,5 @@
 
         let chat = new modules.Chat();
         await chat.init();
-
-        //await chat.fetchNewMessages();
-
-
-        let payload = new URLSearchParams();
-        payload.set("message", "stuff");
-        payload.set("to-id", "3");
-        let sendMessageResponse = await fetch("./chat/sendMessage", {
-            method: "POST",
-            body: payload
-        });
-        console.log(sendMessageResponse);
-        let sendMessage = await sendMessageResponse.text();
-        console.log(sendMessage);
-
     });
 })();

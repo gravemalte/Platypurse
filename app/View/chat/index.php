@@ -70,14 +70,14 @@ if(isset($_GET['id'])){
                 </div>
             </div>
             <div class="chat-send-container">
-                <form action="chat">
+                <form action="chat" id="chat-input-form">
                     <div class="chat-input-container">
                         <label for="chat-input">
                             <input type="text" placeholder="Nachricht senden..." id="chat-input" title="Nachricht senden">
                         </label>
-                        <a href="">
-                            <span class="fas fa-location-arrow"></span>
-                        </a>
+                        <p>
+                            <span class="fas fa-location-arrow" id="chat-input-fire"></span>
+                        </p>
                     </div>
                 </form>
             </div>

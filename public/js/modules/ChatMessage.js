@@ -37,7 +37,7 @@ function buildChatMessage(modules) {
 
             let date =
                 document.createElement("P");
-            date.innerHTML = new NiceDate(this.sendDate).getDigitalTime();
+            date.innerHTML = new NiceDate(this.sendDate).getNiceDate();
 
             innerContainer.appendChild(message);
             innerContainer.appendChild(date);

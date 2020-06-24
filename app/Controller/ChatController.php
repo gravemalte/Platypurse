@@ -110,7 +110,7 @@ class ChatController extends BaseController
         echo UserModel::getUser($_GET['id'])->getDisplayName();
     }
 
-    public static function sendMessage(){
+    public static function sendMessage() {
         if(!(isset($_SESSION['currentUser']))) {
             http_response_code(401);
             echo json_encode(array());
@@ -130,7 +130,38 @@ class ChatController extends BaseController
 
         $chat = new ChatModel(null, $fromID, $toID, $message, $date);
 
-        $chat->writeToDatabase();
+        if (!$chat->writeToDatabase()) {
+            http_response_code(500);
+            echo json_encode(array());
+            return;
+        }
 
+        $whereClause = "WHERE "
+            . COLUMNS_MESSAGE["sender_id"]
+            . " = ? AND "
+            . COLUMNS_MESSAGE["receiver_id"]
+            . " = ? AND "
+            . COLUMNS_MESSAGE["send_date"]
+            . " = ?";
+
+        $messages = ChatModel::getFromDatabase(
+            SQLite::connectToSQLite(),
+            $whereClause,
+            array($fromID, $toID, $date)
+        );
+
+        $result = array();
+
+        foreach ($messages as $message){
+            $result[] = array(
+                COLUMNS_MESSAGE['msg_id'] => $message->getId(),
+                COLUMNS_MESSAGE['sender_id'] => $message->getFrom(),
+                COLUMNS_MESSAGE['receiver_id'] => $message->getTo(),
+                COLUMNS_MESSAGE['message']=>$message->getMessage(),
+                COLUMNS_MESSAGE['send_date']=>$message->getDate()
+            );
+        }
+
+        echo json_encode(array('chat' => $result, 'date' => Date::now()));
     }
 }

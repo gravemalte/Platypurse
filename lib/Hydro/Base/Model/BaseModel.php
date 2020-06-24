@@ -38,7 +38,7 @@ abstract class BaseModel extends AbstractBaseClass implements DAOContract  {
             $specialCharsValueArray[] = $val;
         endforeach;
         $statement = substr($statement, 0, -2) .");";
-        echo $statement;
+        //echo $statement;
         $command = $con->prepare($statement);
 
         return $command->execute($specialCharsValueArray);

@@ -89,9 +89,6 @@ function buildChatThread(modules) {
                 this.push(message);
                 return true;
             }
-            console.log(parseInt(this.latestMessage.id));
-            console.log(parseInt(message.id));
-            console.log(parseInt(this.latestMessage.id) < parseInt(message.id));
             if (parseInt(this.latestMessage.id) < parseInt(message.id)) {
                 this.push(message);
                 return true;
