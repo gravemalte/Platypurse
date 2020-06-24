@@ -1,0 +1,48 @@
+main.main-page {
+    position: relative;
+    z-index: 1;
+}
+
+.confirm-changes-container-background {
+    width: 100%;
+    height: calc(100% + 1em);
+    background-color: rgba(0,0,0,0.8);
+    position: absolute;
+    z-index: 5;
+}
+.confirm-changes-container-background > div {
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+}
+
+.confirm-changes-container {
+    margin: 1em;
+    max-width: calc(1920px / 2);
+    padding: 0 1em 1em;
+}
+.confirm-changes-container button {
+    float: right;
+    border-radius: 5px;
+    font-size: 1.5em;
+    padding: 0.5em;
+    min-width: 2.1em;
+    min-height: 2.1em;
+    margin-left: 0.5em;
+    margin-top: 0.5em;
+}
+.confirm-changes-container button[data-confirm=confirm] {
+    background-color: var(--page-button-alt-bg-color);
+    color: var(--page-button-alt-text-color);
+}
+.confirm-changes-container button.delete {
+    background-color: var(--page-button-danger-bg-color);
+    color: var(--page-button-danger-text-color);
+}
+
+@media (min-width: 1921px) {
+    .confirm-changes-container {
+        max-width: calc(100vw / 2);
+    }
+}

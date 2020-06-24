@@ -98,7 +98,7 @@ endif;
                         <label for="submit-report" class="fas fa-exclamation-triangle" title="Artikel melden"></label>
                     </form>
                     <?php if($_SESSION["currentUser"]->getId() == $seller->getId() || $_SESSION["currentUser"]->isAdmin()): ?>
-                    <form action="offer/delete" method="post">
+                    <form action="offer/delete" method="post" data-needs-confirmation>
                         <input type="text" id="delete-platypus-id" name="platypusId" hidden value="<?=$offer->getPlatypus()->getId();?>">
                         <input type="text" id="delete-offer-id" name="offerId" hidden value="<?=$offer->getId();?>">
                         <label for="delete-id" hidden>Änderungs-ID</label>
@@ -116,6 +116,21 @@ endif;
                     <?php endif; ?>
                     <?php endif; ?>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="confirm-changes-container-background" id="confirm-changes-container" hidden>
+        <div>
+            <div class="confirm-changes-container card">
+                <h2>Wirklich löschen?</h2>
+                <div class="confirm-changes-diff-container" id="confirm-changes-diff">
+                </div>
+                <button title="Wirklich löschen" class="delete" data-confirm="confirm">
+                    <span class="fas fa-trash-alt"></span>
+                </button>
+                <button title="Abbrechen" data-confirm="cancel">
+                    <span class="fas fa-times"></span>
+                </button>
             </div>
         </div>
     </div>

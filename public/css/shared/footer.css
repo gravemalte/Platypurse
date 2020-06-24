@@ -4,6 +4,11 @@ footer {
     flex-direction: column;
     align-items: center;
     background-color: var(--footer-bg-color);
+    position: relative;
+    color: var(--footer-text-color);
+}
+footer * {
+    color: inherit;
 }
 footer > div {
     margin: 1em;
@@ -49,4 +54,25 @@ footer p {
 }
 .footer-copyright-container .designed-by a {
     text-decoration: none;
+}
+
+.footer-light-mode-switch-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.footer-light-mode-switch-container button {
+    font-size: 2em;
+    background-color: var(--light-switch-bg-color);
+    color: var(--light-switch-text-color);
+    padding: 0.2em;
+    min-width: 1.5em;
+    min-height: 1.5em;
+}
+
+@media (max-width: 550px) {
+    .footer-light-mode-switch-container {
+        position: relative;
+        align-self: baseline;
+    }
 }
