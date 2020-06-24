@@ -58,13 +58,25 @@ class CreateController extends BaseController
                 $_POST["weight"],
                 1);
 
+            $imageArray = array();
+            if(file_exists($_FILES['image']['tmp_name'])):
+                $imageDataArray[COLUMNS_OFFER_IMAGES['mime']] =$_FILES['image']['type'];
+                $imageDataArray[COLUMNS_OFFER_IMAGES['image']] = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
+                $imageArray[] = $imageDataArray;
+            else:
+                $defaultImagePath = "https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg";
+                $imageDataArray[COLUMNS_OFFER_IMAGES['mime']] =pathinfo($defaultImagePath)['extension'];
+                $imageDataArray[COLUMNS_OFFER_IMAGES['image']] = base64_encode(file_get_contents($defaultImagePath));
+                $imageArray[] = $imageDataArray;
+            endif;
+
             $offer = new OfferModel($offerId,
                 $currentUser,
                 $platypus,
                 $this->processInputPrice($_POST["price"]),
                 0,
                 $_POST['description'],
-                array());
+                $imageArray);
 
             if(!empty($existingOffer)):
                 $platypus->setId($existingOffer->getPlatypus()->getId());

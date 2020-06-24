@@ -11,9 +11,14 @@
             </a>
         </div>
         <div class="nav-search-container">
-            <form action="search" method="post">
+            <form action="search" method="get">
                 <label for="search" hidden>Suche</label>
-                <input type="text" id="search" name="search" placeholder="Suche...">
+                <?php
+                $searchText = "";
+                if(isset($_GET['search'])):
+                    $searchText = "value = '".$_GET['search']."'";
+                endif;?>
+                <input type="text" id="search" <?= $searchText ?> name="search" placeholder="Suche...">
                 <label for="submit-search" hidden>Suche starten</label>
                 <button id="submit-search" type="submit" hidden></button>
                 <label for="submit-search" class="fas fa-search"></label>
@@ -38,7 +43,7 @@
         <div class="nav-profile-container">
             <a href="profile"
                title="<?= $_SESSION['currentUser']->getDisplayName() ?>">
-                <img src="assets/nav/user-circle-solid.svg" alt="user avatar">
+                <img src="<?= $_SESSION['currentUser']->getPicture() ?>" alt="user avatar">
             </a>
         </div>
         <?php endif; ?>

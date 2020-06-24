@@ -1,17 +1,25 @@
 "use strict";
 
 (function () {
-    window.addEventListener("click", event => {
-        if (typeof event.target?.dataset?.togglePassword === "undefined") return;
+    window.addEventListener("DOMContentLoaded", async event => {
+        let toggles = document.querySelectorAll("[data-toggle-password]");
+        for (let toggle of toggles) {
+            let toggleFunction = createToggle(toggle);
+            toggle.addEventListener("click", async event => (await toggleFunction)(event));
+        }
+    });
 
-        let clickElement = event.target;
+    async function createToggle(clickElement) {
         let toggleId = clickElement.dataset.togglePassword;
         let toggleElement = document.getElementById(toggleId);
 
-        if (clickElement.checked) {
-            toggleElement.type = "text";
-            return;
+        function toggle(event) {
+            if (clickElement.checked) {
+                toggleElement.type = "text";
+                return;
+            }
+            toggleElement.type = "password";
         }
-        toggleElement.type = "password";
-    });
+        return toggle;
+    }
 })();

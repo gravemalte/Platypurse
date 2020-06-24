@@ -4,12 +4,12 @@
 
 (function() {
     window.addEventListener("DOMContentLoaded", async event => {
-        let hiddenElements = document.getElementsByClassName("no-js-hide");
+        let hiddenElements = document.querySelectorAll(".no-js-hide");
         for (let hiddenElement of hiddenElements) {
             hiddenElement.classList.remove("no-js-hide");
         }
 
-        let showElements = document.getElementsByClassName("no-js-container");
+        let showElements = document.querySelectorAll(".no-js-container");
         for (let showElement of showElements) {
             showElement.style.display = "none";
         }

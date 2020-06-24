@@ -71,18 +71,16 @@ class ProfileController extends BaseController
         $user = UserModel::getFromDatabase(SQLite::connectToSQLite(), "WHERE " .COLUMNS_USER['u_id']. " = ?",
             array($_POST['user']));
 
-        $user->setDisabled(1);
-        $user->writeToDatabase();
+        $user->deactivateInDatabase();
         header('location: ' . URL . 'profile?id=' .$user->getId());
         exit();
     }
 
     public static function enableUser() {
-        $user = UserModel::getFromDatabase("WHERE " .COLUMNS_USER['u_id']. " = ?",
+        $user = UserModel::getFromDatabase(SQLite::connectToSQLite(), "WHERE " .COLUMNS_USER['u_id']. " = ?",
             array($_POST['user']));
 
-        $user->setDisabled(0);
-        $user->writeToDatabase();
+        $user->activateInDatabase();
         header('location: ' . URL . 'profile?id=' .$user->getId());
         exit();
 
