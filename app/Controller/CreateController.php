@@ -60,7 +60,7 @@ class CreateController extends BaseController
 
             $imageArray = array();
             if(file_exists($_FILES['image']['tmp_name'])):
-                $imageDataArray[COLUMNS_OFFER_IMAGES['mime']] =$_FILES['image']['type'];
+                $imageDataArray[COLUMNS_OFFER_IMAGES['mime']] = $_FILES['image']['type'];
                 $imageDataArray[COLUMNS_OFFER_IMAGES['image']] = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
                 $imageArray[] = $imageDataArray;
             else:
