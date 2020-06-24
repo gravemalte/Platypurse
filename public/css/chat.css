@@ -95,6 +95,7 @@
 
 .chat-message-container {
     display: flex;
+    margin-bottom: 0.2em;
 }
 .chat-message-container.receive {
     justify-content: flex-start;

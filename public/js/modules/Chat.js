@@ -4,6 +4,7 @@ function buildChat(modules) {
     const ChatThreadMap = modules.ChatThreadMap;
     const ChatMessage = modules.ChatMessage;
     const ChatThread = modules.ChatThread;
+    const NiceDate = modules.NiceDate;
 
     class Chat {
         constructor() {
@@ -20,7 +21,9 @@ function buildChat(modules) {
 
         async fetchMessages() {
             let messageResponse = await fetch("./chat/getChatHistory");
-            let messages = await messageResponse.json();
+            let responseJson = await messageResponse.json();
+            let messages = responseJson.chat;
+            this.lastRequestDate = new Date(responseJson.date);
 
             this.chatThreadMap = new ChatThreadMap;
             this.messages = [];
@@ -55,6 +58,18 @@ function buildChat(modules) {
             for (let chatThread of chatThreads) {
                 let isSelected = chatThread.id === this.currentThreadId;
                 this.chatThreadMap.container.appendChild(chatThread.createElement(isSelected));
+            }
+
+            for (let thread of this.chatThreadMap.values()) {
+                let chat = this;
+                let threadElement = thread.getElement();
+                threadElement.addEventListener("click", event => {
+                    chat.currentThread.unselect();
+                    thread.select();
+                    chat.currentThreadId = thread.id;
+                    this.setTitle();
+                    this.setChatLog();
+                });
             }
         }
 
@@ -98,25 +113,65 @@ function buildChat(modules) {
                 this.chatThreadMap.set(this.currentThreadId, chatThread);
             }
 
-            this.setThreads();
             this.setTitle();
             this.setChatLog();
+            this.setThreads();
 
-            for (let thread of this.chatThreadMap.values()) {
-                let chat = this;
-                let threadElement = thread.getElement();
-                threadElement.addEventListener("click", event => {
-                    chat.currentThread.unselect();
-                    thread.select();
-                    chat.currentThreadId = thread.id;
-                    this.setTitle();
-                    this.setChatLog();
-                });
-            }
+            await (async () => {
+                console.log("initiate loop");
+                const callFunction = () => {
+                    const callNext = () => {
+                        console.log("callback");
+                        callFunction();
+                    }
+                    setTimeout(() => {
+                        console.log("fetching now");
+                        this.fetchNewMessages().then(callNext);
+                    }, 1000);
+                }
+                callFunction();
+            })();
         }
 
         async sendMessage(messageText) {
 
+        }
+
+        async fetchNewMessages() {
+            let requestDate = (new NiceDate(this.lastRequestDate)).getDatabaseString();
+            let url = new URL("/chat/getNewMessages", window.location.toString());
+            url.searchParams.set("date", requestDate);
+
+            let messageResponse = await fetch(url.toString());
+            let responseJson = await messageResponse.json();
+            let messages = responseJson.chat;
+            let messageAmount = this.messages.length;
+            this.lastRequestDate = new Date(responseJson.date);
+
+            let textContainer = document.getElementById("chat-text-container");
+
+            for (let message of messages) {
+                let chatMessage = new ChatMessage(message);
+                if (parseInt(chatMessage.id) > parseInt(this.messages[this.messages.length - 1].id)) {
+                    this.messages.push(chatMessage);
+                }
+
+                let recipientId = chatMessage.senderId;
+                if (recipientId === this.userId) recipientId = chatMessage.receiverId;
+                if (!this.chatThreadMap.has(recipientId)) {
+                    this.chatThreadMap.set(recipientId, new ChatThread(recipientId));
+                }
+                let hasUpdated = this.chatThreadMap.get(recipientId).update(chatMessage);
+                if (recipientId === this.currentThreadId && hasUpdated) {
+                    textContainer.appendChild(chatMessage.createElement(this.userId));
+                }
+            }
+            if (this.messages.length !== messageAmount) {
+                console.log(this.messages);
+                this.setThreads();
+            }
+
+            console.log(messages);
         }
     }
 

@@ -43,6 +43,16 @@ function buildNiceDate(modules) {
             }
             return `am ${this.getMonthDate()}${this.getFullYear()} um ${this.getDigitalTime()}`;
         }
+
+        getDatabaseString() {
+            let offset = this.getTimezoneOffset();
+            let unixTime = this.getTime();
+            let unixOffset = offset * 60 * 1000;
+            let newUnixTime = unixTime - unixOffset;
+            let newDate = new Date(newUnixTime);
+            let isoString = newDate.toISOString();
+            return isoString.substr(0,19).replace("T", " ");
+        }
     }
 
     return NiceDate;

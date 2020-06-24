@@ -53,7 +53,51 @@ class ChatController extends BaseController
             );
         }
 
-        echo json_encode($result);
+        echo json_encode(array('chat' => $result, 'date' => Date::now()));
+    }
+
+    public static function getNewMessages() {
+        if(!(isset($_SESSION['currentUser']))) {
+            http_response_code(401);
+            echo json_encode(array());
+            return;
+        }
+
+        if(!(isset($_GET['date']))) {
+            http_response_code(400);
+            echo json_encode(array());
+            return;
+        }
+
+        $whereClause = "WHERE ("
+            . COLUMNS_MESSAGE["sender_id"]
+            . " = ? OR "
+            . COLUMNS_MESSAGE["receiver_id"]
+            . " = ?) AND "
+            . COLUMNS_MESSAGE["send_date"]
+            . " >= ? ORDER BY "
+            . COLUMNS_MESSAGE["send_date"]
+            . " ASC";
+        $userID = $_SESSION['currentUser']->getId();
+
+        $messages = ChatModel::getFromDatabase(
+            SQLite::connectToSQLite(),
+            $whereClause,
+            array($userID, $userID, $_GET['date'])
+        );
+        $result = array();
+
+        foreach ($messages as $message){
+            $result[] = array(
+                COLUMNS_MESSAGE['msg_id'] => $message->getId(),
+                COLUMNS_MESSAGE['sender_id'] => $message->getFrom(),
+                COLUMNS_MESSAGE['receiver_id'] => $message->getTo(),
+                COLUMNS_MESSAGE['message']=>$message->getMessage(),
+                COLUMNS_MESSAGE['send_date']=>$message->getDate()
+            );
+        }
+
+        echo json_encode(array('chat' => $result, 'date' => Date::now()));
     }
 
     public static function getUserDisplayName() {
@@ -86,7 +130,7 @@ class ChatController extends BaseController
 
         $chat = new ChatModel(null, $fromID, $toID, $message, $date);
 
-        $chat->sendMessageToDatabase();
+        $chat->writeToDatabase();
 
     }
 }

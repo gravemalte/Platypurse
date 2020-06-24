@@ -12,6 +12,10 @@ function buildChatMessage(modules) {
             this.sendDate = new Date(chatData.send_date);
         }
 
+        get id() {
+            return this.messageId;
+        }
+
         createElement(currentUserId) {
             let messageContainer =
                 document.createElement("DIV");
