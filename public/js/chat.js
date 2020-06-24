@@ -33,7 +33,7 @@
 
         //await chat.fetchNewMessages();
 
-        /*
+
         let payload = new URLSearchParams();
         payload.set("message", "stuff");
         payload.set("to-id", "3");
@@ -44,6 +44,6 @@
         console.log(sendMessageResponse);
         let sendMessage = await sendMessageResponse.text();
         console.log(sendMessage);
-        */
+
     });
 })();

@@ -57,7 +57,8 @@ class ChatModel extends BaseModel
 
     public function getDatabaseValues()
     {
-        return array($this->getFrom(),
+        return array($this->getId(),
+            $this->getFrom(),
             $this->getTo(),
             $this->getMessage(),
             $this->getDate());
