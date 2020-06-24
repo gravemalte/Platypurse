@@ -11,6 +11,8 @@ CREATE TABLE user (
   ug_id INTEGER NOT NULL,
   rating REAL DEFAULT 0,
   created_at TEXT DEFAULT (datetime('now','localtime')),
+  mime TEXT,
+  image BLOB,
   disabled INTEGER DEFAULT 0,
   CONSTRAINT fk_user_group
     FOREIGN KEY (ug_id)
@@ -63,6 +65,7 @@ CREATE TABLE offer_images (
   oi_id INTEGER NOT NULL,
   o_id INTEGER NOT NULL,
   picture_position INTEGER NOT NULL,
+  mime TEXT NOT NULL,
   image BLOB NOT NULL,
   CONSTRAINT fk_offer
     FOREIGN KEY (o_id)

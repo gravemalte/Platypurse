@@ -6,7 +6,7 @@ $isUpdate = isset($_GET['id']);
 if($isUpdate) {
     $offerId = $_GET['id'];
     $offer = OfferController::getOffer($offerId);
-    $userIsOwner = $currentUser->getId() == $offer->getUserId();
+    $userIsOwner = $currentUser->getId() == $offer->getUser()->getId();
     $userIsAdmin = $currentUser->isAdmin();
 }
 
@@ -32,7 +32,7 @@ if ($showUpdateData) {
 <main class="main-page">
     <div class="main-area">
         <div class="create-offer-container card">
-            <form action="create/processInput" method="post" data-needs-confirmation>
+            <form action="create/processInput" method="post" data-needs-confirmation enctype="multipart/form-data">
             <?php if($showUpdateData):?>
                 <input type="hidden" name="offerId" value='<?php echo $offer->getId();?>'>
             <?php endif;?>

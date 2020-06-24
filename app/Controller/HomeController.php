@@ -4,8 +4,6 @@ namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 use Model\OfferModel;
-use Model\OfferGridModel;
-use Model\HotOfferModel;
 
 class HomeController extends BaseController
 {
@@ -23,20 +21,11 @@ class HomeController extends BaseController
     }
 
     public function getNewestOffers() {
-        $whereClause = TABLE_OFFER.".".COLUMNS_OFFER['active']. " = ?";
-        $orderClause = COLUMNS_OFFER['create_date']. " desc";
-        $limitClause = "9";
-
-        return OfferGridModel::getFromDatabase(OfferGridModel::TABLE,
-            $whereClause,
-            array(1),
-            "",
-            $orderClause,
-            $limitClause);
+        return OfferModel::getNewestOffers();
     }
 
     public function getHotOffer() {
-        return HotOfferModel::getFromDatabase();
+        return OfferModel::getHotOffer();
     }
 
     /**

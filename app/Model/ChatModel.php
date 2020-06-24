@@ -20,14 +20,57 @@ class ChatModel extends BaseModel
         $this->to = $senderID;
         $this->message = $message;
         $this->date = $date;
-        parent::__construct();
+        parent::__construct(TABLE_MESSAGE, COLUMNS_MESSAGE);
     }
 
-    public static function getMessages($userID, $receiverID){
+    public function insertIntoDatabase($con)
+    {
+        return $this->create($con);
+    }
+
+    public static function getFromDatabase($con, $whereClause, $value)
+    {
+        $result = parent::read($con, TABLE_MESSAGE. " " .$whereClause, $value);
+        $messages = array();
+        foreach ($result as $row){
+            $messages[] = new ChatModel(
+                $row[COLUMNS_MESSAGE['sender_id']],
+                $row[COLUMNS_MESSAGE['receiver_id']],
+                $row[COLUMNS_MESSAGE['message']],
+                $row[COLUMNS_MESSAGE['send_date']]);
+        }
+        return $messages;
+    }
+
+    public function updateInDatabase($con, $editDate = true)
+    {
+        // TODO: Implement updateInDatabase() method.
+    }
+
+    public function deactivateInDatabase()
+    {
+        // TODO: Implement deactivateInDatabase() method.
+    }
+
+    public function getDatabaseValues()
+    {
+        return array($this->getFrom(),
+            $this->getTo(),
+            $this->getMessage(),
+            $this->getDate());
+    }
+
+    public function getId()
+    {
+        // TODO: Implement getId() method.
+    }
+
+    public static function getMessages($userID){
         $whereClause = COLUMNS_MESSAGE["sender_id"] .  " = ? AND " . COLUMNS_MESSAGE["receiver_id"] .  " = ?";
         $chat = array();
-        $result = SQLite::selectBuilder(COLUMNS_MESSAGE, TABLE_MESSAGE,
-            $whereClause, array($userID, $receiverID));
+        $result = null;
+
+        //SQLite::selectBuilder(COLUMNS_MESSAGE, TABLE_MESSAGE, $whereClause, array($userID));
         foreach ($result as $row){
             $chat[] = new ChatModel(
                 $row[COLUMNS_MESSAGE['sender_id']],
@@ -47,7 +90,7 @@ class ChatModel extends BaseModel
             $this->getDate()
         );
 
-        SQLite::insertBuilder(TABLE_MESSAGE, COLUMNS_MESSAGE, $insertValues);
+        //SQLite::insertBuilder(TABLE_MESSAGE, COLUMNS_MESSAGE, $insertValues);
     }
 
     /**
@@ -113,5 +156,4 @@ class ChatModel extends BaseModel
     {
         $this->date = $date;
     }
-
 }

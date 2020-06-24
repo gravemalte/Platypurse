@@ -1,7 +1,7 @@
 <?php
     use Controller\SearchController;
 
-    $searchText = $_POST['search'];
+    $searchText = $_GET['search'];
     $sex = "";
     $sexMaleSelected = "";
     $sexFemaleSelected = "";
@@ -9,25 +9,25 @@
     $size = array(0, 75);
     $weight = array(0, 3000);
 
-    if(isset($_POST['sex'])): $sex = $_POST['sex']; endif;
-    if(isset($_POST['sex'])):
-        $sex = $_POST['sex'];
+    if(isset($_GET['sex'])): $sex = $_GET['sex']; endif;
+    if(isset($_GET['sex'])):
+        $sex = $_GET['sex'];
         if($sex == "männlich"): $sexMaleSelected = "selected"; endif;
         if($sex == "weiblich"): $sexFemaleSelected = "selected"; endif;
     endif;
-    if(isset($_POST['age'])):
-        $age = $_POST['age'];
+    if(isset($_GET['age'])):
+        $age = $_GET['age'];
     endif;
-    if(isset($_POST['size'])):
-        $size = $_POST['size'];
+    if(isset($_GET['size'])):
+        $size = $_GET['size'];
     endif;
-    if(isset($_POST['weight'])):
-        $weight = $_POST['weight'];
+    if(isset($_GET['weight'])):
+        $weight = $_GET['weight'];
     endif;?>
 <main class="main-page filter-page">
     <div class="filter-area">
         <div class="filter-container card">
-            <form action="search" method="post">
+            <form action="search" method="get">
                 <div class="title-container">
                     <input type="hidden" name="search" value='<?php echo $searchText ?>'>
                     <p>Filter</p>
@@ -109,14 +109,25 @@
             $offers = SearchController::getOffers($searchText, $sex, $age, $size, $weight);
             if(!empty($offers)):?>
             <div class="offer-list-container">
-                <?php foreach($offers as $offer): ?>
-                <a class="offer-list-link" href="offer?id=<?= $offer->getOId();?>">
-                    <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name"><?= $offer->getName();?></p>
-                        <p class="description"><?= $offer->getDescription();?></p>
-                        <div class="price-tag-container">
-                            <p class="price-tag"><?= $offer->getPrice();?></p>
+                <?php
+                $offers = SearchController::getOffers($searchText, $sex, $age, $size, $weight);
+                if(!empty($offers)):?>
+                <div class="offer-list-container">
+                    <?php foreach($offers as $offer): ?>
+                        <a class="offer-list-link" href="offer?id=<?= $offer->getId();?>">
+                            <div class="offer-list-item card">
+                                <img src="<?= $offer->getPictureOnPosition(0); ?>" alt="">
+                                <p class="name"><?= $offer->getPlatypus()->getName();?></p>
+                                <p class="description"><?= $offer->getDescription();?></p>
+                                <div class="price-tag-container">
+                                    <p class="price-tag"><?= $offer->getPrice();?></p>
+                                </div>
+                            </div>
+                        </a>
+                    <?php endforeach;
+                    else: ?>
+                        <div>
+                            <h1>Sorry, es gibt leider keine passenden Angebote. ¯\_(ツ)_/¯</h1>
                         </div>
                     </div>
                 </a>

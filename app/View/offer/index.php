@@ -5,16 +5,17 @@ use Hydro\Helper\Date;
 $offer = OfferController::getOffer($_GET['id']);
 $offer->offerClickPlusOne();
 $seller = $offer->getUser();
+//print_r($seller->getPictureArray());
 $isSaved = false;
 if(isset($_SESSION['currentUser'])):
-    $isSaved = OfferController::getOfferFromSavedList($_GET['id']);
+    $isSaved = OfferController::isOfferInSavedList($_GET['id']);
 endif;
 ?>
 <main class="main-page">
     <div class="main-area">
         <div class="offer-area">
             <div class="offer-container card">
-                <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="offer image">
+                <img src="<?= $offer->getPictureOnPosition(0); ?>" alt="offer image">
                 <div class="description-container">
                     <p class="name"><?=$offer->getPlatypus()->getName();?></p>
                     <p class="description"><?=$offer->getDescription();?></p>
@@ -30,7 +31,7 @@ endif;
             </div>
             <div class="side-container">
                 <div class="offer-buttons-container">
-                    <a href="chat?id=<?=$offer->getUserId() ?>" class="send-message-button button">
+                    <a href="chat?id=<?=$offer->getUser()->getId() ?>" class="send-message-button button">
                         <div>
                             <p>Nachricht schreiben</p>
                         </div>
@@ -55,7 +56,7 @@ endif;
                 </div>
                 <div class="profile-container card">
                     <a href="profile?id=<?= $seller->getId() ?>">
-                        <img src="assets/nav/user-circle-solid.svg" alt="user-avatar">
+                        <img src="<?= $seller->getPicture(); ?>" alt="user-avatar">
                     </a>
                     <div>
                         <a href="profile?id=<?= $seller->getId() ?>">

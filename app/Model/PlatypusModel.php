@@ -4,6 +4,7 @@ namespace Model;
 
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
+use PDOException;
 
 class PlatypusModel extends BaseModel {
     private $id;
@@ -33,19 +34,16 @@ class PlatypusModel extends BaseModel {
         $this->size = $size;
         $this->weight = $weight;
         $this->active = $active;
-        parent::__construct();
+        parent::__construct(TABLE_PLATYPUS, COLUMNS_PLATYPUS);
     }
 
-    public static function getFromDatabase($preparedWhereClause = "", $values = array(),
-                                           $groupClause = "", $orderClause = "", $limitClause = "") {
+    public function insertIntoDatabase($con) {
+        return $this->create($con);
+    }
+
+    public static function getFromDatabase($con, $whereClause, $values) {
+        $result = parent::read($con, TABLE_PLATYPUS. " " .$whereClause, $values);
         $platypus = array();
-        $result = SQLite::selectBuilder(COLUMNS_PLATYPUS,
-            TABLE_PLATYPUS,
-            $preparedWhereClause,
-            $values,
-            $groupClause,
-            $orderClause,
-            $limitClause);
 
         foreach ($result as $row):
             $platypus[] = new PlatypusModel($row[COLUMNS_PLATYPUS["p_id"]],
@@ -57,58 +55,37 @@ class PlatypusModel extends BaseModel {
                 $row[COLUMNS_PLATYPUS["active"]]);
         endforeach;
 
-        if(sizeof($platypus) <= 1):
-            return array_shift($platypus);
-        else:
-            return $platypus;
+        if(count($platypus) == 1):
+            $platypus = array_shift($platypus);
         endif;
+
+        return $platypus;
     }
+    
+    public function updateInDatabase($con, $editDate = true) {
+        $result = false;
 
-    public function writeToDatabase() {
-        // Check if platypus exists in database
-        $platypusInDatabase = SQLite::selectBuilder(COLUMNS_PLATYPUS, TABLE_PLATYPUS,
-            COLUMNS_PLATYPUS["p_id"]. " = ?", array($this->getId()));
-
-        // If platypus doesn't exist, insert into database. Else update in database
-        if(empty($platypusInDatabase)):
-            return $this->insertIntoDatabase();
-        else:
-            return $this->updateInDatabase();
-        endif;
-    }
-
-    /**
-     * @return bool
-     */
-    public function insertIntoDatabase() {
-        return SQLite::insertBuilder(TABLE_PLATYPUS,
-            COLUMNS_PLATYPUS,
-            $this->getDatabaseValues());
-    }
-
-    /**
-     *
-     */
-    public function updateInDatabase() {
-        $preparedSetClause = "";
-        foreach (COLUMNS_PLATYPUS as $tableCol):
-            $preparedSetClause .= $tableCol. " = ?,";
-        endforeach;
-
-        $preparedWhereClause = COLUMNS_PLATYPUS["p_id"]. " = " .$this->getId();
-
-        return SQLite::updateBuilder(TABLE_PLATYPUS,
-            substr($preparedSetClause, 0, -1),
-            $preparedWhereClause,
-            $this->getDatabaseValues());
+        try {
+            $updateValues = $this->getDatabaseValues();
+            $updateValues[] = $this->getId();
+            $result = $this->update($con, $updateValues);
+        }
+        catch (PDOException $ex) {
+            $con->rollBack();
+            $result = false;
+        }
+        finally {
+            unset($con);
+            return $result;
+        }
     }
 
     /**
      * Set active to 0 and update database
      */
-    public function deleteFromDatabase() {
+    public function deactivateInDatabase() {
         $this->setActive(0);
-        return $this->updateInDatabase();
+        $this->updateInDatabase(SQLite::connectToSQLite());
     }
 
     /**

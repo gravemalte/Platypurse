@@ -5,8 +5,9 @@ namespace Controller;
 
 
 use Hydro\Base\Controller\BaseController;
+use Hydro\Base\Database\Driver\SQLite;
 use Model\UserModel;
-use Model\OfferGridModel;
+use Model\OfferModel;
 
 class ProfileController extends BaseController
 {
@@ -34,8 +35,8 @@ class ProfileController extends BaseController
     }
 
     public static function getUser($id){
-        $whereClause = COLUMNS_USER["u_id"]. " = ?";
-        return UserModel::getFromDatabase($whereClause, array($id));
+        $whereClause = "WHERE " .COLUMNS_USER["u_id"]. " = ?";
+        return UserModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($id));
     }
 
     public static function getDisplayUser() {
@@ -47,35 +48,40 @@ class ProfileController extends BaseController
 
     public static function getOffersFromUser() {
         $id = ProfileController::getDisplayUser()->getId();
-        $whereClause = COLUMNS_OFFER["u_id"]. " = ? AND "
+        $whereClause = "WHERE " .COLUMNS_OFFER["u_id"]. " = ? AND "
             .TABLE_OFFER.".".COLUMNS_OFFER["active"]. " = ?";
-        return OfferGridModel::getFromDatabase(OfferGridModel::TABLE, $whereClause, array($id, 1));
+
+
+        return OfferModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($id, 1));
     }
 
     public static function getSavedOffers() {
+        $whereClause = "LEFT JOIN " .TABLE_SAVED_OFFERS. " on " .TABLE_OFFER. "." .COLUMNS_OFFER['o_id'].
+            " = " .TABLE_SAVED_OFFERS. "." .COLUMNS_SAVED_OFFERS['o_id']. " INNER JOIN " .TABLE_PLATYPUS.
+            " on " .TABLE_OFFER. "." .COLUMNS_OFFER['p_id']. " = " .TABLE_PLATYPUS. "." .COLUMNS_PLATYPUS['p_id'].
+            " WHERE " .TABLE_SAVED_OFFERS. "." .COLUMNS_SAVED_OFFERS['u_id']. " = ?";
+
+
         $id = ProfileController::getDisplayUser()->getId();
-        $whereClause = TABLE_SAVED_OFFERS.".".COLUMNS_SAVED_OFFERS["u_id"]. " = ?";
-        return OfferGridModel::getFromDatabase(OfferGridModel::TABLEJOINSAVEDOFFERS,
-            $whereClause,
+
+        return OfferModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause,
             array($id));
     }
 
     public static function disableUser() {
-        $user = UserModel::getFromDatabase(COLUMNS_USER['u_id']. " = ?",
+        $user = UserModel::getFromDatabase(SQLite::connectToSQLite(), "WHERE " .COLUMNS_USER['u_id']. " = ?",
             array($_POST['user']));
 
-        $user->setDisabled(1);
-        $user->writeToDatabase();
+        $user->deactivateInDatabase();
         header('location: ' . URL . 'profile?id=' .$user->getId());
         exit();
     }
 
     public static function enableUser() {
-        $user = UserModel::getFromDatabase(COLUMNS_USER['u_id']. " = ?",
+        $user = UserModel::getFromDatabase(SQLite::connectToSQLite(), "WHERE " .COLUMNS_USER['u_id']. " = ?",
             array($_POST['user']));
 
-        $user->setDisabled(0);
-        $user->writeToDatabase();
+        $user->activateInDatabase();
         header('location: ' . URL . 'profile?id=' .$user->getId());
         exit();
 

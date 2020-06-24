@@ -15,7 +15,7 @@ class EditProfileController extends BaseController {
             header('location: ' . URL . 'login');
         }
         // only admins can use specific id to edit-profile user profiles
-        if (isset($_GET['id']) && !$_SESSION['currentUser']->isAdmin()) {
+        if (isset($_POST['id']) && !$_SESSION['currentUser']->isAdmin()) {
             header('location: ' . URL . 'editProfile');
         }
 
@@ -28,20 +28,20 @@ class EditProfileController extends BaseController {
 
     public static function getUser() {
         $id = $_SESSION['currentUser']->getId();
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
         }
         return ProfileController::getUser($id);
     }
 
     public static function update() {
 
-        if (!isset($_GET['id']) || !isset($_SESSION['currentUser'])) {
+        if (!isset($_POST['id']) || !isset($_SESSION['currentUser'])) {
             header('location: ' . URL . 'error');
             exit();
         }
 
-        $id = $_GET['id'];
+        $id = $_POST['id'];
         $user = ProfileController::getUser($id);
         $currentUser = $_SESSION['currentUser'];
 
@@ -52,24 +52,30 @@ class EditProfileController extends BaseController {
 
         $possibleChanges = array('display-name', 'email', 'password');
         foreach ($possibleChanges as $possibleChange) {
-            if (isset($_GET[$possibleChange])) {
-                if (!empty($_GET[$possibleChange])) {
+            if (isset($_POST[$possibleChange])) {
+                if (!empty($_POST[$possibleChange])) {
                     switch ($possibleChange) {
                         case $possibleChanges[0]:
-                            $user->setDisplayName($_GET[$possibleChange]);
+                            $user->setDisplayName($_POST[$possibleChange]);
                             break;
                         case $possibleChanges[1]:
-                            $user->setMail($_GET[$possibleChange]);
+                            $user->setMail($_POST[$possibleChange]);
                             break;
                         case $possibleChanges[2]:
-                            $user->setPassword($_GET[$possibleChange]);
+                            $user->setPassword($_POST[$possibleChange]);
                             break;
                     }
                 }
             }
         }
 
-        $user->updateInDatabase();
+        if(file_exists($_FILES['image']['tmp_name'])):
+            $imageDataArray[COLUMNS_USER['mime']] =$_FILES['image']['type'];
+            $imageDataArray[COLUMNS_USER['image']] = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
+            $user->setPictureArray($imageDataArray);
+        endif;
+
+        $user->writeToDatabase();
 
         if ($currentUser->getId() == $id) {
             $_SESSION['currentUser'] = $user;

@@ -29,6 +29,7 @@ if(!file_exists(DB_FILE)){
     $sql_file_name = DB . 'sql/fill_tables.sql';
     $sql_file = file_get_contents($sql_file_name);
     $database->exec($sql_file);
+    sleep(2);
     unset($database);
 }
 

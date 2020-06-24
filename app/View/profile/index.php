@@ -14,6 +14,13 @@ if (isset($_SESSION['currentUser'])) {
     $loggedIn = true;
 }
 
+$userRating = $displayUser->getUserRatingFromDatabase();
+if(empty($userRating)):
+    $ratingString = "Dude hat noch nichts bewertet bekommen";
+else:
+    $ratingString = "Geiles Rating von $userRating hat der Dude";
+endif;
+
 $savedOffers = ProfileController::getSavedOffers();
 $offersByUser = ProfileController::getOffersFromUser();
 
@@ -23,7 +30,7 @@ $offersByUser = ProfileController::getOffersFromUser();
     <div class="profile-area">
         <div class="profile-container card">
             <div class="profile-image">
-                <img src="assets/nav/user-circle-solid.svg" alt="profile image">
+                <img src="<?= $displayUser->getPicture(); ?>" alt="profile image">
             </div>
             <div class="profile-display-name">
                 <span><?= $displayUser->getDisplayName() ?></span>
@@ -32,6 +39,9 @@ $offersByUser = ProfileController::getOffersFromUser();
                 <span><strong>[Account deaktiviert]</strong></span>
 
                 <?php endif; ?>
+            </div>
+            <div class="user-rating">
+                <span><?= $ratingString ?></span>
             </div>
             <div class="user-rating">
                 <span class="fas fa-star" id="user-rating-5"></span>
@@ -49,7 +59,7 @@ $offersByUser = ProfileController::getOffersFromUser();
                 </a>
                 <?php endif; ?>
                 <?php if ($userItself || $viewHasAdmin): ?>
-                <a href="profile/edit?id=<?= $displayUser->getId(); ?>">
+                <a href="profile/edit">
                     <button class="edit-profile-button button">
                         <span>Profil bearbeiten</span>
                     </button>
@@ -62,7 +72,6 @@ $offersByUser = ProfileController::getOffersFromUser();
                 <?php if ($viewHasAdmin): ?>
                 <?php if ($displayUser->isDisabled()):?>
                         <form action="profile/enableUser" method="post" class="user-suspend-container">
-                            <!-- TODO: Add icon for unban -->
                             <label for="submit-suspend" class="fas fa-unlock enable" title="Nutzer entsperren"></label>
                     <?php else:?>
                         <form action="profile/disableUser" method="post" class="user-suspend-container">
@@ -87,10 +96,10 @@ $offersByUser = ProfileController::getOffersFromUser();
             <p class="title">Deine Merkliste</p>
             <div class="offer-list-container">
                 <?php foreach($savedOffers as $offer): ?>
-                <a class="offer-list-link" href="offer?id=<?= $offer->getOId();?>">
+                <a class="offer-list-link" href="offer?id=<?= $offer->getId();?>">
                     <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name"><?= $offer->getName();?></p>
+                        <img src="<?= $offer->getPictureOnPosition(0); ?>" alt="">
+                        <p class="name"><?= $offer->getPlatypus()->getName();?></p>
                         <p class="description"><?= $offer->getDescription();?></p>
                         <div class="price-tag-container">
                             <p class="price-tag"><?= $offer->getShortPrice();?></p>
@@ -108,10 +117,10 @@ $offersByUser = ProfileController::getOffersFromUser();
             </p>
             <div class="offer-list-container">
                 <?php foreach($offersByUser as $offer): ?>
-                <a class="offer-list-link" href="offer?id=<?= $offer->getOId();?>">
+                <a class="offer-list-link" href="offer?id=<?= $offer->getId();?>">
                     <div class="offer-list-item card">
-                        <img src="https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg" alt="">
-                        <p class="name"><?= $offer->getName();?></p>
+                        <img src="<?= $offer->getPictureOnPosition(0); ?>" alt="">
+                        <p class="name"><?= $offer->getPlatypus()->getName();?></p>
                         <p class="description"><?= $offer->getDescription();?></p>
                         <div class="price-tag-container">
                             <p class="price-tag"><?= $offer->getShortPrice();?></p>

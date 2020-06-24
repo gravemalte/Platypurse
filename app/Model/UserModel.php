@@ -4,6 +4,7 @@ namespace Model;
 
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
+use PDOException;
 
 class UserModel extends BaseModel
 {
@@ -14,6 +15,7 @@ class UserModel extends BaseModel
     private $ugId;
     private $rating;
     private $createdAt;
+    private $picture;
     private $disabled;
 
     /**
@@ -25,9 +27,10 @@ class UserModel extends BaseModel
      * @param $ugId
      * @param $rating
      * @param $createdAt
+     * @param $picture;
      * @param $disabled
      */
-    public function __construct($id, $displayName, $mail, $password, $ugId, $rating, $createdAt, $disabled)
+    public function __construct($id, $displayName, $mail, $password, $ugId, $rating, $createdAt, $picture, $disabled)
     {
         $this->id = $id;
         $this->displayName = $displayName;
@@ -36,22 +39,23 @@ class UserModel extends BaseModel
         $this->ugId = $ugId;
         $this->rating = $rating;
         $this->createdAt = $createdAt;
+        $this->picture = $picture;
         $this->disabled = $disabled;
-        parent::__construct();
+        parent::__construct(TABLE_USER, COLUMNS_USER);
     }
 
-    public static function getFromDatabase($preparedWhereClause = "", $values = array(),
-                                           $groupClause = "", $orderClause = "", $limitClause = "") {
-        $user = array();
-        $result = SQLite::selectBuilder(COLUMNS_USER,
-            TABLE_USER,
-            $preparedWhereClause,
-            $values,
-            $groupClause,
-            $orderClause,
-            $limitClause);
+    public function insertIntoDatabase($con) {
+        return $this->create($con);
+    }
 
+    public static function getFromDatabase($con, $whereClause, $values) {
+
+        $result = parent::read($con, TABLE_USER. " " .$whereClause, $values);
+        $user = array();
         foreach ($result as $row):
+            $picture[COLUMNS_USER['mime']] = $row[COLUMNS_USER["mime"]];
+            $picture[COLUMNS_USER['image']] = $row[COLUMNS_USER["image"]];
+
             $user[] = new UserModel($row[COLUMNS_USER["u_id"]],
                 $row[COLUMNS_USER["display_name"]],
                 $row[COLUMNS_USER["mail"]],
@@ -59,62 +63,36 @@ class UserModel extends BaseModel
                 $row[COLUMNS_USER["ug_id"]],
                 $row[COLUMNS_USER["rating"]],
                 $row[COLUMNS_USER["created_at"]],
+                $picture,
                 $row[COLUMNS_USER["disabled"]]);
         endforeach;
-
-        if(sizeof($user) <= 1):
-            return array_shift($user);
-        else:
-            return $user;
+        if(count($user) == 1):
+            $user = array_shift($user);
         endif;
+
+        return $user;
     }
 
-    public function writeToDatabase() {
-        // Check if offer exists in database
-        $userInDatabase = $this->getFromDatabase(COLUMNS_OFFER["u_id"]. " = ?"
-            , array($this->getId()));
-
-        // If platypus doesn't exist, insert into database. Else update in database
-        if(empty($userInDatabase)):
-            return $this->insertIntoDatabase();
-        else:
-            return $this->updateInDatabase();
-        endif;
+    public function updateInDatabase($con, $editDate = true) {
+        $updateValues = $this->getDatabaseValues();
+        $updateValues[] = $this->getId();
+        return $this->update($con, $updateValues);
     }
 
     /**
-     * @return bool
+     * Set active to 0 and update database
      */
-    public function insertIntoDatabase() {
-        return SQLite::insertBuilder(TABLE_USER,
-            COLUMNS_USER,
-            $this->getDatabaseValues());
+    public function deactivateInDatabase() {
+        $this->setDisabled(1);
+        $this->updateInDatabase(SQLite::connectToSQLite());
     }
 
     /**
-     *
+     * Set active to 0 and update database
      */
-    public function updateInDatabase() {
-        $preparedSetClause = "";
-        foreach (COLUMNS_USER as $tableCol):
-            $preparedSetClause .= $tableCol. " = ?,";
-        endforeach;
-
-        $preparedWhereClause = COLUMNS_USER["u_id"]. " = " .$this->getId();
-
-        return SQLite::updateBuilder(TABLE_USER,
-            substr($preparedSetClause, 0, -1),
-            $preparedWhereClause,
-            $this->getDatabaseValues());
-    }
-
-    /**
-     *
-     */
-    public function deleteFromDatabase() {
-        return SQLite::deleteBuilder(TABLE_USER,
-            COLUMNS_USER['u_id']. " = ?;",
-            array($this->getId()));
+    public function activateInDatabase() {
+        $this->setDisabled(0);
+        $this->updateInDatabase(SQLite::connectToSQLite());
     }
 
     /**
@@ -128,7 +106,56 @@ class UserModel extends BaseModel
             $this->getUgId(),
             $this->getRating(),
             $this->getCreatedAt(),
+            $this->getPictureArray()[COLUMNS_USER['mime']],
+            $this->getPictureArray()[COLUMNS_USER['image']],
             $this->isDisabled());
+    }
+
+    public function insertRatingIntoDatabase($from, $rating) {
+        $con = SQLite::connectToSQLite();
+        $result = false;
+        $con->beginTransaction();
+        try {
+            $statement = "INSERT INTO " . TABLE_USER_RATING . "(";
+            foreach (COLUMNS_USER_RATING as $col):
+                $statement .= $col . ", ";
+            endforeach;
+            $statement = substr($statement, 0, -2) . ") VALUES (";
+            $valueArray = array();
+            foreach (COLUMNS_USER_RATING as $col):
+                $statement .= "?, ";
+            endforeach;
+            $statement = substr($statement, 0, -2) . ");";
+
+
+            $valueArray($from, $this->getId(), $rating);
+            //print($statement);
+            //print_r($valueArray);
+
+            $command = $con->prepare($statement);
+            $result = $command->execute($valueArray);
+            $con->commit();
+        }
+        catch(PDOException $ex) {
+            $con->rollBack();
+            $return = false;
+        }
+        finally {
+            unset($con);
+            return $return;
+        }
+    }
+
+    public function getUserRatingFromDatabase() {
+        $con = SQLite::connectToSQLite();
+        $statement = "SELECT AVG(" .COLUMNS_USER_RATING['rating']. ") AS " .COLUMNS_USER_RATING['rating'].
+            " FROM " .TABLE_USER_RATING. " WHERE " .COLUMNS_USER_RATING['for_u_id']. " = ?;";
+
+        $command = $con->prepare($statement);
+        $command->execute(array($this->getId()));
+        $result = $command->fetch();
+
+        return $result[COLUMNS_USER_RATING['rating']];
     }
 
     /**
@@ -142,7 +169,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $id
      */
-    public function setId($id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -158,7 +185,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $displayName
      */
-    public function setDisplayName($displayName): void
+    public function setDisplayName($displayName)
     {
         $this->displayName = $displayName;
     }
@@ -174,7 +201,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $mail
      */
-    public function setMail($mail): void
+    public function setMail($mail)
     {
         $this->mail = $mail;
     }
@@ -191,7 +218,7 @@ class UserModel extends BaseModel
      * @param mixed $password
      * @param boolean $shallHash
      */
-    public function setPassword($password, bool $shallHash = true): void
+    public function setPassword($password, $shallHash = true)
     {
         if ($shallHash) $password = password_hash($password, PASSWORD_DEFAULT);
         $this->password = $password;
@@ -208,7 +235,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $ugId
      */
-    public function setUgId($ugId): void
+    public function setUgId($ugId)
     {
         $this->ugId = $ugId;
     }
@@ -232,7 +259,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $rating
      */
-    public function setRating($rating): void
+    public function setRating($rating)
     {
         $this->rating = $rating;
     }
@@ -248,9 +275,34 @@ class UserModel extends BaseModel
     /**
      * @param mixed $createdAt
      */
-    public function setCreatedAt($createdAt): void
+    public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPictureArray()
+    {
+        return $this->picture;
+    }
+
+    /**
+     * @param mixed $picture
+     */
+    public function setPictureArray($picture)
+    {
+        $this->picture = $picture;
+    }
+
+    public function getPicture() {
+        $picture = $this->getPictureArray();
+        if(!empty($picture)){
+            return "data:" . $picture[COLUMNS_USER['mime']] .
+                ";base64," . $picture[COLUMNS_USER['image']];
+        }
+        return "";
     }
 
     /**
@@ -264,7 +316,7 @@ class UserModel extends BaseModel
     /**
      * @param mixed $disabled
      */
-    public function setDisabled($disabled): void
+    public function setDisabled($disabled)
     {
         $this->disabled = $disabled;
     }
