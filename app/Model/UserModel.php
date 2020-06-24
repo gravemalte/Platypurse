@@ -76,7 +76,7 @@ class UserModel extends BaseModel
     public function updateInDatabase($con, $editDate = true) {
         $updateValues = $this->getDatabaseValues();
         $updateValues[] = $this->getId();
-        return $this->update($con, $updateValues);;
+        return $this->update($con, $updateValues);
     }
 
     /**
@@ -298,12 +298,11 @@ class UserModel extends BaseModel
 
     public function getPicture() {
         $picture = $this->getPictureArray();
-        if(!empty($picture)):
-            return "data:" .$picture[COLUMNS_USER['mime']].
-                ";base64," .$picture[COLUMNS_USER['image']];
-        else:
-            return "lol";
-        endif;
+        if(!empty($picture)){
+            return "data:" . $picture[COLUMNS_USER['mime']] .
+                ";base64," . $picture[COLUMNS_USER['image']];
+        }
+        return "";
     }
 
     /**
