@@ -38,9 +38,7 @@
 
     async function lightSwitchButton(event) {
         document.body.classList.add("transition");
-        console.log(document.body.classList);
-
-        console.log(localStorage.getItem(storageKeyName));
+        
         let lightStorage = localStorage.getItem(storageKeyName);
 
         await (async () => {

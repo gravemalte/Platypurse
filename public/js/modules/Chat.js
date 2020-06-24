@@ -113,12 +113,14 @@ function buildChat(modules) {
             await this.fetchMessages();
 
             if (!this.chatThreadMap.has(this.currentThreadId)) {
-                let recipientNameResponse = await fetch("./chat/getUserDisplayName?id=" + this.currentThreadId);
-                let recipientName = await recipientNameResponse.text();
-                let chatThread = new ChatThread();
-                chatThread.recipientName = recipientName;
-                chatThread.id = this.currentThreadId;
-                this.chatThreadMap.set(this.currentThreadId, chatThread);
+                if (this.currentThreadId !== null && this.currentThreadId !== this.userId) {
+                    let recipientNameResponse = await fetch("./chat/getUserDisplayName?id=" + this.currentThreadId);
+                    let recipientName = await recipientNameResponse.text();
+                    let chatThread = new ChatThread();
+                    chatThread.recipientName = recipientName;
+                    chatThread.id = this.currentThreadId;
+                    this.chatThreadMap.set(this.currentThreadId, chatThread);
+                }
             }
 
             this.setTitle();
