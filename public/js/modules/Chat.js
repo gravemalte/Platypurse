@@ -96,6 +96,7 @@ function buildChat(modules) {
             for (let message of thread) {
                 textContainer.appendChild(message.createElement(this.userId));
             }
+            textContainer.scrollBy(0, textContainer.offsetHeight);
         }
 
         async init() {
@@ -183,6 +184,10 @@ function buildChat(modules) {
                 let hasUpdated = this.chatThreadMap.get(recipientId).update(chatMessage);
                 if (recipientId === this.currentThreadId && hasUpdated) {
                     textContainer.appendChild(chatMessage.createElement(this.userId));
+                    textContainer.scrollTo({
+                        top: textContainer.offsetHeight,
+                        behavior: "smooth"
+                    });
                 }
             }
             if (this.messages.length !== messageAmount) {

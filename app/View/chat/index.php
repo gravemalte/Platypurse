@@ -11,9 +11,6 @@ if(isset($_GET['id'])){
 
 
 ?>
-<div class="nav-notification-container nav-wip-container">
-    <p>WIP! Hier entsteht etwas. Schau später nochmal vorbei. <span class="fas fa-wrench"></span></p>
-</div>
 <main class="main-page">
     <div class="chat-container card" id="chat-container">
         <span id="chat-user-id" hidden><?= $userID ?></span>
