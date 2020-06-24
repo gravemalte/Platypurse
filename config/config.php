@@ -72,6 +72,7 @@ define("TABLE_OFFER_IMAGES", "offer_images");
 define("COLUMNS_OFFER_IMAGES", array("oi_id" => "oi_id",
     "o_id" => "o_id",
     "picture_position" => "picture_position",
+    "mime" => "mime",
     "image" => "image"));
 
 /** Table name for table "offer_reports" */
@@ -120,6 +121,8 @@ define("COLUMNS_USER", array(
     "ug_id" => "ug_id",
     "rating" => "rating",
     "created_at" => "created_at",
+    "mime" => "mime",
+    "image" => "image",
     "disabled" => "disabled"));
 
 /** Table name for table "user_group" */

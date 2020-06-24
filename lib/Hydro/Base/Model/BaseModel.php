@@ -47,9 +47,6 @@ abstract class BaseModel extends AbstractBaseClass implements DAOContract  {
     {
         $statement = "SELECT * FROM " .$whereClause;
 
-        //print($statement);
-        //print_r($values);
-
         $command = $con->prepare($statement);
         $command->execute($values);
 

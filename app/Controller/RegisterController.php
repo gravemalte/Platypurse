@@ -36,6 +36,11 @@ class RegisterController extends BaseController {
             exit();
         }
 
+        //TODO: fix default svg image
+        $defaultImagePath = "assets/nav/user-circle-solid.svg";
+        $imageDataArray[COLUMNS_USER['mime']] = "image/" .pathinfo($defaultImagePath)['extension']. '+xml';
+        $imageDataArray[COLUMNS_USER['image']] = "<svg>".base64_encode(file_get_contents($defaultImagePath)). "</svg>";
+
         $user = new UserModel(hexdec(uniqid()),
             $userInputDisplayName,
             $userInputMail,
@@ -43,6 +48,7 @@ class RegisterController extends BaseController {
             2,
             0,
             Date::now(),
+            $imageDataArray,
             0);
 
         $check = $user->writeToDatabase();
