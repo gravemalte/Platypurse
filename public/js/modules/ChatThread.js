@@ -73,7 +73,12 @@ function buildChatThread(modules) {
         }
 
         getElement() {
-            return document.getElementById("chat-thread-" + this.id);
+            let element = document.getElementById("chat-thread-" + this.id);
+            if (element === null) {
+                element = document.createElement("DIV");
+                element.appendChild(document.createElement("DIV"));
+            }
+            return element;
         }
 
         unselect() {

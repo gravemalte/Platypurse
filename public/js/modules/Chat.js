@@ -16,6 +16,9 @@ function buildChat(modules) {
         }
 
         get currentThread() {
+            if (!this.chatThreadMap.has(this.currentThreadId)) {
+                return new ChatThread();
+            }
             return this.chatThreadMap.get(this.currentThreadId);
         }
 
@@ -112,15 +115,18 @@ function buildChat(modules) {
 
             await this.fetchMessages();
 
-            if (!this.chatThreadMap.has(this.currentThreadId)) {
-                if (this.currentThreadId !== null && this.currentThreadId !== this.userId) {
-                    let recipientNameResponse = await fetch("./chat/getUserDisplayName?id=" + this.currentThreadId);
-                    let recipientName = await recipientNameResponse.text();
-                    let chatThread = new ChatThread();
-                    chatThread.recipientName = recipientName;
-                    chatThread.id = this.currentThreadId;
-                    this.chatThreadMap.set(this.currentThreadId, chatThread);
-                }
+            if (this.currentThreadId === this.userId) {
+                window.location = "./chat";
+                return;
+            }
+
+            if (!this.chatThreadMap.has(this.currentThreadId) && this.currentThreadId !== null) {
+                let recipientNameResponse = await fetch("./chat/getUserDisplayName?id=" + this.currentThreadId);
+                let recipientName = await recipientNameResponse.text();
+                let chatThread = new ChatThread();
+                chatThread.recipientName = recipientName;
+                chatThread.id = this.currentThreadId;
+                this.chatThreadMap.set(this.currentThreadId, chatThread);
             }
 
             this.setTitle();
@@ -161,6 +167,7 @@ function buildChat(modules) {
         }
 
         async sendMessage(messageText) {
+            if (this.currentThreadId === null) return;
             let payload = new URLSearchParams();
             payload.set("message", messageText);
             payload.set("to-id", this.currentThreadId);
@@ -168,9 +175,7 @@ function buildChat(modules) {
                 method: "POST",
                 body: payload
             });
-            console.log(sendMessageResponse);
             let sendMessage = await sendMessageResponse.json();
-            console.log(sendMessage);
         }
 
         async fetchNewMessages() {
