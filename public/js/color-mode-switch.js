@@ -37,23 +37,30 @@
     });
 
     async function lightSwitchButton(event) {
+        document.body.classList.add("transition");
+        console.log(document.body.classList);
+
         console.log(localStorage.getItem(storageKeyName));
         let lightStorage = localStorage.getItem(storageKeyName);
 
-        if (lightStorage === "light") {
-            await makeDark();
-            return
-        }
-        if (lightStorage === "dark") {
-            await makeLight();
-            return
-        }
-        if (matchDeviceColor("light")) {
-            await makeDark();
-            return
-        }
-        if (matchDeviceColor("dark")) {
-            await makeLight();
-        }
+        await (async () => {
+            if (lightStorage === "light") {
+                await makeDark();
+                return
+            }
+            if (lightStorage === "dark") {
+                await makeLight();
+                return
+            }
+            if (matchDeviceColor("light")) {
+                await makeDark();
+                return
+            }
+            if (matchDeviceColor("dark")) {
+                await makeLight();
+            }
+        })();
+
+        await setTimeout(() => document.body.classList.remove("transition"), 600);
     }
 })();
