@@ -35,20 +35,20 @@ class CreateController extends BaseController
         $existingOffer = null;
 
 
-        $currentUser = $_SESSION['currentUser'];
+        $offerUser = $_SESSION['currentUser'];
+        $isAdmin = $offerUser->isAdmin();
         $platypusId = hexdec(uniqid());
         $offerId = hexdec(uniqid());
-        $userId = $currentUser->getId();
-        $createDate = Date::now();
 
         if(isset($_POST["offerId"])):
             $offerId = $_POST["offerId"];
             $existingOffer = OfferModel::getFromDatabase(SQLite::connectToSQLite(), "WHERE " .COLUMNS_OFFER['o_id']. " = ?",
                 array($offerId))[0];
+            $offerUser = $existingOffer->getUser();
         endif;
 
-        if(!isset($existingOffer) ||$currentUser->getId() == $existingOffer->getUser()->getId()
-            || $currentUser->isAdmin()):
+        if(!isset($existingOffer) ||$offerUser->getId() == $existingOffer->getUser()->getId()
+            || $isAdmin):
 
             $platypus = new PlatypusModel($platypusId,
                 $_POST["name"],
@@ -71,7 +71,7 @@ class CreateController extends BaseController
             endif;
 
             $offer = new OfferModel($offerId,
-                $currentUser,
+                $offerUser,
                 $platypus,
                 $this->processInputPrice($_POST["price"]),
                 0,
