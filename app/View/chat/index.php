@@ -12,7 +12,11 @@ if(isset($_GET['id'])){
 
 ?>
 <main class="main-page">
-    <div class="chat-container card" id="chat-container">
+    <div class="load-container card" id="load-container">
+        <h1>Der Chat wird aktuell geladen</h1>
+        <span class="fas fa-truck-moving"></span>
+    </div>
+    <div class="chat-container card hide" id="chat-container">
         <span id="chat-user-id" hidden><?= $userID ?></span>
         <div class="chat-list-container" id="chat-list-container">
             <div>

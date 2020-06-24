@@ -138,6 +138,13 @@ function buildChat(modules) {
                 chatInputForm.dispatchEvent(new Event("submit"));
             });
 
+            this.container.classList.remove("hide");
+            document.getElementById("load-container").style.display = "none";
+            this.container.scrollIntoView({
+                block: "start",
+                behavior: "smooth"
+            });
+
             await (async () => {
                 const callFunction = () => {
                     const callNext = () => {
@@ -167,7 +174,7 @@ function buildChat(modules) {
         async fetchNewMessages() {
             let requestDate = (new NiceDate(this.lastRequestDate)).getDatabaseString();
             let url = new URL("/chat/getNewMessages", window.location.toString());
-            url.searchParams.set("date", requestDate);
+            url.searchParams.set("latest-id", this.messages[this.messages.length - 1].id);
 
             let messageResponse = await fetch(url.toString());
             let responseJson = await messageResponse.json();

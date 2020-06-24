@@ -63,7 +63,7 @@ class ChatController extends BaseController
             return;
         }
 
-        if(!(isset($_GET['date']))) {
+        if(!(isset($_GET['latest-id']))) {
             http_response_code(400);
             echo json_encode(array());
             return;
@@ -74,16 +74,16 @@ class ChatController extends BaseController
             . " = ? OR "
             . COLUMNS_MESSAGE["receiver_id"]
             . " = ?) AND "
-            . COLUMNS_MESSAGE["send_date"]
+            . COLUMNS_MESSAGE["msg_id"]
             . " >= ? ORDER BY "
-            . COLUMNS_MESSAGE["send_date"]
+            . COLUMNS_MESSAGE["msg_id"]
             . " ASC";
         $userID = $_SESSION['currentUser']->getId();
 
         $messages = ChatModel::getFromDatabase(
             SQLite::connectToSQLite(),
             $whereClause,
-            array($userID, $userID, $_GET['date'])
+            array($userID, $userID, $_GET['latest-id'])
         );
         $result = array();
 
