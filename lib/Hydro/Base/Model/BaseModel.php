@@ -4,7 +4,6 @@ namespace Hydro\Base\Model;
 
 use Hydro\Base\Contracts\DAOContract;
 use Hydro\Base\Database\Driver\SQLite;
-use Model\UserModel;
 use Hydro\Helper\AbstractBaseClass;
 use PDOException;
 
