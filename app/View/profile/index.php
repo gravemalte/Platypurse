@@ -72,7 +72,6 @@ $offersByUser = ProfileController::getOffersFromUser();
                 <?php if ($viewHasAdmin): ?>
                 <?php if ($displayUser->isDisabled()):?>
                         <form action="profile/enableUser" method="post" class="user-suspend-container">
-                            <!-- TODO: Add icon for unban -->
                             <label for="submit-suspend" class="fas fa-unlock enable" title="Nutzer entsperren"></label>
                     <?php else:?>
                         <form action="profile/disableUser" method="post" class="user-suspend-container">
