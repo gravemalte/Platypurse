@@ -12,7 +12,11 @@ if(isset($_GET['id'])){
 
 ?>
 <main class="main-page">
-    <div class="load-container card" id="load-container">
+    <div class="card no-js-container">
+        <h1>Der Chat funktioniert leider nicht ohne Javascript.</h1>
+        <span>(っ˘̩╭╮˘̩)っ</span>
+    </div>
+    <div class="load-container card no-js-hide" id="load-container">
         <h1>Der Chat wird aktuell geladen</h1>
         <span class="fas fa-truck-moving"></span>
     </div>
