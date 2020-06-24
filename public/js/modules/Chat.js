@@ -53,6 +53,7 @@ function buildChat(modules) {
 
         setThreads() {
             this.chatThreadMap.container.innerHTML = "";
+            let chatInput = document.getElementById("chat-input");
 
             let chatThreads = Array.from(this.chatThreadMap.values()).sort(ChatThread.compareDate);
             for (let chatThread of chatThreads) {
@@ -69,8 +70,14 @@ function buildChat(modules) {
                     chat.currentThreadId = thread.id;
                     this.setTitle();
                     this.setChatLog();
+
+                    chatInput.focus();
+                    chatInput.select();
                 });
             }
+
+            chatInput.focus();
+            chatInput.select();
         }
 
         setTitle() {
