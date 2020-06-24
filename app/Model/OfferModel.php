@@ -99,7 +99,12 @@ class OfferModel extends BaseModel {
             if($this->getPlatypus()->updateInDatabase($con)):
                 $updateValues = $this->getDatabaseValues();
                 $updateValues[] = $this->getId();
-                $result = $this->update($con, $updateValues);
+
+                if($this->update($con, $updateValues)):
+                    $picture = $this->getPictures()[0];
+                    $updateImageValues = array($picture['mime'], $picture['image'], $this->getId());
+                    $result = $this->updateImagesInDatabase($con, $updateImageValues);
+                endif;
             else:
                 throw new PDOException();
             endif;
@@ -145,6 +150,20 @@ class OfferModel extends BaseModel {
 
             $command = $con->prepare($statement);
             return $command->execute($valueArray);
+        else:
+            return true;
+        endif;
+    }
+
+    public function updateImagesInDatabase($con, $values) {
+        if(!empty($this->getPictures())):
+            $statement = "UPDATE " .TABLE_OFFER_IMAGES. " SET mime = ?, image = ? WHERE o_id = ?;";
+
+            //print($statement);
+            //print_r($values);
+
+            $command = $con->prepare($statement);
+            return $command->execute($values);
         else:
             return true;
         endif;
