@@ -52,7 +52,7 @@ $offersByUser = ProfileController::getOffersFromUser();
             </div>
             <div class="profile-button-container">
                 <?php if (!$userItself): ?>
-                <a href="chat?u=<?= $displayUser->getId() ?>">
+                <a href="chat?id=<?= $displayUser->getId() ?>">
                     <button class="send-message-button button">
                         <span>Nachricht schreiben</span>
                     </button>

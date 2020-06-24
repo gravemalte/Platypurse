@@ -11,13 +11,19 @@ if(isset($_GET['id'])){
 
 
 ?>
-<div class="nav-notification-container nav-wip-container">
-    <p>WIP! Hier entsteht etwas. Schau später nochmal vorbei. <span class="fas fa-wrench"></span></p>
-</div>
 <main class="main-page">
-    <div class="chat-container card">
-        <div class="chat-list-container">
-            <a href="">
+    <div class="card no-js-container">
+        <h1>Der Chat funktioniert leider nicht ohne Javascript.</h1>
+        <span>(っ˘̩╭╮˘̩)っ</span>
+    </div>
+    <div class="load-container card no-js-hide" id="load-container">
+        <h1>Der Chat wird aktuell geladen</h1>
+        <span class="fas fa-truck-moving"></span>
+    </div>
+    <div class="chat-container card hide" id="chat-container">
+        <span id="chat-user-id" hidden><?= $userID ?></span>
+        <div class="chat-list-container" id="chat-list-container">
+            <div>
                 <div class="chat-contact-container select">
                     <div class="chat-contact-icon-container">
                         <img src="assets/nav/user-circle-solid.svg" alt="user icon">
@@ -31,8 +37,8 @@ if(isset($_GET['id'])){
                         <p>12</p>
                     </div>
                 </div>
-            </a>
-            <a href="">
+            </div>
+            <div>
                 <div class="chat-contact-container">
                     <div class="chat-contact-icon-container">
                         <img src="assets/nav/user-circle-solid.svg" alt="user icon">
@@ -46,15 +52,15 @@ if(isset($_GET['id'])){
                         <p>12</p>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
         <div class="chat-main-container">
-            <div class="chat-title-container">
+            <div class="chat-title-container" id="chat-title-container">
                 <a href="profile">
                     <p>SchnabelFan1</p>
                 </a>
             </div>
-            <div class="chat-text-container">
+            <div class="chat-text-container" id="chat-text-container">
                 <div class="chat-message-container receive">
                     <div>
                         <h1>Hey, ich fand dein Schnabeltier voll cute und so</h1>
@@ -69,14 +75,14 @@ if(isset($_GET['id'])){
                 </div>
             </div>
             <div class="chat-send-container">
-                <form action="chat">
+                <form action="chat" id="chat-input-form">
                     <div class="chat-input-container">
                         <label for="chat-input">
                             <input type="text" placeholder="Nachricht senden..." id="chat-input" title="Nachricht senden">
                         </label>
-                        <a href="">
-                            <span class="fas fa-location-arrow"></span>
-                        </a>
+                        <p>
+                            <span class="fas fa-location-arrow" id="chat-input-fire"></span>
+                        </p>
                     </div>
                 </form>
             </div>

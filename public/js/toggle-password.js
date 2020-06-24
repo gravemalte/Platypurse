@@ -20,7 +20,6 @@
             }
             toggleElement.type = "password";
         }
-
         return toggle;
     }
 })();

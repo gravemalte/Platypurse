@@ -35,8 +35,7 @@ class ProfileController extends BaseController
     }
 
     public static function getUser($id){
-        $whereClause = "WHERE " .COLUMNS_USER["u_id"]. " = ?";
-        return UserModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($id));
+        return UserModel::getUser($id);
     }
 
     public static function getDisplayUser() {

@@ -32,8 +32,8 @@
                     <div class="form-remember-me-container">
                         <label for="remember-me">Anmeldung merken</label>
                         <input type="checkbox" id="remember-me" name="user-remember-me">
-                        <label for="remember-me" class="fas fa-square"></label>
-                        <label for="remember-me" class="fas fa-check-square"></label>
+                        <label for="remember-me" class="fas fa-square no-js-hide"></label>
+                        <label for="remember-me" class="fas fa-check-square no-js-hide"></label>
                     </div>
                     <div class="form-forgot-container">
                         <a href="">Passwort vergessen?</a>

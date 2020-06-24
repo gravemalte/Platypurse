@@ -1,3 +1,11 @@
 .no-js-hide {
     display: none !important;
 }
+
+.no-js-container {
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
