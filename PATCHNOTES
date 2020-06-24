@@ -8,10 +8,10 @@ Email: admin@platypurse.com
 Passwort: 123
 
 Neuheiten:
-* User können Avatar ändern
+* User können den Avatar ändern
 * Angebotsbilder können nun hochgeladen und verändert werden
 * Confirm Dialoge sind nun vorhanden
-* Chat ist implementiert
-    * Zum testen /chat in die URL oder Benutzer anschreiben über ein Angebot
+* Der Chat ist implementiert
+    * Zum testen Benutzer anschreiben über ein Angebot oder /chat in die URL schreiben
 * docs folder ist nun vorhanden
 
