@@ -1,0 +1,17 @@
+**************************
+V1.1
+**************************
+INFORMATIONEN:
+Admin-Daten:
+
+Email: admin@platypurse.com
+Passwort: 123
+
+Neuheiten:
+* User können Avatar ändern
+* Angebotsbilder können nun hochgeladen und verändert werden
+* Confirm Dialoge sind nun vorhanden
+* Chat ist implementiert
+    * Zum testen /chat in die URL oder Benutzer anschreiben über ein Angebot
+* docs folder ist nun vorhanden
+
