@@ -33,7 +33,7 @@ if(!file_exists(DB_FILE)){
     unset($database);
 }
 
-ini_set('session.gc_maxlifetime', 3600);
+ini_set('session.gc_maxlifetime', 10800);
 session_set_cookie_params(3600);
 
 session_start();

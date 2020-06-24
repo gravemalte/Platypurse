@@ -9,4 +9,8 @@ class ApplicationFactory
     {
     }
 
+    public static  function generateController(){
+
+    }
+
 }

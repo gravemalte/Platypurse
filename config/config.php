@@ -14,6 +14,7 @@ if (ENVIRONMENT == 'dev') {
 define('APP', ROOT . 'app' . DIRECTORY_SEPARATOR);
 define('LIB', ROOT . 'lib' . DIRECTORY_SEPARATOR);
 define('DB', ROOT . 'db' . DIRECTORY_SEPARATOR);
+define('BACKSLASH', '\\');
 
 /**
  * URL configuration for the web server

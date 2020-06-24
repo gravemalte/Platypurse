@@ -27,10 +27,10 @@ class Application
             $page = new HomeController();
             $page->index();
 
-        } elseif (file_exists(APP . 'Controller/' . ucfirst($this->url_controller) .
+        } elseif (file_exists(APP .  self::CONTROLLER . DIRECTORY_SEPARATOR . ucfirst($this->url_controller) .
             self::CONTROLLER . self::PHP_FILE_ENDING)) {
 
-            $controller = "\\Controller\\" . ucfirst($this->url_controller) . self::CONTROLLER;
+            $controller = self::CONTROLLER . BACKSLASH . ucfirst($this->url_controller) . self::CONTROLLER;
             $this->url_controller = new $controller();
 
 
