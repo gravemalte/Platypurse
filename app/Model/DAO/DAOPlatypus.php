@@ -2,15 +2,15 @@
 
 
 namespace Model\DAO;
-use http\Client\Curl\User;
+use http\Client\Curl\platypus;
 use PDO;
 use PDOException;
 
-use Model\UserModel;
+use Model\platypusModel;
 use Hydro\Base\Contracts\DAOContract;
 
 
-class DAOUser implements DAOContract
+class DAOPlatypus implements DAOContract
 {
     private $con;
 
@@ -23,60 +23,60 @@ class DAOUser implements DAOContract
     public function create($obj)
     {
         $this->con->beginTransaction();
-        $query = "INSERT INTO user(u_id, display_name, mail, password, ug_id) VALUES (:userID, :displayName, :mail, :password, :ugID)";
+        $query = "INSERT INTO platypus(p_id, name, age_years, sex, size, weight)
+            VALUES (:platypusId, :name, :ageYears, :sex, :size, :weight)";
         $stmt = $this->con->prepare($query);
-        $stmt->bindValue(":userID", $obj->getId());
-        $stmt->bindValue(":displayName", $obj->getDisplayName());
-        $stmt->bindValue(":mail", $obj->getMail());
-        $stmt->bindValue(":password", $obj->getPassword());
-        $stmt->bindValue(":ugID", $obj->getUgId());
+        $stmt->bindValue(":platypusId", $obj->getId());
+        $stmt->bindValue(":name", $obj->getName());
+        $stmt->bindValue(":ageYears", $obj->getAge());
+        $stmt->bindValue(":sex", $obj->getSex());
+        $stmt->bindValue(":size", $obj->getSize());
+        $stmt->bindValue(":weight", $obj->getWeight());
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
-            $sql = "SELECT * FROM user WHERE u_id = $id";
+            $sql = "SELECT * FROM platypus WHERE p_id = $id";
             $result = $this->con->query($sql);
             $this->con->commit();
             return $result->fetch();
         } else {
             $this->con->rollback();
-            return new PDOException('UserModel statement exception');
+            return new PDOException('DAOPlatypus create error');
         }
 
     }
 
     public function read($id)
     {
-        $query = "SELECT * FROM user WHERE u_id = :id";
+        $query = "SELECT * FROM platypus WHERE p_id = :id";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $id);
 
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('UserModel select error...');
+            throw new PDOException('DAOPlatypus read error');
         }
     }
 
     public function update($obj)
     {
-        $sql = "UPDATE user SET display_name = :displayName, mail = :mail, password = :password, ug_id = :ugId,
-                rating = :rating, mime = :mime, image = :image, disabled = :disabled WHERE u_id = :id";
+        $sql = "UPDATE platypus SET name = :name, age_years = :ageYears, sex = :sex, size = :size,
+                weight = :weight, active = :active WHERE p_id = :id";
 
         $stmt = $this->con->prepare($sql);
-        $stmt->bindValue(":displayName", $obj->getDisplayName());
-        $stmt->bindValue(":mail", $obj->getMail());
-        $stmt->bindValue(":password", $obj->getPassword());
-        $stmt->bindValue(":ugId", $obj->getUgId());
-        $stmt->bindValue(":rating", $obj->getRating());
-        $stmt->bindValue(":mime", $obj->getPicture()[0]);
-        $stmt->bindValue(":image", $obj->getPicture()[1]);
-        $stmt->bindValue(":disabled", $obj->isDisabled());
+        $stmt->bindValue(":name", $obj->getName());
+        $stmt->bindValue(":ageYears", $obj->getAge());
+        $stmt->bindValue(":sex", $obj->getSex());
+        $stmt->bindValue(":size", $obj->getSize());
+        $stmt->bindValue(":weight", $obj->getWeight());
+        $stmt->bindValue(":active", $obj->getActive());
         $stmt->bindValue(":id", $obj->getId());
 
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('Update UserModel error...');
+            throw new PDOException('DAOPlatypus update error');
         }
     }
 
@@ -86,28 +86,13 @@ class DAOUser implements DAOContract
 
     public function readAll()
     {
-        $sql = "SELECT * FROM user";
+        $sql = "SELECT * FROM platypus";
         $stmt = $this->con->prepare($sql);
 
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('Error UserModel readAll');
+            throw new PDOException('DAOPlatypus readAll error');
         }
     }
-
-    public function readByMail($mail)
-    {
-        $query = "SELECT * FROM user WHERE mail = :mail";
-        $stmt = $this->con->prepare($query);
-        $stmt->bindValue(":mail", $mail);
-
-        if($stmt->execute()){
-           return $stmt->fetch();
-        } else {
-            throw new PDOException('UserModel select mail error...');
-        }
-    }
-
-
 }
