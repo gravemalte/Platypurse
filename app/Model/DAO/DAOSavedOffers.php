@@ -97,7 +97,7 @@ class DAOOffer implements DAOContract
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('DAOOffer readAll error');
+            throw new PDOException('DAOOffer readHot error');
         }
     }
 
@@ -109,7 +109,7 @@ class DAOOffer implements DAOContract
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('DAOOffer readAll error');
+            throw new PDOException('DAOOffer readNewest error');
         }
     }
 }
