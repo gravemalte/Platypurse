@@ -45,16 +45,6 @@ class ChatModel extends BaseModel
         return $messages;
     }
 
-    public function updateInDatabase($con, $editDate = true)
-    {
-        // TODO: Implement updateInDatabase() method.
-    }
-
-    public function deactivateInDatabase()
-    {
-        // TODO: Implement deactivateInDatabase() method.
-    }
-
     public function getDatabaseValues()
     {
         return array($this->getId(),

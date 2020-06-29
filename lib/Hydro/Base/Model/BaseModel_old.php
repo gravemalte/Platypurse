@@ -22,6 +22,60 @@ abstract class BaseModel  {
         $this->tableColumns = $tableColumns;
     }
 
+    public function create($con)
+    {
+        $statement = "INSERT INTO " .$this->getTable(). " (";
+        foreach ($this->getTableColumns() as $col):
+            $statement .= $col .", ";
+        endforeach;
+        $statement = substr($statement, 0, -2) .") VALUES (";
+        $specialCharsValueArray = array();
+        foreach ($this->getDatabaseValues() as $val):
+            $statement .= "?, ";
+            $specialCharsValueArray[] = $val;
+        endforeach;
+        $statement = substr($statement, 0, -2) .");";
+        //echo $statement;
+        $command = $con->prepare($statement);
+
+        return $command->execute($specialCharsValueArray);
+    }
+
+    public static function read($con, $whereClause = "", $values = array())
+    {
+        $statement = "SELECT * FROM " .$whereClause;
+
+        $command = $con->prepare($statement);
+        $command->execute($values);
+
+        return $command->fetchAll();
+    }
+
+    public function update($con, $values)
+    {
+        $columns = $this->getTableColumns();
+        $statement = "UPDATE " .$this->getTable(). " SET ";
+        foreach ($this->getTableColumns() as $col):
+            $statement .= $col ." = ?, ";
+        endforeach;
+        $statement = substr($statement, 0, -2) ." WHERE " .reset($columns). " = ?;";
+        $specialCharsValueArray = array();
+        foreach ($values as $val):
+            $specialCharsValueArray[] = htmlspecialchars($val);
+        endforeach;
+        $command = $con->prepare($statement);
+        return $command->execute($specialCharsValueArray);
+    }
+
+    public function delete($values)
+    {
+        $columns = $this->getTableColumns();
+        $statement = "DELETE FROM " .$this->getTable(). " WHERE " .reset($columns). " = ?;";
+
+        $command = $con->prepare($statement);
+        return $command->execute($values);
+    }
+
     public function writeToDatabase() {
         $con = SQLite::connectToSQLite();
         $result = false;

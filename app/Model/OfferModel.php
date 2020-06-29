@@ -5,6 +5,7 @@ namespace Model;
 use PDOException;
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
+use Model\UserModel;
 use Hydro\Helper\Date;
 
 class OfferModel extends BaseModel {
@@ -73,7 +74,8 @@ class OfferModel extends BaseModel {
         $offer = array();
         foreach ($result as $row):
             $offer[] = new OfferModel($row[COLUMNS_OFFER["o_id"]],
-                UserModel::getFromDatabase($con, "WHERE " .COLUMNS_USER['u_id']. " = ?", array($row[COLUMNS_OFFER["u_id"]])),
+                // FIXME: $dao initialization needed
+                UserModel::getFromDatabaseById($dao, $row[COLUMNS_OFFER["u_id"]]),
                 PlatypusModel::getFromDatabase($con, "WHERE " .COLUMNS_PLATYPUS['p_id']. " = ?", array($row[COLUMNS_OFFER["p_id"]])),
                 $row[COLUMNS_OFFER["price"]],
                 $row[COLUMNS_OFFER["negotiable"]],

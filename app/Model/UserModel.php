@@ -3,10 +3,9 @@
 namespace Model;
 
 use Hydro\Base\Database\Driver\SQLite;
-use Hydro\Base\Model\BaseModel;
 use PDOException;
 
-class UserModel extends BaseModel
+class UserModel
 {
     private $id;
     private $displayName;
@@ -15,7 +14,8 @@ class UserModel extends BaseModel
     private $ugId;
     private $rating;
     private $createdAt;
-    private $picture;
+    private $mime;
+    private $image;
     private $disabled;
 
     /**
@@ -30,7 +30,7 @@ class UserModel extends BaseModel
      * @param $picture;
      * @param $disabled
      */
-    public function __construct($id, $displayName, $mail, $password, $ugId, $rating, $createdAt, $picture, $disabled)
+    public function __construct($id, $displayName, $mail, $password, $ugId, $rating, $createdAt, $mime, $image, $disabled)
     {
         $this->id = $id;
         $this->displayName = $displayName;
@@ -39,39 +39,25 @@ class UserModel extends BaseModel
         $this->ugId = $ugId;
         $this->rating = $rating;
         $this->createdAt = $createdAt;
-        $this->picture = $picture;
+        $this->mime = $mime;
+        $this->image = $image;
         $this->disabled = $disabled;
-        parent::__construct(TABLE_USER, COLUMNS_USER);
     }
 
-    public function insertIntoDatabase($con) {
-        return $this->create($con);
+    public function insertIntoDatabase($userDAO) {
+        return $userDAO->create($this);
     }
 
-    public static function getFromDatabase($con, $whereClause, $values) {
-
-        $result = parent::read($con, TABLE_USER. " " .$whereClause, $values);
-        $user = array();
-        foreach ($result as $row):
-            $picture[COLUMNS_USER['mime']] = $row[COLUMNS_USER["mime"]];
-            $picture[COLUMNS_USER['image']] = $row[COLUMNS_USER["image"]];
-
-            $user[] = new UserModel($row[COLUMNS_USER["u_id"]],
-                $row[COLUMNS_USER["display_name"]],
-                $row[COLUMNS_USER["mail"]],
-                $row[COLUMNS_USER["password"]],
-                $row[COLUMNS_USER["ug_id"]],
-                $row[COLUMNS_USER["rating"]],
-                $row[COLUMNS_USER["created_at"]],
-                $picture,
-                $row[COLUMNS_USER["disabled"]]);
-        endforeach;
-        if(count($user) == 1):
-            $user = array_shift($user);
-        endif;
-
-        return $user;
+    public static function getFromDatabaseByMail($userDAO, $mail){
+        $tmp = $userDAO->readByMail($mail);
+        return new UserModel($tmp[0], $tmp[1], $tmp[2], $tmp[3], $tmp[4], $tmp[5], $tmp[6], $tmp[7], $tmp[8], $tmp[9]);;
     }
+
+    public static function getFromDatabaseById($userDAO, $id){
+        $tmp = $userDAO->read($id);
+        return new UserModel($tmp[0], $tmp[1], $tmp[2], $tmp[3], $tmp[4], $tmp[5], $tmp[6], $tmp[7], $tmp[8], $tmp[9]);;
+    }
+
 
     public function updateInDatabase($con, $editDate = true) {
         $updateValues = $this->getDatabaseValues();
@@ -106,8 +92,8 @@ class UserModel extends BaseModel
             $this->getUgId(),
             $this->getRating(),
             $this->getCreatedAt(),
-            $this->getPictureArray()[COLUMNS_USER['mime']],
-            $this->getPictureArray()[COLUMNS_USER['image']],
+            $this->mime,
+            $this->image,
             $this->isDisabled());
     }
 
@@ -280,29 +266,10 @@ class UserModel extends BaseModel
         $this->createdAt = $createdAt;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPictureArray()
-    {
-        return $this->picture;
-    }
-
-    /**
-     * @param mixed $picture
-     */
-    public function setPictureArray($picture)
-    {
-        $this->picture = $picture;
-    }
 
     public function getPicture() {
-        $picture = $this->getPictureArray();
-        if(!empty($picture)){
-            return "data:" . $picture[COLUMNS_USER['mime']] .
-                ";base64," . $picture[COLUMNS_USER['image']];
-        }
-        return "";
+            return "data:" . $this->mime .
+                ";base64," . $this->image;
     }
 
     /**
@@ -322,7 +289,6 @@ class UserModel extends BaseModel
     }
 
     public static function getUser($id) {
-        $whereClause = "WHERE " .COLUMNS_USER["u_id"]. " = ?";
-        return self::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($id));
+        return self::getFromDatabaseById(new DAOUser(SQLite::connectToSQLite()), $id);
     }
 }

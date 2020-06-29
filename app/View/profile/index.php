@@ -77,7 +77,7 @@ $offersByUser = ProfileController::getOffersFromUser();
                         <form action="profile/disableUser" method="post" class="user-suspend-container">
                             <label for="submit-suspend" class="fas fa-gavel disable" title="Nutzer sperren"></label>
                     <?php endif; ?>
-                        <input type="text" name="user" hidden value='<?= $displayUser->getId();?>'>
+                        <input type="text" name="user_id" hidden value='<?= $displayUser->getId();?>'>
                         <button id="submit-suspend" type="submit" hidden></button>
                         <label for="submit-suspend" hidden>Nutzer sperren</label>
                     </form>

@@ -6,6 +6,7 @@ namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\DAOUser;
 use Model\UserModel;
 use Model\OfferModel;
 
@@ -68,17 +69,15 @@ class ProfileController extends BaseController
     }
 
     public static function disableUser() {
-        $user = UserModel::getFromDatabase(SQLite::connectToSQLite(), "WHERE " .COLUMNS_USER['u_id']. " = ?",
-            array($_POST['user']));
+        $user = UserModel::getFromDatabaseById(new DAOUser(SQLite::connectToSQLite()), $_POST['user_id']);
 
         $user->deactivateInDatabase();
-        header('location: ' . URL . 'profile?id=' .$user->getId());
+        header('location: ' . URL . 'profile?id=' . $user->getId());
         exit();
     }
 
     public static function enableUser() {
-        $user = UserModel::getFromDatabase(SQLite::connectToSQLite(), "WHERE " .COLUMNS_USER['u_id']. " = ?",
-            array($_POST['user']));
+        $user = UserModel::getFromDatabaseById(new DAOUser(SQLite::connectToSQLite()), $_POST['user_id']);
 
         $user->activateInDatabase();
         header('location: ' . URL . 'profile?id=' .$user->getId());
