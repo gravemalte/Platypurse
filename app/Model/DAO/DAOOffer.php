@@ -93,4 +93,28 @@ class DAOOffer implements DAOContract
             throw new PDOException('DAOOffer readAll error');
         }
     }
+
+    public function readHot()
+    {
+        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY clicks desc LIMIT 1";
+        $stmt = $this->con->prepare($sql);
+
+        if($stmt->execute()) {
+            return $stmt->fetchAll();
+        } else {
+            throw new PDOException('DAOOffer readAll error');
+        }
+    }
+
+    public function readNewest()
+    {
+        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY create_date desc LIMIT 9";
+        $stmt = $this->con->prepare($sql);
+
+        if($stmt->execute()) {
+            return $stmt->fetchAll();
+        } else {
+            throw new PDOException('DAOOffer readAll error');
+        }
+    }
 }
