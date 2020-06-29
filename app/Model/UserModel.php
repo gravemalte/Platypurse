@@ -3,6 +3,7 @@
 namespace Model;
 
 use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\DAOUser;
 use PDOException;
 
 class UserModel
@@ -59,10 +60,8 @@ class UserModel
     }
 
 
-    public function updateInDatabase($con, $editDate = true) {
-        $updateValues = $this->getDatabaseValues();
-        $updateValues[] = $this->getId();
-        return $this->update($con, $updateValues);
+    public function updateInDatabase($userDAO) {
+        return $userDAO->read($this);
     }
 
     /**
@@ -70,7 +69,7 @@ class UserModel
      */
     public function deactivateInDatabase() {
         $this->setDisabled(1);
-        $this->updateInDatabase(SQLite::connectToSQLite());
+        $this->updateInDatabase(new DAOUser(SQLite::connectToSQLite()));
     }
 
     /**
@@ -78,7 +77,7 @@ class UserModel
      */
     public function activateInDatabase() {
         $this->setDisabled(0);
-        $this->updateInDatabase(SQLite::connectToSQLite());
+        $this->updateInDatabase(new DAOUser(SQLite::connectToSQLite()));
     }
 
     /**
