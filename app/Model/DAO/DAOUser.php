@@ -68,8 +68,8 @@ class DAOUser implements DAOContract
         $stmt->bindValue(":password", $obj->getPassword());
         $stmt->bindValue(":ugId", $obj->getUgId());
         $stmt->bindValue(":rating", $obj->getRating());
-        $stmt->bindValue(":mime", $obj->getPicture()[0]);
-        $stmt->bindValue(":image", $obj->getPicture()[1]);
+        $stmt->bindValue(":mime", $obj->getMime());
+        $stmt->bindValue(":image", $obj->getImage());
         $stmt->bindValue(":disabled", $obj->isDisabled());
         $stmt->bindValue(":id", $obj->getId());
 
