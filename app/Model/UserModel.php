@@ -28,7 +28,8 @@ class UserModel
      * @param $ugId
      * @param $rating
      * @param $createdAt
-     * @param $picture;
+     * @param $mime;
+     * @param $image;
      * @param $disabled
      */
     public function __construct($id, $displayName, $mail, $password, $ugId, $rating, $createdAt, $mime, $image, $disabled)
@@ -265,10 +266,25 @@ class UserModel
         $this->createdAt = $createdAt;
     }
 
+    public function getMime() {
+        return $this->mime;
+    }
+
+    public function setMime($mime) {
+        $this->mime = $mime;
+    }
+
+    public function getImage() {
+        return $this->image;
+    }
+
+    public function setImage($image) {
+        $this->image = $image;
+    }
 
     public function getPicture() {
-            return "data:" . $this->mime .
-                ";base64," . $this->image;
+            return "data:" . $this->getMime() .
+                ";base64," . $this->getImage();
     }
 
     /**
