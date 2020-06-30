@@ -10,7 +10,7 @@ use Model\UserModel;
 use Hydro\Base\Contracts\DAOContract;
 
 
-class DAOUser implements DAOContract
+class DAOUserRating implements DAOContract
 {
     private $con;
 
