@@ -48,13 +48,13 @@ class OfferController extends BaseController
                 $savedOffer = new SavedOfferModel(hexdec(uniqid()),
                     $userId, $offerId, 1);
 
-                $check = $dao->create($savedOffer);
+                $check = $savedOffer->insertIntoDatabase($savedOffer);
             else:
                 $savedOffer->setActive(1);
                 $check = $savedOffer->updateInDatabase($dao);
             endif;
 
-            if(!$check):
+            if($check):
                 header('location: ' . URL . 'profile?id=' . $userId);
                 exit();
             endif;
