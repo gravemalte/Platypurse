@@ -78,17 +78,12 @@ class OfferController extends BaseController
     }
 
     public static function isOfferInSavedList($offerId) {
-        $con = SQLite::connectToSQLite();
-        $statement = "SELECT * FROM " .TABLE_SAVED_OFFERS. " WHERE "
-            .COLUMNS_SAVED_OFFERS["u_id"]. " = ? AND "
-            .COLUMNS_SAVED_OFFERS["o_id"]. " = ? AND "
-            .COLUMNS_SAVED_OFFERS["active"]. " = ?";
-        $values = array($_SESSION["currentUser"]->getId(), $offerId, 1);
+        $userId = $_SESSION["currentUser"]->getId();
+        $dao = new DAOSavedOffers(SQLite::connectToSQLite());
 
-        $command = $con->prepare($statement);
-        $command->execute($values);
+        $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId);
 
-        if(count($command->fetchAll()) == 0):
+        if(empty($savedOffer->getId())):
             return false;
         else:
             return true;
