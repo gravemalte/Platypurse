@@ -23,7 +23,7 @@ class HomeController extends BaseController
     }
 
     public function getNewestOffers() {
-        return OfferModel::getNewestOffers();
+        return OfferModel::getNewestOffers(new DAOOffer(SQLite::connectToSQLite()));
     }
 
     public function getHotOffer() {

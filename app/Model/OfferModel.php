@@ -170,7 +170,7 @@ class OfferModel extends BaseModel {
     }
 
     public static function getNewestOffers($offerDAO) {
-        $result = $offerDAO->readNew();
+        $result = $offerDAO->readNewest();
 
         $returnArray = array();
         foreach($result as $row):
