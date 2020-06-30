@@ -62,7 +62,7 @@ class UserModel
 
 
     public function updateInDatabase($userDAO) {
-        return $userDAO->read($this);
+        return $userDAO->update($this);
     }
 
     /**
