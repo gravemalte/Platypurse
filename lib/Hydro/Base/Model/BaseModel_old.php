@@ -6,7 +6,7 @@ use Hydro\Base\Database\Driver\SQLite;
 use PDOException;
 
 
-abstract class BaseModel  {
+abstract class OldBaseModel  {
 
     private $table;
     private $tableColumns;
