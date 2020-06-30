@@ -31,7 +31,7 @@ class DAOOffer implements DAOContract
         $stmt->bindValue(":offerId", $obj->getId());
         $stmt->bindValue(":userId", $obj->getUser()->getId());
         $stmt->bindValue(":platypusId", $obj->getPlatypus()->getId());
-        $stmt->bindValue(":price", $obj->getPrice());
+        $stmt->bindValue(":price", $obj->getPriceUnformatted());
         $stmt->bindValue(":negotiable", $obj->getNegotiable());
         $stmt->bindValue(":description", $obj->getDescription());
 
@@ -61,18 +61,19 @@ class DAOOffer implements DAOContract
     public function update($obj)
     {
         $sql = "UPDATE offer SET price = :price, negotiable = :negotiable, description = :description,
-                 clicks = :clicks, edit_date = :edit_date, active = :active WHERE u_id = :id";
+                 clicks = :clicks, edit_date = :edit_date, active = :active WHERE o_id = :id";
 
         $stmt = $this->con->prepare($sql);
-        $stmt->bindValue(":price", $obj->getPrice());
+        $stmt->bindValue(":price", $obj->getPriceUnformatted());
         $stmt->bindValue(":negotiable", $obj->getNegotiable());
         $stmt->bindValue(":description", $obj->getDescription());
         $stmt->bindValue(":clicks", $obj->getClicks());
         $stmt->bindValue(":edit_date", $obj->getEditDate());
-        $stmt->bindValue(":active", $obj->getActive());
+        $stmt->bindValue(":active", $obj->isActive());
+        $stmt->bindValue(":id", $obj->getId());
 
         if($stmt->execute()) {
-            return $stmt->fetch();
+            return true;
         } else {
             throw new PDOException('DAOOffer update error');
         }

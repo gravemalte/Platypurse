@@ -100,7 +100,6 @@ class UserModel
     public function insertRatingIntoDatabase($from, $rating) {
         $con = SQLite::connectToSQLite();
         $result = false;
-        $con->beginTransaction();
         try {
             $statement = "INSERT INTO " . TABLE_USER_RATING . "(";
             foreach (COLUMNS_USER_RATING as $col):
@@ -120,10 +119,8 @@ class UserModel
 
             $command = $con->prepare($statement);
             $result = $command->execute($valueArray);
-            $con->commit();
         }
         catch(PDOException $ex) {
-            $con->rollBack();
             $return = false;
         }
         finally {

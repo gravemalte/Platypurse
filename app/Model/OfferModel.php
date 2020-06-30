@@ -3,9 +3,9 @@
 namespace Model;
 
 use Model\DAO\DAOOfferImages;
+use Model\DAO\DAOOffer;
 use Model\DAO\DAOUser;
 use Model\DAO\DAOPlatypus;
-use PDOException;
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
 use Hydro\Helper\Date;
@@ -58,7 +58,18 @@ class OfferModel extends BaseModel {
     }
 
     public function insertIntoDatabase($offerDAO) {
-        return $offerDAO->create($this);
+        if($this->getPlatypus()->insertIntoDatabase(new DAOPlatypus($offerDAO->getCon()))):
+            if($offerDAO->create($this)):
+                foreach($this->getImages() as $image):
+                    $check = $image->insertIntoDatabase(new DAOOfferImages(($offerDAO->getCon())));
+                    if(!$check):
+                        return false;
+                    endif;
+                endforeach;
+                return true;
+            endif;
+        endif;
+        return false;
     }
 
     public static function getFromDatabase($offerDAO, $id){
@@ -86,33 +97,19 @@ class OfferModel extends BaseModel {
         return $returnArray;
     }
 
-    public function updateInDatabase($con, $editDate = true) {
-        $result = false;
-
-        if($editDate):
-            $this->setEditDate(Date::now());
-        endif;
-
-        try {
-            if($this->getPlatypus()->updateInDatabase($con)):
-                $updateValues = $this->getDatabaseValues();
-                $updateValues[] = $this->getId();
-
-                if($this->update($con, $updateValues)):
-                    $picture = $this->getPictures()[0];
-                    $updateImageValues = array($picture['mime'], $picture['image'], $this->getId());
-                    $result = $this->updateImagesInDatabase($con, $updateImageValues);
-                endif;
-            else:
-                throw new PDOException();
+    public function updateInDatabase($offerDAO) {
+        if($this->getPlatypus()->updateInDatabase(new DAOPlatypus($offerDAO->getCon()))):
+            if($offerDAO->update($this)):
+                foreach($this->getImages() as $image):
+                    $check = $image->updateInDatabase(new DAOOfferImages(($offerDAO->getCon())));
+                    if(!$check):
+                        return false;
+                    endif;
+                endforeach;
+                return true;
             endif;
-        }
-        catch (PDOException $ex) {
-            $result = false;
-        }
-        finally {
-            return $result;
-        }
+        endif;
+        return false;
     }
 
     /**
@@ -123,34 +120,6 @@ class OfferModel extends BaseModel {
         $this->setEditDate(Date::now());
         $this->getPlatypus()->setActive(0);
         $this->updateInDatabase(SQLite::connectToSQLite(), false);
-    }
-
-    public function insertImagesIntoDatabase($con) {
-        if(!empty($this->getPictures())):
-            $statement = "INSERT INTO " .TABLE_OFFER_IMAGES. "(";
-            foreach (COLUMNS_OFFER_IMAGES as $col):
-                $statement .= $col .", ";
-            endforeach;
-            $statement = substr($statement, 0, -2) .") VALUES ";
-            $valueArray = array();
-            foreach ($this->getPictures() as $key=>$value):
-                $statement .= "(?, ?, ?, ?, ?), ";
-                $valueArray[] = hexdec(uniqid());
-                $valueArray[] = $this->getId();
-                $valueArray[] = $key;
-                $valueArray[] = $value[COLUMNS_OFFER_IMAGES['mime']];
-                $valueArray[] = $value[COLUMNS_OFFER_IMAGES['image']];
-            endforeach;
-            $statement = substr($statement, 0, -2) .";";
-
-            //print($statement);
-            //print_r($valueArray);
-
-            $command = $con->prepare($statement);
-            return $command->execute($valueArray);
-        else:
-            return true;
-        endif;
     }
 
     public function updateImagesInDatabase($con, $values) {
@@ -165,25 +134,6 @@ class OfferModel extends BaseModel {
         else:
             return true;
         endif;
-    }
-
-    public static function getImagesFromDatabase($con, $id) {
-        $picturesArray = array();
-
-        $statement = "SELECT * FROM " .TABLE_OFFER_IMAGES. " WHERE " .COLUMNS_OFFER_IMAGES['o_id']. " = ? 
-            ORDER BY " .COLUMNS_OFFER_IMAGES['picture_position']. " desc;";
-
-        $command = $con->prepare($statement);
-        $command->execute(array($id));
-        foreach ($command->fetchAll() as $row):
-            $contentArray = array();
-            $contentArray[COLUMNS_OFFER_IMAGES['mime']] = $row[COLUMNS_OFFER_IMAGES['mime']];
-            $contentArray[COLUMNS_OFFER_IMAGES['image']] = $row[COLUMNS_OFFER_IMAGES['image']];
-
-            $picturesArray[$row[COLUMNS_OFFER_IMAGES['picture_position']]] = $contentArray;
-        endforeach;
-
-        return $picturesArray;
     }
 
     public static function getNewestOffers($offerDAO) {
@@ -207,7 +157,7 @@ class OfferModel extends BaseModel {
      */
     public function offerClickPlusOne() {
         $this->setClicks($this->getClicks() + 1);
-        $this->updateInDatabase(SQLite::connectToSQLite(), false);
+        $this->updateInDatabase(new DAOOffer(SQLite::connectToSQLite()));
     }
 
     private static function getOfferFromRow($row, $offerDAO) {

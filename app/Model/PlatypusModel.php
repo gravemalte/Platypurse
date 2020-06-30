@@ -37,8 +37,8 @@ class PlatypusModel extends BaseModel {
         parent::__construct(TABLE_PLATYPUS, COLUMNS_PLATYPUS);
     }
 
-    public function insertIntoDatabase($con) {
-        return $this->create($con);
+    public function insertIntoDatabase($dao) {
+        return $dao->create($this);
     }
 
     public static function getFromDatabaseById($platypusDAO, $id){
@@ -68,22 +68,8 @@ class PlatypusModel extends BaseModel {
         return $platypus;
     }
     
-    public function updateInDatabase($con, $editDate = true) {
-        $result = false;
-
-        try {
-            $updateValues = $this->getDatabaseValues();
-            $updateValues[] = $this->getId();
-            $result = $this->update($con, $updateValues);
-        }
-        catch (PDOException $ex) {
-            $con->rollBack();
-            $result = false;
-        }
-        finally {
-            unset($con);
-            return $result;
-        }
+    public function updateInDatabase($dao) {
+        return $dao->update($this);
     }
 
     /**
@@ -92,19 +78,6 @@ class PlatypusModel extends BaseModel {
     public function deactivateInDatabase() {
         $this->setActive(0);
         $this->updateInDatabase(SQLite::connectToSQLite());
-    }
-
-    /**
-     * @return array
-     */
-    public function getDatabaseValues() {
-        return array($this->getId(),
-            $this->getName(),
-            $this->getAgeYears(),
-            $this->getSex(),
-            $this->getSize(),
-            $this->getWeight(),
-            $this->getActive());
     }
 
     /**
@@ -206,7 +179,7 @@ class PlatypusModel extends BaseModel {
     /**
      * @return mixed
      */
-    public function getActive()
+    public function isActive()
     {
         return $this->active;
     }

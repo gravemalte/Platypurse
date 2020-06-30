@@ -44,8 +44,8 @@ class OfferImageModel extends BaseModel {
         return $returnArray;
     }
     
-    public function updateInDatabase($con, $editDate = true) {
-        //TODO: implement
+    public function updateInDatabase($dao) {
+        return $dao->update($this);
     }
 
     /**

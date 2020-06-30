@@ -21,24 +21,21 @@ class DAOOfferImages implements DAOContract
 
     public function create($obj)
     {
-        $this->con->beginTransaction();
         $query = "INSERT INTO offer_images (oi_id, o_id, picture_position, mime, image) 
             VALUES (:offerImagesId, :offerId, :picturePosition, :mime, :image)";
         $stmt = $this->con->prepare($query);
-        // TODO: Object for offer images?
         $stmt->bindValue(":offerImagesId", $obj->getId());
-        $stmt->bindValue(":offerId", $obj->getUser()->getId());
-        $stmt->bindValue(":mime", $obj->getPlatypus()->getId());
-        $stmt->bindValue(":image", $obj->getPrice());
+        $stmt->bindValue(":offerId", $obj->getOfferId());
+        $stmt->bindValue(":picturePosition", $obj->getPicturePosition());
+        $stmt->bindValue(":mime", $obj->getMime());
+        $stmt->bindValue(":image", $obj->getImage());
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
             $sql = "SELECT * FROM offer_images WHERE oi_id = $id";
             $result = $this->con->query($sql);
-            $this->con->commit();
             return $result->fetch();
         } else {
-            $this->con->rollback();
             return new PDOException('DAOOfferImages create error');
         }
 
@@ -59,19 +56,18 @@ class DAOOfferImages implements DAOContract
 
     public function update($obj)
     {
-        $sql = "UPDATE offer_images SET price = :price, negotiable = :negotiable, description = :description,
-                 clicks = :clicks, edit_date = :edit_date, active = :active WHERE u_id = :id";
+        // TODO: Where oi_id
+        $sql = "UPDATE offer_images SET picture_position = :picturePosition, mime = :mime, image = :image
+                WHERE o_id = :id";
 
         $stmt = $this->con->prepare($sql);
-        $stmt->bindValue(":price", $obj->getPrice());
-        $stmt->bindValue(":negotiable", $obj->getNegotiable());
-        $stmt->bindValue(":description", $obj->getDescription());
-        $stmt->bindValue(":clicks", $obj->getClicks());
-        $stmt->bindValue(":edit_date", $obj->getEditDate());
-        $stmt->bindValue(":active", $obj->getActive());
+        $stmt->bindValue(":picturePosition", $obj->getPicturePosition());
+        $stmt->bindValue(":mime", $obj->getMime());
+        $stmt->bindValue(":image", $obj->getImage());
+        $stmt->bindValue(":id", $obj->getOfferId());
 
         if($stmt->execute()) {
-            return $stmt->fetch();
+            return true;
         } else {
             throw new PDOException('DAOOfferImages update error');
         }

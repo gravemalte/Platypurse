@@ -22,7 +22,6 @@ class DAOUser implements DAOContract
 
     public function create($obj)
     {
-        $this->con->beginTransaction();
         $query = "INSERT INTO user(u_id, display_name, mail, password, ug_id) VALUES (:userID, :displayName, :mail, :password, :ugID)";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":userID", $obj->getId());
@@ -35,10 +34,8 @@ class DAOUser implements DAOContract
             $id = $this->con->lastInsertId();
             $sql = "SELECT * FROM user WHERE u_id = $id";
             $result = $this->con->query($sql);
-            $this->con->commit();
             return $result->fetch();
         } else {
-            $this->con->rollback();
             return new PDOException('UserModel statement exception');
         }
 
@@ -74,7 +71,7 @@ class DAOUser implements DAOContract
         $stmt->bindValue(":id", $obj->getId());
 
         if($stmt->execute()) {
-            return $stmt->fetch();
+            return true;
         } else {
             throw new PDOException('Update UserModel error...');
         }

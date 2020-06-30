@@ -22,13 +22,12 @@ class DAOPlatypus implements DAOContract
 
     public function create($obj)
     {
-        $this->con->beginTransaction();
         $query = "INSERT INTO platypus(p_id, name, age_years, sex, size, weight)
             VALUES (:platypusId, :name, :ageYears, :sex, :size, :weight)";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":platypusId", $obj->getId());
         $stmt->bindValue(":name", $obj->getName());
-        $stmt->bindValue(":ageYears", $obj->getAge());
+        $stmt->bindValue(":ageYears", $obj->getAgeYears());
         $stmt->bindValue(":sex", $obj->getSex());
         $stmt->bindValue(":size", $obj->getSize());
         $stmt->bindValue(":weight", $obj->getWeight());
@@ -37,10 +36,8 @@ class DAOPlatypus implements DAOContract
             $id = $this->con->lastInsertId();
             $sql = "SELECT * FROM platypus WHERE p_id = $id";
             $result = $this->con->query($sql);
-            $this->con->commit();
             return $result->fetch();
         } else {
-            $this->con->rollback();
             return new PDOException('DAOPlatypus create error');
         }
 
@@ -66,15 +63,15 @@ class DAOPlatypus implements DAOContract
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":name", $obj->getName());
-        $stmt->bindValue(":ageYears", $obj->getAge());
+        $stmt->bindValue(":ageYears", $obj->getAgeYears());
         $stmt->bindValue(":sex", $obj->getSex());
         $stmt->bindValue(":size", $obj->getSize());
         $stmt->bindValue(":weight", $obj->getWeight());
-        $stmt->bindValue(":active", $obj->getActive());
+        $stmt->bindValue(":active", $obj->isActive());
         $stmt->bindValue(":id", $obj->getId());
 
         if($stmt->execute()) {
-            return $stmt->fetch();
+            return true;
         } else {
             throw new PDOException('DAOPlatypus update error');
         }
