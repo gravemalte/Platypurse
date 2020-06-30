@@ -21,7 +21,6 @@ class DAOOffer implements DAOContract
 
     public function create($obj)
     {
-        $this->con->beginTransaction();
         $query = "INSERT INTO offer (o_id, u_id, p_id, price, negotiable, description) 
             VALUES (:offerId, :userId, :platypusId, :price, :negotiable, :description)";
         $stmt = $this->con->prepare($query);
@@ -36,10 +35,8 @@ class DAOOffer implements DAOContract
             $id = $this->con->lastInsertId();
             $sql = "SELECT * FROM offer WHERE o_id = $id";
             $result = $this->con->query($sql);
-            $this->con->commit();
             return $result->fetch();
         } else {
-            $this->con->rollback();
             return new PDOException('DAOOffer create error');
         }
 
@@ -100,7 +97,7 @@ class DAOOffer implements DAOContract
         $stmt = $this->con->prepare($sql);
 
         if($stmt->execute()) {
-            return $stmt->fetchAll();
+            return $stmt->fetch();
         } else {
             throw new PDOException('DAOOffer readAll error');
         }

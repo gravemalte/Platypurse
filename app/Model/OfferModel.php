@@ -2,10 +2,10 @@
 
 namespace Model;
 
+use Model\UserModel;
 use PDOException;
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
-use Model\UserModel;
 use Hydro\Helper\Date;
 
 class OfferModel extends BaseModel {
@@ -15,7 +15,6 @@ class OfferModel extends BaseModel {
     private $price;
     private $negotiable;
     private $description;
-    private $pictures;
     private $clicks;
     private $create_date;
     private $edit_date;
@@ -29,13 +28,12 @@ class OfferModel extends BaseModel {
      * @param $price
      * @param $negotiable
      * @param $description
-     * @param $pictures
      * @param $clicks
      * @param $create_date
      * @param $edit_date
      * @param $active
      */
-    public function __construct($id, $user, $platypus, $price, $negotiable, $description, $pictures, $clicks = 0, $create_date = "", $edit_date = "", $active = 1)
+    public function __construct($id, $user, $platypus, $price, $negotiable, $description, $clicks = 0, $create_date = "", $edit_date = "", $active = 1)
     {
         if(empty($create_date)):
             $create_date = Date::now();
@@ -47,47 +45,28 @@ class OfferModel extends BaseModel {
         $this->price = $price;
         $this->negotiable = $negotiable;
         $this->description = $description;
-        $this->pictures = $pictures;
         $this->clicks = $clicks;
         $this->create_date = $create_date;
         $this->edit_date = $edit_date;
         $this->active = $active;
-        parent::__construct(TABLE_OFFER, COLUMNS_OFFER);
     }
 
-    public function insertIntoDatabase($con) {
-        $result = false;
-        if($this->getPlatypus()->insertIntoDatabase($con)):
-            if($this->create($con)):
-                $result = $this->insertImagesIntoDatabase($con);
-            else:
-                throw new PDOException();
-            endif;
-        else:
-            throw new PDOException();
-        endif;
-        return $result;
+    public function insertIntoDatabase($offerDAO) {
+        return $offerDAO->create($this);
     }
 
-    public static function getFromDatabase($con, $whereClause, $values) {
-        $result = parent::read($con, TABLE_OFFER. " " .$whereClause, $values);
-        $offer = array();
-        foreach ($result as $row):
-            $offer[] = new OfferModel($row[COLUMNS_OFFER["o_id"]],
-                // FIXME: $dao initialization needed
-                UserModel::getFromDatabaseById($dao, $row[COLUMNS_OFFER["u_id"]]),
-                PlatypusModel::getFromDatabase($con, "WHERE " .COLUMNS_PLATYPUS['p_id']. " = ?", array($row[COLUMNS_OFFER["p_id"]])),
-                $row[COLUMNS_OFFER["price"]],
-                $row[COLUMNS_OFFER["negotiable"]],
-                $row[COLUMNS_OFFER["description"]],
-                OfferModel::getImagesFromDatabase($con, $row[COLUMNS_OFFER['o_id']]),
-                $row[COLUMNS_OFFER["clicks"]],
-                $row[COLUMNS_OFFER["create_date"]],
-                $row[COLUMNS_OFFER["edit_date"]],
-                $row[COLUMNS_OFFER["active"]]);
+    public static function getFromDatabaseByUserId($offerDAO, $userId){
+        $result = $offerDAO->readByUserId($userId);
+
+        $returnArray = array();
+        foreach($result as $row):
+            $returnArray[] = new OfferModel($row[0],
+                UserModel::getFromDatabaseById($offerDAO, $row[1]),
+                PlatypusModel::getFromDatabaseById($offerDAO, $row[2]),
+                $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9]);
         endforeach;
 
-        return $offer;
+        return $returnArray;
     }
 
     public function updateInDatabase($con, $editDate = true) {
@@ -190,20 +169,27 @@ class OfferModel extends BaseModel {
         return $picturesArray;
     }
 
-    public static function getNewestOffers() {
-        $con = SQLite::connectToSQLite();
-        $whereClause = "WHERE " .COLUMNS_OFFER['active']. " = ? ORDER BY "
-            .COLUMNS_OFFER['create_date']. " desc LIMIT 9";
+    public static function getNewestOffers($offerDAO) {
+        $result = $offerDAO->readNew();
 
-        return OfferModel::getFromDatabase($con, $whereClause, array(1));
+        $returnArray = array();
+        foreach($result as $row):
+            $returnArray[] = new OfferModel($row[0],
+                UserModel::getFromDatabaseById($offerDAO, $row[1]),
+                PlatypusModel::getFromDatabaseById($offerDAO, $row[2]),
+                $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9]);
+        endforeach;
+
+        return $returnArray;
     }
 
-    public static function getHotOffer() {
-        $con = SQLite::connectToSQLite();
-        $whereClause = "WHERE " .COLUMNS_OFFER['active']. " = ? ORDER BY "
-            .COLUMNS_OFFER['clicks']. " desc LIMIT 1";
+    public static function getHotOffer($offerDAO) {
+        $result = $offerDAO->readHot();
 
-        return OfferModel::getFromDatabase($con, $whereClause, array(1))[0];
+        return new OfferModel($result[0],
+            UserModel::getFromDatabaseById($offerDAO, $result[1]),
+            PlatypusModel::getFromDatabaseById($offerDAO, $result[2]),
+            $result[3], $result[4], $result[5], $result[6], $result[7], $result[8], $result[9]);
     }
 
     /**
@@ -212,22 +198,6 @@ class OfferModel extends BaseModel {
     public function offerClickPlusOne() {
         $this->setClicks($this->getClicks() + 1);
         $this->updateInDatabase(SQLite::connectToSQLite(), false);
-    }
-
-    /**
-     * @return array
-     */
-    public function getDatabaseValues() {
-        return array($this->getId(),
-            $this->getUser()->getId(),
-            $this->getPlatypus()->getId(),
-            $this->getPriceUnformatted(),
-            $this->getNegotiable(),
-            $this->getDescription(),
-            $this->getClicks(),
-            $this->getCreateDate(),
-            $this->getEditDate(),
-            $this->isActive());
     }
 
     /**

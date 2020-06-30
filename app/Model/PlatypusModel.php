@@ -9,7 +9,7 @@ use PDOException;
 class PlatypusModel extends BaseModel {
     private $id;
     private $name;
-    private $age_years;
+    private $ageYears;
     private $sex;
     private $size;
     private $weight;
@@ -29,7 +29,7 @@ class PlatypusModel extends BaseModel {
     {
         $this->id = $id;
         $this->name = $name;
-        $this->age_years = $age_years;
+        $this->ageYears = $age_years;
         $this->sex = $sex;
         $this->size = $size;
         $this->weight = $weight;
@@ -39,6 +39,12 @@ class PlatypusModel extends BaseModel {
 
     public function insertIntoDatabase($con) {
         return $this->create($con);
+    }
+
+    public static function getFromDatabaseById($platypusDAO, $id){
+        $result = $platypusDAO->read($id);
+
+        return new PlatypusModel($result[0], $result[1], $result[2], $result[3], $result[4], $result[5], $result[6]);
     }
 
     public static function getFromDatabase($con, $whereClause, $values) {
@@ -138,15 +144,15 @@ class PlatypusModel extends BaseModel {
      */
     public function getAgeYears()
     {
-        return $this->age_years;
+        return $this->ageYears;
     }
 
     /**
-     * @param mixed $age_years
+     * @param mixed $ageYears
      */
-    public function setAgeYears($age_years): void
+    public function setAgeYears($ageYears): void
     {
-        $this->age_years = $age_years;
+        $this->ageYears = $ageYears;
     }
 
     /**

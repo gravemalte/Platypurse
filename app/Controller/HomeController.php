@@ -3,7 +3,9 @@
 namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
+use Hydro\Base\Database\Driver\SQLite;
 use Model\OfferModel;
+use Model\DAO\DAOOffer;
 
 class HomeController extends BaseController
 {
@@ -25,7 +27,7 @@ class HomeController extends BaseController
     }
 
     public function getHotOffer() {
-        return OfferModel::getHotOffer();
+        return OfferModel::getHotOffer(new DAOOffer(SQLite::connectToSQLite()));
     }
 
     /**
