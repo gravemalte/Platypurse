@@ -106,7 +106,8 @@ define("COLUMNS_REPORTS_REASONS", array("rr_id" => "rr_id",
 /** Table name for table "saved_offers" */
 define("TABLE_SAVED_OFFERS", "saved_offers");
 /** Table columns for table "saved_offers" */
-define("COLUMNS_SAVED_OFFERS", array("u_id" => "u_id",
+define("COLUMNS_SAVED_OFFERS", array("so_id" => "so_id",
+    "u_id" => "u_id",
     "o_id" => "o_id",
     "active" => "active"));
 
@@ -135,7 +136,8 @@ define("COLUMNS_USER_GROUP", array("ug_id" => "ug_id",
 /** Table name for table "user_rating" */
 define("TABLE_USER_RATING", "user_rating");
 /** Table columns for table "user_rating" */
-define("COLUMNS_USER_RATING", array("from_u_id" => "from_u_id",
+define("COLUMNS_USER_RATING", array("ur_id" => "ur_id",
+    "from_u_id" => "from_u_id",
     "for_u_id" => "for_u_id",
     "rating" => "rating"));
 

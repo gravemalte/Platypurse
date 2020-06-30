@@ -20,6 +20,7 @@ CREATE TABLE user (
 );
 
 CREATE TABLE user_rating (
+  ur_id INTEGER PRIMARY AUTOINCREMENT,
   from_u_id INTEGER NOT NULL,
   for_u_id INTEGER NOT NULL,
   rating INTEGER NOT NULL,
@@ -73,6 +74,7 @@ CREATE TABLE offer_images (
 );
 
 CREATE TABLE saved_offers (
+  so_id INTEGER PRIMARY AUTOINCREMENT,
   u_id INTEGER NOT NULL,
   o_id INTEGER NOT NULL,
   active INTEGER DEFAULT 1,
