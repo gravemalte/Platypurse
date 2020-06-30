@@ -122,7 +122,7 @@ class DAOOffer implements DAOContract
     {
         $sql = "SELECT * FROM offer
                     LEFT JOIN saved_offers so on offer.o_id = so.o_id
-                    WHERE so.u_id = :userId";
+                    WHERE so.u_id = :userId AND so.active=1";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":userId", $userId);
 

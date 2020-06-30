@@ -5,8 +5,10 @@ namespace Controller;
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\DAOOffer;
+use Model\DAO\DAOSavedOffers;
 use Model\OfferModel;
 use Model\PlatypusModel;
+use Model\SavedOfferModel;
 use Model\UserModel;
 
 class OfferController extends BaseController
@@ -37,25 +39,22 @@ class OfferController extends BaseController
 
     public static function offerToSavedList() {
         if(isset($_SESSION["currentUser"])):
-            $con = SQLite::connectToSQLite();
+            $dao = new DAOSavedOffers(SQLite::connectToSQLite());
             $userId = $_SESSION["currentUser"]->getId();
-            $values = array($userId, $_POST["offerId"], 1);
+            $offerId = $_POST["offerId"];
 
-            $statement = "INSERT INTO " .TABLE_SAVED_OFFERS. " (";
-            foreach (COLUMNS_SAVED_OFFERS as $col):
-                $statement .= $col .", ";
-            endforeach;
-            $statement = substr($statement, 0, -2) .") VALUES (";
-            foreach ($values as $val):
-                $statement .= "?, ";
-            endforeach;
-            $statement = substr($statement, 0, -2) .");";
+            $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId);
+            if(empty($savedOffer->getId())):
+                $savedOffer = new SavedOfferModel(hexdec(uniqid()),
+                    $userId, $offerId, 1);
 
-            //print($statement);
-            //print_r($specialCharsValueArray);
+                $check = $dao->create($savedOffer);
+            else:
+                $savedOffer->setActive(1);
+                $check = $savedOffer->updateInDatabase($dao);
+            endif;
 
-            $command = $con->prepare($statement);
-            if($command->execute($values)):
+            if(!$check):
                 header('location: ' . URL . 'profile?id=' . $userId);
                 exit();
             endif;
@@ -66,15 +65,14 @@ class OfferController extends BaseController
 
     public static function removeFromSavedList() {
         $userId = $_SESSION["currentUser"]->getId();
-        $con = SQLite::connectToSQLite();
-        $statement = "DELETE FROM " .TABLE_SAVED_OFFERS. " WHERE "
-            .COLUMNS_SAVED_OFFERS["u_id"]. " = ? AND "
-            .COLUMNS_SAVED_OFFERS["o_id"]. " = ? AND "
-            .COLUMNS_SAVED_OFFERS["active"]. " = ?";
-        $values = array($_SESSION["currentUser"]->getId(), $_POST["offerId"], 1);
+        $offerId = $_POST["offerId"];
+        $dao = new DAOSavedOffers(SQLite::connectToSQLite());
 
-        $command = $con->prepare($statement);
-        $command->execute($values);
+        $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId);
+        $savedOffer->setActive(0);
+
+        $check = $savedOffer->updateInDatabase($dao);
+
         header('location: ' . URL . 'profile?id=' . $userId);
         exit();
     }

@@ -41,9 +41,15 @@ class SavedOfferModel extends BaseModel {
 
         return $returnArray;
     }
+
+    public static function getFromDatabaseByUserIdAndOfferId($savedOffersDAO, $userId, $offerId) {
+        $result = $savedOffersDAO->readByUserIdAndOfferId($userId, $offerId);
+
+        return new SavedOfferModel($result[0], $result[1], $result[2], $result[3]);
+    }
     
-    public function updateInDatabase($con, $editDate = true) {
-        //TODO: implement
+    public function updateInDatabase($dao) {
+        return $dao->update($this);
     }
 
     /**
@@ -97,7 +103,7 @@ class SavedOfferModel extends BaseModel {
     /**
      * @return mixed
      */
-    public function getActive()
+    public function isActive()
     {
         return $this->active;
     }
