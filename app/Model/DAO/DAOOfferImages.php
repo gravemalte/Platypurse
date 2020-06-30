@@ -81,6 +81,19 @@ class DAOOfferImages implements DAOContract
     {
     }
 
+    public function readByOfferId($offerId)
+    {
+        $query = "SELECT * FROM offer_images WHERE o_id = :offerId";
+        $stmt = $this->con->prepare($query);
+        $stmt->bindValue(":offerId", $offerId);
+
+        if($stmt->execute()){
+            return $stmt->fetchAll();
+        } else {
+            throw new PDOException('DAOOfferImages select by offerId error');
+        }
+    }
+
     public function readAll()
     {
         $sql = "SELECT * FROM offer_images";

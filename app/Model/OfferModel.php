@@ -2,7 +2,9 @@
 
 namespace Model;
 
-use Model\UserModel;
+use Model\DAO\DAOOfferImages;
+use Model\DAO\DAOUser;
+use Model\DAO\DAOPlatypus;
 use PDOException;
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Base\Model\BaseModel;
@@ -18,6 +20,7 @@ class OfferModel extends BaseModel {
     private $clicks;
     private $create_date;
     private $edit_date;
+    private $images;
     private $active;
 
     /**
@@ -31,9 +34,11 @@ class OfferModel extends BaseModel {
      * @param $clicks
      * @param $create_date
      * @param $edit_date
+     * @param $images
      * @param $active
      */
-    public function __construct($id, $user, $platypus, $price, $negotiable, $description, $clicks = 0, $create_date = "", $edit_date = "", $active = 1)
+    public function __construct($id, $user, $platypus, $price, $negotiable, $description,
+                                $clicks, $create_date, $edit_date, $images, $active = 1)
     {
         if(empty($create_date)):
             $create_date = Date::now();
@@ -48,6 +53,7 @@ class OfferModel extends BaseModel {
         $this->clicks = $clicks;
         $this->create_date = $create_date;
         $this->edit_date = $edit_date;
+        $this->images = $images;
         $this->active = $active;
     }
 
@@ -57,13 +63,13 @@ class OfferModel extends BaseModel {
 
     public static function getFromDatabaseByUserId($offerDAO, $userId){
         $result = $offerDAO->readByUserId($userId);
-
         $returnArray = array();
         foreach($result as $row):
             $returnArray[] = new OfferModel($row[0],
                 UserModel::getFromDatabaseById($offerDAO, $row[1]),
                 PlatypusModel::getFromDatabaseById($offerDAO, $row[2]),
-                $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9]);
+                $row[3], $row[4], $row[5], $row[6], $row[7], $row[8],
+                OfferImageModel::getFromDatabaseByOfferId($offerDAO, $row[0]), $row[9]);
         endforeach;
 
         return $returnArray;
@@ -175,11 +181,11 @@ class OfferModel extends BaseModel {
         $returnArray = array();
         foreach($result as $row):
             $returnArray[] = new OfferModel($row[0],
-                UserModel::getFromDatabaseById($offerDAO, $row[1]),
-                PlatypusModel::getFromDatabaseById($offerDAO, $row[2]),
-                $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9]);
+                UserModel::getFromDatabaseById(new DAOUser($offerDAO->getCon()), $row[1]),
+                PlatypusModel::getFromDatabaseById(new DAOPlatypus($offerDAO->getCon()), $row[2]),
+                $row[3], $row[4], $row[5], $row[6], $row[7], $row[8],
+                OfferImageModel::getFromDatabaseByOfferId(new DAOOfferImages($offerDAO->getCon()), $row[0]), $row[9]);
         endforeach;
-
         return $returnArray;
     }
 
@@ -187,9 +193,10 @@ class OfferModel extends BaseModel {
         $result = $offerDAO->readHot();
 
         return new OfferModel($result[0],
-            UserModel::getFromDatabaseById($offerDAO, $result[1]),
-            PlatypusModel::getFromDatabaseById($offerDAO, $result[2]),
-            $result[3], $result[4], $result[5], $result[6], $result[7], $result[8], $result[9]);
+            UserModel::getFromDatabaseById(new DAOUser($offerDAO->getCon()), $result[1]),
+            PlatypusModel::getFromDatabaseById(new DAOPlatypus($offerDAO->getCon()), $result[2]),
+            $result[3], $result[4], $result[5], $result[6], $result[7], $result[8],
+            OfferImageModel::getFromDatabaseByOfferId(new DAOOfferImages($offerDAO->getCon()), $result[0]), $result[9]);
     }
 
     /**
@@ -324,33 +331,6 @@ class OfferModel extends BaseModel {
     /**
      * @return mixed
      */
-    public function getPictures()
-    {
-        return $this->pictures;
-    }
-
-    /**
-     * @param mixed $pictures
-     */
-    public function setPictures($pictures)
-    {
-        $this->pictures = $pictures;
-    }
-
-    public function getPictureOnPosition($pos) {
-        $pictures = $this->getPictures();
-        if(!empty($pictures) && count($pictures) >= $pos):
-            $picture = $pictures[$pos];
-            return "data:" .$picture[COLUMNS_OFFER_IMAGES['mime']].
-                ";base64," .$picture[COLUMNS_OFFER_IMAGES['image']];
-        else:
-            return null;
-        endif;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getClicks()
     {
         return $this->clicks;
@@ -394,6 +374,32 @@ class OfferModel extends BaseModel {
     public function setEditDate($edit_date)
     {
         $this->edit_date = $edit_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param mixed $images
+     */
+    public function setImages($images)
+    {
+        $this->images = $images;
+    }
+
+    public function getImageOnPosition($pos) {
+        $images = $this->getImages();
+        if(!empty($images) && count($images) >= $pos):
+            $image = $images[$pos];
+            return $image->getSrc();
+        else:
+            return null;
+        endif;
     }
 
     /**

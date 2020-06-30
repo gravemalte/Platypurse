@@ -18,6 +18,10 @@ class DAOOffer implements DAOContract
         $this->con = $con;
     }
 
+    public function getCon() {
+        return $this->con;
+    }
+
 
     public function create($obj)
     {
