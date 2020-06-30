@@ -68,17 +68,17 @@ class UserModel
     /**
      * Set active to 0 and update database
      */
-    public function deactivateInDatabase() {
+    public function deactivateInDatabase($dao) {
         $this->setDisabled(1);
-        $this->updateInDatabase(new DAOUser(SQLite::connectToSQLite()));
+        $this->updateInDatabase($dao);
     }
 
     /**
      * Set active to 0 and update database
      */
-    public function activateInDatabase() {
+    public function activateInDatabase($dao) {
         $this->setDisabled(0);
-        $this->updateInDatabase(new DAOUser(SQLite::connectToSQLite()));
+        $this->updateInDatabase($dao);
     }
 
     /**

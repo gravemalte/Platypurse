@@ -58,17 +58,19 @@ class ProfileController extends BaseController
     }
 
     public static function disableUser() {
-        $user = UserModel::getFromDatabaseById(new DAOUser(SQLite::connectToSQLite()), $_POST['user_id']);
+        $dao = new DAOUser(SQLite::connectToSQLite());
+        $user = UserModel::getFromDatabaseById($dao, $_POST['user_id']);
 
-        $user->deactivateInDatabase();
+        $user->deactivateInDatabase($dao);
         header('location: ' . URL . 'profile?id=' . $user->getId());
         exit();
     }
 
     public static function enableUser() {
-        $user = UserModel::getFromDatabaseById(new DAOUser(SQLite::connectToSQLite()), $_POST['user_id']);
+        $dao = new DAOUser(SQLite::connectToSQLite());
+        $user = UserModel::getFromDatabaseById($dao, $_POST['user_id']);
 
-        $user->activateInDatabase();
+        $user->activateInDatabase($dao);
         header('location: ' . URL . 'profile?id=' .$user->getId());
         exit();
 
