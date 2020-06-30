@@ -82,7 +82,6 @@ abstract class OldBaseModel  {
         $columns = $this->getTableColumns();
 
         try{
-            $con->beginTransaction();
             // Check if object exists in database
             $objectInDatabase = $this->read($con, $this->getTable(). " WHERE " .reset($columns). " = ?", array($this->getId()));
 
@@ -93,9 +92,7 @@ abstract class OldBaseModel  {
                 $result = $this->updateInDatabase($con);
             endif;
 
-            if($result):
-                $con->commit();
-            else:
+            if(!$result):
                 throw new PDOException();
             endif;
         }

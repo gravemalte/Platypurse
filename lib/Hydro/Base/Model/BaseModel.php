@@ -28,7 +28,6 @@ abstract class BaseModel  {
         $columns = $this->getTableColumns();
 
         try{
-            $con->beginTransaction();
             // Check if object exists in database
             $objectInDatabase = $this->read($con, $this->getTable(). " WHERE " .reset($columns). " = ?", array($this->getId()));
 
@@ -39,14 +38,11 @@ abstract class BaseModel  {
                 $result = $this->updateInDatabase($con);
             endif;
 
-            if($result):
-                $con->commit();
-            else:
+            if(!$result):
                 throw new PDOException();
             endif;
         }
         catch(PDOException $ex) {
-            $con->rollBack();
             $result = false;
         }
         finally {
