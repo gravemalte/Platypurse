@@ -4,6 +4,7 @@ namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\DAOOffer;
 use Model\OfferModel;
 use Model\PlatypusModel;
 use Model\UserModel;
@@ -31,8 +32,7 @@ class OfferController extends BaseController
     }
 
     public static function getOffer($id) {
-        return OfferModel::getFromDatabase(SQLite::connectToSQLite(),  "WHERE " .COLUMNS_OFFER["o_id"]. " = ?",
-            array($id))[0];
+        return OfferModel::getFromDatabase(new DAOOffer(SQLite::connectToSQLite()), $id);
     }
 
     public static function offerToSavedList() {

@@ -61,15 +61,26 @@ class OfferModel extends BaseModel {
         return $offerDAO->create($this);
     }
 
+    public static function getFromDatabase($offerDAO, $id){
+        $result = $offerDAO->read($id);
+        return self::getOfferFromRow($result, $offerDAO);
+    }
+
     public static function getFromDatabaseByUserId($offerDAO, $userId){
-        $result = $offerDAO->readByUserId($userId);
+        $result = $offerDAO->readOffersByUserId($userId);
         $returnArray = array();
         foreach($result as $row):
-            $returnArray[] = new OfferModel($row[0],
-                UserModel::getFromDatabaseById($offerDAO, $row[1]),
-                PlatypusModel::getFromDatabaseById($offerDAO, $row[2]),
-                $row[3], $row[4], $row[5], $row[6], $row[7], $row[8],
-                OfferImageModel::getFromDatabaseByOfferId($offerDAO, $row[0]), $row[9]);
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO);
+        endforeach;
+
+        return $returnArray;
+    }
+
+    public static function getSavedOffersFromDatabaseByUserId($offerDAO, $userId){
+        $result = $offerDAO->readSavedOffersByUserId($userId);
+        $returnArray = array();
+        foreach($result as $row):
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO);
         endforeach;
 
         return $returnArray;
@@ -180,11 +191,7 @@ class OfferModel extends BaseModel {
 
         $returnArray = array();
         foreach($result as $row):
-            $returnArray[] = new OfferModel($row[0],
-                UserModel::getFromDatabaseById(new DAOUser($offerDAO->getCon()), $row[1]),
-                PlatypusModel::getFromDatabaseById(new DAOPlatypus($offerDAO->getCon()), $row[2]),
-                $row[3], $row[4], $row[5], $row[6], $row[7], $row[8],
-                OfferImageModel::getFromDatabaseByOfferId(new DAOOfferImages($offerDAO->getCon()), $row[0]), $row[9]);
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO);
         endforeach;
         return $returnArray;
     }
@@ -192,11 +199,7 @@ class OfferModel extends BaseModel {
     public static function getHotOffer($offerDAO) {
         $result = $offerDAO->readHot();
 
-        return new OfferModel($result[0],
-            UserModel::getFromDatabaseById(new DAOUser($offerDAO->getCon()), $result[1]),
-            PlatypusModel::getFromDatabaseById(new DAOPlatypus($offerDAO->getCon()), $result[2]),
-            $result[3], $result[4], $result[5], $result[6], $result[7], $result[8],
-            OfferImageModel::getFromDatabaseByOfferId(new DAOOfferImages($offerDAO->getCon()), $result[0]), $result[9]);
+        return self::getOfferFromRow($result, $offerDAO);
     }
 
     /**
@@ -205,6 +208,14 @@ class OfferModel extends BaseModel {
     public function offerClickPlusOne() {
         $this->setClicks($this->getClicks() + 1);
         $this->updateInDatabase(SQLite::connectToSQLite(), false);
+    }
+
+    private static function getOfferFromRow($row, $offerDAO) {
+        return new OfferModel($row[0],
+            UserModel::getFromDatabaseById(new DAOUser($offerDAO->getCon()), $row[1]),
+            PlatypusModel::getFromDatabaseById(new DAOPlatypus($offerDAO->getCon()), $row[2]),
+            $row[3], $row[4], $row[5], $row[6], $row[7], $row[8],
+            OfferImageModel::getFromDatabaseByOfferId(new DAOOfferImages($offerDAO->getCon()), $row[0]), $row[9]);
     }
 
     /**

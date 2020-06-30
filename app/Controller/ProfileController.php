@@ -6,6 +6,7 @@ namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\DAOOffer;
 use Model\DAO\DAOUser;
 use Model\UserModel;
 use Model\OfferModel;
@@ -46,26 +47,14 @@ class ProfileController extends BaseController
       // see index()
     }
 
-    public static function getOffersFromUser() {
+    public static function getOffersByUserId() {
         $id = ProfileController::getDisplayUser()->getId();
-        $whereClause = "WHERE " .COLUMNS_OFFER["u_id"]. " = ? AND "
-            .TABLE_OFFER.".".COLUMNS_OFFER["active"]. " = ?";
-
-
-        return OfferModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($id, 1));
+        return OfferModel::getFromDatabaseByUserId(new DAOOffer(SQLite::connectToSQLite()),$id);
     }
 
-    public static function getSavedOffers() {
-        $whereClause = "LEFT JOIN " .TABLE_SAVED_OFFERS. " on " .TABLE_OFFER. "." .COLUMNS_OFFER['o_id'].
-            " = " .TABLE_SAVED_OFFERS. "." .COLUMNS_SAVED_OFFERS['o_id']. " INNER JOIN " .TABLE_PLATYPUS.
-            " on " .TABLE_OFFER. "." .COLUMNS_OFFER['p_id']. " = " .TABLE_PLATYPUS. "." .COLUMNS_PLATYPUS['p_id'].
-            " WHERE " .TABLE_SAVED_OFFERS. "." .COLUMNS_SAVED_OFFERS['u_id']. " = ?";
-
-
+    public static function getSavedOffersForCurrentUser() {
         $id = ProfileController::getDisplayUser()->getId();
-
-        return OfferModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause,
-            array($id));
+        return OfferModel::getSavedOffersFromDatabaseByUserId(new DAOOffer(SQLite::connectToSQLite()), $id);
     }
 
     public static function disableUser() {

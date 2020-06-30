@@ -35,7 +35,7 @@ class DAOSavedOffers implements DAOContract
             return $result->fetch();
         } else {
             $this->con->rollback();
-            return new PDOException('DAOOffer create error');
+            return new PDOException('DAOSavedOffer create error');
         }
 
     }
@@ -49,7 +49,7 @@ class DAOSavedOffers implements DAOContract
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('DAOOffer read error');
+            throw new PDOException('DAOSavedOffer read error');
         }
     }
 
@@ -69,7 +69,7 @@ class DAOSavedOffers implements DAOContract
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('DAOOffer update error');
+            throw new PDOException('DAOSavedOffer update error');
         }
     }
 
@@ -85,31 +85,22 @@ class DAOSavedOffers implements DAOContract
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('DAOOffer readAll error');
+            throw new PDOException('DAOSavedOffer readAll error');
         }
     }
 
-    public function readHot()
+    public function readByUserId($userId)
     {
-        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY clicks desc LIMIT 1";
+        $sql = "SELECT * FROM offer
+                    LEFT JOIN saved_offers so on offer.o_id = so.o_id
+                    WHERE so.u_id = :userId";
         $stmt = $this->con->prepare($sql);
+        $stmt->bindValue(":userId", $userId);
 
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('DAOOffer readHot error');
-        }
-    }
-
-    public function readNewest()
-    {
-        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY create_date desc LIMIT 9";
-        $stmt = $this->con->prepare($sql);
-
-        if($stmt->execute()) {
-            return $stmt->fetchAll();
-        } else {
-            throw new PDOException('DAOOffer readNewest error');
+            throw new PDOException('DAOSavedOffer readByUserId error');
         }
     }
 }

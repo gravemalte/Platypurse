@@ -46,8 +46,7 @@ class DAOOffer implements DAOContract
 
     }
 
-    public function read($id)
-    {
+    public function read($id) {
         $query = "SELECT * FROM offer WHERE o_id = :id";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $id);
@@ -116,6 +115,34 @@ class DAOOffer implements DAOContract
             return $stmt->fetchAll();
         } else {
             throw new PDOException('DAOOffer readAll error');
+        }
+    }
+
+    public function readSavedOffersByUserId($userId)
+    {
+        $sql = "SELECT * FROM offer
+                    LEFT JOIN saved_offers so on offer.o_id = so.o_id
+                    WHERE so.u_id = :userId";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bindValue(":userId", $userId);
+
+        if($stmt->execute()) {
+            return $stmt->fetchAll();
+        } else {
+            throw new PDOException('DAOOffer readByUserId error');
+        }
+    }
+
+    public function readOffersByUserId($userId)
+    {
+        $sql = "SELECT * FROM offer WHERE u_id = :userId";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bindValue(":userId", $userId);
+
+        if($stmt->execute()) {
+            return $stmt->fetchAll();
+        } else {
+            throw new PDOException('DAOOffer readOffersByUserId error');
         }
     }
 }
