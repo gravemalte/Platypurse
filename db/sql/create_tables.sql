@@ -20,11 +20,10 @@ CREATE TABLE user (
 );
 
 CREATE TABLE user_rating (
-  ur_id INTEGER PRIMARY AUTOINCREMENT,
+  ur_id INTEGER PRIMARY KEY AUTOINCREMENT,
   from_u_id INTEGER NOT NULL,
   for_u_id INTEGER NOT NULL,
   rating INTEGER NOT NULL,
-  PRIMARY KEY(from_u_id, for_u_id),
   CONSTRAINT fk_from_user
     FOREIGN KEY (from_u_id)
     REFERENCES user(u_id),
@@ -74,11 +73,10 @@ CREATE TABLE offer_images (
 );
 
 CREATE TABLE saved_offers (
-  so_id INTEGER PRIMARY AUTOINCREMENT,
+  so_id INTEGER PRIMARY KEY AUTOINCREMENT,
   u_id INTEGER NOT NULL,
   o_id INTEGER NOT NULL,
   active INTEGER DEFAULT 1,
-  PRIMARY KEY (u_id, o_id),
   CONSTRAINT fk_user
     FOREIGN KEY (u_id)
     REFERENCES user(u_id),
