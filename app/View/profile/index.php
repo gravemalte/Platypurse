@@ -14,7 +14,9 @@ if (isset($_SESSION['currentUser'])) {
     $loggedIn = true;
 }
 
-$userRating = $displayUser->getUserRatingFromDatabase();
+
+
+$userRating = ProfileController::getRatingForUserId($displayUser->getId());
 if(empty($userRating)):
     $ratingString = "Dude hat noch nichts bewertet bekommen";
 else:

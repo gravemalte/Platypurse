@@ -7,9 +7,13 @@ namespace Controller;
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\DAOOffer;
+use Model\DAO\DAOSavedOffers;
 use Model\DAO\DAOUser;
+use Model\DAO\DAOUserRating;
+use Model\SavedOfferModel;
 use Model\UserModel;
 use Model\OfferModel;
+use Model\UserRatingModel;
 
 class ProfileController extends BaseController
 {
@@ -55,6 +59,35 @@ class ProfileController extends BaseController
     public static function getSavedOffersForCurrentUser() {
         $id = ProfileController::getDisplayUser()->getId();
         return OfferModel::getSavedOffersFromDatabaseByUserId(new DAOOffer(SQLite::connectToSQLite()), $id);
+    }
+
+    public static function getRatingForUserId($userId) {
+        $userRatingDao = new DAOUserRating(SQLite::connectToSQLite());
+        return UserRatingModel::getRatingFromDatabaseForUserId($userRatingDao, $userId);
+    }
+
+    public static function insertRating($fromUserId, $forUserId, $rating) {
+        if(isset($_SESSION["currentUser"])):
+            $dao = new DAOUserRating(SQLite::connectToSQLite());
+
+            $userRating = UserRatingModel::getFromDatabaseByFromUserIdAndForUserId($dao, $fromUserId, $forUserId);
+            if(empty($userRating->getId())):
+                $userRating = new UserRatingModel(hexdec(uniqid()),
+                    $fromUserId, $forUserId, $rating);
+
+                $check = $userRating->insertIntoDatabase($dao);
+            else:
+                $userRating->setRating($rating);
+                $check = $userRating->updateInDatabase($dao);
+            endif;
+
+            if($check):
+                header('location: ' . URL . 'profile?id=' . $forUserId);
+                exit();
+            endif;
+        endif;
+        header('location: ' . URL . 'login');
+        exit();
     }
 
     public static function disableUser() {

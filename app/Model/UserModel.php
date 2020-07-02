@@ -67,6 +67,7 @@ class UserModel
 
     /**
      * Set active to 0 and update database
+     * @param $dao
      */
     public function deactivateInDatabase($dao) {
         $this->setDisabled(1);
@@ -75,70 +76,11 @@ class UserModel
 
     /**
      * Set active to 0 and update database
+     * @param $dao
      */
     public function activateInDatabase($dao) {
         $this->setDisabled(0);
         $this->updateInDatabase($dao);
-    }
-
-    /**
-     * @return array
-     */
-    public function getDatabaseValues() {
-        return array($this->getId(),
-            $this->getDisplayName(),
-            $this->getMail(),
-            $this->getPassword(),
-            $this->getUgId(),
-            $this->getRating(),
-            $this->getCreatedAt(),
-            $this->mime,
-            $this->image,
-            $this->isDisabled());
-    }
-
-    public function insertRatingIntoDatabase($from, $rating) {
-        $con = SQLite::connectToSQLite();
-        $result = false;
-        try {
-            $statement = "INSERT INTO " . TABLE_USER_RATING . "(";
-            foreach (COLUMNS_USER_RATING as $col):
-                $statement .= $col . ", ";
-            endforeach;
-            $statement = substr($statement, 0, -2) . ") VALUES (";
-            $valueArray = array();
-            foreach (COLUMNS_USER_RATING as $col):
-                $statement .= "?, ";
-            endforeach;
-            $statement = substr($statement, 0, -2) . ");";
-
-
-            $valueArray($from, $this->getId(), $rating);
-            //print($statement);
-            //print_r($valueArray);
-
-            $command = $con->prepare($statement);
-            $result = $command->execute($valueArray);
-        }
-        catch(PDOException $ex) {
-            $return = false;
-        }
-        finally {
-            unset($con);
-            return $return;
-        }
-    }
-
-    public function getUserRatingFromDatabase() {
-        $con = SQLite::connectToSQLite();
-        $statement = "SELECT AVG(" .COLUMNS_USER_RATING['rating']. ") AS " .COLUMNS_USER_RATING['rating'].
-            " FROM " .TABLE_USER_RATING. " WHERE " .COLUMNS_USER_RATING['for_u_id']. " = ?;";
-
-        $command = $con->prepare($statement);
-        $command->execute(array($this->getId()));
-        $result = $command->fetch();
-
-        return $result[COLUMNS_USER_RATING['rating']];
     }
 
     /**
