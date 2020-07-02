@@ -77,6 +77,16 @@ class OfferModel extends BaseModel {
         return self::getOfferFromRow($result, $offerDAO);
     }
 
+    public static function getSearchResultsFromDatabase($offerDAO, $keyedSearchValuesArray) {
+        $result = $offerDAO->readSearchResults($keyedSearchValuesArray);
+        $returnArray = array();
+        foreach($result as $row):
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO);
+        endforeach;
+
+        return $returnArray;
+    }
+
     public static function getFromDatabaseByUserId($offerDAO, $userId){
         $result = $offerDAO->readOffersByUserId($userId);
         $returnArray = array();

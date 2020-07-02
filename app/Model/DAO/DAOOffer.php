@@ -146,4 +146,39 @@ class DAOOffer implements DAOContract
             throw new PDOException('DAOOffer readOffersByUserId error');
         }
     }
+
+    public function readSearchResults($keyedSearchValuesArray)
+    {
+        $bindSex = array_key_exists("sex", $keyedSearchValuesArray);
+        $sql = "SELECT * FROM offer
+                    INNER JOIN platypus ON platypus.p_id = offer.p_id
+                    WHERE name LIKE :name AND 
+                          age_years BETWEEN :ageMin and :ageMax 
+                      AND size BETWEEN :sizeMin and :sizeMax 
+                      AND weight BETWEEN :weightMin and :weightMax
+                      AND offer.active = 1";
+
+        if($bindSex):
+            $sql .= " AND sex = :sex";
+        endif;
+
+        $stmt = $this->con->prepare($sql);
+        $stmt->bindValue(":name", $keyedSearchValuesArray['name']);
+        $stmt->bindValue(":ageMin", $keyedSearchValuesArray['ageMin']);
+        $stmt->bindValue(":ageMax", $keyedSearchValuesArray['ageMax']);
+        $stmt->bindValue(":sizeMin", $keyedSearchValuesArray['sizeMin']);
+        $stmt->bindValue(":sizeMax", $keyedSearchValuesArray['sizeMax']);
+        $stmt->bindValue(":weightMin", $keyedSearchValuesArray['weightMin']);
+        $stmt->bindValue(":weightMax", $keyedSearchValuesArray['weightMax']);
+
+        if($bindSex):
+            $stmt->bindValue(":sex", $keyedSearchValuesArray['sex']);
+        endif;
+
+        if($stmt->execute()) {
+            return $stmt->fetchAll();
+        } else {
+            throw new PDOException('DAOOffer readSearchResults error');
+        }
+    }
 }

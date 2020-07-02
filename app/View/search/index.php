@@ -119,7 +119,7 @@ endif; ?>
                 <?php foreach ($offers as $offer): ?>
                     <a class="offer-list-link" href="offer?id=<?= $offer->getId(); ?>">
                         <div class="offer-list-item card">
-                            <img src="<?= $offer->getPictureOnPosition(0); ?>" alt="">
+                            <img src="<?= $offer->getImageOnPosition(0); ?>" alt="">
                             <p class="name"><?= $offer->getPlatypus()->getName(); ?></p>
                             <p class="description"><?= $offer->getDescription(); ?></p>
                             <div class="price-tag-container">
