@@ -54,7 +54,6 @@ class DAOSavedOffers implements DAOContract
     public function update($obj)
     {
         $sql = "UPDATE saved_offers SET active = :active WHERE u_id = :userId AND o_id = :offerId";
-
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":active", $obj->isActive());
         $stmt->bindValue(":userId", $obj->getUserId());
@@ -99,10 +98,16 @@ class DAOSavedOffers implements DAOContract
         }
     }
 
-    public function readByUserIdAndOfferId($userId, $offerId)
+    public function readByUserIdAndOfferId($userId, $offerId, $withActives)
     {
         $sql = "SELECT * FROM saved_offers
-                    WHERE u_id = :userId AND o_id = :offerId";
+                    WHERE u_id = :userId
+                    AND o_id = :offerId ";
+
+        if($withActives):
+            $sql .= "AND active = 1";
+        endif;
+
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":userId", $userId);
         $stmt->bindValue(":offerId", $offerId);

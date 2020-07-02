@@ -43,12 +43,14 @@ class OfferController extends BaseController
             $userId = $_SESSION["currentUser"]->getId();
             $offerId = $_POST["offerId"];
 
-            $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId);
+            $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, false);
             if(empty($savedOffer->getId())):
                 $savedOffer = new SavedOfferModel(hexdec(uniqid()),
                     $userId, $offerId, 1);
 
-                $check = $savedOffer->insertIntoDatabase($savedOffer);
+                $insertRow = $savedOffer->insertIntoDatabase($dao);
+                // TODO: Check why this below works
+                $check = empty($insertRow[0]);
             else:
                 $savedOffer->setActive(1);
                 $check = $savedOffer->updateInDatabase($dao);
@@ -68,7 +70,7 @@ class OfferController extends BaseController
         $offerId = $_POST["offerId"];
         $dao = new DAOSavedOffers(SQLite::connectToSQLite());
 
-        $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId);
+        $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, true);
         $savedOffer->setActive(0);
 
         $check = $savedOffer->updateInDatabase($dao);
@@ -81,7 +83,7 @@ class OfferController extends BaseController
         $userId = $_SESSION["currentUser"]->getId();
         $dao = new DAOSavedOffers(SQLite::connectToSQLite());
 
-        $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId);
+        $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, true);
 
         if(empty($savedOffer->getId())):
             return false;

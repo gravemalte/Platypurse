@@ -42,8 +42,8 @@ class SavedOfferModel extends BaseModel {
         return $returnArray;
     }
 
-    public static function getFromDatabaseByUserIdAndOfferId($savedOffersDAO, $userId, $offerId) {
-        $result = $savedOffersDAO->readByUserIdAndOfferId($userId, $offerId);
+    public static function getFromDatabaseByUserIdAndOfferId($savedOffersDAO, $userId, $offerId, $withActives) {
+        $result = $savedOffersDAO->readByUserIdAndOfferId($userId, $offerId, $withActives);
 
         return new SavedOfferModel($result[0], $result[1], $result[2], $result[3]);
     }
