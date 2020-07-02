@@ -35,8 +35,8 @@ class UserModel
     public function __construct($id, $displayName, $mail, $password, $ugId, $rating, $createdAt, $mime, $image, $disabled)
     {
         $this->id = $id;
-        $this->displayName = $displayName;
-        $this->mail = $mail;
+        $this->displayName = htmlspecialchars($displayName);
+        $this->mail = htmlspecialchars($mail, FILTER_SANITIZE_EMAIL);
         $this->password = $password;
         $this->ugId = $ugId;
         $this->rating = $rating;

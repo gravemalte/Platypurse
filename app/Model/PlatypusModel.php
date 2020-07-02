@@ -28,11 +28,11 @@ class PlatypusModel extends BaseModel {
     public function __construct($id, $name, $age_years, $sex, $size, $weight, $active)
     {
         $this->id = $id;
-        $this->name = $name;
-        $this->ageYears = $age_years;
+        $this->name = htmlspecialchars($name);
+        $this->ageYears = htmlspecialchars($age_years);
         $this->sex = $sex;
-        $this->size = $size;
-        $this->weight = $weight;
+        $this->size = htmlspecialchars($size);
+        $this->weight = htmlspecialchars($weight);
         $this->active = $active;
         parent::__construct(TABLE_PLATYPUS, COLUMNS_PLATYPUS);
     }

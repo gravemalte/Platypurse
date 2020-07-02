@@ -28,7 +28,7 @@ class SearchController extends BaseController
         AND ".COLUMNS_PLATYPUS['weight']." BETWEEN ? and ?
         AND ".TABLE_OFFER.".".COLUMNS_OFFER['active']." = 1";*/
         $keyedSearchValuesArray = array(
-            "name" => "%" .$like. "%",
+            "name" => "%" .htmlspecialchars($like). "%",
             "ageMin" => min($age),
             "ageMax" => max($age),
             "sizeMin" => min($size),

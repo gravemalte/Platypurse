@@ -47,9 +47,9 @@ class OfferModel extends BaseModel {
         $this->id = $id;
         $this->user = $user;
         $this->platypus = $platypus;
-        $this->price = $price;
+        $this->price = htmlspecialchars($price);
         $this->negotiable = $negotiable;
-        $this->description = $description;
+        $this->description = htmlspecialchars($description);
         $this->clicks = $clicks;
         $this->create_date = $create_date;
         $this->edit_date = $edit_date;
