@@ -134,14 +134,18 @@ function buildChat(modules) {
             let chatInputForm = document.getElementById("chat-input-form");
             let chatInput = document.getElementById("chat-input");
             let chatInputButton = document.getElementById("chat-input-fire");
-            chatInputForm.addEventListener("submit", event => {
+            let chat = this;
+            async function submitMessage(event) {
                 event.preventDefault();
                 if (chatInput.value === "") return;
-                this.sendMessage(chatInput.value);
+                let sendResponse = await chat.sendMessage(chatInput.value);
                 chatInput.value = "";
-            });
+                console.log(new ChatMessage(sendResponse.chat[0]));
+                // TODO: Add instant show
+            }
+            chatInputForm.addEventListener("submit", event => submitMessage(event));
             chatInputButton.addEventListener("click", event => {
-                chatInputForm.dispatchEvent(new Event("submit"));
+                submitMessage(new Event("submit"));
             });
 
             this.container.classList.remove("hide");
@@ -158,7 +162,7 @@ function buildChat(modules) {
                     }
                     setTimeout(() => {
                         this.fetchNewMessages().then(callNext);
-                    }, 1000);
+                    }, 10000);
                 }
                 callFunction();
             })();
@@ -174,11 +178,12 @@ function buildChat(modules) {
                 body: payload
             });
             let sendMessage = await sendMessageResponse.json();
+            return sendMessage;
         }
 
         async fetchNewMessages() {
             let requestDate = (new NiceDate(this.lastRequestDate)).getDatabaseString();
-            let url = new URL("/chat/getNewMessages", window.location.toString());
+            let url = new URL("./chat/getNewMessages", window.location.toString());
             url.searchParams.set("latest-id", this.messages[this.messages.length - 1].id);
 
             let messageResponse = await fetch(url.toString());

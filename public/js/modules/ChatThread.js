@@ -47,12 +47,12 @@ function buildChatThread(modules) {
 
             let displayName =
                 document.createElement("H1");
-            displayName.innerHTML = this.recipientName;
+            displayName.innerText = this.recipientName;
 
             let lastMessage =
                 document.createElement("P");
             if (this.latestMessage !== null) {
-                lastMessage.innerHTML = this.latestMessage.message;
+                lastMessage.innerText = this.latestMessage.message;
             }
 
             let date =

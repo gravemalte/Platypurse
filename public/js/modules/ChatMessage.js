@@ -33,7 +33,7 @@ function buildChatMessage(modules) {
 
             let message =
                 document.createElement("H1");
-            message.innerHTML = this.message;
+            message.innerText = this.message;
 
             let date =
                 document.createElement("P");
