@@ -129,7 +129,7 @@ class OfferModel extends BaseModel {
         $this->setActive(0);
         $this->setEditDate(Date::now());
         $this->getPlatypus()->setActive(0);
-        $this->updateInDatabase(SQLite::connectToSQLite(), false);
+        $this->updateInDatabase(new DAOOffer(SQLite::connectToSQLite()));
     }
 
     public function updateImagesInDatabase($con, $values) {
