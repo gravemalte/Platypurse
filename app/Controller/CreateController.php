@@ -33,7 +33,7 @@ class CreateController extends BaseController
         return OfferController::getOffer($id);
     }
 
-    public function doSomething() {
+    public function processInput() {
         $dao = new DAOOffer(SQLite::connectToSQLite());
         $newOfferId = hexdec(uniqid());
         $isUpdate = false;
@@ -109,66 +109,6 @@ class CreateController extends BaseController
             endif;
         endif;
         header('location: ' . URL . 'offer?id=' .$newOffer->getId());
-        exit();
-    }
-
-    public function processInput() {
-        $existingOffer = null;
-
-
-        $offerUser = $_SESSION['currentUser'];
-        $isAdmin = $offerUser->isAdmin();
-        $platypusId = hexdec(uniqid());
-        $offerId = hexdec(uniqid());
-
-        if(isset($_POST["offerId"])):
-            $offerId = $_POST["offerId"];
-            $existingOffer = OfferModel::getFromDatabase(SQLite::connectToSQLite(), "WHERE " .COLUMNS_OFFER['o_id']. " = ?",
-                array($offerId))[0];
-            $offerUser = $existingOffer->getUser();
-        endif;
-
-        if(!isset($existingOffer) ||$offerUser->getId() == $existingOffer->getUser()->getId()
-            || $isAdmin):
-
-            $platypus = new PlatypusModel($platypusId,
-                $_POST["name"],
-                $_POST["age"],
-                $_POST["sex"],
-                $_POST["size"],
-                $_POST["weight"],
-                1);
-
-            $imageArray = array();
-            if(file_exists($_FILES['image']['tmp_name'])):
-                $imageDataArray[COLUMNS_OFFER_IMAGES['mime']] = $_FILES['image']['type'];
-                $imageDataArray[COLUMNS_OFFER_IMAGES['image']] = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
-                $imageArray[] = $imageDataArray;
-            else:
-                $defaultImagePath = "https://i.pinimg.com/originals/85/89/f4/8589f4a07642a1c7bbe669c2b49b4a64.jpg";
-                $imageDataArray[COLUMNS_OFFER_IMAGES['mime']] =pathinfo($defaultImagePath)['extension'];
-                $imageDataArray[COLUMNS_OFFER_IMAGES['image']] = base64_encode(file_get_contents($defaultImagePath));
-                $imageArray[] = $imageDataArray;
-            endif;
-
-            $offer = new OfferModel($offerId,
-                $offerUser,
-                $platypus,
-                $this->processInputPrice($_POST["price"]),
-                0,
-                $_POST['description'],
-                $imageArray);
-
-            if(!empty($existingOffer)):
-                $platypus->setId($existingOffer->getPlatypus()->getId());
-
-                $offer->setClicks($existingOffer->getClicks());
-                $offer->setCreateDate($existingOffer->getCreateDate());
-            endif;
-
-            $offer->writeToDatabase();
-        endif;
-        header('location: ' . URL . 'offer?id=' .$offerId);
         exit();
     }
 

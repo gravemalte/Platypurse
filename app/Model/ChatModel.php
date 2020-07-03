@@ -3,12 +3,7 @@
 
 namespace Model;
 
-
-use Hydro\Base\Database\Driver\SQLite;
-use Hydro\Base\Model\BaseModel;
-
-class ChatModel extends BaseModel
-{
+class ChatModel {
     private $msgID;
     private $from;
     private $to;

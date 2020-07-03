@@ -2,11 +2,7 @@
 
 namespace Model;
 
-use Hydro\Base\Database\Driver\SQLite;
-use Hydro\Base\Model\BaseModel;
-use PDOException;
-
-class UserRatingModel extends BaseModel {
+class UserRatingModel {
     private $id;
     private $fromUserId;
     private $forUserId;

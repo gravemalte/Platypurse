@@ -32,7 +32,7 @@ if ($showUpdateData) {
 <main class="main-page">
     <div class="main-area">
         <div class="create-offer-container card">
-            <form action="create/doSomething" method="post" data-needs-confirmation enctype="multipart/form-data">
+            <form action="create/processInput" method="post" data-needs-confirmation enctype="multipart/form-data">
             <?php if($showUpdateData):?>
                 <input type="hidden" name="offerId" value='<?php echo $offer->getId();?>'>
             <?php endif;?>

@@ -7,10 +7,9 @@ use Model\DAO\DAOOffer;
 use Model\DAO\DAOUser;
 use Model\DAO\DAOPlatypus;
 use Hydro\Base\Database\Driver\SQLite;
-use Hydro\Base\Model\BaseModel;
 use Hydro\Helper\Date;
 
-class OfferModel extends BaseModel {
+class OfferModel {
     private $id;
     private $user;
     private $platypus;
@@ -130,20 +129,6 @@ class OfferModel extends BaseModel {
         $this->setEditDate(Date::now());
         $this->getPlatypus()->setActive(0);
         $this->updateInDatabase(new DAOOffer(SQLite::connectToSQLite()));
-    }
-
-    public function updateImagesInDatabase($con, $values) {
-        if(!empty($this->getPictures())):
-            $statement = "UPDATE " .TABLE_OFFER_IMAGES. " SET mime = ?, image = ? WHERE o_id = ?;";
-
-            //print($statement);
-            //print_r($values);
-
-            $command = $con->prepare($statement);
-            return $command->execute($values);
-        else:
-            return true;
-        endif;
     }
 
     public static function getNewestOffers($offerDAO) {

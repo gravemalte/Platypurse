@@ -2,11 +2,7 @@
 
 namespace Model;
 
-use Hydro\Base\Database\Driver\SQLite;
-use Hydro\Base\Model\BaseModel;
-use PDOException;
-
-class PlatypusModel extends BaseModel {
+class PlatypusModel {
     private $id;
     private $name;
     private $ageYears;
@@ -34,7 +30,6 @@ class PlatypusModel extends BaseModel {
         $this->size = htmlspecialchars(strip_tags($size));
         $this->weight = htmlspecialchars(strip_tags($weight));
         $this->active = $active;
-        parent::__construct(TABLE_PLATYPUS, COLUMNS_PLATYPUS);
     }
 
     public function insertIntoDatabase($dao) {
@@ -46,38 +41,9 @@ class PlatypusModel extends BaseModel {
 
         return new PlatypusModel($result[0], $result[1], $result[2], $result[3], $result[4], $result[5], $result[6]);
     }
-
-    public static function getFromDatabase($con, $whereClause, $values) {
-        $result = parent::read($con, TABLE_PLATYPUS. " " .$whereClause, $values);
-        $platypus = array();
-
-        foreach ($result as $row):
-            $platypus[] = new PlatypusModel($row[COLUMNS_PLATYPUS["p_id"]],
-                $row[COLUMNS_PLATYPUS["name"]],
-                $row[COLUMNS_PLATYPUS["age_years"]],
-                $row[COLUMNS_PLATYPUS["sex"]],
-                $row[COLUMNS_PLATYPUS["size"]],
-                $row[COLUMNS_PLATYPUS["weight"]],
-                $row[COLUMNS_PLATYPUS["active"]]);
-        endforeach;
-
-        if(count($platypus) == 1):
-            $platypus = array_shift($platypus);
-        endif;
-
-        return $platypus;
-    }
     
     public function updateInDatabase($dao) {
         return $dao->update($this);
-    }
-
-    /**
-     * Set active to 0 and update database
-     */
-    public function deactivateInDatabase() {
-        $this->setActive(0);
-        $this->updateInDatabase(SQLite::connectToSQLite());
     }
 
     /**

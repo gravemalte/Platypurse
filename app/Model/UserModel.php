@@ -4,7 +4,6 @@ namespace Model;
 
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\DAOUser;
-use PDOException;
 
 class UserModel
 {

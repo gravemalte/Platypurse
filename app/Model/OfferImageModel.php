@@ -2,11 +2,7 @@
 
 namespace Model;
 
-use Hydro\Base\Database\Driver\SQLite;
-use Hydro\Base\Model\BaseModel;
-use PDOException;
-
-class OfferImageModel extends BaseModel {
+class OfferImageModel {
     private $id;
     private $offerId;
     private $picturePosition;
