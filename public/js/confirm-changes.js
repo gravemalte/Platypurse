@@ -34,6 +34,13 @@
             for (let child of diffElement.children) {
                 if (child.dataset.confirmNew !== "") continue;
                 child.innerHTML = element.value;
+                if (element.type === "file") {
+                    let fileNames = [];
+                    for (let file of element.files) {
+                        fileNames.push(file.name);
+                    }
+                    child.innerHTML = fileNames.join(", ");
+                }
             }
             if (diffElement.dataset?.confirmOgValue.trim() === element.value.trim()) {
                 diffElement.hidden = true;
