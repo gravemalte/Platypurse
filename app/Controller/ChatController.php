@@ -25,6 +25,8 @@ class ChatController extends BaseController
     }
 
     public static function getChatHistory() {
+        header('Content-Type: application/json');
+
         if(!(isset($_SESSION['currentUser']))) {
             http_response_code(401);
             echo json_encode(array());
@@ -57,6 +59,8 @@ class ChatController extends BaseController
     }
 
     public static function getNewMessages() {
+        header('Content-Type: application/json');
+
         if(!(isset($_SESSION['currentUser']))) {
             http_response_code(401);
             echo json_encode(array());
@@ -101,6 +105,8 @@ class ChatController extends BaseController
     }
 
     public static function getUserDisplayName() {
+        header('Content-Type: text/plain');
+
         if (!isset($_GET['id'])) {
             http_response_code(400);
             echo 0;
@@ -111,6 +117,8 @@ class ChatController extends BaseController
     }
 
     public static function sendMessage() {
+        header('Content-Type: application/json');
+
         if(!(isset($_SESSION['currentUser']))) {
             http_response_code(401);
             echo json_encode(array());
