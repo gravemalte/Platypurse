@@ -75,7 +75,7 @@ class ChatController extends BaseController
             . COLUMNS_MESSAGE["receiver_id"]
             . " = ?) AND "
             . COLUMNS_MESSAGE["msg_id"]
-            . " >= ? ORDER BY "
+            . " > ? ORDER BY "
             . COLUMNS_MESSAGE["msg_id"]
             . " ASC";
         $userID = $_SESSION['currentUser']->getId();
