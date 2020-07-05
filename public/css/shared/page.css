@@ -1,6 +1,6 @@
 /* styles for whole page */
-body.transition,
-body.transition * {
+body,
+body * {
     transition-property: background-color, color;
     transition-duration: .5s;
 }
