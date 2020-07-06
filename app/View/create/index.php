@@ -189,7 +189,11 @@ if ($showUpdateData) {
     <div class="confirm-changes-container-background" id="confirm-changes-container" hidden>
         <div>
             <div class="confirm-changes-container card">
+                <?php if ($isUpdate): ?>
                 <h2>Änderungen anwenden?</h2>
+                <?php else: ?>
+                <h2>Angebot so erstellen?</h2>
+                <?php endif; ?>
                 <div class="confirm-changes-diff-container" id="confirm-changes-diff">
                     <p
                             data-confirm-diff="name"
