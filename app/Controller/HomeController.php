@@ -29,14 +29,4 @@ class HomeController extends BaseController
     public function getHotOffer() {
         return OfferModel::getHotOffer(new DAOOffer(SQLite::connectToSQLite()));
     }
-
-    /**
-     * testing page
-     */
-    public function testing()
-    {
-        // load views
-        require APP . 'View/shared/header.php';
-        require APP . 'View/shared/footer.php';
-    }
 }

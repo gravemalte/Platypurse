@@ -14,5 +14,4 @@ class ErrorController
         require APP . 'View/error/404.php';
         require APP . 'View/shared/footer.php';
     }
-
 }
