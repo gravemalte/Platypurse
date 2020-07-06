@@ -3,6 +3,8 @@
 
 namespace Model;
 
+use Controller\ChatController;
+
 class ChatModel {
     private $msgID;
     private $from;
@@ -17,27 +19,17 @@ class ChatModel {
         $this->to = $senderID;
         $this->message = $message;
         $this->date = $date;
-        parent::__construct(TABLE_MESSAGE, COLUMNS_MESSAGE);
     }
 
-    public function insertIntoDatabase($con)
+    public static function insertIntoDatabase($messageDAO, $message)
     {
-        return $this->create($con);
+        return $messageDAO->create($message);
     }
 
-    public static function getFromDatabase($con, $whereClause, $value)
+    public static function getFromDatabase($messageDAO, $id)
     {
-        $result = parent::read($con, TABLE_MESSAGE. " " .$whereClause, $value);
-        $messages = array();
-        foreach ($result as $row){
-            $messages[] = new ChatModel(
-                $row[COLUMNS_MESSAGE['msg_id']],
-                $row[COLUMNS_MESSAGE['sender_id']],
-                $row[COLUMNS_MESSAGE['receiver_id']],
-                $row[COLUMNS_MESSAGE['message']],
-                $row[COLUMNS_MESSAGE['send_date']]);
-        }
-        return $messages;
+        $tmp = $messageDAO->read($id);
+        return new ChatModel($tmp[0], $tmp[1],$tmp[2],$tmp[3],$tmp[4]);
     }
 
     public function getDatabaseValues()

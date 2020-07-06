@@ -22,35 +22,35 @@ class DAOMessage implements DAOContract
 
     public function create($obj)
     {
-        $query = "INSERT INTO user(u_id, display_name, mail, password, ug_id) VALUES (:userID, :displayName, :mail, :password, :ugID)";
+        $query = "INSERT INTO message(msg_id, sender_id, receiver_id, message, send_date) VALUES (:msgId, :senderId, :receiverId, :message, :sendDate)";
         $stmt = $this->con->prepare($query);
-        $stmt->bindValue(":userID", $obj->getId());
-        $stmt->bindValue(":displayName", $obj->getDisplayName());
-        $stmt->bindValue(":mail", $obj->getMail());
-        $stmt->bindValue(":password", $obj->getPassword());
-        $stmt->bindValue(":ugID", $obj->getUgId());
+        $stmt->bindValue(":msgId", $obj->getId());
+        $stmt->bindValue(":senderId", $obj->getFrom());
+        $stmt->bindValue(":receiverId", $obj->getTo());
+        $stmt->bindValue(":message", $obj->getMessage());
+        $stmt->bindValue(":sendDate", $obj->getDate());
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
-            $sql = "SELECT * FROM user WHERE u_id = $id";
+            $sql = "SELECT * FROM message WHERE sender_id = $id";
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('UserModel statement exception');
+            return new PDOException('MessageModel statement exception');
         }
 
     }
 
     public function read($id)
     {
-        $query = "SELECT * FROM user WHERE u_id = :id";
+        $query = "SELECT * FROM message WHERE msg_id = :id";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $id);
 
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('UserModel select error...');
+            throw new PDOException('MessageModel select error...');
         }
     }
 
@@ -83,7 +83,7 @@ class DAOMessage implements DAOContract
 
     public function readAll()
     {
-        $sql = "SELECT * FROM user";
+        $sql = "SELECT * FROM message";
         $stmt = $this->con->prepare($sql);
 
         if($stmt->execute()) {
