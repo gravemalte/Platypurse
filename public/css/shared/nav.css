@@ -53,6 +53,7 @@ nav {
 .nav-buttons-container {
     display: flex;
     align-items: stretch;
+    margin-left: 0.25em;
 }
 .nav-buttons-container div {
     display: flex;
