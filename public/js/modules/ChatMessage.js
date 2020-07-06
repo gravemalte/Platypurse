@@ -1,7 +1,6 @@
 "use strict";
 
 function buildChatMessage(modules) {
-    const NiceDate = modules.NiceDate;
 
     class ChatMessage {
         constructor(chatData) {
@@ -37,7 +36,7 @@ function buildChatMessage(modules) {
 
             let date =
                 document.createElement("P");
-            date.innerHTML = new NiceDate(this.sendDate).getNiceDate();
+            date.innerText = getNiceDate(this.sendDate, true);
 
             innerContainer.appendChild(message);
             innerContainer.appendChild(date);

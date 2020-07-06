@@ -1,7 +1,6 @@
 "use strict";
 
 function buildChatThread(modules) {
-    const NiceDate = modules.NiceDate;
 
     class ChatThread extends Array {
         constructor(id) {
@@ -58,7 +57,7 @@ function buildChatThread(modules) {
             let date =
                 document.createElement("P");
             if (this.latestMessage !== null) {
-                date.innerHTML = (new NiceDate(this.latestMessageDate)).getNiceDate();
+                date.innerText = getNiceDate(this.latestMessageDate, true);
             }
 
             iconContainer.appendChild(icon);

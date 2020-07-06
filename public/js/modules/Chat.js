@@ -4,7 +4,6 @@ function buildChat(modules) {
     const ChatThreadMap = modules.ChatThreadMap;
     const ChatMessage = modules.ChatMessage;
     const ChatThread = modules.ChatThread;
-    const NiceDate = modules.NiceDate;
 
     class Chat {
         constructor() {
@@ -140,13 +139,14 @@ function buildChat(modules) {
                 if (chatInput.value === "") return;
                 let sendResponse = await chat.sendMessage(chatInput.value);
                 chatInput.value = "";
-                console.log(new ChatMessage(sendResponse.chat[0]));
                 // TODO: Add instant show
             }
             chatInputForm.addEventListener("submit", event => submitMessage(event));
             chatInputButton.addEventListener("click", event => {
                 submitMessage(new Event("submit"));
             });
+
+            setInterval(this.updateTimeStamps, 3000, this);
 
             this.container.classList.remove("hide");
             document.getElementById("load-container").style.display = "none";
@@ -182,7 +182,7 @@ function buildChat(modules) {
         }
 
         async fetchNewMessages() {
-            let requestDate = (new NiceDate(this.lastRequestDate)).getDatabaseString();
+            let requestDate = getDatabaseString(this.lastRequestDate, true);
             let url = new URL("./chat/getNewMessages", window.location.toString());
             url.searchParams.set("latest-id", this.messages[this.messages.length - 1].id);
 
@@ -218,6 +218,14 @@ function buildChat(modules) {
                 this.setThreads();
             }
         }
+
+        updateTimeStamps(chat = this) {
+            for (let message of chat.currentThread) {
+                let element = document.getElementById("message-id-" + message.id);
+                element.getElementsByTagName("P")[0].innerText = getNiceDate(message.sendDate, true);
+            }
+        }
+
     }
 
     return Chat;

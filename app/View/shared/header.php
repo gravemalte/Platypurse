@@ -40,6 +40,7 @@ use Hydro\Helper\ColorCollector;
     <!-- Link JS in the footer template-->
     <script src="<?= CacheBuster::serve('js/color-mode-switch.js') ?>"></script>
     <script src="<?= CacheBuster::serve("js/enable-js-only-features.js") ?>"></script>
+    <script src="<?= CacheBuster::serve('js/date-operations.js') ?>"></script>
     <script src="<?= CacheBuster::serve("js/confirm-changes.js") ?>"></script>
 
     <!-- Font Awesome -->
