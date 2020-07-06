@@ -14,15 +14,17 @@ if (isset($_SESSION['currentUser'])) {
     $loggedIn = true;
 }
 
-$userRating = $displayUser->getUserRatingFromDatabase();
+
+
+$userRating = ProfileController::getRatingForUserId($displayUser->getId());
 if(empty($userRating)):
     $ratingString = "Dude hat noch nichts bewertet bekommen";
 else:
     $ratingString = "Geiles Rating von $userRating hat der Dude";
 endif;
 
-$savedOffers = ProfileController::getSavedOffers();
-$offersByUser = ProfileController::getOffersFromUser();
+$savedOffers = ProfileController::getSavedOffersForCurrentUser();
+$offersByUser = ProfileController::getOffersByUserId();
 
 ?>
 
@@ -77,7 +79,7 @@ $offersByUser = ProfileController::getOffersFromUser();
                         <form action="profile/disableUser" method="post" class="user-suspend-container">
                             <label for="submit-suspend" class="fas fa-gavel disable" title="Nutzer sperren"></label>
                     <?php endif; ?>
-                        <input type="text" name="user" hidden value='<?= $displayUser->getId();?>'>
+                        <input type="text" name="user_id" hidden value='<?= $displayUser->getId();?>'>
                         <button id="submit-suspend" type="submit" hidden></button>
                         <label for="submit-suspend" hidden>Nutzer sperren</label>
                     </form>
@@ -98,7 +100,7 @@ $offersByUser = ProfileController::getOffersFromUser();
                 <?php foreach($savedOffers as $offer): ?>
                 <a class="offer-list-link" href="offer?id=<?= $offer->getId();?>">
                     <div class="offer-list-item card">
-                        <img src="<?= $offer->getPictureOnPosition(0); ?>" alt="">
+                        <img src="<?= $offer->getImageOnPosition(0); ?>" alt="">
                         <p class="name"><?= $offer->getPlatypus()->getName();?></p>
                         <p class="description"><?= $offer->getDescription();?></p>
                         <div class="price-tag-container">
@@ -119,7 +121,7 @@ $offersByUser = ProfileController::getOffersFromUser();
                 <?php foreach($offersByUser as $offer): ?>
                 <a class="offer-list-link" href="offer?id=<?= $offer->getId();?>">
                     <div class="offer-list-item card">
-                        <img src="<?= $offer->getPictureOnPosition(0); ?>" alt="">
+                        <img src="<?= $offer->getImageOnPosition(0); ?>" alt="">
                         <p class="name"><?= $offer->getPlatypus()->getName();?></p>
                         <p class="description"><?= $offer->getDescription();?></p>
                         <div class="price-tag-container">

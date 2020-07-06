@@ -8,6 +8,7 @@ use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Helper\Date;
 use Model\ChatModel;
+use Model\DAO\DAOMessage;
 use Model\UserModel;
 
 class ChatController extends BaseController
@@ -31,27 +32,22 @@ class ChatController extends BaseController
             return;
         }
 
-        $whereClause = "WHERE "
-            . COLUMNS_MESSAGE["sender_id"]
-            . " = ? OR "
-            . COLUMNS_MESSAGE["receiver_id"]
-            . " = ? ORDER BY "
-            . COLUMNS_MESSAGE["send_date"]
-            . " ASC";
         $userID = $_SESSION['currentUser']->getId();
 
-        $messages = ChatModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($userID, $userID));
+        $messages = ChatModel::getFromDatabase(new DAOMessage(SQLite::connectToSQLite()), $userID);
+
         $result = array();
 
-        foreach ($messages as $message){
+        foreach($messages as $msg):
             $result[] = array(
-                COLUMNS_MESSAGE['msg_id'] => $message->getId(),
-                COLUMNS_MESSAGE['sender_id'] => $message->getFrom(),
-                COLUMNS_MESSAGE['receiver_id'] => $message->getTo(),
-                COLUMNS_MESSAGE['message']=>$message->getMessage(),
-                COLUMNS_MESSAGE['send_date']=>$message->getDate()
+                "msg_id" => $msg->getId(),
+                "sender_id" => $msg->getFrom(),
+                "receiver_id" => $msg->getTo(),
+                "message" => $msg->getMessage(),
+                "send_date" => $msg->getDate()
             );
-        }
+        endforeach;
+
 
         echo json_encode(array('chat' => $result, 'date' => Date::now()));
     }
@@ -69,33 +65,22 @@ class ChatController extends BaseController
             return;
         }
 
-        $whereClause = "WHERE ("
-            . COLUMNS_MESSAGE["sender_id"]
-            . " = ? OR "
-            . COLUMNS_MESSAGE["receiver_id"]
-            . " = ?) AND "
-            . COLUMNS_MESSAGE["msg_id"]
-            . " >= ? ORDER BY "
-            . COLUMNS_MESSAGE["msg_id"]
-            . " ASC";
         $userID = $_SESSION['currentUser']->getId();
 
-        $messages = ChatModel::getFromDatabase(
-            SQLite::connectToSQLite(),
-            $whereClause,
-            array($userID, $userID, $_GET['latest-id'])
-        );
+        $messages = ChatModel::getFromDatabaseOrder(new DAOMessage(SQLite::connectToSQLite()), $userID);
+
         $result = array();
 
-        foreach ($messages as $message){
+        foreach($messages as $msg):
             $result[] = array(
-                COLUMNS_MESSAGE['msg_id'] => $message->getId(),
-                COLUMNS_MESSAGE['sender_id'] => $message->getFrom(),
-                COLUMNS_MESSAGE['receiver_id'] => $message->getTo(),
-                COLUMNS_MESSAGE['message']=>$message->getMessage(),
-                COLUMNS_MESSAGE['send_date']=>$message->getDate()
+                "msg_id" => $msg->getId(),
+                "sender_id" => $msg->getFrom(),
+                "receiver_id" => $msg->getTo(),
+                "message" => $msg->getMessage(),
+                "send_date" => $msg->getDate()
             );
-        }
+        endforeach;
+
 
         echo json_encode(array('chat' => $result, 'date' => Date::now()));
     }
@@ -128,39 +113,32 @@ class ChatController extends BaseController
         $message = $_POST['message'];
         $date = Date::now();
 
-        $chat = new ChatModel(null, $fromID, $toID, $message, $date);
 
-        if (!$chat->writeToDatabase()) {
+        $newMessage = new ChatModel(null, $fromID, $toID, $message, $date);
+
+        $messages = ChatModel::insertIntoDatabase(new DAOMessage(SQLite::connectToSQLite()), $newMessage);
+
+        if ($messages) {
             http_response_code(500);
             echo json_encode(array());
             return;
         }
 
-        $whereClause = "WHERE "
-            . COLUMNS_MESSAGE["sender_id"]
-            . " = ? AND "
-            . COLUMNS_MESSAGE["receiver_id"]
-            . " = ? AND "
-            . COLUMNS_MESSAGE["send_date"]
-            . " = ?";
+        $userID = $_SESSION['currentUser']->getId();
 
-        $messages = ChatModel::getFromDatabase(
-            SQLite::connectToSQLite(),
-            $whereClause,
-            array($fromID, $toID, $date)
-        );
+        $messages = ChatModel::getFromDatabase(new DAOMessage(SQLite::connectToSQLite()), $userID);
 
         $result = array();
 
-        foreach ($messages as $message){
+        foreach($messages as $msg):
             $result[] = array(
-                COLUMNS_MESSAGE['msg_id'] => $message->getId(),
-                COLUMNS_MESSAGE['sender_id'] => $message->getFrom(),
-                COLUMNS_MESSAGE['receiver_id'] => $message->getTo(),
-                COLUMNS_MESSAGE['message']=>$message->getMessage(),
-                COLUMNS_MESSAGE['send_date']=>$message->getDate()
+                "msg_id" => $msg->getId(),
+                "sender_id" => $msg->getFrom(),
+                "receiver_id" => $msg->getTo(),
+                "message" => $msg->getMessage(),
+                "send_date" => $msg->getDate()
             );
-        }
+        endforeach;
 
         echo json_encode(array('chat' => $result, 'date' => Date::now()));
     }

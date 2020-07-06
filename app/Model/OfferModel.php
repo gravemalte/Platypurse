@@ -2,22 +2,24 @@
 
 namespace Model;
 
-use PDOException;
+use Model\DAO\DAOOfferImages;
+use Model\DAO\DAOOffer;
+use Model\DAO\DAOUser;
+use Model\DAO\DAOPlatypus;
 use Hydro\Base\Database\Driver\SQLite;
-use Hydro\Base\Model\BaseModel;
 use Hydro\Helper\Date;
 
-class OfferModel extends BaseModel {
+class OfferModel {
     private $id;
     private $user;
     private $platypus;
     private $price;
     private $negotiable;
     private $description;
-    private $pictures;
     private $clicks;
     private $create_date;
     private $edit_date;
+    private $images;
     private $active;
 
     /**
@@ -28,13 +30,14 @@ class OfferModel extends BaseModel {
      * @param $price
      * @param $negotiable
      * @param $description
-     * @param $pictures
      * @param $clicks
      * @param $create_date
      * @param $edit_date
+     * @param $images
      * @param $active
      */
-    public function __construct($id, $user, $platypus, $price, $negotiable, $description, $pictures, $clicks = 0, $create_date = "", $edit_date = "", $active = 1)
+    public function __construct($id, $user, $platypus, $price, $negotiable, $description,
+                                $clicks, $create_date, $edit_date, $images, $active = 1)
     {
         if(empty($create_date)):
             $create_date = Date::now();
@@ -43,78 +46,79 @@ class OfferModel extends BaseModel {
         $this->id = $id;
         $this->user = $user;
         $this->platypus = $platypus;
-        $this->price = $price;
+        $this->price = htmlspecialchars(strip_tags($price));
         $this->negotiable = $negotiable;
-        $this->description = $description;
-        $this->pictures = $pictures;
+        $this->description = htmlspecialchars(strip_tags($description));
         $this->clicks = $clicks;
         $this->create_date = $create_date;
         $this->edit_date = $edit_date;
+        $this->images = $images;
         $this->active = $active;
-        parent::__construct(TABLE_OFFER, COLUMNS_OFFER);
     }
 
-    public function insertIntoDatabase($con) {
-        $result = false;
-        if($this->getPlatypus()->insertIntoDatabase($con)):
-            if($this->create($con)):
-                $result = $this->insertImagesIntoDatabase($con);
-            else:
-                throw new PDOException();
+    public function insertIntoDatabase($offerDAO) {
+        if($this->getPlatypus()->insertIntoDatabase(new DAOPlatypus($offerDAO->getCon()))):
+            if($offerDAO->create($this)):
+                foreach($this->getImages() as $image):
+                    $check = $image->insertIntoDatabase(new DAOOfferImages(($offerDAO->getCon())));
+                    if(!$check):
+                        return false;
+                    endif;
+                endforeach;
+                return true;
             endif;
-        else:
-            throw new PDOException();
         endif;
-        return $result;
+        return false;
     }
 
-    public static function getFromDatabase($con, $whereClause, $values) {
-        $result = parent::read($con, TABLE_OFFER. " " .$whereClause, $values);
-        $offer = array();
-        foreach ($result as $row):
-            $offer[] = new OfferModel($row[COLUMNS_OFFER["o_id"]],
-                UserModel::getFromDatabase($con, "WHERE " .COLUMNS_USER['u_id']. " = ?", array($row[COLUMNS_OFFER["u_id"]])),
-                PlatypusModel::getFromDatabase($con, "WHERE " .COLUMNS_PLATYPUS['p_id']. " = ?", array($row[COLUMNS_OFFER["p_id"]])),
-                $row[COLUMNS_OFFER["price"]],
-                $row[COLUMNS_OFFER["negotiable"]],
-                $row[COLUMNS_OFFER["description"]],
-                OfferModel::getImagesFromDatabase($con, $row[COLUMNS_OFFER['o_id']]),
-                $row[COLUMNS_OFFER["clicks"]],
-                $row[COLUMNS_OFFER["create_date"]],
-                $row[COLUMNS_OFFER["edit_date"]],
-                $row[COLUMNS_OFFER["active"]]);
+    public static function getFromDatabase($offerDAO, $id){
+        $result = $offerDAO->read($id);
+        return self::getOfferFromRow($result, $offerDAO);
+    }
+
+    public static function getSearchResultsFromDatabase($offerDAO, $keyedSearchValuesArray) {
+        $result = $offerDAO->readSearchResults($keyedSearchValuesArray);
+        $returnArray = array();
+        foreach($result as $row):
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO);
         endforeach;
 
-        return $offer;
+        return $returnArray;
     }
 
-    public function updateInDatabase($con, $editDate = true) {
-        $result = false;
+    public static function getFromDatabaseByUserId($offerDAO, $userId){
+        $result = $offerDAO->readOffersByUserId($userId);
+        $returnArray = array();
+        foreach($result as $row):
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO);
+        endforeach;
 
-        if($editDate):
-            $this->setEditDate(Date::now());
-        endif;
+        return $returnArray;
+    }
 
-        try {
-            if($this->getPlatypus()->updateInDatabase($con)):
-                $updateValues = $this->getDatabaseValues();
-                $updateValues[] = $this->getId();
+    public static function getSavedOffersFromDatabaseByUserId($offerDAO, $userId){
+        $result = $offerDAO->readSavedOffersByUserId($userId);
+        $returnArray = array();
+        foreach($result as $row):
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO);
+        endforeach;
 
-                if($this->update($con, $updateValues)):
-                    $picture = $this->getPictures()[0];
-                    $updateImageValues = array($picture['mime'], $picture['image'], $this->getId());
-                    $result = $this->updateImagesInDatabase($con, $updateImageValues);
-                endif;
-            else:
-                throw new PDOException();
+        return $returnArray;
+    }
+
+    public function updateInDatabase($offerDAO) {
+        if($this->getPlatypus()->updateInDatabase(new DAOPlatypus($offerDAO->getCon()))):
+            if($offerDAO->update($this)):
+                foreach($this->getImages() as $image):
+                    $check = $image->updateInDatabase(new DAOOfferImages(($offerDAO->getCon())));
+                    if(!$check):
+                        return false;
+                    endif;
+                endforeach;
+                return true;
             endif;
-        }
-        catch (PDOException $ex) {
-            $result = false;
-        }
-        finally {
-            return $result;
-        }
+        endif;
+        return false;
     }
 
     /**
@@ -124,84 +128,23 @@ class OfferModel extends BaseModel {
         $this->setActive(0);
         $this->setEditDate(Date::now());
         $this->getPlatypus()->setActive(0);
-        $this->updateInDatabase(SQLite::connectToSQLite(), false);
+        $this->updateInDatabase(new DAOOffer(SQLite::connectToSQLite()));
     }
 
-    public function insertImagesIntoDatabase($con) {
-        if(!empty($this->getPictures())):
-            $statement = "INSERT INTO " .TABLE_OFFER_IMAGES. "(";
-            foreach (COLUMNS_OFFER_IMAGES as $col):
-                $statement .= $col .", ";
-            endforeach;
-            $statement = substr($statement, 0, -2) .") VALUES ";
-            $valueArray = array();
-            foreach ($this->getPictures() as $key=>$value):
-                $statement .= "(?, ?, ?, ?, ?), ";
-                $valueArray[] = hexdec(uniqid());
-                $valueArray[] = $this->getId();
-                $valueArray[] = $key;
-                $valueArray[] = $value[COLUMNS_OFFER_IMAGES['mime']];
-                $valueArray[] = $value[COLUMNS_OFFER_IMAGES['image']];
-            endforeach;
-            $statement = substr($statement, 0, -2) .";";
+    public static function getNewestOffers($offerDAO) {
+        $result = $offerDAO->readNewest();
 
-            //print($statement);
-            //print_r($valueArray);
-
-            $command = $con->prepare($statement);
-            return $command->execute($valueArray);
-        else:
-            return true;
-        endif;
-    }
-
-    public function updateImagesInDatabase($con, $values) {
-        if(!empty($this->getPictures())):
-            $statement = "UPDATE " .TABLE_OFFER_IMAGES. " SET mime = ?, image = ? WHERE o_id = ?;";
-
-            //print($statement);
-            //print_r($values);
-
-            $command = $con->prepare($statement);
-            return $command->execute($values);
-        else:
-            return true;
-        endif;
-    }
-
-    public static function getImagesFromDatabase($con, $id) {
-        $picturesArray = array();
-
-        $statement = "SELECT * FROM " .TABLE_OFFER_IMAGES. " WHERE " .COLUMNS_OFFER_IMAGES['o_id']. " = ? 
-            ORDER BY " .COLUMNS_OFFER_IMAGES['picture_position']. " desc;";
-
-        $command = $con->prepare($statement);
-        $command->execute(array($id));
-        foreach ($command->fetchAll() as $row):
-            $contentArray = array();
-            $contentArray[COLUMNS_OFFER_IMAGES['mime']] = $row[COLUMNS_OFFER_IMAGES['mime']];
-            $contentArray[COLUMNS_OFFER_IMAGES['image']] = $row[COLUMNS_OFFER_IMAGES['image']];
-
-            $picturesArray[$row[COLUMNS_OFFER_IMAGES['picture_position']]] = $contentArray;
+        $returnArray = array();
+        foreach($result as $row):
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO);
         endforeach;
-
-        return $picturesArray;
+        return $returnArray;
     }
 
-    public static function getNewestOffers() {
-        $con = SQLite::connectToSQLite();
-        $whereClause = "WHERE " .COLUMNS_OFFER['active']. " = ? ORDER BY "
-            .COLUMNS_OFFER['create_date']. " desc LIMIT 9";
+    public static function getHotOffer($offerDAO) {
+        $result = $offerDAO->readHot();
 
-        return OfferModel::getFromDatabase($con, $whereClause, array(1));
-    }
-
-    public static function getHotOffer() {
-        $con = SQLite::connectToSQLite();
-        $whereClause = "WHERE " .COLUMNS_OFFER['active']. " = ? ORDER BY "
-            .COLUMNS_OFFER['clicks']. " desc LIMIT 1";
-
-        return OfferModel::getFromDatabase($con, $whereClause, array(1))[0];
+        return self::getOfferFromRow($result, $offerDAO);
     }
 
     /**
@@ -209,23 +152,15 @@ class OfferModel extends BaseModel {
      */
     public function offerClickPlusOne() {
         $this->setClicks($this->getClicks() + 1);
-        $this->updateInDatabase(SQLite::connectToSQLite(), false);
+        $this->updateInDatabase(new DAOOffer(SQLite::connectToSQLite()));
     }
 
-    /**
-     * @return array
-     */
-    public function getDatabaseValues() {
-        return array($this->getId(),
-            $this->getUser()->getId(),
-            $this->getPlatypus()->getId(),
-            $this->getPriceUnformatted(),
-            $this->getNegotiable(),
-            $this->getDescription(),
-            $this->getClicks(),
-            $this->getCreateDate(),
-            $this->getEditDate(),
-            $this->isActive());
+    private static function getOfferFromRow($row, $offerDAO) {
+        return new OfferModel($row[0],
+            UserModel::getFromDatabaseById(new DAOUser($offerDAO->getCon()), $row[1]),
+            PlatypusModel::getFromDatabaseById(new DAOPlatypus($offerDAO->getCon()), $row[2]),
+            $row[3], $row[4], $row[5], $row[6], $row[7], $row[8],
+            OfferImageModel::getFromDatabaseByOfferId(new DAOOfferImages($offerDAO->getCon()), $row[0]), $row[9]);
     }
 
     /**
@@ -352,33 +287,6 @@ class OfferModel extends BaseModel {
     /**
      * @return mixed
      */
-    public function getPictures()
-    {
-        return $this->pictures;
-    }
-
-    /**
-     * @param mixed $pictures
-     */
-    public function setPictures($pictures)
-    {
-        $this->pictures = $pictures;
-    }
-
-    public function getPictureOnPosition($pos) {
-        $pictures = $this->getPictures();
-        if(!empty($pictures) && count($pictures) >= $pos):
-            $picture = $pictures[$pos];
-            return "data:" .$picture[COLUMNS_OFFER_IMAGES['mime']].
-                ";base64," .$picture[COLUMNS_OFFER_IMAGES['image']];
-        else:
-            return null;
-        endif;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getClicks()
     {
         return $this->clicks;
@@ -422,6 +330,32 @@ class OfferModel extends BaseModel {
     public function setEditDate($edit_date)
     {
         $this->edit_date = $edit_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param mixed $images
+     */
+    public function setImages($images)
+    {
+        $this->images = $images;
+    }
+
+    public function getImageOnPosition($pos) {
+        $images = $this->getImages();
+        if(!empty($images) && count($images) >= $pos):
+            $image = $images[$pos];
+            return $image->getSrc();
+        else:
+            return null;
+        endif;
     }
 
     /**

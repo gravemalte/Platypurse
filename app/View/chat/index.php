@@ -1,5 +1,4 @@
 <?php
-use Controller\ChatController;
 
 
 $user = $_SESSION['currentUser'];

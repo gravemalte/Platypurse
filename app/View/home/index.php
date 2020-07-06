@@ -12,7 +12,7 @@ use \Controller\HomeController;
                     </div>
                     <div class="hot-offer">
                         <div class="img-container">
-                            <img src="<?= $hotOffer->getPictureOnPosition(0); ?>" alt="hot offer image">
+                            <img src="<?= $hotOffer->getImageOnPosition(0); ?>" alt="hot offer image">
                         </div>
                         <div class="side-text">
                             <h1 class="name"><?= $hotOffer->getPlatypus()->getName();?></h1>
@@ -43,10 +43,10 @@ use \Controller\HomeController;
                 <p>Neuste Angebote</p>
             </div>
             <div class="offer-list-container">
-                <?php foreach($offers as $offer): ?>
+                <?php foreach($offers as $offer):?>
                 <a class="offer-list-link" href="offer?id=<?= $offer->getId();?>">
                     <div class="offer-list-item card">
-                        <img src="<?= $offer->getPictureOnPosition(0); ?>" alt="">
+                        <img src="<?= $offer->getImageOnPosition(0); ?>" alt="">
                         <p class="name"><?= $offer->getPlatypus()->getName();?></p>
                         <p class="description"><?= $offer->getDescription();?></p>
                         <div class="price-tag-container">

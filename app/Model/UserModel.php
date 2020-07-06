@@ -3,10 +3,9 @@
 namespace Model;
 
 use Hydro\Base\Database\Driver\SQLite;
-use Hydro\Base\Model\BaseModel;
-use PDOException;
+use Model\DAO\DAOUser;
 
-class UserModel extends BaseModel
+class UserModel
 {
     private $id;
     private $displayName;
@@ -15,7 +14,8 @@ class UserModel extends BaseModel
     private $ugId;
     private $rating;
     private $createdAt;
-    private $picture;
+    private $mime;
+    private $image;
     private $disabled;
 
     /**
@@ -27,135 +27,59 @@ class UserModel extends BaseModel
      * @param $ugId
      * @param $rating
      * @param $createdAt
-     * @param $picture;
+     * @param $mime;
+     * @param $image;
      * @param $disabled
      */
-    public function __construct($id, $displayName, $mail, $password, $ugId, $rating, $createdAt, $picture, $disabled)
+    public function __construct($id, $displayName, $mail, $password, $ugId, $rating, $createdAt, $mime, $image, $disabled)
     {
         $this->id = $id;
-        $this->displayName = $displayName;
-        $this->mail = $mail;
+        $this->displayName = htmlspecialchars(strip_tags($displayName));
+        $this->mail = htmlspecialchars(strip_tags($mail), FILTER_SANITIZE_EMAIL);
         $this->password = $password;
         $this->ugId = $ugId;
         $this->rating = $rating;
         $this->createdAt = $createdAt;
-        $this->picture = $picture;
+        $this->mime = $mime;
+        $this->image = $image;
         $this->disabled = $disabled;
-        parent::__construct(TABLE_USER, COLUMNS_USER);
     }
 
-    public function insertIntoDatabase($con) {
-        return $this->create($con);
+    public function insertIntoDatabase($userDAO) {
+        return $userDAO->create($this);
     }
 
-    public static function getFromDatabase($con, $whereClause, $values) {
-
-        $result = parent::read($con, TABLE_USER. " " .$whereClause, $values);
-        $user = array();
-        foreach ($result as $row):
-            $picture[COLUMNS_USER['mime']] = $row[COLUMNS_USER["mime"]];
-            $picture[COLUMNS_USER['image']] = $row[COLUMNS_USER["image"]];
-
-            $user[] = new UserModel($row[COLUMNS_USER["u_id"]],
-                $row[COLUMNS_USER["display_name"]],
-                $row[COLUMNS_USER["mail"]],
-                $row[COLUMNS_USER["password"]],
-                $row[COLUMNS_USER["ug_id"]],
-                $row[COLUMNS_USER["rating"]],
-                $row[COLUMNS_USER["created_at"]],
-                $picture,
-                $row[COLUMNS_USER["disabled"]]);
-        endforeach;
-        if(count($user) == 1):
-            $user = array_shift($user);
-        endif;
-
-        return $user;
+    public static function getFromDatabaseByMail($userDAO, $mail){
+        $tmp = $userDAO->readByMail($mail);
+        return new UserModel($tmp[0], $tmp[1], $tmp[2], $tmp[3], $tmp[4], $tmp[5], $tmp[6], $tmp[7], $tmp[8], $tmp[9]);;
     }
 
-    public function updateInDatabase($con, $editDate = true) {
-        $updateValues = $this->getDatabaseValues();
-        $updateValues[] = $this->getId();
-        return $this->update($con, $updateValues);
+    public static function getFromDatabaseById($userDAO, $id){
+        $tmp = $userDAO->read($id);
+        return new UserModel($tmp[0], $tmp[1], $tmp[2], $tmp[3], $tmp[4], $tmp[5], $tmp[6], $tmp[7], $tmp[8], $tmp[9]);;
+    }
+
+
+    public function updateInDatabase($userDAO) {
+        return $userDAO->update($this);
     }
 
     /**
      * Set active to 0 and update database
+     * @param $dao
      */
-    public function deactivateInDatabase() {
+    public function deactivateInDatabase($dao) {
         $this->setDisabled(1);
-        $this->updateInDatabase(SQLite::connectToSQLite());
+        $this->updateInDatabase($dao);
     }
 
     /**
      * Set active to 0 and update database
+     * @param $dao
      */
-    public function activateInDatabase() {
+    public function activateInDatabase($dao) {
         $this->setDisabled(0);
-        $this->updateInDatabase(SQLite::connectToSQLite());
-    }
-
-    /**
-     * @return array
-     */
-    public function getDatabaseValues() {
-        return array($this->getId(),
-            $this->getDisplayName(),
-            $this->getMail(),
-            $this->getPassword(),
-            $this->getUgId(),
-            $this->getRating(),
-            $this->getCreatedAt(),
-            $this->getPictureArray()[COLUMNS_USER['mime']],
-            $this->getPictureArray()[COLUMNS_USER['image']],
-            $this->isDisabled());
-    }
-
-    public function insertRatingIntoDatabase($from, $rating) {
-        $con = SQLite::connectToSQLite();
-        $result = false;
-        $con->beginTransaction();
-        try {
-            $statement = "INSERT INTO " . TABLE_USER_RATING . "(";
-            foreach (COLUMNS_USER_RATING as $col):
-                $statement .= $col . ", ";
-            endforeach;
-            $statement = substr($statement, 0, -2) . ") VALUES (";
-            $valueArray = array();
-            foreach (COLUMNS_USER_RATING as $col):
-                $statement .= "?, ";
-            endforeach;
-            $statement = substr($statement, 0, -2) . ");";
-
-
-            $valueArray($from, $this->getId(), $rating);
-            //print($statement);
-            //print_r($valueArray);
-
-            $command = $con->prepare($statement);
-            $result = $command->execute($valueArray);
-            $con->commit();
-        }
-        catch(PDOException $ex) {
-            $con->rollBack();
-            $return = false;
-        }
-        finally {
-            unset($con);
-            return $return;
-        }
-    }
-
-    public function getUserRatingFromDatabase() {
-        $con = SQLite::connectToSQLite();
-        $statement = "SELECT AVG(" .COLUMNS_USER_RATING['rating']. ") AS " .COLUMNS_USER_RATING['rating'].
-            " FROM " .TABLE_USER_RATING. " WHERE " .COLUMNS_USER_RATING['for_u_id']. " = ?;";
-
-        $command = $con->prepare($statement);
-        $command->execute(array($this->getId()));
-        $result = $command->fetch();
-
-        return $result[COLUMNS_USER_RATING['rating']];
+        $this->updateInDatabase($dao);
     }
 
     /**
@@ -280,29 +204,25 @@ class UserModel extends BaseModel
         $this->createdAt = $createdAt;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPictureArray()
-    {
-        return $this->picture;
+    public function getMime() {
+        return $this->mime;
     }
 
-    /**
-     * @param mixed $picture
-     */
-    public function setPictureArray($picture)
-    {
-        $this->picture = $picture;
+    public function setMime($mime) {
+        $this->mime = $mime;
+    }
+
+    public function getImage() {
+        return $this->image;
+    }
+
+    public function setImage($image) {
+        $this->image = $image;
     }
 
     public function getPicture() {
-        $picture = $this->getPictureArray();
-        if(!empty($picture)){
-            return "data:" . $picture[COLUMNS_USER['mime']] .
-                ";base64," . $picture[COLUMNS_USER['image']];
-        }
-        return "";
+            return "data:" . $this->getMime() .
+                ";base64," . $this->getImage();
     }
 
     /**
@@ -322,7 +242,6 @@ class UserModel extends BaseModel
     }
 
     public static function getUser($id) {
-        $whereClause = "WHERE " .COLUMNS_USER["u_id"]. " = ?";
-        return self::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($id));
+        return self::getFromDatabaseById(new DAOUser(SQLite::connectToSQLite()), $id);
     }
 }

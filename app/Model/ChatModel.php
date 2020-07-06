@@ -3,12 +3,9 @@
 
 namespace Model;
 
+use Controller\ChatController;
 
-use Hydro\Base\Database\Driver\SQLite;
-use Hydro\Base\Model\BaseModel;
-
-class ChatModel extends BaseModel
-{
+class ChatModel {
     private $msgID;
     private $from;
     private $to;
@@ -22,38 +19,39 @@ class ChatModel extends BaseModel
         $this->to = $senderID;
         $this->message = $message;
         $this->date = $date;
-        parent::__construct(TABLE_MESSAGE, COLUMNS_MESSAGE);
     }
 
-    public function insertIntoDatabase($con)
+    public static function insertIntoDatabase($messageDAO, $message)
     {
-        return $this->create($con);
+        return $messageDAO->create($message);
     }
 
-    public static function getFromDatabase($con, $whereClause, $value)
+    public static function getFromDatabase($messageDAO, $id)
     {
-        $result = parent::read($con, TABLE_MESSAGE. " " .$whereClause, $value);
-        $messages = array();
-        foreach ($result as $row){
-            $messages[] = new ChatModel(
-                $row[COLUMNS_MESSAGE['msg_id']],
-                $row[COLUMNS_MESSAGE['sender_id']],
-                $row[COLUMNS_MESSAGE['receiver_id']],
-                $row[COLUMNS_MESSAGE['message']],
-                $row[COLUMNS_MESSAGE['send_date']]);
-        }
-        return $messages;
+        $result = $messageDAO->read($id);
+
+        $returnArray = array();
+        foreach($result as $row):
+            $returnArray[] = new ChatModel($row[0], $row[1], $row[2], $row[3], $row[4]);
+        endforeach;
+
+        return $returnArray;
+
     }
 
-    public function updateInDatabase($con, $editDate = true)
+    public static function getFromDatabaseOrder($messageDAO, $id)
     {
-        // TODO: Implement updateInDatabase() method.
+        $result = $messageDAO->readIdWithOrder($id);
+
+        $returnArray = array();
+        foreach($result as $row):
+            $returnArray[] = new ChatModel($row[0], $row[1], $row[2], $row[3], $row[4]);
+        endforeach;
+
+        return $returnArray;
+
     }
 
-    public function deactivateInDatabase()
-    {
-        // TODO: Implement deactivateInDatabase() method.
-    }
 
     public function getDatabaseValues()
     {

@@ -5,6 +5,8 @@ namespace Controller;
 
 
 use Hydro\Base\Controller\BaseController;
+use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\DAOUser;
 use Model\UserModel;
 
 class EditProfileController extends BaseController {
@@ -70,12 +72,12 @@ class EditProfileController extends BaseController {
         }
 
         if(file_exists($_FILES['image']['tmp_name'])):
-            $imageDataArray[COLUMNS_USER['mime']] =$_FILES['image']['type'];
-            $imageDataArray[COLUMNS_USER['image']] = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
-            $user->setPictureArray($imageDataArray);
+            $user->setMime($_FILES['image']['type']);
+            $user->setImage(base64_encode(file_get_contents($_FILES['image']['tmp_name'])));
         endif;
 
-        $user->writeToDatabase();
+        $dao = new DAOUser(SQLite::connectToSQLite());
+        $user->updateInDatabase($dao);
 
         if ($currentUser->getId() == $id) {
             $_SESSION['currentUser'] = $user;
