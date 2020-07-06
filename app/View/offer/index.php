@@ -1,11 +1,9 @@
 <?php
 use Controller\OfferController;
-use Hydro\Helper\Date;
 
 $offer = OfferController::getOffer($_GET['id']);
-$offer->offerClickPlusOne();
+OfferController::offerClickPlusOne($offer);
 $seller = $offer->getUser();
-//print_r($seller->getPictureArray());
 $isSaved = false;
 if(isset($_SESSION['currentUser'])):
     $isSaved = OfferController::isOfferInSavedList($_GET['id']);

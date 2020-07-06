@@ -9,6 +9,7 @@ use Model\OfferImageModel;
 use Model\OfferModel;
 use Model\PlatypusModel;
 use Hydro\Helper\Date;
+use PDOException;
 
 class CreateController extends BaseController
 {
@@ -25,16 +26,8 @@ class CreateController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
-    /**
-     * @param $id
-     * @return OfferModel|string
-     */
-    public function getOffer($id) {
-        return OfferController::getOffer($id);
-    }
-
     public function processInput() {
-        $dao = new DAOOffer(SQLite::connectToSQLite());
+        // TODO: Documentation
         $newOfferId = hexdec(uniqid());
         $isUpdate = isset($_POST["offerId"]);
         $imageUpdate = file_exists($_FILES['image']['tmp_name']);
@@ -80,20 +73,25 @@ class CreateController extends BaseController
             $images,
             1);
 
-        if($isUpdate):
-            $existingOfferId = $_POST["offerId"];
-            $existingOffer = OfferModel::getFromDatabase($dao, $existingOfferId);
+        $con = SQLite::connectToSQLite();
+        try {
+            $con->beginTransaction();
+            $dao = new DAOOffer(SQLite::connectToSQLite());
 
-            $newPlatypus->setId($existingOffer->getPlatypus()->getId());
-            $newPlatypus->setActive($existingOffer->getPlatypus()->isActive());
+            if($isUpdate):
+                $existingOfferId = $_POST["offerId"];
+                $existingOffer = OfferModel::getFromDatabase($dao, $existingOfferId);
 
-            $newOffer->setId($existingOffer->getId());
-            $newOffer->setUser($existingOffer->getUser());
-            $newOffer->setPlatypus($newPlatypus);
-            $newOffer->setClicks($existingOffer->getClicks());
-            $newOffer->setCreateDate($existingOffer->getCreateDate());
-            $newOffer->setEditDate(Date::now());
-            $newOffer->setActive($existingOffer->isActive());
+                $newPlatypus->setId($existingOffer->getPlatypus()->getId());
+                $newPlatypus->setActive($existingOffer->getPlatypus()->isActive());
+
+                $newOffer->setId($existingOffer->getId());
+                $newOffer->setUser($existingOffer->getUser());
+                $newOffer->setPlatypus($newPlatypus);
+                $newOffer->setClicks($existingOffer->getClicks());
+                $newOffer->setCreateDate($existingOffer->getCreateDate());
+                $newOffer->setEditDate(Date::now());
+                $newOffer->setActive($existingOffer->isActive());
 
                 foreach($newOffer->getImages() as $key=>$image):
                     $image->setOfferId($existingOfferId);
@@ -103,21 +101,32 @@ class CreateController extends BaseController
                         $image->setImage($existingOffer->getImages()[$key]->getImage());
                     endif;
                 endforeach;
-        endif;
-
-        if(!isset($existingOffer) || $offerUser->isAdmin() || $offerUser->getId() == $currentUser->getId()):
-            if($isUpdate):
-                $newOffer->updateInDatabase($dao);
-            else:
-                $newOffer->insertIntoDatabase($dao);
             endif;
-        endif;
+
+            if(!isset($existingOffer) || $offerUser->isAdmin() || $offerUser->getId() == $currentUser->getId()):
+                if($isUpdate):
+                    $check = $newOffer->updateInDatabase($dao);
+                else:
+                    $check = $newOffer->insertIntoDatabase($dao);
+                endif;
+
+                if($check):
+                    $con->commit();
+                    header('location: ' . URL . 'offer?id=' . $newOffer->getId());
+                    exit();
+                endif;
+            endif;
+        } catch (PDOException $e) {
+            // TODO: Error handling
+            // print "error go brr";
+            $con->rollback();
+        }
         header('location: ' . URL . 'offer?id=' .$newOffer->getId());
         exit();
     }
 
     /**
-     * @param $price input price
+     * @param $price
      * @return float|int|string formatted price
      */
     private function processInputPrice($price) {

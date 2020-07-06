@@ -7,10 +7,8 @@ namespace Controller;
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\DAOOffer;
-use Model\DAO\DAOSavedOffers;
 use Model\DAO\DAOUser;
 use Model\DAO\DAOUserRating;
-use Model\SavedOfferModel;
 use Model\UserModel;
 use Model\OfferModel;
 use Model\UserRatingModel;
@@ -40,8 +38,11 @@ class ProfileController extends BaseController
         header('location: ' . URL . 'editProfile');
     }
 
-    public static function getUser($id){
-        return UserModel::getUser($id);
+    public static function getUser($id, $dao = null){
+        if(!isset($dao)):
+            $dao = new DAOUser(SQLite::connectToSQLite());
+        endif;
+        return UserModel::getUser($dao, $id);
     }
 
     public static function getDisplayUser() {
