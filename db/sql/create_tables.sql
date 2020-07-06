@@ -150,5 +150,8 @@ CREATE TABLE zip_coordinates (
   zipcode TEXT,
   name TEXT,
   lat REAL,
-  lon REAL
+  lon REAL,
+  CONSTRAINT fk_offer
+    FOREIGN KEY (zipcode)
+    REFERENCES offer(zipcode)
 );
