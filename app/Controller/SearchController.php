@@ -24,6 +24,7 @@ class SearchController extends BaseController
     public static function getOffers($like = "", $sex = "", $age = array(0, 20), $size = array(0, 20), $weight = array(0, 3000)) {
         $keyedSearchValuesArray = array(
             "name" => "%" .htmlspecialchars($like). "%",
+            "description" => "%" .htmlspecialchars($like). "%",
             "ageMin" => min($age),
             "ageMax" => max($age),
             "sizeMin" => min($size),

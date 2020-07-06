@@ -152,8 +152,9 @@ class DAOOffer implements DAOContract
         $bindSex = array_key_exists("sex", $keyedSearchValuesArray);
         $sql = "SELECT * FROM offer
                     INNER JOIN platypus ON platypus.p_id = offer.p_id
-                    WHERE name LIKE :name AND 
-                          age_years BETWEEN :ageMin and :ageMax 
+                    WHERE (name LIKE :name
+                      OR description LIKE :description)
+                      AND age_years BETWEEN :ageMin and :ageMax 
                       AND size BETWEEN :sizeMin and :sizeMax 
                       AND weight BETWEEN :weightMin and :weightMax
                       AND offer.active = 1";
@@ -164,6 +165,7 @@ class DAOOffer implements DAOContract
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":name", $keyedSearchValuesArray['name']);
+        $stmt->bindValue(":description", $keyedSearchValuesArray['description']);
         $stmt->bindValue(":ageMin", $keyedSearchValuesArray['ageMin']);
         $stmt->bindValue(":ageMax", $keyedSearchValuesArray['ageMax']);
         $stmt->bindValue(":sizeMin", $keyedSearchValuesArray['sizeMin']);
