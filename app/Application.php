@@ -9,13 +9,12 @@ class Application
 
     const CONTROLLERS = array(
         "Chat",
-        "Chat",
+        "Create",
         "EditProfile",
         "Error",
         "Home",
         "Login",
         "Offer",
-        "Create",
         "Profile",
         "Register",
         "Search");
