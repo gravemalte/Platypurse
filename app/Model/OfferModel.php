@@ -16,7 +16,7 @@ class OfferModel {
     private $price;
     private $negotiable;
     private $description;
-    private $postalCode;
+    private $zipcode;
     private $clicks;
     private $create_date;
     private $edit_date;
@@ -31,7 +31,7 @@ class OfferModel {
      * @param $price
      * @param $negotiable
      * @param $description
-     * @param $postal_code
+     * @param $zipcode
      * @param $clicks
      * @param $create_date
      * @param $edit_date
@@ -39,7 +39,7 @@ class OfferModel {
      * @param $active
      */
     public function __construct($id, $user, $platypus, $price, $negotiable, $description,
-                                $postal_code, $clicks, $create_date, $edit_date, $images, $active = 1)
+                                $zipcode, $clicks, $create_date, $edit_date, $images, $active = 1)
     {
         if(empty($create_date)):
             $create_date = Date::now();
@@ -51,7 +51,7 @@ class OfferModel {
         $this->price = htmlspecialchars(strip_tags($price));
         $this->negotiable = $negotiable;
         $this->description = htmlspecialchars(strip_tags($description));
-        $this->postalCode = htmlspecialchars(strip_tags($postal_code));
+        $this->$zipcode = htmlspecialchars(strip_tags($zipcode));
         $this->clicks = $clicks;
         $this->create_date = $create_date;
         $this->edit_date = $edit_date;
@@ -290,17 +290,17 @@ class OfferModel {
     /**
      * @return string
      */
-    public function getPostalCode()
+    public function getZipcode()
     {
-        return $this->postalCode;
+        return $this->zipcode;
     }
 
     /**
-     * @param string $postalCode
+     * @param string $zipcode
      */
-    public function setPostalCode($postalCode)
+    public function setZipcode($zipcode)
     {
-        $this->postalCode = $postalCode;
+        $this->zipcode = $zipcode;
     }
 
     /**

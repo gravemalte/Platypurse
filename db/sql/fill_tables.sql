@@ -34,7 +34,7 @@ VALUES
 (8, "Goal", 2, "weiblich", 36, 800),
 (9, "Bozo", 6, "männlich", 57, 3000);
 
-INSERT INTO offer (o_id, u_id, p_id, price, negotiable, description, postal_code)
+INSERT INTO offer (o_id, u_id, p_id, price, negotiable, description, zipcode)
 VALUES
 (1, 2, 1, 12999, 0, "Er ist ein Schnabeltier, die machen nicht viel. Ist aber tagsüber immer verschwunden...", "26129"),
 (2, 4, 2, 9900, 0, "Wärst du so freundlich und kaufst dieses Schnabeltier?", "26180"),

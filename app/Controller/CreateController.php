@@ -73,7 +73,7 @@ class CreateController extends BaseController
             $this->processInputPrice($_POST["price"]),
             0,
             $_POST['description'],
-            "26129", //TODO: Insert postal code when available
+            "26129", //TODO: Insert zipcode when available
             0,
             Date::now(),
             null,

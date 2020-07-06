@@ -25,8 +25,8 @@ class DAOOffer implements DAOContract
 
     public function create($obj)
     {
-        $query = "INSERT INTO offer (o_id, u_id, p_id, price, negotiable, description, postal_code) 
-            VALUES (:offerId, :userId, :platypusId, :price, :negotiable, :description, :postalCode)";
+        $query = "INSERT INTO offer (o_id, u_id, p_id, price, negotiable, description, zipcode) 
+            VALUES (:offerId, :userId, :platypusId, :price, :negotiable, :description, :zipCode)";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":offerId", $obj->getId());
         $stmt->bindValue(":userId", $obj->getUser()->getId());
@@ -34,7 +34,7 @@ class DAOOffer implements DAOContract
         $stmt->bindValue(":price", $obj->getPriceUnformatted());
         $stmt->bindValue(":negotiable", $obj->getNegotiable());
         $stmt->bindValue(":description", $obj->getDescription());
-        $stmt->bindValue(":postalCode", $obj->getPostalCode());
+        $stmt->bindValue(":zipCode", $obj->getZipcode());
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
@@ -62,13 +62,13 @@ class DAOOffer implements DAOContract
     public function update($obj)
     {
         $sql = "UPDATE offer SET price = :price, negotiable = :negotiable, description = :description,
-                 postal_code = :postalCode, clicks = :clicks, edit_date = :edit_date, active = :active WHERE o_id = :id";
+                 zipcode = :zipcode, clicks = :clicks, edit_date = :edit_date, active = :active WHERE o_id = :id";
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":price", $obj->getPriceUnformatted());
         $stmt->bindValue(":negotiable", $obj->getNegotiable());
         $stmt->bindValue(":description", $obj->getDescription());
-        $stmt->bindValue(":postalCode", $obj->getPostalCode());
+        $stmt->bindValue(":zipcode", $obj->getZipcode());
         $stmt->bindValue(":clicks", $obj->getClicks());
         $stmt->bindValue(":edit_date", $obj->getEditDate());
         $stmt->bindValue(":active", $obj->isActive());
@@ -152,7 +152,7 @@ class DAOOffer implements DAOContract
     public function readSearchResults($keyedSearchValuesArray)
     {
         $bindSex = array_key_exists("sex", $keyedSearchValuesArray);
-        // TODO: Add postal_code to query when available
+        // TODO: Add zipcode to query when available
         $sql = "SELECT * FROM offer
                     INNER JOIN platypus ON platypus.p_id = offer.p_id
                     WHERE (name LIKE :name
