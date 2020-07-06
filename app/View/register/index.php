@@ -22,6 +22,10 @@ $show_error = false;
                         Die angegebenen Passwörter stimmen nicht überein.
                     <?php endif; ?>
 
+                    <?php if(isset($_SESSION['register-error-agb'])) : ?>
+                        Bitte die AGB Akzeptieren.
+                    <?php endif; ?>
+
                 </p>
                 <div class="form-user-display-name-container">
                     <?php if(isset($_SESSION['register-error'])) : ?>
@@ -59,7 +63,11 @@ $show_error = false;
                     <label for="user-passwd-2">Passwort wiederholen</label>
                     <input type="password" id="user-passwd-2" name="user-passwd2" placeholder="Passwort wiederholen" required>
                 </div>
-                <input type="checkbox" id="agb-confirm">AGB Akzeptieren
+
+                <!-- TODO: VERSCHÖNERN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+                <input type="checkbox" name="agb-confirm">AGB Akzeptieren
+
+
                 <div class="form-submit-container">
                     <label for="submit" hidden>Registrieren</label>
                     <button id="submit" type="submit">

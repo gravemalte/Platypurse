@@ -38,7 +38,7 @@ class RegisterController extends BaseController {
             exit();
         }
 
-        if(!$_POST['agb-confirm']){
+        if(!isset($_POST['agb-confirm'])){
             $_SESSION['register-error-agb'] = true;
             header('location:' . URL . 'register');
             exit();
