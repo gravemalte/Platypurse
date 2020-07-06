@@ -1,34 +1,54 @@
 "use strict";
 
 (function() {
-    let storageKeyName = "colorScheme";
+    let storageKeyName = "colorScheme"
 
+    /**
+     * Check if color is preferred by media query.
+     *
+     * @param {"dark"|"light"} color
+     * @returns {boolean}
+     */
     function matchDeviceColor(color) {
         return window.matchMedia("(prefers-color-scheme: " + color + ")").matches;
     }
 
+    /**
+     * Activates light mode.
+     *
+     * @param {boolean} [setStorage=true]
+     * @returns {Promise<void>}
+     */
     async function makeLight(setStorage = true) {
         document.body.classList.add("light");
+        document.body.classList.remove("dark");
         document.getElementById("light-mode-switch-off").hidden = false;
         document.getElementById("light-mode-switch-on").hidden = true;
-        if (setStorage) localStorage.setItem(storageKeyName, "light");
+        if (setStorage) sessionStorage.setItem(storageKeyName, "light");
     }
+
+    /**
+     * Activates dark mode.
+     *
+     * @param {boolean} [setStorage=true]
+     * @returns {Promise<void>}
+     */
     async function makeDark(setStorage = true) {
         document.body.classList.remove("light");
+        document.body.classList.add("dark");
         document.getElementById("light-mode-switch-off").hidden = true;
         document.getElementById("light-mode-switch-on").hidden = false;
-        if (setStorage) localStorage.setItem(storageKeyName, "dark");
+        if (setStorage) sessionStorage.setItem(storageKeyName, "dark");
     }
 
     window.addEventListener("DOMContentLoaded", async event => {
-        let lightStorage = localStorage.getItem(storageKeyName);
+        // using session storage to only change mode in this session
+        let lightStorage = sessionStorage.getItem(storageKeyName);
 
-        if (lightStorage === null) {
-            if (matchDeviceColor("light")) {
-                await makeLight(false);
-            }
+        if (lightStorage === "dark") {
+            await makeDark();
         }
-        else if (lightStorage === "light") {
+        if (lightStorage === "light") {
             await makeLight();
         }
 
@@ -36,12 +56,18 @@
             .addEventListener("click", event => lightSwitchButton(event));
     });
 
+    /**
+     * Switch between dark and light mode.
+     *
+     * @param {Event} event
+     * @returns {Promise<void>}
+     */
     async function lightSwitchButton(event) {
-        document.body.classList.add("transition");
-        
-        let lightStorage = localStorage.getItem(storageKeyName);
+        // using session storage to only change mode in this session
+        let lightStorage = sessionStorage.getItem(storageKeyName);
 
         await (async () => {
+            // decide by if storage is set or media query
             if (lightStorage === "light") {
                 await makeDark();
                 return
@@ -58,7 +84,5 @@
                 await makeLight();
             }
         })();
-
-        await setTimeout(() => document.body.classList.remove("transition"), 600);
     }
 })();

@@ -71,7 +71,7 @@ if ($showUpdateData) {
                     </div>
                     <div class="img-container main-input-container">
                         <p class="name">Bilder</p>
-                        <div class="drag-drop-container">
+                        <div class="drag-drop-container drop-files">
                             <input
                                     id="create-image"
                                     type="file"
@@ -85,6 +85,7 @@ if ($showUpdateData) {
                                 <span>Bilder hier</span>
                                 <span class="far fa-caret-square-down"></span>
                                 <span>Oder hier klicken</span>
+                                <span class="drop-files-show"></span>
                             </label>
                         </div>
                     </div>
@@ -188,7 +189,11 @@ if ($showUpdateData) {
     <div class="confirm-changes-container-background" id="confirm-changes-container" hidden>
         <div>
             <div class="confirm-changes-container card">
+                <?php if ($isUpdate): ?>
                 <h2>Änderungen anwenden?</h2>
+                <?php else: ?>
+                <h2>Angebot so erstellen?</h2>
+                <?php endif; ?>
                 <div class="confirm-changes-diff-container" id="confirm-changes-diff">
                     <p
                             data-confirm-diff="name"
@@ -209,6 +214,13 @@ if ($showUpdateData) {
                         <?php if ($showUpdateData): ?>
                         (<?= $showPrice ?>)
                         <?php endif; ?>
+                    </p>
+                    <p
+                            data-confirm-diff="image"
+                            data-confirm-og-value=""
+                    >
+                        <strong>Neue(s) Bild(er):</strong>
+                        <span data-confirm-new></span>
                     </p>
                     <p
                             data-confirm-diff="description"

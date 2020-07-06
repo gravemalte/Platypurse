@@ -16,6 +16,7 @@ class Date
 
     /**
      * Returns a beautiful timestamp based on relative time.
+     * (Only usable if server timezone is equal to client timezone.)
      *
      * @param $timestamp
      * @return string

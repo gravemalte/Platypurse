@@ -7,7 +7,7 @@
 }
 
 /* dark mode colors */
-body {
+.dark {
     --page-bg-color: #222;
     --page-text-color: var(--quite-white);
     --page-button-bg-color: #444;
@@ -56,7 +56,7 @@ body {
 }
 
 /* light colors (fry your eyes) */
-body.light {
+.light {
     --page-bg-color: #FEDEAF;
     --page-text-color: #111;
     --page-button-bg-color: #EEE;
