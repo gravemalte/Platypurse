@@ -65,33 +65,22 @@ class ChatController extends BaseController
             return;
         }
 
-        $whereClause = "WHERE ("
-            . COLUMNS_MESSAGE["sender_id"]
-            . " = ? OR "
-            . COLUMNS_MESSAGE["receiver_id"]
-            . " = ?) AND "
-            . COLUMNS_MESSAGE["msg_id"]
-            . " >= ? ORDER BY "
-            . COLUMNS_MESSAGE["msg_id"]
-            . " ASC";
         $userID = $_SESSION['currentUser']->getId();
 
-        $messages = ChatModel::getFromDatabase(
-            SQLite::connectToSQLite(),
-            $whereClause,
-            array($userID, $userID, $_GET['latest-id'])
-        );
+        $messages = ChatModel::getFromDatabaseOrder(new DAOMessage(SQLite::connectToSQLite()), $userID);
+
         $result = array();
 
-        foreach ($messages as $message){
+        foreach($messages as $msg):
             $result[] = array(
-                COLUMNS_MESSAGE['msg_id'] => $message->getId(),
-                COLUMNS_MESSAGE['sender_id'] => $message->getFrom(),
-                COLUMNS_MESSAGE['receiver_id'] => $message->getTo(),
-                COLUMNS_MESSAGE['message']=>$message->getMessage(),
-                COLUMNS_MESSAGE['send_date']=>$message->getDate()
+                "messageId" => $msg->getId(),
+                "senderId" => $msg->getFrom(),
+                "receiverId" => $msg->getTo(),
+                "message" => $msg->getMessage(),
+                "sendDate" => $msg->getDate()
             );
-        }
+        endforeach;
+
 
         echo json_encode(array('chat' => $result, 'date' => Date::now()));
     }
@@ -129,11 +118,13 @@ class ChatController extends BaseController
 
         $messages = ChatModel::insertIntoDatabase(new DAOMessage(SQLite::connectToSQLite()), $newMessage);
 
-        if (!$messages) {
+        if ($messages) {
             http_response_code(500);
             echo json_encode(array());
             return;
         }
+
+        $userID = $_SESSION['currentUser']->getId();
 
         $messages = ChatModel::getFromDatabase(new DAOMessage(SQLite::connectToSQLite()), $userID);
 

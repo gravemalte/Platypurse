@@ -81,6 +81,22 @@ class DAOMessage implements DAOContract
     {
     }
 
+
+
+    public function readIdWithOrder($id)
+    {
+        $query = "SELECT * FROM message WHERE sender_id = :id ORDER BY msg_id ASC";
+
+        $stmt = $this->con->prepare($query);
+        $stmt->bindValue(":id", $id);
+
+        if($stmt->execute()){
+            return $stmt->fetchAll();
+        } else {
+            throw new PDOException('MessageModel select error...');
+        }
+    }
+
     public function readAll()
     {
         $sql = "SELECT * FROM message";

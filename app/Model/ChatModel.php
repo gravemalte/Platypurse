@@ -39,6 +39,20 @@ class ChatModel {
 
     }
 
+    public static function getFromDatabaseOrder($messageDAO, $id)
+    {
+        $result = $messageDAO->readIdWithOrder($id);
+
+        $returnArray = array();
+        foreach($result as $row):
+            $returnArray[] = new ChatModel($row[0], $row[1], $row[2], $row[3], $row[4]);
+        endforeach;
+
+        return $returnArray;
+
+    }
+
+
     public function getDatabaseValues()
     {
         return array($this->getId(),
