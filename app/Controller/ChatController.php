@@ -40,11 +40,11 @@ class ChatController extends BaseController
 
         foreach($messages as $msg):
             $result[] = array(
-                "messageId" => $msg->getId(),
-                "senderId" => $msg->getFrom(),
-                "receiverId" => $msg->getTo(),
+                "msg_id" => $msg->getId(),
+                "sender_id" => $msg->getFrom(),
+                "receiver_id" => $msg->getTo(),
                 "message" => $msg->getMessage(),
-                "sendDate" => $msg->getDate()
+                "send_date" => $msg->getDate()
             );
         endforeach;
 
@@ -73,11 +73,11 @@ class ChatController extends BaseController
 
         foreach($messages as $msg):
             $result[] = array(
-                "messageId" => $msg->getId(),
-                "senderId" => $msg->getFrom(),
-                "receiverId" => $msg->getTo(),
+                "msg_id" => $msg->getId(),
+                "sender_id" => $msg->getFrom(),
+                "receiver_id" => $msg->getTo(),
                 "message" => $msg->getMessage(),
-                "sendDate" => $msg->getDate()
+                "send_date" => $msg->getDate()
             );
         endforeach;
 
@@ -132,11 +132,11 @@ class ChatController extends BaseController
 
         foreach($messages as $msg):
             $result[] = array(
-                "messageId" => $msg->getId(),
-                "senderId" => $msg->getFrom(),
-                "receiverId" => $msg->getTo(),
+                "msg_id" => $msg->getId(),
+                "sender_id" => $msg->getFrom(),
+                "receiver_id" => $msg->getTo(),
                 "message" => $msg->getMessage(),
-                "sendDate" => $msg->getDate()
+                "send_date" => $msg->getDate()
             );
         endforeach;
 
