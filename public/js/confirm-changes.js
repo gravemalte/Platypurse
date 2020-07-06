@@ -50,7 +50,7 @@
 
     function addConfirmEvents(containerElement) {
         containerElement.addEventListener("click", event => {
-            for (let element of event.path) {
+            for (let element of event.composedPath()) {
                 if (element.tagName === "BUTTON") {
                     switch (element.dataset.confirm) {
                         case "confirm":
