@@ -142,3 +142,12 @@ CREATE TABLE log (
   l_id INTEGER PRIMARY KEY AUTOINCREMENT,
   message text
 );
+
+CREATE TABLE zip_coordinates (
+  zc_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  loc_id INTEGER,
+  zipcode TEXT,
+  name TEXT,
+  lat REAL,
+  lon REAL
+);
