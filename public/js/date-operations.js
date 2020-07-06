@@ -10,7 +10,7 @@
         let now = new Date();
         let dateTime = date.getTime();
         let nowTime = now.getTime();
-        
+
         if (date.getFullYear() === now.getFullYear()) {
             if (date.getMonth() === now.getMonth()) {
                 if (date.getDate() === now.getDate()) {
@@ -76,6 +76,17 @@
         if (parsedNumber < 10) return "0" + parsedNumber;
         return parsedNumber.toString();
     }
+
+    window.addEventListener("DOMContentLoaded", event => {
+       for (let element of document.getElementsByClassName("date-display")) {
+           let text = element.innerText;
+           let utc = false;
+           if (text.search(/utc/i) !== -1) utc = true;
+           if (utc) text = text.replace(/utc/i, "");
+           text.trim();
+           element.innerText = getNiceDate(text, utc);
+       }
+    });
 
     window.getNiceDate = getNiceDate;
     window.getDatabaseString = getDatabaseString;

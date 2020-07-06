@@ -79,12 +79,12 @@ endif;
                         <p><strong>Gewicht:</strong><br>&nbsp<?=$offer->getPlatypus()->getWeight();?>g</p>
                     </div>
                     <div class="attribute-item">
-                        <p>Erstellt: <strong>
-                                <?= Date::niceDate($offer->getCreateDate()) ?>
+                        <p>Erstellt: <strong class="date-display">
+                                <?= $offer->getCreateDate() ?> UTC
                             </strong></p>
                         <?php if(!empty($offer->getEditDate())): ?>
-                        <p>Zuletzt bearbeitet: <strong>
-                                <?= Date::niceDate($offer->getEditDate()) ?></strong></p>
+                        <p>Zuletzt bearbeitet: <strong class="date-display">
+                                <?= $offer->getEditDate() ?> UTC</strong></p>
                         <?php endif; ?>
                     </div>
                 </div>
