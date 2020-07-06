@@ -22,7 +22,8 @@ class RegisterController extends BaseController {
 
     public function register(){
         if(!(isset($_POST["user-email"]) || isset($_POST["user-passwd"])
-        || isset($_POST['user-display-name']) || isset($_POST['user-passwd2']))){
+        || isset($_POST['user-display-name']) || isset($_POST['user-passwd2'])
+            || isset($_POST['agb-confirm']))){
             $_SESSION['register-error'] = true;
             header('location:' . URL . 'register');
         }
