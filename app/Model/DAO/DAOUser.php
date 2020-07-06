@@ -22,13 +22,16 @@ class DAOUser implements DAOContract
 
     public function create($obj)
     {
-        $query = "INSERT INTO user(u_id, display_name, mail, password, ug_id) VALUES (:userID, :displayName, :mail, :password, :ugID)";
+        $query = "INSERT INTO user(u_id, display_name, mail, password, ug_id, mime, image) VALUES (:userID, :displayName, :mail, :password, :ugID, :mime, :image)";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":userID", $obj->getId());
         $stmt->bindValue(":displayName", $obj->getDisplayName());
         $stmt->bindValue(":mail", $obj->getMail());
         $stmt->bindValue(":password", $obj->getPassword());
         $stmt->bindValue(":ugID", $obj->getUgId());
+        $stmt->bindValue(":mime", $obj->getMime());
+        $stmt->bindValue(":image", $obj->getImage());
+
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
