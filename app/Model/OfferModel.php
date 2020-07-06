@@ -16,6 +16,7 @@ class OfferModel {
     private $price;
     private $negotiable;
     private $description;
+    private $postalCode;
     private $clicks;
     private $create_date;
     private $edit_date;
@@ -30,6 +31,7 @@ class OfferModel {
      * @param $price
      * @param $negotiable
      * @param $description
+     * @param $postal_code
      * @param $clicks
      * @param $create_date
      * @param $edit_date
@@ -37,7 +39,7 @@ class OfferModel {
      * @param $active
      */
     public function __construct($id, $user, $platypus, $price, $negotiable, $description,
-                                $clicks, $create_date, $edit_date, $images, $active = 1)
+                                $postal_code, $clicks, $create_date, $edit_date, $images, $active = 1)
     {
         if(empty($create_date)):
             $create_date = Date::now();
@@ -49,6 +51,7 @@ class OfferModel {
         $this->price = htmlspecialchars(strip_tags($price));
         $this->negotiable = $negotiable;
         $this->description = htmlspecialchars(strip_tags($description));
+        $this->postalCode = htmlspecialchars(strip_tags($postal_code));
         $this->clicks = $clicks;
         $this->create_date = $create_date;
         $this->edit_date = $edit_date;
@@ -159,8 +162,8 @@ class OfferModel {
         return new OfferModel($row[0],
             UserModel::getFromDatabaseById(new DAOUser($offerDAO->getCon()), $row[1]),
             PlatypusModel::getFromDatabaseById(new DAOPlatypus($offerDAO->getCon()), $row[2]),
-            $row[3], $row[4], $row[5], $row[6], $row[7], $row[8],
-            OfferImageModel::getFromDatabaseByOfferId(new DAOOfferImages($offerDAO->getCon()), $row[0]), $row[9]);
+            $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9],
+            OfferImageModel::getFromDatabaseByOfferId(new DAOOfferImages($offerDAO->getCon()), $row[0]), $row[10]);
     }
 
     /**
@@ -282,6 +285,22 @@ class OfferModel {
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostalCode()
+    {
+        return $this->postalCode;
+    }
+
+    /**
+     * @param string $postalCode
+     */
+    public function setPostalCode($postalCode)
+    {
+        $this->postalCode = $postalCode;
     }
 
     /**

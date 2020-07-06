@@ -36,7 +36,8 @@ class CreateController extends BaseController
     public function processInput() {
         $dao = new DAOOffer(SQLite::connectToSQLite());
         $newOfferId = hexdec(uniqid());
-        $isUpdate = false;
+        $isUpdate = isset($_POST["offerId"]);
+        $imageUpdate = file_exists($_FILES['image']['tmp_name']);
 
         $currentUser = $_SESSION['currentUser'];
         $offerUser = $currentUser;
@@ -50,7 +51,7 @@ class CreateController extends BaseController
             1);
 
         $images = array();
-        if(file_exists($_FILES['image']['tmp_name'])):
+        if($imageUpdate):
             // TODO: When gallery is implemented, loop through multiple images
             $mime = $_FILES['image']['type'];
             $image = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
@@ -72,13 +73,14 @@ class CreateController extends BaseController
             $this->processInputPrice($_POST["price"]),
             0,
             $_POST['description'],
+            "26129", //TODO: Insert postal code when available
             0,
             Date::now(),
             null,
             $images,
             1);
 
-        if(isset($_POST["offerId"])):
+        if($isUpdate):
             $existingOfferId = $_POST["offerId"];
             $existingOffer = OfferModel::getFromDatabase($dao, $existingOfferId);
 
@@ -93,12 +95,14 @@ class CreateController extends BaseController
             $newOffer->setEditDate(Date::now());
             $newOffer->setActive($existingOffer->isActive());
 
-            foreach($newOffer->getImages() as $key=>$image):
-                $image->setOfferId($existingOfferId);
-                $image->setId($existingOffer->getImages()[$key]->getId());
-            endforeach;
-
-            $isUpdate = true;
+                foreach($newOffer->getImages() as $key=>$image):
+                    $image->setOfferId($existingOfferId);
+                    $image->setId($existingOffer->getImages()[$key]->getId());
+                    if(!$imageUpdate):
+                        $image->setMime($existingOffer->getImages()[$key]->getMime());
+                        $image->setImage($existingOffer->getImages()[$key]->getImage());
+                    endif;
+                endforeach;
         endif;
 
         if(!isset($existingOffer) || $offerUser->isAdmin() || $offerUser->getId() == $currentUser->getId()):

@@ -49,6 +49,7 @@ CREATE TABLE offer (
   price INTEGER NOT NULL,
   negotiable INTEGER DEFAULT 0,
   description TEXT DEFAULT "",
+  postal_code TEXT NOT NULL,
   clicks INTEGER DEFAULT 0,
   create_date TEXT DEFAULT (datetime('now','localtime')),
   edit_date text,

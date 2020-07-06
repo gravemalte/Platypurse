@@ -34,17 +34,17 @@ VALUES
 (8, "Goal", 2, "weiblich", 36, 800),
 (9, "Bozo", 6, "männlich", 57, 3000);
 
-INSERT INTO offer (o_id, u_id, p_id, price, negotiable, description)
+INSERT INTO offer (o_id, u_id, p_id, price, negotiable, description, postal_code)
 VALUES
-(1, 2, 1, 12999, 0, "Er ist ein Schnabeltier, die machen nicht viel. Ist aber tagsüber immer verschwunden..."),
-(2, 4, 2, 9900, 0, "Wärst du so freundlich und kaufst dieses Schnabeltier?"),
-(3, 4, 3, 9900, 1, "Rietlebanchs sesied fauk!"),
-(4, 4, 4, 13300, 1, ""),
-(5, 3, 5, 7950, 0, "Ist ein älteres Tier und hat Erinnerungen hinterlassen."),
-(6, 2, 6, 150000, 1, "Selbsterklärend."),
-(7, 3, 7, 550, 0, "Bisschen vertrottelt, besitzt aber Erfindergeist!"),
-(8, 2, 8, 11879, 0, "Gutmütiges Vieh. Hat aber gespaltene Persönlichkeiten"),
-(9, 2, 9, 10000, 1, "In Ehrfurcht vor der Größe dieses Jungens. Absolute Einheit.");
+(1, 2, 1, 12999, 0, "Er ist ein Schnabeltier, die machen nicht viel. Ist aber tagsüber immer verschwunden...", "26129"),
+(2, 4, 2, 9900, 0, "Wärst du so freundlich und kaufst dieses Schnabeltier?", "26180"),
+(3, 4, 3, 9900, 1, "Rietlebanchs sesied fauk!", "01108"),
+(4, 4, 4, 13300, 1, "", "20457"),
+(5, 3, 5, 7950, 0, "Ist ein älteres Tier und hat Erinnerungen hinterlassen.", "90471"),
+(6, 2, 6, 150000, 1, "Selbsterklärend.", "26121"),
+(7, 3, 7, 550, 0, "Bisschen vertrottelt, besitzt aber Erfindergeist!", "26169"),
+(8, 2, 8, 11879, 0, "Gutmütiges Vieh. Hat aber gespaltene Persönlichkeiten", "26655"),
+(9, 2, 9, 10000, 1, "In Ehrfurcht vor der Größe dieses Jungens. Absolute Einheit.", "49661");
 
 INSERT INTO saved_offers (u_id, o_id)
 VALUES
