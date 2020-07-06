@@ -2,3 +2,6 @@
 .vscode/
 *.dat
 *.sqlite
+
+# colors.css now get's generated
+public/css/shared/colors.css
