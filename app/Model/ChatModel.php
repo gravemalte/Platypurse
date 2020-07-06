@@ -28,8 +28,15 @@ class ChatModel {
 
     public static function getFromDatabase($messageDAO, $id)
     {
-        $tmp = $messageDAO->read($id);
-        return new ChatModel($tmp[0], $tmp[1],$tmp[2],$tmp[3],$tmp[4]);
+        $result = $messageDAO->read($id);
+
+        $returnArray = array();
+        foreach($result as $row):
+            $returnArray[] = new ChatModel($row[0], $row[1], $row[2], $row[3], $row[4]);
+        endforeach;
+
+        return $returnArray;
+
     }
 
     public function getDatabaseValues()

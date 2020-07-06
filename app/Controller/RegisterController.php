@@ -38,6 +38,12 @@ class RegisterController extends BaseController {
             exit();
         }
 
+        if(!$_POST['agb-confirm']){
+            $_SESSION['register-error-agb'] = true;
+            header('location:' . URL . 'register');
+            exit();
+        }
+
         $defaultImagePath = "assets/nav/user-circle-solid.svg";
         $mime = "image/" .pathinfo($defaultImagePath)['extension']. '+xml';
         $image = base64_encode(file_get_contents($defaultImagePath));

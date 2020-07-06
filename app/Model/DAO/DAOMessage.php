@@ -43,12 +43,12 @@ class DAOMessage implements DAOContract
 
     public function read($id)
     {
-        $query = "SELECT * FROM message WHERE msg_id = :id";
+        $query = "SELECT * FROM message WHERE sender_id = :id";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $id);
 
         if($stmt->execute()){
-            return $stmt->fetch();
+            return $stmt->fetchAll();
         } else {
             throw new PDOException('MessageModel select error...');
         }
@@ -92,19 +92,5 @@ class DAOMessage implements DAOContract
             throw new PDOException('Error UserModel readAll');
         }
     }
-
-    public function readByMail($mail)
-    {
-        $query = "SELECT * FROM user WHERE mail = :mail";
-        $stmt = $this->con->prepare($query);
-        $stmt->bindValue(":mail", $mail);
-
-        if($stmt->execute()){
-           return $stmt->fetch();
-        } else {
-            throw new PDOException('UserModel select mail error...');
-        }
-    }
-
 
 }

@@ -59,6 +59,7 @@ $show_error = false;
                     <label for="user-passwd-2">Passwort wiederholen</label>
                     <input type="password" id="user-passwd-2" name="user-passwd2" placeholder="Passwort wiederholen" required>
                 </div>
+                <input type="checkbox" id="agb-confirm">AGB Akzeptieren
                 <div class="form-submit-container">
                     <label for="submit" hidden>Registrieren</label>
                     <button id="submit" type="submit">

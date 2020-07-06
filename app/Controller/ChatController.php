@@ -32,17 +32,21 @@ class ChatController extends BaseController
             return;
         }
 
-
         $userID = $_SESSION['currentUser']->getId();
 
         $messages = ChatModel::getFromDatabase(new DAOMessage(SQLite::connectToSQLite()), $userID);
-        $result = array(
-            "messageId" => $messages->getId(),
-            "senderId" => $messages->getFrom(),
-            "receiverId" => $messages->getTo(),
-            "message" => $messages->getMessage(),
-            "sendDate" => $messages->getDate()
-        );
+
+        $result = array();
+
+        foreach($messages as $msg):
+            $result[] = array(
+                "messageId" => $msg->getId(),
+                "senderId" => $msg->getFrom(),
+                "receiverId" => $msg->getTo(),
+                "message" => $msg->getMessage(),
+                "sendDate" => $msg->getDate()
+            );
+        endforeach;
 
 
         echo json_encode(array('chat' => $result, 'date' => Date::now()));
@@ -131,15 +135,19 @@ class ChatController extends BaseController
             return;
         }
 
-        $messages = ChatModel::getFromDatabase(new DAOMessage(SQLite::connectToSQLite()), $toID);
+        $messages = ChatModel::getFromDatabase(new DAOMessage(SQLite::connectToSQLite()), $userID);
 
-        $result = array(
-            "messageId" => $messages->getId(),
-            "senderId" => $messages->getFrom(),
-            "receiverId" => $messages->getTo(),
-            "message" => $messages->getMessage(),
-            "sendDate" => $messages->getDate()
-        );
+        $result = array();
+
+        foreach($messages as $msg):
+            $result[] = array(
+                "messageId" => $msg->getId(),
+                "senderId" => $msg->getFrom(),
+                "receiverId" => $msg->getTo(),
+                "message" => $msg->getMessage(),
+                "sendDate" => $msg->getDate()
+            );
+        endforeach;
 
         echo json_encode(array('chat' => $result, 'date' => Date::now()));
     }
