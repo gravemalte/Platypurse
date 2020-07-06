@@ -77,13 +77,13 @@
         return parsedNumber.toString();
     }
 
-    window.addEventListener("DOMContentLoaded", event => {
+    window.addEventListener("DOMContentLoaded", async event => {
        for (let element of document.getElementsByClassName("date-display")) {
            let text = element.innerText;
            let utc = false;
            if (text.search(/utc/i) !== -1) utc = true;
            if (utc) text = text.replace(/utc/i, "");
-           text.trim();
+           text = text.trim();
            element.innerText = getNiceDate(text, utc);
        }
     });
