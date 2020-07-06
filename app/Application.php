@@ -7,8 +7,17 @@ class Application
 {
     private static $instance = null;
 
-    const CONTROLLER = 'Controller';
-    const PHP_FILE_ENDING = '.php';
+    const CONTROLLERS = array(
+        "Chat",
+        "Create",
+        "EditProfile",
+        "Error",
+        "Home",
+        "Login",
+        "Offer",
+        "Profile",
+        "Register",
+        "Search");
 
     private $url_controller = null;
     private $url_action = null;
@@ -16,23 +25,15 @@ class Application
 
     private function __construct()
     {
-
-        // splitting up our URL
         $this->splitUrl();
 
-        // checks if the current controller is null
-        // Rewriting the logic see issue #13
         if (!$this->url_controller) {
-
             $page = new HomeController();
             $page->index();
+        } elseif (in_array(ucfirst($this->url_controller), self::CONTROLLERS)) {
 
-        } elseif (file_exists(APP . 'Controller/' . ucfirst($this->url_controller) .
-            self::CONTROLLER . self::PHP_FILE_ENDING)) {
-
-            $controller = "\\Controller\\" . ucfirst($this->url_controller) . self::CONTROLLER;
+            $controller = 'Controller' . BACKSLASH . ucfirst($this->url_controller) . 'Controller';
             $this->url_controller = new $controller();
-
 
             if (method_exists($this->url_controller, $this->url_action)) {
 
@@ -45,13 +46,12 @@ class Application
                 if (strlen($this->url_action) == 0) {
                     $this->url_controller->index();
                 } else {
-                    $error = new ErrorController();
-                    $error->index();
+                    header('location: ' . URL . 'error');
                 }
             }
         } else {
-            $error = new ErrorController();
-            $error->index();
+            header('location: ' . URL . 'error');
+
         }
     }
 

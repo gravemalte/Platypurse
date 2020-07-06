@@ -3,6 +3,8 @@
 namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
+use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\DAOUser;
 use Model\UserModel;
 use Hydro\Helper\Date;
 
@@ -20,13 +22,14 @@ class RegisterController extends BaseController {
 
     public function register(){
         if(!(isset($_POST["user-email"]) || isset($_POST["user-passwd"])
-        || isset($_POST['user-display-name']) || isset($_POST['user-passwd2']))){
+        || isset($_POST['user-display-name']) || isset($_POST['user-passwd2'])
+            || isset($_POST['agb-confirm']))){
             $_SESSION['register-error'] = true;
             header('location:' . URL . 'register');
         }
 
         $userInputDisplayName = $_POST['user-display-name'];
-        $userInputMail =strtolower($_POST['user-email']);
+        $userInputMail = strtolower($_POST['user-email']);
         $userInputPassswd = $_POST['user-passwd'];
         $userInputPassswd2 = $_POST['user-passwd2'];
 
@@ -36,26 +39,36 @@ class RegisterController extends BaseController {
             exit();
         }
 
-        $defaultImagePath = "assets/nav/user-circle-solid.svg";
-        $imageDataArray[COLUMNS_USER['mime']] = "image/" .pathinfo($defaultImagePath)['extension']. '+xml';
-        $imageDataArray[COLUMNS_USER['image']] = base64_encode(file_get_contents($defaultImagePath));
+        if(!isset($_POST['agb-confirm'])){
+            $_SESSION['register-error-agb'] = true;
+            header('location:' . URL . 'register');
+            exit();
+        }
 
-        $user = new UserModel(hexdec(uniqid()),
+        $defaultImagePath = "assets/nav/user-circle-solid.svg";
+        $mime = "image/svg+xml";
+        $image = base64_encode(file_get_contents($defaultImagePath));
+
+        $userModel = new UserModel(hexdec(uniqid()),
             $userInputDisplayName,
             $userInputMail,
             password_hash($userInputPassswd, PASSWORD_DEFAULT),
             2,
             0,
             Date::now(),
-            $imageDataArray,
+            $mime,
+            $image,
             0);
 
-        $check = $user->writeToDatabase();
+        $con = SQLITE::connectToSQLite();
+        $userDao = new DAOUser($con);
+        $check = $userModel->insertIntoDatabase($userDao);
+
         if($check){
-            unset($user);
+            unset($userModel);
             header('location: '. URL . 'login');
         }else{
-            unset($user);
+            unset($userModel);
             $_SESSION['register-error'] = true;
             header('location: '. URL . 'register');
         }

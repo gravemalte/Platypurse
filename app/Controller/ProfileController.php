@@ -6,8 +6,14 @@ namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\DAOOffer;
+use Model\DAO\DAOSavedOffers;
+use Model\DAO\DAOUser;
+use Model\DAO\DAOUserRating;
+use Model\SavedOfferModel;
 use Model\UserModel;
 use Model\OfferModel;
+use Model\UserRatingModel;
 
 class ProfileController extends BaseController
 {
@@ -45,42 +51,59 @@ class ProfileController extends BaseController
       // see index()
     }
 
-    public static function getOffersFromUser() {
+    public static function getOffersByUserId() {
         $id = ProfileController::getDisplayUser()->getId();
-        $whereClause = "WHERE " .COLUMNS_OFFER["u_id"]. " = ? AND "
-            .TABLE_OFFER.".".COLUMNS_OFFER["active"]. " = ?";
-
-
-        return OfferModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause, array($id, 1));
+        return OfferModel::getFromDatabaseByUserId(new DAOOffer(SQLite::connectToSQLite()),$id);
     }
 
-    public static function getSavedOffers() {
-        $whereClause = "LEFT JOIN " .TABLE_SAVED_OFFERS. " on " .TABLE_OFFER. "." .COLUMNS_OFFER['o_id'].
-            " = " .TABLE_SAVED_OFFERS. "." .COLUMNS_SAVED_OFFERS['o_id']. " INNER JOIN " .TABLE_PLATYPUS.
-            " on " .TABLE_OFFER. "." .COLUMNS_OFFER['p_id']. " = " .TABLE_PLATYPUS. "." .COLUMNS_PLATYPUS['p_id'].
-            " WHERE " .TABLE_SAVED_OFFERS. "." .COLUMNS_SAVED_OFFERS['u_id']. " = ?";
-
-
+    public static function getSavedOffersForCurrentUser() {
         $id = ProfileController::getDisplayUser()->getId();
+        return OfferModel::getSavedOffersFromDatabaseByUserId(new DAOOffer(SQLite::connectToSQLite()), $id);
+    }
 
-        return OfferModel::getFromDatabase(SQLite::connectToSQLite(), $whereClause,
-            array($id));
+    public static function getRatingForUserId($userId) {
+        $userRatingDao = new DAOUserRating(SQLite::connectToSQLite());
+        return UserRatingModel::getRatingFromDatabaseForUserId($userRatingDao, $userId);
+    }
+
+    public static function insertRating($fromUserId, $forUserId, $rating) {
+        if(isset($_SESSION["currentUser"])):
+            $dao = new DAOUserRating(SQLite::connectToSQLite());
+
+            $userRating = UserRatingModel::getFromDatabaseByFromUserIdAndForUserId($dao, $fromUserId, $forUserId);
+            if(empty($userRating->getId())):
+                $userRating = new UserRatingModel(hexdec(uniqid()),
+                    $fromUserId, $forUserId, $rating);
+
+                $check = $userRating->insertIntoDatabase($dao);
+            else:
+                $userRating->setRating($rating);
+                $check = $userRating->updateInDatabase($dao);
+            endif;
+
+            if($check):
+                header('location: ' . URL . 'profile?id=' . $forUserId);
+                exit();
+            endif;
+        endif;
+        header('location: ' . URL . 'login');
+        exit();
     }
 
     public static function disableUser() {
-        $user = UserModel::getFromDatabase(SQLite::connectToSQLite(), "WHERE " .COLUMNS_USER['u_id']. " = ?",
-            array($_POST['user']));
+        $dao = new DAOUser(SQLite::connectToSQLite());
+        $user = UserModel::getFromDatabaseById($dao, $_POST['user_id']);
 
-        $user->deactivateInDatabase();
-        header('location: ' . URL . 'profile?id=' .$user->getId());
+        $user->deactivateInDatabase($dao);
+        header('location: ' . URL . 'profile?id=' . $user->getId());
         exit();
     }
 
     public static function enableUser() {
-        $user = UserModel::getFromDatabase(SQLite::connectToSQLite(), "WHERE " .COLUMNS_USER['u_id']. " = ?",
-            array($_POST['user']));
+        $dao = new DAOUser(SQLite::connectToSQLite());
+        $user = UserModel::getFromDatabaseById($dao, $_POST['user_id']);
 
-        $user->activateInDatabase();
+        $user->activateInDatabase($dao);
         header('location: ' . URL . 'profile?id=' .$user->getId());
         exit();
 

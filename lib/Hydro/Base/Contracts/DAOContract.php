@@ -4,8 +4,9 @@ namespace Hydro\Base\Contracts;
 
 interface DAOContract
 {
-    public function create($connection);
-    public static function read($connection, $where, $values);
-    public function update($connection, $values);
-    public function delete($connection, $values);
+    public function create($obj);
+    public function read($id);
+    public function update($obj);
+    public function delete($id);
+    public function readAll();
 }
