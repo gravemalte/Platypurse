@@ -51,7 +51,7 @@ class OfferModel {
         $this->price = htmlspecialchars(strip_tags($price));
         $this->negotiable = $negotiable;
         $this->description = htmlspecialchars(strip_tags($description));
-        $this->$zipcode = htmlspecialchars(strip_tags($zipcode));
+        $this->zipcode = htmlspecialchars(strip_tags($zipcode));
         $this->clicks = $clicks;
         $this->create_date = $create_date;
         $this->edit_date = $edit_date;
