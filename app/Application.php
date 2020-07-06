@@ -15,6 +15,7 @@ class Application
         "Home",
         "Login",
         "Offer",
+        "Create",
         "Profile",
         "Register",
         "Search");
