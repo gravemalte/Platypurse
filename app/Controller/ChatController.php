@@ -104,7 +104,7 @@ class ChatController extends BaseController
     public static function sendMessage() {
         header('Content-Type: application/json');
 
-        if(!(isset($_SESSION['currentUser']))) {
+        if(!(isset($_SESSION['currentUser'])) || ($_POST['csrf'] != $_SESSION['csrf_token'])) {
             http_response_code(401);
             echo json_encode(array());
             return;

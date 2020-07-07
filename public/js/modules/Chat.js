@@ -71,7 +71,10 @@ function buildChat(modules) {
             let messageResponse = await fetch("./chat/getChatHistory");
 
             // send the user to login if not authorized
-            if (messageResponse.status === 401) window.location.href = "./chat";
+            if (messageResponse.status === 401) {
+                window.location.href = "./login";
+                return;
+            }
 
             let responseJson = await messageResponse.json();
             let messages = responseJson.chat;
@@ -264,13 +267,17 @@ function buildChat(modules) {
             let payload = new URLSearchParams();
             payload.set("message", messageText);
             payload.set("to-id", this.currentThreadId);
+            payload.set("csrf", document.getElementById("csrf-token").value);
             let sendMessageResponse = await fetch("./chat/sendMessage", {
                 method: "POST",
                 body: payload
             });
 
             // send the user to login if not authorized
-            if (sendMessageResponse.status === 401) window.location.href = "./chat";
+            if (sendMessageResponse.status === 401) {
+                window.location.href = "./login";
+                return;
+            }
 
             let sendMessage = await sendMessageResponse.json();
             return new ChatMessage(sendMessage);
@@ -290,7 +297,10 @@ function buildChat(modules) {
             let messageResponse = await fetch(url.toString());
 
             // send the user to login if not authorized
-            if (messageResponse.status === 401) window.location.href = "./chat";
+            if (messageResponse.status === 401) {
+                window.location.href = "./login";
+                return;
+            }
 
             let responseJson = await messageResponse.json();
             let messages = responseJson.chat;
