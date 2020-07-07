@@ -42,6 +42,7 @@ class LoginController extends BaseController
         if ($user):
             if (password_verify($userSentPasswd, $user->getPassword())) {
                 $_SESSION['currentUser'] = $user;
+                $_SESSION['csrf_token'] = uniqid('', true);
                 header('location: ' . URL);
                 exit();
             }

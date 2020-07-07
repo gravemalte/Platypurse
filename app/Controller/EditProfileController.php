@@ -47,6 +47,11 @@ class EditProfileController extends BaseController {
         $user = ProfileController::getUser($id);
         $currentUser = $_SESSION['currentUser'];
 
+
+        if($_POST['csrf'] != $_SESSION['csrf_token']){
+            header('location: ' . URL . 'error');
+        }
+
         if (!($currentUser->isAdmin() || $id == $currentUser->getId())) {
             header('location: ' . URL . 'login');
             exit();
