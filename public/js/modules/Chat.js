@@ -69,6 +69,10 @@ function buildChat(modules) {
         async fetchMessages() {
             // fetch all messages
             let messageResponse = await fetch("./chat/getChatHistory");
+
+            // send the user to login if not authorized
+            if (messageResponse.status === 401) window.location.href = "./chat";
+
             let responseJson = await messageResponse.json();
             let messages = responseJson.chat;
             this.lastRequestDate = new Date(responseJson.date);
@@ -224,7 +228,7 @@ function buildChat(modules) {
             });
 
             // update regularly the shown timestamps
-            setInterval(this.updateTimeStamps, 3000, this);
+            setInterval(this.updateTimeStamps, 60000, this);
 
             // finally display chat after all loaded
             this.container.classList.remove("hide");
@@ -265,6 +269,9 @@ function buildChat(modules) {
                 body: payload
             });
 
+            // send the user to login if not authorized
+            if (sendMessageResponse.status === 401) window.location.href = "./chat";
+
             let sendMessage = await sendMessageResponse.json();
             return new ChatMessage(sendMessage);
         }
@@ -281,6 +288,10 @@ function buildChat(modules) {
 
             // fetch new messages
             let messageResponse = await fetch(url.toString());
+
+            // send the user to login if not authorized
+            if (messageResponse.status === 401) window.location.href = "./chat";
+
             let responseJson = await messageResponse.json();
             let messages = responseJson.chat;
             let messageAmount = this.messages.length;
