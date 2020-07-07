@@ -20,6 +20,7 @@ class EditProfileController extends BaseController {
         if (isset($_POST['id']) && !$_SESSION['currentUser']->isAdmin()) {
             header('location: ' . URL . 'editProfile');
         }
+        $_SESSION['csrf_token'] = uniqid('', true);
 
         require APP . 'View/shared/header.php';
         require APP . 'View/edit-profile/header.php';
