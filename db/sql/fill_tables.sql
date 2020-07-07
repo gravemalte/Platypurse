@@ -40,7 +40,7 @@ VALUES
 (2, 4, 2, 9900, 0, "Wärst du so freundlich und kaufst dieses Schnabeltier?", "26180"),
 (3, 4, 3, 9900, 1, "Rietlebanchs sesied fauk!", "01108"),
 (4, 4, 4, 13300, 1, "", "20457"),
-(5, 3, 5, 7950, 0, "Ist ein älteres Tier und hat Erinnerungen hinterlassen.", "90471"),
+(5, 3, 5, 7950, 0, "Ist ein älteres Tier und hat Erinnerungen hinterlassen.", null),
 (6, 2, 6, 150000, 1, "Selbsterklärend.", "26121"),
 (7, 3, 7, 550, 0, "Bisschen vertrottelt, besitzt aber Erfindergeist!", "26169"),
 (8, 2, 8, 11879, 0, "Gutmütiges Vieh. Hat aber gespaltene Persönlichkeiten", "26655"),

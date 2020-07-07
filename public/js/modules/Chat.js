@@ -332,7 +332,7 @@ function buildChat(modules) {
 
             // easy way to update chat threads
             // may update this to be more performant
-            this.setThreads();
+            chat.setThreads();
         }
 
     }
