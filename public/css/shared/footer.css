@@ -71,6 +71,16 @@ footer p {
 }
 
 @media (max-width: 550px) {
+    .footer-link-container {
+        flex-direction: column;
+    }
+    .footer-link-container > * {
+        margin-top: 1em !important;
+    }
+    .footer-link-container > *:first-of-type {
+        margin-top: 0 !important;
+    }
+
     .footer-light-mode-switch-container {
         position: relative;
         align-self: baseline;
