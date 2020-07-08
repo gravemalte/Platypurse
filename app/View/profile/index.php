@@ -18,9 +18,9 @@ if (isset($_SESSION['currentUser'])) {
 
 $userRating = ProfileController::getRatingForUserId($displayUser->getId());
 if(empty($userRating)):
-    $ratingString = "Dude hat noch nichts bewertet bekommen";
+    $ratingString = "Bisher nicht bewertet ...";
 else:
-    $ratingString = "Geiles Rating von $userRating hat der Dude";
+    $ratingString = "Rating: $userRating";
 endif;
 
 $savedOffers = ProfileController::getSavedOffersForCurrentUser();
