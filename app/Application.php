@@ -8,6 +8,7 @@ class Application
     private static $instance = null;
 
     const CONTROLLERS = array(
+        "Contact",
         "Chat",
         "Create",
         "DataPrivacy",

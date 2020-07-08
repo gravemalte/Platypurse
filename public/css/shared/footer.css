@@ -70,7 +70,7 @@ footer p {
     min-height: 1.5em;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
     .footer-link-container {
         flex-direction: column;
     }

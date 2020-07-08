@@ -1,5 +1,6 @@
 <footer>
     <div class="footer-link-container">
+        <a href="./contact">Kontakt</a>
         <a href="./legalNotice">Impressum</a>
         <a href="./dataPrivacy">Datenschutzerklärung</a>
         <a href="./termsOfUse">Nutzungsbedingungen</a>
