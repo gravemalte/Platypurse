@@ -7,6 +7,7 @@ use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\DAOUser;
 use Model\UserModel;
 use Hydro\Helper\Date;
+use PDOException;
 
 
 class RegisterController extends BaseController {
@@ -61,16 +62,25 @@ class RegisterController extends BaseController {
             0);
 
         $con = SQLITE::connectToSQLite();
-        $userDao = new DAOUser($con);
-        $check = $userModel->insertIntoDatabase($userDao);
+        try {
+            $con->beginTransaction();
+            $userDao = new DAOUser($con);
+            $check = $userModel->insertIntoDatabase($userDao);
 
-        if($check){
-            unset($userModel);
-            header('location: '. URL . 'login');
-        }else{
-            unset($userModel);
-            $_SESSION['register-error'] = true;
-            header('location: '. URL . 'register');
+            if($check){
+                $con->commit();
+                unset($userModel);
+                header('location: '. URL . 'login');
+            } else {
+                $con->rollback();
+                unset($userModel);
+                $_SESSION['register-error'] = true;
+                header('location: '. URL . 'register');
+            }
+        } catch (PDOException $e) {
+            // TODO: Error handling
+            // print "error go brr";
+            $con->rollback();
         }
     }
 

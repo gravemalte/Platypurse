@@ -9,7 +9,9 @@ use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Helper\Date;
 use Model\ChatModel;
 use Model\DAO\DAOMessage;
+use Model\DAO\DAOUser;
 use Model\UserModel;
+use PDOException;
 
 class ChatController extends BaseController
 {
@@ -98,8 +100,9 @@ class ChatController extends BaseController
             echo 0;
             return;
         }
-
-        $user = UserModel::getUser($_GET['id']);
+      
+        $user = UserModel::getUser(new DAOUser(SQLite::connectToSQLite()), 
+            $_GET['id']);
 
         if ($user->getUgId() == 3) {
             echo '<em>' . $user->getDisplayName() . '</em>';
@@ -132,30 +135,41 @@ class ChatController extends BaseController
 
         $newMessage = new ChatModel(null, $fromID, $toID, $message, $date);
 
-        $messages = ChatModel::insertIntoDatabase(new DAOMessage(SQLite::connectToSQLite()), $newMessage);
+        $con = SQLite::connectToSQLite();
+        try {
+            $con->beginTransaction();
+            $dao = new DAOMessage($con);
 
-        if ($messages) {
-            http_response_code(500);
-            echo json_encode(array());
-            return;
+            $messages = ChatModel::insertIntoDatabase($dao, $newMessage);
+
+            if ($messages) {
+                http_response_code(500);
+                echo json_encode(array());
+                return;
+            }
+
+            $userID = $_SESSION['currentUser']->getId();
+
+            $messages = ChatModel::getFromDatabase($dao, $userID);
+
+            $result = array();
+
+            foreach($messages as $msg):
+                $result[] = array(
+                    "msg_id" => $msg->getId(),
+                    "sender_id" => $msg->getFrom(),
+                    "receiver_id" => $msg->getTo(),
+                    "message" => $msg->getMessage(),
+                    "send_date" => $msg->getDate()
+                );
+            endforeach;
+
+            $con->commit();
+            echo json_encode(array('chat' => $result, 'date' => Date::now()));
+        } catch (PDOException $e) {
+            // TODO: Error handling
+            // print "error go brr";
+            $con->rollback();
         }
-
-        $userID = $_SESSION['currentUser']->getId();
-
-        $messages = ChatModel::getFromDatabase(new DAOMessage(SQLite::connectToSQLite()), $userID);
-
-        $result = array();
-
-        foreach($messages as $msg):
-            $result[] = array(
-                "msg_id" => $msg->getId(),
-                "sender_id" => $msg->getFrom(),
-                "receiver_id" => $msg->getTo(),
-                "message" => $msg->getMessage(),
-                "send_date" => $msg->getDate()
-            );
-        endforeach;
-
-        echo json_encode(array('chat' => $result, 'date' => Date::now()));
     }
 }

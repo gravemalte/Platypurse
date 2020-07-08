@@ -1,17 +1,16 @@
 <?php
 use Controller\OfferController;
-use Hydro\Helper\Date;
 
 $offer = OfferController::getOffer($_GET['id']);
-$offer->offerClickPlusOne();
+OfferController::offerClickPlusOne($offer);
 $seller = $offer->getUser();
 $zipcode = $offer->getZipcode();
 $zipcoordinates = $offer->getZipCoordinates();
 $location = $zipcoordinates->getName();
 $map_lat = $zipcoordinates->getLat();
 $map_lon = $zipcoordinates->getLon();
-//print_r($seller->getPictureArray());
 $isSaved = false;
+
 if(isset($_SESSION['currentUser'])):
     $isSaved = OfferController::isOfferInSavedList($_GET['id']);
 endif;

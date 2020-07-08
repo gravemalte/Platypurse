@@ -3,10 +3,8 @@
 namespace Model;
 
 use Model\DAO\DAOOfferImages;
-use Model\DAO\DAOOffer;
 use Model\DAO\DAOUser;
 use Model\DAO\DAOPlatypus;
-use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Helper\Date;
 use Model\DAO\DAOZipCoordinates;
 
@@ -128,11 +126,11 @@ class OfferModel {
     /**
      * Set active to 0 and update database
      */
-    public function deactivateInDatabase() {
+    public function deactivateInDatabase($offerDAO) {
         $this->setActive(0);
         $this->setEditDate(Date::now());
         $this->getPlatypus()->setActive(0);
-        $this->updateInDatabase(new DAOOffer(SQLite::connectToSQLite()));
+        $this->updateInDatabase($offerDAO);
     }
 
     public static function getNewestOffers($offerDAO) {
@@ -152,11 +150,11 @@ class OfferModel {
     }
 
     /**
-     *
+     * @param $offerDAO
      */
-    public function offerClickPlusOne() {
+    public function offerClickPlusOne($offerDAO) {
         $this->setClicks($this->getClicks() + 1);
-        $this->updateInDatabase(new DAOOffer(SQLite::connectToSQLite()));
+        $this->updateInDatabase($offerDAO);
     }
 
     private static function getOfferFromRow($row, $offerDAO) {

@@ -2,9 +2,6 @@
 
 namespace Model;
 
-use Hydro\Base\Database\Driver\SQLite;
-use Model\DAO\DAOUser;
-
 class UserModel
 {
     private $id;
@@ -51,12 +48,12 @@ class UserModel
 
     public static function getFromDatabaseByMail($userDAO, $mail){
         $tmp = $userDAO->readByMail($mail);
-        return new UserModel($tmp[0], $tmp[1], $tmp[2], $tmp[3], $tmp[4], $tmp[5], $tmp[6], $tmp[7], $tmp[8], $tmp[9]);;
+        return new UserModel($tmp[0], $tmp[1], $tmp[2], $tmp[3], $tmp[4], $tmp[5], $tmp[6], $tmp[7], $tmp[8], $tmp[9]);
     }
 
     public static function getFromDatabaseById($userDAO, $id){
         $tmp = $userDAO->read($id);
-        return new UserModel($tmp[0], $tmp[1], $tmp[2], $tmp[3], $tmp[4], $tmp[5], $tmp[6], $tmp[7], $tmp[8], $tmp[9]);;
+        return new UserModel($tmp[0], $tmp[1], $tmp[2], $tmp[3], $tmp[4], $tmp[5], $tmp[6], $tmp[7], $tmp[8], $tmp[9]);
     }
 
 
@@ -241,7 +238,7 @@ class UserModel
         $this->disabled = $disabled;
     }
 
-    public static function getUser($id) {
-        return self::getFromDatabaseById(new DAOUser(SQLite::connectToSQLite()), $id);
+    public static function getUser($dao, $id) {
+        return self::getFromDatabaseById($dao, $id);
     }
 }

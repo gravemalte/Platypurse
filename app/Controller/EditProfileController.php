@@ -7,7 +7,7 @@ namespace Controller;
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\DAOUser;
-use Model\UserModel;
+use PDOException;
 
 class EditProfileController extends BaseController {
 
@@ -39,16 +39,10 @@ class EditProfileController extends BaseController {
     }
 
     public static function update() {
-
         if (!isset($_POST['id']) || !isset($_SESSION['currentUser'])) {
             header('location: ' . URL . 'error');
             exit();
         }
-
-        $id = $_POST['id'];
-        $user = ProfileController::getUser($id);
-        $currentUser = $_SESSION['currentUser'];
-
 
         if($_POST['csrf'] != $_SESSION['csrf_token']){
             header('location: ' . URL . 'error');
@@ -59,39 +53,58 @@ class EditProfileController extends BaseController {
             header('location: ' . URL . 'login');
             die();
         }
+      
+        $id = $_POST['id'];
+        $con = SQLite::connectToSQLite();
+        try {
+            $con->beginTransaction();
+            $dao = new DAOUser($con);
 
-        $possibleChanges = array('display-name', 'email', 'password');
-        foreach ($possibleChanges as $possibleChange) {
-            if (isset($_POST[$possibleChange])) {
-                if (!empty($_POST[$possibleChange])) {
-                    switch ($possibleChange) {
-                        case $possibleChanges[0]:
-                            $user->setDisplayName($_POST[$possibleChange]);
-                            break;
-                        case $possibleChanges[1]:
-                            $user->setMail($_POST[$possibleChange]);
-                            break;
-                        case $possibleChanges[2]:
-                            $user->setPassword($_POST[$possibleChange]);
-                            break;
+            $user = ProfileController::getUser($id, $dao);
+            $currentUser = $_SESSION['currentUser'];
+
+            if (!($currentUser->isAdmin() || $id == $currentUser->getId())) {
+                header('location: ' . URL . 'login');
+                exit();
+            }
+
+            $possibleChanges = array('display-name', 'email', 'password');
+            foreach ($possibleChanges as $possibleChange) {
+                if (isset($_POST[$possibleChange])) {
+                    if (!empty($_POST[$possibleChange])) {
+                        switch ($possibleChange) {
+                            case $possibleChanges[0]:
+                                $user->setDisplayName($_POST[$possibleChange]);
+                                break;
+                            case $possibleChanges[1]:
+                                $user->setMail($_POST[$possibleChange]);
+                                break;
+                            case $possibleChanges[2]:
+                                $user->setPassword($_POST[$possibleChange]);
+                                break;
+                        }
                     }
                 }
             }
+
+            if(file_exists($_FILES['image']['tmp_name'])):
+                $user->setMime($_FILES['image']['type']);
+                $user->setImage(base64_encode(file_get_contents($_FILES['image']['tmp_name'])));
+            endif;
+
+            $user->updateInDatabase($dao);
+
+            if ($currentUser->getId() == $id) {
+                $_SESSION['currentUser'] = $user;
+            }
+            $con->commit();
+            header('location: ' . URL . 'profile/edit?id=' . $id);
+        } catch (PDOException $e) {
+            // TODO: Error handling
+            // print "error go brr";
+            $con->rollback();
+            header('location: ' . URL . 'error');
         }
-
-        if(file_exists($_FILES['image']['tmp_name'])):
-            $user->setMime($_FILES['image']['type']);
-            $user->setImage(base64_encode(file_get_contents($_FILES['image']['tmp_name'])));
-        endif;
-
-        $dao = new DAOUser(SQLite::connectToSQLite());
-        $user->updateInDatabase($dao);
-
-        if ($currentUser->getId() == $id) {
-            $_SESSION['currentUser'] = $user;
-        }
-
-        header('location: ' . URL . 'profile/edit?id=' . $id);
     }
 
 }
