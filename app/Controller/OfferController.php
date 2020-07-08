@@ -143,7 +143,10 @@ class OfferController extends BaseController
             $con->beginTransaction();
             $dao = new DAOOffer($con);
             $offer = $this->getOffer($_POST['offerId'], $dao);
-            $offer->deactivateInDatabase($dao);
+            $check = $offer->deactivateInDatabase($dao);
+            if($check):
+                $con->commit();
+            endif;
         } catch (PDOException $e) {
             // TODO: Error handling
             // print "error go brr";

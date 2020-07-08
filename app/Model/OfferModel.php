@@ -126,12 +126,14 @@ class OfferModel {
 
     /**
      * Set active to 0 and update database
+     * @param $offerDAO
+     * @return bool
      */
     public function deactivateInDatabase($offerDAO) {
         $this->setActive(0);
         $this->setEditDate(Date::now());
         $this->getPlatypus()->setActive(0);
-        $this->updateInDatabase($offerDAO);
+        return $this->updateInDatabase($offerDAO);
     }
 
     public static function getNewestOffers($offerDAO) {
