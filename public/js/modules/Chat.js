@@ -291,7 +291,12 @@ function buildChat(modules) {
         async fetchNewMessages() {
             let requestDate = getDatabaseString(this.lastRequestDate, true);
             let url = new URL("./chat/getNewMessages", window.location.toString());
-            url.searchParams.set("latest-id", this.messages[this.messages.length - 1].id);
+            if (this.messages.length === 0) {
+                url.searchParams.set("latest-id", 0);
+            }
+            else {
+                url.searchParams.set("latest-id", this.messages[this.messages.length - 1].id);
+            }
 
             // fetch new messages
             let messageResponse = await fetch(url.toString());
@@ -314,7 +319,10 @@ function buildChat(modules) {
 
                 // check if message is new
                 let chatMessage = new ChatMessage(message);
-                if (parseInt(chatMessage.id) > parseInt(this.messages[this.messages.length - 1].id)) {
+                if (this.messages.length === 0) {
+                    this.messages.push(chatMessage);
+                }
+                else if (parseInt(chatMessage.id) > parseInt(this.messages[this.messages.length - 1].id)) {
                     this.messages.push(chatMessage);
                 }
 
