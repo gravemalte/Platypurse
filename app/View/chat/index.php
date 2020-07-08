@@ -75,6 +75,7 @@ if(isset($_GET['id'])){
             </div>
             <div class="chat-send-container">
                 <form action="chat" id="chat-input-form">
+                    <input type="hidden" id="csrf-token" value="<?= $_SESSION['csrf_token'] ?>">
                     <div class="chat-input-container">
                         <label for="chat-input">
                             <input type="text" placeholder="Nachricht senden..." id="chat-input" title="Nachricht senden">

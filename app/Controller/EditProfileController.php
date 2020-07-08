@@ -21,6 +21,8 @@ class EditProfileController extends BaseController {
             header('location: ' . URL . 'editProfile');
         }
 
+        $_SESSION['csrf_token'] = uniqid();
+
         require APP . 'View/shared/header.php';
         require APP . 'View/edit-profile/header.php';
         require APP . 'View/shared/nav.php';
@@ -47,9 +49,15 @@ class EditProfileController extends BaseController {
         $user = ProfileController::getUser($id);
         $currentUser = $_SESSION['currentUser'];
 
+
+        if($_POST['csrf'] != $_SESSION['csrf_token']){
+            header('location: ' . URL . 'error');
+            die();
+        }
+
         if (!($currentUser->isAdmin() || $id == $currentUser->getId())) {
             header('location: ' . URL . 'login');
-            exit();
+            die();
         }
 
         $possibleChanges = array('display-name', 'email', 'password');

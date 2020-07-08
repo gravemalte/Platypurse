@@ -7,9 +7,7 @@ use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\DAOOffer;
 use Model\DAO\DAOSavedOffers;
 use Model\OfferModel;
-use Model\PlatypusModel;
 use Model\SavedOfferModel;
-use Model\UserModel;
 
 class OfferController extends BaseController
 {

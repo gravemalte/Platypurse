@@ -66,7 +66,8 @@ $show_error = false;
 
                 <div class="form-misc-container">
                     <div class="form-agb-confirm-container">
-                        <label for="agb-confirm">ABG akzeptieren</label>
+
+                        <label for="agb-confirm"><a href="./termsOfUse">Nutzungsbedingungen</a> akzeptieren</label>
                         <input type="checkbox" id="agb-confirm" name="agb-confirm">
                         <label for="agb-confirm" class="fas fa-square no-js-hide"></label>
                         <label for="agb-confirm" class="fas fa-check-square no-js-hide"></label>

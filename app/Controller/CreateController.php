@@ -17,6 +17,8 @@ class CreateController extends BaseController
         if(!(isset($_SESSION['currentUser']))){
             header('location: ' .URL . 'login');
         }
+        $_SESSION['csrf_token'] = uniqid();
+
         // load views
         require APP . 'View/shared/header.php';
         require APP . 'View/create/header.php';
@@ -34,6 +36,11 @@ class CreateController extends BaseController
     }
 
     public function processInput() {
+
+        if($_POST['csrf'] != $_SESSION['csrf_token']){
+            header('location: ' . URL . 'error');
+        }
+
         $dao = new DAOOffer(SQLite::connectToSQLite());
         $newOfferId = hexdec(uniqid());
         $isUpdate = isset($_POST["offerId"]);
@@ -73,7 +80,7 @@ class CreateController extends BaseController
             $this->processInputPrice($_POST["price"]),
             0,
             $_POST['description'],
-            "26129", //TODO: Insert zipcode when available
+            $_POST['zipcode'],
             0,
             Date::now(),
             null,
