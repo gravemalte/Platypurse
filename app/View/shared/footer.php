@@ -1,7 +1,9 @@
 <footer>
     <div class="footer-link-container">
-        <a href="">Impressum</a>
-        <a href="">Kontakt</a>
+        <a href="./contact">Kontakt</a>
+        <a href="./legalNotice">Impressum</a>
+        <a href="./dataPrivacy">Datenschutzerklärung</a>
+        <a href="./termsOfUse">Nutzungsbedingungen</a>
         <a href="https://uol.de/" target="_blank">Universität<br>Oldenburg</a>
     </div>
     <div class="footer-copyright-container">

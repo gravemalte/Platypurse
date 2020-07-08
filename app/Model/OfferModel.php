@@ -6,6 +6,7 @@ use Model\DAO\DAOOfferImages;
 use Model\DAO\DAOUser;
 use Model\DAO\DAOPlatypus;
 use Hydro\Helper\Date;
+use Model\DAO\DAOZipCoordinates;
 
 class OfferModel {
     private $id;
@@ -299,6 +300,14 @@ class OfferModel {
     public function setZipcode($zipcode)
     {
         $this->zipcode = $zipcode;
+    }
+
+    /**
+     * @return ZipCoordinatesModel
+     */
+    public function getZipCoordinates() {
+        $dao = new DAOZipCoordinates(SQLite::connectToSQLite());
+        return ZipCoordinatesModel::getFromDatabaseByZipcode($dao, $this->zipcode);
     }
 
     /**

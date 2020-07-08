@@ -21,6 +21,8 @@ class EditProfileController extends BaseController {
             header('location: ' . URL . 'editProfile');
         }
 
+        $_SESSION['csrf_token'] = uniqid();
+
         require APP . 'View/shared/header.php';
         require APP . 'View/edit-profile/header.php';
         require APP . 'View/shared/nav.php';
@@ -42,12 +44,21 @@ class EditProfileController extends BaseController {
             exit();
         }
 
+        if($_POST['csrf'] != $_SESSION['csrf_token']){
+            header('location: ' . URL . 'error');
+            die();
+        }
+
+        if (!($currentUser->isAdmin() || $id == $currentUser->getId())) {
+            header('location: ' . URL . 'login');
+            die();
+        }
+      
         $id = $_POST['id'];
         $con = SQLite::connectToSQLite();
         try {
             $con->beginTransaction();
             $dao = new DAOUser($con);
-
 
             $user = ProfileController::getUser($id, $dao);
             $currentUser = $_SESSION['currentUser'];

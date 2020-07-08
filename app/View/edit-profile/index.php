@@ -48,6 +48,7 @@ $user = EditProfileController::getUser();
                                 placeholder="Passwort"
                         >
                     </div>
+                    <input type="hidden" name="csrf" value="<?php echo $_SESSION['csrf_token']?>">
                 </div>
                 <div class="submit-container">
                     <button type="submit" title="Profil anpassen">

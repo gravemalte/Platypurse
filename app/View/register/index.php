@@ -64,10 +64,15 @@ $show_error = false;
                     <input type="password" id="user-passwd-2" name="user-passwd2" placeholder="Passwort wiederholen" required>
                 </div>
 
-                <!-- TODO: VERSCHÖNERN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
-                <input type="checkbox" name="agb-confirm">AGB Akzeptieren
+                <div class="form-misc-container">
+                    <div class="form-agb-confirm-container">
 
-
+                        <label for="agb-confirm"><a href="./termsOfUse">Nutzungsbedingungen</a> akzeptieren</label>
+                        <input type="checkbox" id="agb-confirm" name="agb-confirm">
+                        <label for="agb-confirm" class="fas fa-square no-js-hide"></label>
+                        <label for="agb-confirm" class="fas fa-check-square no-js-hide"></label>
+                    </div>
+                </div>
                 <div class="form-submit-container">
                     <label for="submit" hidden>Registrieren</label>
                     <button id="submit" type="submit">

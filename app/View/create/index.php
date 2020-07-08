@@ -18,6 +18,7 @@ $showSex = "";
 $showAge = "";
 $showSize = "";
 $showWeight = "";
+$showZipcode = "";
 if ($showUpdateData) {
     $showName = $offer->getPlatypus()->getName();
     $showPrice = $offer->getPrice(false);
@@ -26,6 +27,7 @@ if ($showUpdateData) {
     $showAge = $offer->getPlatypus()->getAgeYears();
     $showSize = $offer->getPlatypus()->getSize();
     $showWeight = $offer->getPlatypus()->getWeight();
+    $showZipcode = $offer->getZipcode();
 }
 ?>
 
@@ -174,9 +176,26 @@ if ($showUpdateData) {
                                 >
                                 <p>g</p>
                             </div>
+                            <div class="attribute-item dropdown-item">
+                                <div class="attribute-item-header dropdown-item-header">
+                                    <p>Standort (Postleitzahl)</p>
+                                </div>
+                                <div class="attribute-item-select dropdown-item-select">
+                                    <label for="zipcode" hidden>Postleitzahl</label>
+                                    <input
+                                            type="text"
+                                            id="zipcode"
+                                            name="zipcode"
+                                            pattern="^([0]{1}[1-9]{1}|[1-9]{1}[0-9]{1})[0-9]{3}$"
+                                            value="<?= $showZipcode ?>"
+                                    >
+                                    <p></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="buttons-container">
+                        <input type="hidden" name="csrf" value="<?= $_SESSION['csrf_token'] ?>">
                         <button type="submit" hidden id="create-submit"></button>
                         <label for="create-submit" class="fas fa-clipboard-check"
                                title="Angebot erstellen"
@@ -270,6 +289,16 @@ if ($showUpdateData) {
                         <span data-confirm-new></span>
                         <?php if ($showUpdateData): ?>
                         (<?= $showWeight ?>)
+                        <?php endif; ?>
+                    </p>
+                    <p
+                            data-confirm-diff="zipcode"
+                            data-confirm-og-value="<?= $showZipcode ?>"
+                    >
+                        <strong>Neuer Standort:</strong>
+                        <span data-confirm-new></span>
+                        <?php if ($showUpdateData): ?>
+                            (<?= $showZipcode ?>)
                         <?php endif; ?>
                     </p>
                 </div>

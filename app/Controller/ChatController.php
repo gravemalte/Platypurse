@@ -19,6 +19,7 @@ class ChatController extends BaseController
         if(!(isset($_SESSION['currentUser']))){
             header('location: ' .URL . 'login');
         }
+        $_SESSION['csrf_token'] = uniqid();
 
         require APP . 'View/shared/header.php';
         require APP . 'View/chat/header.php';
@@ -99,15 +100,22 @@ class ChatController extends BaseController
             echo 0;
             return;
         }
+      
+        $user = UserModel::getUser(new DAOUser(SQLite::connectToSQLite()), 
+            $_GET['id']);
 
-        echo UserModel::getUser(new DAOUser(SQLite::connectToSQLite()),
-            $_GET['id'])->getDisplayName();
+        if ($user->getUgId() == 3) {
+            echo '<em>' . $user->getDisplayName() . '</em>';
+            return;
+        }
+
+        echo $user->getDisplayName();
     }
 
     public static function sendMessage() {
         header('Content-Type: application/json');
 
-        if(!(isset($_SESSION['currentUser']))) {
+        if(!(isset($_SESSION['currentUser'])) || ($_POST['csrf'] != $_SESSION['csrf_token'])) {
             http_response_code(401);
             echo json_encode(array());
             return;

@@ -4,7 +4,13 @@ use Controller\OfferController;
 $offer = OfferController::getOffer($_GET['id']);
 OfferController::offerClickPlusOne($offer);
 $seller = $offer->getUser();
+$zipcode = $offer->getZipcode();
+$zipcoordinates = $offer->getZipCoordinates();
+$location = $zipcoordinates->getName();
+$map_lat = $zipcoordinates->getLat();
+$map_lon = $zipcoordinates->getLon();
 $isSaved = false;
+
 if(isset($_SESSION['currentUser'])):
     $isSaved = OfferController::isOfferInSavedList($_GET['id']);
 endif;
@@ -116,6 +122,18 @@ endif;
                 </div>
             </div>
         </div>
+        <?php if (!(is_null($zipcode) || $zipcode === "")): ?>
+        <div class="map-container card no-js-hide">
+            <input type="hidden" id="map-lat" value="<?= $map_lat ?>">
+            <input type="hidden" id="map-lon" value="<?= $map_lon ?>">
+            <div class="map-text-container">
+                <h3>Standort:</h3>
+                <p><?= $zipcode ?></p>
+                <p><?= $location ?></p>
+            </div>
+            <div id="map"></div>
+        </div>
+        <?php endif; ?>
     </div>
     <div class="confirm-changes-container-background" id="confirm-changes-container" hidden>
         <div>
