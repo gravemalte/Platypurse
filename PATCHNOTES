@@ -1,5 +1,33 @@
 **************************
-V1.1
+           V1.2
+**************************
+INFORMATIONEN:
+Admin-Daten:
+
+Email: admin@platypurse.com
+Passwort: 123
+
+Neuheiten:
+ * Rechtliches dazu zählen, AGB, Datenschutzerklärung, Impressum und Kontaktseite
+ * Standort des Angebots ist nun implementiert
+ * CRSF und XSS protection
+ * Ein neues DAO-Pattern
+ * Lightmode wurde verbessert (dynamisch)
+ * Drag & Drop von Bilder ist jetzt verfügbar
+ * Ein extra Support User (erreichbar über die Kontaktseite)
+ * Der Chat funktioniert nun richtig
+
+
+* Bugfixes:
+ * Der Firefox-Bug wurde gefixt
+ * Diverse Chat fixes
+ * Diverse Datenbank änderungen
+
+
+===============================================================================================
+
+**************************
+           V1.1
 **************************
 INFORMATIONEN:
 Admin-Daten:
@@ -15,4 +43,4 @@ Neuheiten:
     * Zum testen Benutzer anschreiben über ein Angebot oder /chat in die URL schreiben
 * Ein Lightmode ist nun verfügbar
 * docs folder ist nun vorhanden
-
+===============================================================================================
