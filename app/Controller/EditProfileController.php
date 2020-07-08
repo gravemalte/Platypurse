@@ -56,7 +56,6 @@ class EditProfileController extends BaseController {
             header('location: ' . URL . 'login');
             die();
         }
-      
 
         $con = SQLite::connectToSQLite();
         try {
