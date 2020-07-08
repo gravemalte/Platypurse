@@ -7,6 +7,7 @@ use Model\DAO\DAOUser;
 use Model\DAO\DAOPlatypus;
 use Hydro\Helper\Date;
 use Model\DAO\DAOZipCoordinates;
+use Hydro\Base\Database\Driver\SQLite;
 
 class OfferModel {
     private $id;
