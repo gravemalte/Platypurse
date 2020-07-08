@@ -1,5 +1,5 @@
 <main class="main-page">
-    <div class="main-area card" style="padding: 1em;">
+    <div class="main-area card" style="padding: 1em; word-break: break-word">
         <h2 class="code-line" data-line-start=0 data-line-end=1 ><a id="1_Leistungsbeschreibung_und_Bewerbung_der_Angebote_0"></a>1 Leistungsbeschreibung und Bewerbung der Angebote</h2>
         <ol>
             <li class="has-line-data" data-line-start="1" data-line-end="2">Platypurse stellt mit den Platypurse-Diensten einen Online-Service zur Verfügung, über den der Nutzer als Inserent aus Texten und Bildern bestehende Angebote und Gesuche (im Folgenden „Angebote“) erstellen und veröffentlichen sowie als Interessent veröffentlichte Angebote anderer Nutzer einsehen kann. Darüber hinaus ermöglichen die Platypurse-Dienste auch den Austausch elektronischer Nachrichten zwischen Inserenten und Interessenten. Soweit dies zur Konvertierung in für die Platypurse-Dienste taugliche Dateiformate erforderlich ist, wird Platypurse die Angebote des Nutzers in Formate für die Nutzung in mobilen Anwendungen und Webseiten konvertieren.</li>

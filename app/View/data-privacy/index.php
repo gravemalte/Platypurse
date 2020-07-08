@@ -1,5 +1,5 @@
 <main class="main-page">
-    <div class="main-area card" style="padding: 1em;">
+    <div class="main-area card" style="padding: 1em; word-break: break-word"">
         <h1>Datenschutzerklärung</h1>
         <h2>Einleitung</h2>
         <p>Mit der folgenden Datenschutzerklärung möchten wir Sie darüber aufklären, welche Arten Ihrer personenbezogenen Daten (nachfolgend auch kurz als "Daten“ bezeichnet) wir zu welchen Zwecken und in welchem Umfang im Rahmen der Bereitstellung unserer Applikation verarbeiten.</p>
