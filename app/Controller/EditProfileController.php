@@ -49,19 +49,21 @@ class EditProfileController extends BaseController {
             die();
         }
 
+        $id = $_POST['id'];
+        $currentUser = $_SESSION['currentUser'];
+
         if (!($currentUser->isAdmin() || $id == $currentUser->getId())) {
             header('location: ' . URL . 'login');
             die();
         }
       
-        $id = $_POST['id'];
+
         $con = SQLite::connectToSQLite();
         try {
             $con->beginTransaction();
             $dao = new DAOUser($con);
 
             $user = ProfileController::getUser($id, $dao);
-            $currentUser = $_SESSION['currentUser'];
 
             if (!($currentUser->isAdmin() || $id == $currentUser->getId())) {
                 header('location: ' . URL . 'login');
