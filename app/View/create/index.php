@@ -177,6 +177,7 @@ if ($showUpdateData) {
                         </div>
                     </div>
                     <div class="buttons-container">
+                        <input type="hidden" name="csrf" value="<?= $_SESSION['csrf_token'] ?>">
                         <button type="submit" hidden id="create-submit"></button>
                         <label for="create-submit" class="fas fa-clipboard-check"
                                title="Angebot erstellen"

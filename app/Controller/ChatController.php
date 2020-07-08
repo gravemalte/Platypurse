@@ -17,7 +17,7 @@ class ChatController extends BaseController
         if(!(isset($_SESSION['currentUser']))){
             header('location: ' .URL . 'login');
         }
-        $_SESSION['csrf_token'] = uniqid('', true);
+        $_SESSION['csrf_token'] = uniqid();
 
         require APP . 'View/shared/header.php';
         require APP . 'View/chat/header.php';
