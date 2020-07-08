@@ -34,7 +34,13 @@ use Hydro\Helper\ColorCollector;
     <!-- used https://www.favicon-generator.org/ for that -->
 
     <!-- CSS linking here -->
-    <link rel="stylesheet" href="<?= ColorCollector::serveColorSchemes("shared/raw-colors.css", "dark") ?>">
+    <link
+            rel="stylesheet"
+            href="<?=
+                CacheBuster::serve(
+                        ColorCollector::serveColorSchemes("shared/raw-colors.css", "dark")
+                )
+            ?>">
     <?= CacheBuster::embedCSSImports('css/shared.css') ?>
 
     <!-- Link JS in the footer template-->

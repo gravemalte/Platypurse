@@ -3,7 +3,7 @@ use Hydro\Helper\CacheBuster;
 ?>
 
     <!-- elements per page -->
-    <link rel="stylesheet" href="<?= CacheBuster::serve("css/register.css") ?>">
+    <?= CacheBuster::embedCSSImports('css/register.css') ?>
     <script src="<?= CacheBuster::serve("js/toggle-password.js") ?>"></script>
 
 </head>

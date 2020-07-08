@@ -88,35 +88,43 @@ form > div > input[type=password] {
     justify-content: space-between;
 }
 
+.form-agb-confirm-container,
 .form-remember-me-container {
     font-size: 1.2em;
     user-select: none;
     display: flex;
     align-items: center;
 }
+.form-agb-confirm-container > *,
 .form-remember-me-container > * {
     margin: 0.2em;
 }
+.form-agb-confirm-container label,
 .form-remember-me-container label {
     cursor: pointer;
 }
+.form-agb-confirm-container input,
 .form-remember-me-container input {
     display: none;
 }
+.form-agb-confirm-container .fa-check-square,
 .form-remember-me-container .fa-check-square {
     display: none;
     font-size: 1.5em;
     color: var(--page-input-bg-color);
     filter: invert(1);
 }
+.form-agb-confirm-container input[type=checkbox]:checked ~ label.fa-check-square,
 .form-remember-me-container input[type=checkbox]:checked ~ label.fa-check-square {
     display: initial;
 }
+.form-agb-confirm-container .fa-square,
 .form-remember-me-container .fa-square {
     display: initial;
     font-size: 1.5em;
     color: var(--page-input-bg-color);
 }
+.form-agb-confirm-container input[type=checkbox]:checked ~ label.fa-square,
 .form-remember-me-container input[type=checkbox]:checked ~ label.fa-square {
     display: none;
 }

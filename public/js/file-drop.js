@@ -50,13 +50,25 @@
             // apply dropped files to input
             input.files = event.dataTransfer.files;
 
-            // display dropped file names for feedback
-            for (let file of event.dataTransfer.files) {
-                if (file.type.startsWith("image")) {
-                    show.innerText += "\n" + file.name;
-                }
-            }
+            input.dispatchEvent(new Event("change"));
         }
         return drop;
     }
+
+    window.addEventListener("DOMContentLoaded", event => {
+        for (let element of document.getElementsByTagName("INPUT")) {
+            if (element.type !== "file") continue;
+            let show = element.parentElement.getElementsByClassName("drop-files-show")[0];
+            element.addEventListener("change", event => {
+                show.innerText = "";
+
+                // display dropped file names for feedback
+                for (let file of element.files) {
+                    if (file.type.startsWith("image")) {
+                        show.innerText += "\n" + file.name;
+                    }
+                }
+            });
+        }
+    });
 })();
