@@ -79,6 +79,7 @@ class OfferController extends BaseController
         $con = SQLite::connectToSQLite();
 
         try {
+            $con->beginTransaction();
             $dao = new DAOSavedOffers(SQLite::connectToSQLite());
 
             $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, true);
