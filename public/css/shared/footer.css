@@ -70,7 +70,7 @@ footer p {
     min-height: 1.5em;
 }
 
-@media (max-width: 550px) {
+@media (max-width: 600px) {
     .footer-link-container {
         flex-direction: column;
     }
@@ -80,7 +80,9 @@ footer p {
     .footer-link-container > *:first-of-type {
         margin-top: 0 !important;
     }
+}
 
+@media (max-width: 550px) {
     .footer-light-mode-switch-container {
         position: relative;
         align-self: baseline;

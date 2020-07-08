@@ -19,7 +19,8 @@ class Application
         "Offer",
         "Profile",
         "Register",
-        "Search");
+        "Search",
+        "TermsOfUse");
 
     private $url_controller = null;
     private $url_action = null;
