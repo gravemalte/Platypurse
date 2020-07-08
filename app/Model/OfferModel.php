@@ -250,6 +250,10 @@ class OfferModel {
      */
     public function getShortPrice()
     {
+        if (!$this->isActive()) {
+            return "Nicht verfügbar";
+        }
+
         $price = $this->getPrice(true);
         if (substr($price, -2) == "00") {
             return substr($price, 0, strlen($price) - 3);

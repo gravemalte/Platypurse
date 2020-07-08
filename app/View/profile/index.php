@@ -98,7 +98,10 @@ $offersByUser = ProfileController::getOffersByUserId();
             <p class="title">Deine Merkliste</p>
             <div class="offer-list-container">
                 <?php foreach($savedOffers as $offer): ?>
-                <a class="offer-list-link" href="offer?id=<?= $offer->getId();?>">
+                <a
+                        class="offer-list-link <?php if(!$offer->isActive()) echo "offer-sold" ?>"
+                        href="offer?id=<?= $offer->getId();?>"
+                >
                     <div class="offer-list-item card">
                         <img src="<?= $offer->getImageOnPosition(0); ?>" alt="">
                         <p class="name"><?= $offer->getPlatypus()->getName();?></p>
@@ -119,7 +122,10 @@ $offersByUser = ProfileController::getOffersByUserId();
             </p>
             <div class="offer-list-container">
                 <?php foreach($offersByUser as $offer): ?>
-                <a class="offer-list-link" href="offer?id=<?= $offer->getId();?>">
+                <a
+                        class="offer-list-link <?php if(!$offer->isActive()) echo "offer-sold" ?>"
+                        href="offer?id=<?= $offer->getId();?>"
+                >
                     <div class="offer-list-item card">
                         <img src="<?= $offer->getImageOnPosition(0); ?>" alt="">
                         <p class="name"><?= $offer->getPlatypus()->getName();?></p>

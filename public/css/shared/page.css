@@ -108,6 +108,16 @@ select {
     margin: 0 1em;
 }
 
+.offer-sold {
+    filter: grayscale(1);
+}
+.offer-sold .price-tag::after {
+    content: none !important;
+}
+.offer-sold .price-tag *::after {
+    content: none !important;
+}
+
 @media (min-width: 1921px) {
     .main-area {
         max-width: calc(100vw / 2);
