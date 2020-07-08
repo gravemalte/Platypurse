@@ -19,7 +19,8 @@ a,
 input,
 textarea,
 select,
-label {
+label,
+li {
     font-family: sans-serif;
     color: var(--page-text-color);
 }

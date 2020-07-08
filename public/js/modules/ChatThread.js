@@ -82,7 +82,7 @@ function buildChatThread(modules) {
 
             let displayName =
                 document.createElement("H1");
-            displayName.innerText = this.recipientName;
+            displayName.innerHTML = this.recipientName;
 
             let lastMessage =
                 document.createElement("P");

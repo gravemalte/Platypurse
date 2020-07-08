@@ -99,7 +99,14 @@ class ChatController extends BaseController
             return;
         }
 
-        echo UserModel::getUser($_GET['id'])->getDisplayName();
+        $user = UserModel::getUser($_GET['id']);
+
+        if ($user->getUgId() == 3) {
+            echo '<em>' . $user->getDisplayName() . '</em>';
+            return;
+        }
+
+        echo $user->getDisplayName();
     }
 
     public static function sendMessage() {

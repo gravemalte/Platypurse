@@ -8,16 +8,20 @@ class Application
     private static $instance = null;
 
     const CONTROLLERS = array(
+        "Contact",
         "Chat",
         "Create",
+        "DataPrivacy",
         "EditProfile",
         "Error",
         "Home",
         "Login",
+        "LegalNotice",
         "Offer",
         "Profile",
         "Register",
-        "Search");
+        "Search",
+        "TermsOfUse");
 
     private $url_controller = null;
     private $url_action = null;
