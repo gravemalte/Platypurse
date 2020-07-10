@@ -2,7 +2,7 @@
 
 use Controller\SearchController;
 
-$searchText = $_GET['search'];
+$searchText = htmlspecialchars(strip_tags($_GET['search']));
 $sex = "";
 $sexMaleSelected = "";
 $sexFemaleSelected = "";

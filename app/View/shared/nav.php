@@ -16,7 +16,7 @@
                 <?php
                 $searchText = "";
                 if(isset($_GET['search'])):
-                    $searchText = "value = '".$_GET['search']."'";
+                    $searchText = "value = '".htmlspecialchars(strip_tags($_GET['search']))."'";
                 endif;?>
                 <input type="text" id="search" <?= $searchText ?> name="search" placeholder="Suche...">
                 <label for="submit-search" hidden>Suche starten</label>
