@@ -13,7 +13,6 @@ class DAOMessage implements DAOContract
         $this->con = $con;
     }
 
-
     public function create($obj)
     {
         $query = "INSERT INTO message(msg_id, sender_id, receiver_id, message, send_date) VALUES (:msgId, :senderId, :receiverId, :message, :sendDate)";
