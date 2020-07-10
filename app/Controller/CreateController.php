@@ -33,6 +33,7 @@ class CreateController extends BaseController
 
         if($_POST['csrf'] != $_SESSION['csrf_token']){
             header('location: ' . URL . 'error');
+            exit();
         }
 
         $dao = new DAOOffer(SQLite::connectToSQLite());
