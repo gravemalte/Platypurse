@@ -1,14 +1,8 @@
 <?php
-
-
 namespace Model\DAO;
-use http\Client\Curl\User;
-use PDO;
+
 use PDOException;
-
-use Model\UserModel;
 use Hydro\Base\Contracts\DAOContract;
-
 
 class DAOUserRating implements DAOContract
 {

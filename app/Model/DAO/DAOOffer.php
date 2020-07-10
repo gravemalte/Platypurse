@@ -1,13 +1,8 @@
 <?php
-
-
 namespace Model\DAO;
-use PDO;
+
 use PDOException;
-
-use Model\OfferModel;
 use Hydro\Base\Contracts\DAOContract;
-
 
 class DAOOffer implements DAOContract
 {

@@ -1,11 +1,8 @@
 <?php
-
-
 namespace Model\DAO;
+
 use PDOException;
-
 use Hydro\Base\Contracts\DAOContract;
-
 
 class DAOZipCoordinates implements DAOContract
 {

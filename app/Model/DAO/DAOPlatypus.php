@@ -1,12 +1,7 @@
 <?php
-
-
 namespace Model\DAO;
-use http\Client\Curl\platypus;
-use PDO;
-use PDOException;
 
-use Model\platypusModel;
+use PDOException;
 use Hydro\Base\Contracts\DAOContract;
 
 
