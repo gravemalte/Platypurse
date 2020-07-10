@@ -1,3 +1,12 @@
+CREATE TABLE zip_coordinates (
+  zc_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  loc_id INTEGER,
+  zipcode TEXT,
+  name TEXT,
+  lat REAL,
+  lon REAL
+);
+
 CREATE TABLE user_group (
   ug_id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL
@@ -59,7 +68,10 @@ CREATE TABLE offer (
     REFERENCES platypus(p_id),
   CONSTRAINT fk_user
     FOREIGN KEY (u_id)
-    REFERENCES user(u_id)
+    REFERENCES user(u_id),
+  CONSTRAINT fk_zipcode
+    FOREIGN KEY (zipcode)
+    REFERENCES zip_coordinates(zipcode)
 );
 
 CREATE TABLE offer_images (
@@ -142,16 +154,4 @@ CREATE TABLE offer_reports (
 CREATE TABLE log (
   l_id INTEGER PRIMARY KEY AUTOINCREMENT,
   message text
-);
-
-CREATE TABLE zip_coordinates (
-  zc_id INTEGER PRIMARY KEY AUTOINCREMENT,
-  loc_id INTEGER,
-  zipcode TEXT,
-  name TEXT,
-  lat REAL,
-  lon REAL,
-  CONSTRAINT fk_offer
-    FOREIGN KEY (zipcode)
-    REFERENCES offer(zipcode)
 );
