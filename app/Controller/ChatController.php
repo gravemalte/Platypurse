@@ -118,7 +118,7 @@ class ChatController extends BaseController
         if(!(isset($_SESSION['currentUser'])) || ($_POST['csrf'] != $_SESSION['csrf_token'])) {
             http_response_code(401);
             echo json_encode(array());
-            return;
+            exit();
         }
 
         if (!(isset($_POST['message']) && isset($_POST['to-id']))) {
