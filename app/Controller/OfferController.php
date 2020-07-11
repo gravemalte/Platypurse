@@ -45,7 +45,7 @@ class OfferController extends BaseController
                 $dao = new SavedOffersDAO($con);
 
                 $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, false);
-                if(empty($savedOffer->getId())):
+                if(!$savedOffer || empty($savedOffer->getId())):
                     $savedOffer = new SavedOfferModel(hexdec(uniqid()),
                         $userId, $offerId, 1);
 
@@ -107,7 +107,7 @@ class OfferController extends BaseController
 
         $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, true);
 
-        if(empty($savedOffer->getId())):
+        if(!$savedOffer || empty($savedOffer->getId())):
             return false;
         else:
             return true;
