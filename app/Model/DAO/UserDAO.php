@@ -1,10 +1,10 @@
 <?php
 namespace Model\DAO;
 
+use Hydro\Base\Contracts\UserDAOInterface;
 use PDOException;
-use Hydro\Base\Contracts\DAOContract;
 
-class DAOUser implements DAOContract
+class UserDAO implements UserDAOInterface
 {
     private $con;
 
@@ -33,7 +33,7 @@ class DAOUser implements DAOContract
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('UserModel statement exception');
+            return new PDOException('UserDAO create error');
         }
 
     }
@@ -47,7 +47,20 @@ class DAOUser implements DAOContract
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('UserModel select error...');
+            throw new PDOException('UserDAO read error');
+        }
+    }
+
+    public function readByMail($mail)
+    {
+        $query = "SELECT * FROM user WHERE mail = :mail";
+        $stmt = $this->con->prepare($query);
+        $stmt->bindValue(":mail", $mail);
+
+        if($stmt->execute()){
+            return $stmt->fetch();
+        } else {
+            throw new PDOException('UserDAO readByMail error');
         }
     }
 
@@ -70,38 +83,7 @@ class DAOUser implements DAOContract
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('Update UserModel error...');
+            throw new PDOException('UserDAO update error');
         }
     }
-
-    public function delete($id)
-    {
-    }
-
-    public function readAll()
-    {
-        $sql = "SELECT * FROM user";
-        $stmt = $this->con->prepare($sql);
-
-        if($stmt->execute()) {
-            return $stmt->fetchAll();
-        } else {
-            throw new PDOException('Error UserModel readAll');
-        }
-    }
-
-    public function readByMail($mail)
-    {
-        $query = "SELECT * FROM user WHERE mail = :mail";
-        $stmt = $this->con->prepare($query);
-        $stmt->bindValue(":mail", $mail);
-
-        if($stmt->execute()){
-           return $stmt->fetch();
-        } else {
-            throw new PDOException('UserModel select mail error...');
-        }
-    }
-
-
 }

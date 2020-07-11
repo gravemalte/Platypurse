@@ -1,12 +1,8 @@
 <?php
-
-
 namespace Controller;
-
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
-use Model\DAO\DAOOffer;
 use Model\OfferModel;
 
 class SearchController extends BaseController
@@ -36,7 +32,7 @@ class SearchController extends BaseController
             $keyedSearchValuesArray["sex"] = $sex;
         endif;
 
-        $offerDao = new DAOOffer(SQLite::connectToSQLite());
+        $offerDao = new OfferDAO(SQLite::connectToSQLite());
         return OfferModel::getSearchResultsFromDatabase($offerDao, $keyedSearchValuesArray);
     }
 }

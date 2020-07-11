@@ -1,11 +1,11 @@
 <?php
 namespace Model\DAO;
 
+use Hydro\Base\Contracts\PlatypusDAOInterface;
 use PDOException;
-use Hydro\Base\Contracts\DAOContract;
 
 
-class DAOPlatypus implements DAOContract
+class PlatypusDAO implements PlatypusDAOInterface
 {
     private $con;
 
@@ -33,7 +33,7 @@ class DAOPlatypus implements DAOContract
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('DAOPlatypus create error');
+            return new PDOException('PlatypusDAO create error');
         }
 
     }
@@ -47,7 +47,7 @@ class DAOPlatypus implements DAOContract
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('DAOPlatypus read error');
+            throw new PDOException('PlatypusDAO read error');
         }
     }
 
@@ -68,23 +68,7 @@ class DAOPlatypus implements DAOContract
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('DAOPlatypus update error');
-        }
-    }
-
-    public function delete($id)
-    {
-    }
-
-    public function readAll()
-    {
-        $sql = "SELECT * FROM platypus";
-        $stmt = $this->con->prepare($sql);
-
-        if($stmt->execute()) {
-            return $stmt->fetchAll();
-        } else {
-            throw new PDOException('DAOPlatypus readAll error');
+            throw new PDOException('PlatypusDAO update error');
         }
     }
 }

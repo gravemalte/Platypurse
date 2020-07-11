@@ -1,15 +1,12 @@
 <?php
-
-
 namespace Controller;
-
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
 use Hydro\Helper\Date;
 use Model\ChatModel;
-use Model\DAO\DAOMessage;
-use Model\DAO\DAOUser;
+use Model\DAO\MessageDAO;
+use Model\DAO\UserDAO;
 use Model\UserModel;
 use PDOException;
 
@@ -39,7 +36,7 @@ class ChatController extends BaseController
 
         $userID = $_SESSION['currentUser']->getId();
 
-        $messages = ChatModel::getFromDatabase(new DAOMessage(SQLite::connectToSQLite()), $userID);
+        $messages = ChatModel::getFromDatabase(new MessageDAO(SQLite::connectToSQLite()), $userID);
 
         $result = array();
 
@@ -74,7 +71,7 @@ class ChatController extends BaseController
 
         $userID = $_SESSION['currentUser']->getId();
 
-        $messages = ChatModel::getFromDatabaseOrder(new DAOMessage(SQLite::connectToSQLite()), $userID);
+        $messages = ChatModel::getFromDatabaseOrder(new MessageDAO(SQLite::connectToSQLite()), $userID);
 
         $result = array();
 
@@ -101,7 +98,7 @@ class ChatController extends BaseController
             return;
         }
       
-        $user = UserModel::getUser(new DAOUser(SQLite::connectToSQLite()), 
+        $user = UserModel::getUser(new UserDAO(SQLite::connectToSQLite()),
             $_GET['id']);
 
         if ($user->getUgId() == 3) {
@@ -138,7 +135,7 @@ class ChatController extends BaseController
         $con = SQLite::connectToSQLite();
         try {
             $con->beginTransaction();
-            $dao = new DAOMessage($con);
+            $dao = new MessageDAO($con);
 
             $messages = ChatModel::insertIntoDatabase($dao, $newMessage);
 
