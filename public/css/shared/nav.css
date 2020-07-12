@@ -54,6 +54,7 @@ nav {
     display: flex;
     align-items: stretch;
     margin-left: 0.25em;
+    margin-right: 0.25em;
 }
 .nav-buttons-container div {
     display: flex;
@@ -80,8 +81,8 @@ nav {
     height: 3em;
     width: 3em;
     border-radius: 50%;
-    padding: 0.5em;
     object-fit: cover;
+    padding: 0.5em 0.5em 0.5em 0;
 }
 .nav-profile-container img[src$=svg] {
     filter: invert(var(--filter-bright));
