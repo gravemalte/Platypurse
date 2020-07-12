@@ -66,6 +66,8 @@
         // using session storage to only change mode in this session
         let lightStorage = sessionStorage.getItem(storageKeyName);
 
+        document.body.classList.add("transition");
+
         await (async () => {
             // decide by if storage is set or media query
             if (lightStorage === "light") {
@@ -84,5 +86,7 @@
                 await makeLight();
             }
         })();
+
+        setTimeout(document.body.classList.remove, 2000, "transition");
     }
 })();
