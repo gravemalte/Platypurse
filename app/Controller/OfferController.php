@@ -1,11 +1,10 @@
 <?php
-
 namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
-use Model\DAO\DAOOffer;
-use Model\DAO\DAOSavedOffers;
+use Model\DAO\OfferDAO;
+use Model\DAO\SavedOffersDAO;
 use Model\OfferModel;
 use Model\SavedOfferModel;
 use PDOException;
@@ -31,7 +30,7 @@ class OfferController extends BaseController
 
     public static function getOffer($id, $offerDAO = null) {
         if(!isset($offerDAO)):
-            $offerDAO = new DAOOffer(SQLite::connectToSQLite());
+            $offerDAO = new OfferDAO(SQLite::connectToSQLite());
         endif;
         return OfferModel::getFromDatabase($offerDAO, $id);
     }
@@ -43,10 +42,10 @@ class OfferController extends BaseController
             $con = SQLite::connectToSQLite();
             try {
                 $con->beginTransaction();
-                $dao = new DAOSavedOffers($con);
+                $dao = new SavedOffersDAO($con);
 
                 $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, false);
-                if(empty($savedOffer->getId())):
+                if(!$savedOffer || empty($savedOffer->getId())):
                     $savedOffer = new SavedOfferModel(hexdec(uniqid()),
                         $userId, $offerId, 1);
 
@@ -80,7 +79,7 @@ class OfferController extends BaseController
 
         try {
             $con->beginTransaction();
-            $dao = new DAOSavedOffers(SQLite::connectToSQLite());
+            $dao = new SavedOffersDAO(SQLite::connectToSQLite());
 
             $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, true);
             $savedOffer->setActive(0);
@@ -104,11 +103,11 @@ class OfferController extends BaseController
 
     public static function isOfferInSavedList($offerId) {
         $userId = $_SESSION["currentUser"]->getId();
-        $dao = new DAOSavedOffers(SQLite::connectToSQLite());
+        $dao = new SavedOffersDAO(SQLite::connectToSQLite());
 
         $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, true);
 
-        if(empty($savedOffer->getId())):
+        if(!$savedOffer || empty($savedOffer->getId())):
             return false;
         else:
             return true;
@@ -120,7 +119,7 @@ class OfferController extends BaseController
 
         try {
             $con->beginTransaction();
-            $dao = new DAOOffer($con);
+            $dao = new OfferDAO($con);
             $offer->offerClickPlusOne($dao);
             $con->commit();
         } catch (PDOException $e) {
@@ -142,7 +141,7 @@ class OfferController extends BaseController
 
         try {
             $con->beginTransaction();
-            $dao = new DAOOffer($con);
+            $dao = new OfferDAO($con);
             $offer = $this->getOffer($_POST['offerId'], $dao);
             $check = $offer->deactivateInDatabase($dao);
             if($check):

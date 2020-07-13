@@ -1,10 +1,10 @@
 <?php
 namespace Model\DAO;
 
+use Hydro\Base\Contracts\SavedOffersDAOInterface;
 use PDOException;
-use Hydro\Base\Contracts\DAOContract;
 
-class DAOSavedOffers implements DAOContract
+class SavedOffersDAO implements SavedOffersDAOInterface
 {
     private $con;
 
@@ -28,53 +28,7 @@ class DAOSavedOffers implements DAOContract
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('DAOSavedOffer create error');
-        }
-
-    }
-
-    public function read($id)
-    {
-        $query = "SELECT * FROM offer WHERE o_id = :id";
-        $stmt = $this->con->prepare($query);
-        $stmt->bindValue(":id", $id);
-
-        if($stmt->execute()){
-            return $stmt->fetch();
-        } else {
-            throw new PDOException('DAOSavedOffer read error');
-        }
-    }
-
-    public function update($obj)
-    {
-        $sql = "UPDATE saved_offers SET active = :active WHERE u_id = :userId AND o_id = :offerId";
-        $stmt = $this->con->prepare($sql);
-        $stmt->bindValue(":active", $obj->isActive());
-        $stmt->bindValue(":userId", $obj->getUserId());
-        $stmt->bindValue(":offerId", $obj->getOfferId());
-
-
-        if($stmt->execute()) {
-            return true;
-        } else {
-            throw new PDOException('DAOSavedOffer update error');
-        }
-    }
-
-    public function delete($id)
-    {
-    }
-
-    public function readAll()
-    {
-        $sql = "SELECT * FROM offer";
-        $stmt = $this->con->prepare($sql);
-
-        if($stmt->execute()) {
-            return $stmt->fetchAll();
-        } else {
-            throw new PDOException('DAOSavedOffer readAll error');
+            return new PDOException('SavedOffersDAO create error');
         }
     }
 
@@ -89,7 +43,7 @@ class DAOSavedOffers implements DAOContract
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('DAOSavedOffer readByUserId error');
+            throw new PDOException('SavedOffersDAO readByUserId error');
         }
     }
 
@@ -110,7 +64,23 @@ class DAOSavedOffers implements DAOContract
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('DAOSavedOffer readByUserId error');
+            throw new PDOException('SavedOffersDAO readByUserId error');
+        }
+    }
+
+    public function update($obj)
+    {
+        $sql = "UPDATE saved_offers SET active = :active WHERE u_id = :userId AND o_id = :offerId";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bindValue(":active", $obj->isActive());
+        $stmt->bindValue(":userId", $obj->getUserId());
+        $stmt->bindValue(":offerId", $obj->getOfferId());
+
+
+        if($stmt->execute()) {
+            return true;
+        } else {
+            throw new PDOException('SavedOffersDAO update error');
         }
     }
 }

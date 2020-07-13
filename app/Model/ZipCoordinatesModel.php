@@ -31,6 +31,9 @@ class ZipCoordinatesModel {
 
     public static function getFromDatabaseByZipcode($zipCoordinatesDAO, $zipcode) {
         $result = $zipCoordinatesDAO->readByZipcode($zipcode);
+        if(!$result):
+            return false;
+        endif;
 
         return new ZipCoordinatesModel($result[0], $result[1], $result[2], $result[3], $result[4], $result[5]);
     }

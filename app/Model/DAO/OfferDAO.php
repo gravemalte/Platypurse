@@ -1,10 +1,10 @@
 <?php
 namespace Model\DAO;
 
+use Hydro\Base\Contracts\OfferDAOInterface;
 use PDOException;
-use Hydro\Base\Contracts\DAOContract;
 
-class DAOOffer implements DAOContract
+class OfferDAO implements OfferDAOInterface
 {
     private $con;
 
@@ -16,7 +16,6 @@ class DAOOffer implements DAOContract
     public function getCon() {
         return $this->con;
     }
-
 
     public function create($obj)
     {
@@ -37,7 +36,7 @@ class DAOOffer implements DAOContract
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('DAOOffer create error');
+            return new PDOException('OfferDAO create error');
         }
 
     }
@@ -50,7 +49,7 @@ class DAOOffer implements DAOContract
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('DAOOffer read error');
+            throw new PDOException('OfferDAO read error');
         }
     }
 
@@ -72,23 +71,7 @@ class DAOOffer implements DAOContract
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('DAOOffer update error');
-        }
-    }
-
-    public function delete($id)
-    {
-    }
-
-    public function readAll()
-    {
-        $sql = "SELECT * FROM offer";
-        $stmt = $this->con->prepare($sql);
-
-        if($stmt->execute()) {
-            return $stmt->fetchAll();
-        } else {
-            throw new PDOException('DAOOffer readAll error');
+            throw new PDOException('OfferDAO update error');
         }
     }
 
@@ -100,7 +83,7 @@ class DAOOffer implements DAOContract
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('DAOOffer readAll error');
+            throw new PDOException('OfferDAO readAll error');
         }
     }
 
@@ -112,7 +95,7 @@ class DAOOffer implements DAOContract
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('DAOOffer readAll error');
+            throw new PDOException('OfferDAO readAll error');
         }
     }
 
@@ -127,7 +110,7 @@ class DAOOffer implements DAOContract
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('DAOOffer readByUserId error');
+            throw new PDOException('OfferDAO readByUserId error');
         }
     }
 
@@ -140,7 +123,7 @@ class DAOOffer implements DAOContract
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('DAOOffer readOffersByUserId error');
+            throw new PDOException('OfferDAO readOffersByUserId error');
         }
     }
 
@@ -178,7 +161,7 @@ class DAOOffer implements DAOContract
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('DAOOffer readSearchResults error');
+            throw new PDOException('OfferDAO readSearchResults error');
         }
     }
 }

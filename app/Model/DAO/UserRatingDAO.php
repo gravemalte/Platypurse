@@ -1,10 +1,10 @@
 <?php
 namespace Model\DAO;
 
+use Hydro\Base\Contracts\UserRatingDAOInterface;
 use PDOException;
-use Hydro\Base\Contracts\DAOContract;
 
-class DAOUserRating implements DAOContract
+class UserRatingDAO implements UserRatingDAOInterface
 {
     private $con;
 
@@ -30,21 +30,37 @@ class DAOUserRating implements DAOContract
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('DAOUserRating create error');
+            return new PDOException('UserRatingDAO create error');
         }
 
     }
 
-    public function read($id)
+    public function readForUserId($forUserId)
     {
-        $query = "SELECT * FROM user_Rating WHERE ur_id = :id";
+        $query = "SELECT AVG(rating) FROM user_rating WHERE for_u_id = :forUserId;";
         $stmt = $this->con->prepare($query);
-        $stmt->bindValue(":id", $id);
+        $stmt->bindValue(":forUserId", $forUserId);
 
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('DAOUserRating read error');
+            throw new PDOException('UserRatingDAO readForUserId error');
+        }
+    }
+
+    public function readFromUserIdForUserId($fromUserId, $forUserId)
+    {
+        $query = "SELECT * FROM user_rating
+            WHERE from_u_id = :fromUserId
+            AND for_u_id = :forUserId;";
+        $stmt = $this->con->prepare($query);
+        $stmt->bindValue(":fromUserId", $fromUserId);
+        $stmt->bindValue(":forUserId", $forUserId);
+
+        if($stmt->execute()){
+            return $stmt->fetch();
+        } else {
+            throw new PDOException('UserRatingDAO readForUserId error');
         }
     }
 
@@ -61,54 +77,7 @@ class DAOUserRating implements DAOContract
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('DAOUserRating update error');
+            throw new PDOException('UserRatingDAO update error');
         }
     }
-
-    public function delete($id)
-    {
-    }
-
-    public function readAll()
-    {
-        $sql = "SELECT * FROM user";
-        $stmt = $this->con->prepare($sql);
-
-        if($stmt->execute()) {
-            return $stmt->fetchAll();
-        } else {
-            throw new PDOException('DAOUserRating readAll error');
-        }
-    }
-
-    public function readForUserId($forUserId)
-    {
-        $query = "SELECT AVG(rating) FROM user_rating WHERE for_u_id = :forUserId;";
-        $stmt = $this->con->prepare($query);
-        $stmt->bindValue(":forUserId", $forUserId);
-
-        if($stmt->execute()){
-           return $stmt->fetch();
-        } else {
-            throw new PDOException('DAOUserRating readForUserId error');
-        }
-    }
-
-    public function readFromUserIdForUserId($fromUserId, $forUserId)
-    {
-        $query = "SELECT * FROM user_rating
-            WHERE from_u_id = :fromUserId
-            AND for_u_id = :forUserId;";
-        $stmt = $this->con->prepare($query);
-        $stmt->bindValue(":fromUserId", $fromUserId);
-        $stmt->bindValue(":forUserId", $forUserId);
-
-        if($stmt->execute()){
-            return $stmt->fetch();
-        } else {
-            throw new PDOException('DAOUserRating readForUserId error');
-        }
-    }
-
-
 }

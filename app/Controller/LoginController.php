@@ -1,11 +1,9 @@
 <?php
-
 namespace Controller;
-
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
-use Model\DAO\DAOUser;
+use Model\DAO\UserDAO;
 use Model\UserModel;
 
 class LoginController extends BaseController
@@ -38,7 +36,7 @@ class LoginController extends BaseController
         $userSentPasswd = $_POST['user-passwd'];
 
 
-        $user = UserModel::getFromDatabaseByMail(new DAOUser(SQLite::connectToSQLite()), $userSentMail);
+        $user = UserModel::getFromDatabaseByMail(new UserDAO(SQLite::connectToSQLite()), $userSentMail);
         if ($user):
             if (password_verify($userSentPasswd, $user->getPassword())) {
                 $_SESSION['currentUser'] = $user;

@@ -41,6 +41,10 @@ class SavedOfferModel {
     public static function getFromDatabaseByUserIdAndOfferId($savedOffersDAO, $userId, $offerId, $withActives) {
         $result = $savedOffersDAO->readByUserIdAndOfferId($userId, $offerId, $withActives);
 
+        if(empty($result)):
+            return false;
+        endif;
+
         return new SavedOfferModel($result[0], $result[1], $result[2], $result[3]);
     }
     
