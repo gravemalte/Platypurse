@@ -23,6 +23,7 @@ CREATE TABLE user (
   mime TEXT,
   image BLOB,
   disabled INTEGER DEFAULT 0,
+  verified INTEGER DEFAULT 0,
   CONSTRAINT fk_user_group
     FOREIGN KEY (ug_id)
     REFERENCES user_group(ug_id)
@@ -154,4 +155,21 @@ CREATE TABLE offer_reports (
 CREATE TABLE log (
   l_id INTEGER PRIMARY KEY AUTOINCREMENT,
   message text
+);
+
+CREATE TABLE mails (
+  m_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  content TEXT NOT NULL,
+  receiver_name TEXT,
+  receiver_id INTEGER NOT NULL,
+  receiver_mail TEXT NOT NULL,
+  send_date TEXT DEFAULT (datetime('now','localtime'))
+);
+
+CREATE TABLE register_tokens (
+  token_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  token TEXT NOT NULL,
+  u_id INTEGER NOT NULL,
+  expiration_date TEXT NOT NULL,
+  active INTEGER DEFAULT 1
 );
