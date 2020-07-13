@@ -24,7 +24,8 @@ class SavedOffersDAO implements SavedOffersDAOInterface
         $stmt->bindValue(":active", $obj->isActive());
 
         if($stmt->execute()) {
-            $sql = "SELECT * FROM saved_offers WHERE o_id = :offerId AND u_id = :userId";
+            $id = $this->con->lastInsertId();
+            $sql = "SELECT * FROM saved_offers WHERE so_id = $id";
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
