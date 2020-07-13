@@ -16,7 +16,8 @@ class UserDAO implements UserDAOInterface
 
     public function create($obj)
     {
-        $query = "INSERT INTO user(u_id, display_name, mail, password, ug_id, mime, image) VALUES (:userID, :displayName, :mail, :password, :ugID, :mime, :image)";
+        $query = "INSERT INTO user(u_id, display_name, mail, password, ug_id, mime, image)
+            VALUES (:userID, :displayName, :mail, :password, :ugID, :mime, :image);";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":userID", $obj->getId());
         $stmt->bindValue(":displayName", $obj->getDisplayName());
@@ -29,7 +30,7 @@ class UserDAO implements UserDAOInterface
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
-            $sql = "SELECT * FROM user WHERE u_id = $id";
+            $sql = "SELECT * FROM user WHERE u_id = $id;";
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
@@ -40,7 +41,7 @@ class UserDAO implements UserDAOInterface
 
     public function read($id)
     {
-        $query = "SELECT * FROM user WHERE u_id = :id";
+        $query = "SELECT * FROM user WHERE u_id = :id;";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $id);
 
@@ -53,7 +54,7 @@ class UserDAO implements UserDAOInterface
 
     public function readByMail($mail)
     {
-        $query = "SELECT * FROM user WHERE mail = :mail";
+        $query = "SELECT * FROM user WHERE mail = :mail;";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":mail", $mail);
 
@@ -67,7 +68,7 @@ class UserDAO implements UserDAOInterface
     public function update($obj)
     {
         $sql = "UPDATE user SET display_name = :displayName, mail = :mail, password = :password, ug_id = :ugId,
-                rating = :rating, mime = :mime, image = :image, disabled = :disabled WHERE u_id = :id";
+                rating = :rating, mime = :mime, image = :image, disabled = :disabled WHERE u_id = :id;";
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":displayName", $obj->getDisplayName());

@@ -16,7 +16,8 @@ class SavedOffersDAO implements SavedOffersDAOInterface
 
     public function create($obj)
     {
-        $query = "INSERT INTO saved_offers (so_id, u_id, o_id, active) VALUES (:id, :userId, :offerId, :active)";
+        $query = "INSERT INTO saved_offers (so_id, u_id, o_id, active)
+            VALUES (:id, :userId, :offerId, :active);";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $obj->getId());
         $stmt->bindValue(":userId", $obj->getUserId());
@@ -25,7 +26,7 @@ class SavedOffersDAO implements SavedOffersDAOInterface
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
-            $sql = "SELECT * FROM saved_offers WHERE so_id = $id";
+            $sql = "SELECT * FROM saved_offers WHERE so_id = $id;";
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
@@ -37,7 +38,7 @@ class SavedOffersDAO implements SavedOffersDAOInterface
     {
         $sql = "SELECT * FROM offer
                     LEFT JOIN saved_offers so on offer.o_id = so.o_id
-                    WHERE so.u_id = :userId";
+                    WHERE so.u_id = :userId;";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":userId", $userId);
 
@@ -52,7 +53,7 @@ class SavedOffersDAO implements SavedOffersDAOInterface
     {
         $sql = "SELECT * FROM saved_offers
                     WHERE u_id = :userId
-                    AND o_id = :offerId ";
+                    AND o_id = :offerId;";
 
         if($withActives):
             $sql .= "AND active = 1";
@@ -71,7 +72,7 @@ class SavedOffersDAO implements SavedOffersDAOInterface
 
     public function update($obj)
     {
-        $sql = "UPDATE saved_offers SET active = :active WHERE u_id = :userId AND o_id = :offerId";
+        $sql = "UPDATE saved_offers SET active = :active WHERE u_id = :userId AND o_id = :offerId;";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":active", $obj->isActive());
         $stmt->bindValue(":userId", $obj->getUserId());

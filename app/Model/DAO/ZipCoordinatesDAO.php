@@ -15,7 +15,7 @@ class ZipCoordinatesDAO implements ZipCoordinatesDAOInterface
 
     public function readByZipcode($zipcode)
     {
-        $sql = "SELECT * FROM zip_coordinates WHERE zipcode = :zipcode";
+        $sql = "SELECT * FROM zip_coordinates WHERE zipcode = :zipcode;";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":zipcode", $zipcode);
 

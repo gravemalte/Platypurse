@@ -18,7 +18,7 @@ class PlatypusDAO implements PlatypusDAOInterface
     public function create($obj)
     {
         $query = "INSERT INTO platypus(p_id, name, age_years, sex, size, weight)
-            VALUES (:platypusId, :name, :ageYears, :sex, :size, :weight)";
+            VALUES (:platypusId, :name, :ageYears, :sex, :size, :weight);";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":platypusId", $obj->getId());
         $stmt->bindValue(":name", $obj->getName());
@@ -29,7 +29,7 @@ class PlatypusDAO implements PlatypusDAOInterface
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
-            $sql = "SELECT * FROM platypus WHERE p_id = $id";
+            $sql = "SELECT * FROM platypus WHERE p_id = $id;";
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
@@ -40,7 +40,7 @@ class PlatypusDAO implements PlatypusDAOInterface
 
     public function read($id)
     {
-        $query = "SELECT * FROM platypus WHERE p_id = :id";
+        $query = "SELECT * FROM platypus WHERE p_id = :id;";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $id);
 
@@ -54,7 +54,7 @@ class PlatypusDAO implements PlatypusDAOInterface
     public function update($obj)
     {
         $sql = "UPDATE platypus SET name = :name, age_years = :ageYears, sex = :sex, size = :size,
-                weight = :weight, active = :active WHERE p_id = :id";
+                weight = :weight, active = :active WHERE p_id = :id;";
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":name", $obj->getName());

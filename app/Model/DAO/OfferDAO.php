@@ -20,7 +20,7 @@ class OfferDAO implements OfferDAOInterface
     public function create($obj)
     {
         $query = "INSERT INTO offer (o_id, u_id, p_id, price, negotiable, description, zipcode) 
-            VALUES (:offerId, :userId, :platypusId, :price, :negotiable, :description, :zipCode)";
+            VALUES (:offerId, :userId, :platypusId, :price, :negotiable, :description, :zipCode);";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":offerId", $obj->getId());
         $stmt->bindValue(":userId", $obj->getUser()->getId());
@@ -32,7 +32,7 @@ class OfferDAO implements OfferDAOInterface
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
-            $sql = "SELECT * FROM offer WHERE o_id = $id";
+            $sql = "SELECT * FROM offer WHERE o_id = $id;";
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
@@ -42,7 +42,7 @@ class OfferDAO implements OfferDAOInterface
     }
 
     public function read($id) {
-        $query = "SELECT * FROM offer WHERE o_id = :id";
+        $query = "SELECT * FROM offer WHERE o_id = :id;";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $id);
 
@@ -56,7 +56,7 @@ class OfferDAO implements OfferDAOInterface
     public function update($obj)
     {
         $sql = "UPDATE offer SET price = :price, negotiable = :negotiable, description = :description,
-                 zipcode = :zipcode, clicks = :clicks, edit_date = :edit_date, active = :active WHERE o_id = :id";
+                 zipcode = :zipcode, clicks = :clicks, edit_date = :edit_date, active = :active WHERE o_id = :id;";
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":price", $obj->getPriceUnformatted());
@@ -77,7 +77,7 @@ class OfferDAO implements OfferDAOInterface
 
     public function readHot()
     {
-        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY clicks desc LIMIT 1";
+        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY clicks desc LIMIT 1;";
         $stmt = $this->con->prepare($sql);
 
         if($stmt->execute()) {
@@ -89,7 +89,7 @@ class OfferDAO implements OfferDAOInterface
 
     public function readNewest()
     {
-        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY create_date desc LIMIT 9";
+        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY create_date desc LIMIT 9;";
         $stmt = $this->con->prepare($sql);
 
         if($stmt->execute()) {
@@ -103,7 +103,7 @@ class OfferDAO implements OfferDAOInterface
     {
         $sql = "SELECT * FROM offer
                     LEFT JOIN saved_offers so on offer.o_id = so.o_id
-                    WHERE so.u_id = :userId AND so.active=1";
+                    WHERE so.u_id = :userId AND so.active=1;";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":userId", $userId);
 
@@ -116,7 +116,7 @@ class OfferDAO implements OfferDAOInterface
 
     public function readOffersByUserId($userId)
     {
-        $sql = "SELECT * FROM offer WHERE u_id = :userId";
+        $sql = "SELECT * FROM offer WHERE u_id = :userId;";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":userId", $userId);
 
@@ -138,7 +138,7 @@ class OfferDAO implements OfferDAOInterface
                       AND age_years BETWEEN :ageMin and :ageMax 
                       AND size BETWEEN :sizeMin and :sizeMax 
                       AND weight BETWEEN :weightMin and :weightMax
-                      AND offer.active = 1";
+                      AND offer.active = 1;";
 
         if($bindSex):
             $sql .= " AND sex = :sex";

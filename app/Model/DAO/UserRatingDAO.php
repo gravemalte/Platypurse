@@ -17,7 +17,7 @@ class UserRatingDAO implements UserRatingDAOInterface
     public function create($obj)
     {
         $query = "INSERT INTO user_rating(ur_id, from_u_id, for_u_id, rating)
-            VALUES (:userRatingId, :fromUserId, :forUserId, :rating)";
+            VALUES (:userRatingId, :fromUserId, :forUserId, :rating);";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":userRatingId", $obj->getId());
         $stmt->bindValue(":fromUserId", $obj->getFromUserId());
@@ -26,7 +26,7 @@ class UserRatingDAO implements UserRatingDAOInterface
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
-            $sql = "SELECT * FROM user_rating WHERE ur_id = $id";
+            $sql = "SELECT * FROM user_rating WHERE ur_id = $id;";
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
@@ -67,7 +67,7 @@ class UserRatingDAO implements UserRatingDAOInterface
     public function update($obj)
     {
         $sql = "UPDATE user_rating SET for_u_id = :forUserId, rating = :rating
-            WHERE ur_id = :id";
+            WHERE ur_id = :id;";
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":forUserId", $obj->getForUserId());

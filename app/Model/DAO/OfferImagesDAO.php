@@ -17,7 +17,7 @@ class OfferImagesDAO implements OfferImagesDAOInterface
     public function create($obj)
     {
         $query = "INSERT INTO offer_images (oi_id, o_id, picture_position, mime, image) 
-            VALUES (:offerImagesId, :offerId, :picturePosition, :mime, :image)";
+            VALUES (:offerImagesId, :offerId, :picturePosition, :mime, :image);";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":offerImagesId", $obj->getId());
         $stmt->bindValue(":offerId", $obj->getOfferId());
@@ -38,7 +38,7 @@ class OfferImagesDAO implements OfferImagesDAOInterface
 
     public function readByOfferId($offerId)
     {
-        $query = "SELECT * FROM offer_images WHERE o_id = :offerId";
+        $query = "SELECT * FROM offer_images WHERE o_id = :offerId;";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":offerId", $offerId);
 
@@ -53,7 +53,7 @@ class OfferImagesDAO implements OfferImagesDAOInterface
     {
         // TODO: Where oi_id
         $sql = "UPDATE offer_images SET picture_position = :picturePosition, mime = :mime, image = :image
-                WHERE o_id = :id";
+                WHERE o_id = :id;";
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":picturePosition", $obj->getPicturePosition());
