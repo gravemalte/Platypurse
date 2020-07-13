@@ -17,6 +17,7 @@ class Application
         "Home",
         "Login",
         "LegalNotice",
+        "Mail",
         "Offer",
         "Profile",
         "Register",
