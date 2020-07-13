@@ -163,7 +163,10 @@ CREATE TABLE mails (
   receiver_name TEXT,
   receiver_id INTEGER NOT NULL,
   receiver_mail TEXT NOT NULL,
-  send_date TEXT DEFAULT (datetime('now','localtime'))
+  send_date TEXT DEFAULT (datetime('now','localtime')),
+  CONSTRAINT fk_user
+    FOREIGN KEY (receiver_id)
+    REFERENCES user(u_id)
 );
 
 CREATE TABLE register_tokens (
