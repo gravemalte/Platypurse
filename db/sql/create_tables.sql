@@ -58,7 +58,7 @@ CREATE TABLE offer (
   p_id INTEGER NOT NULL,
   price INTEGER NOT NULL,
   negotiable INTEGER DEFAULT 0,
-  description TEXT DEFAULT "",
+  description TEXT DEFAULT '',
   zipcode TEXT,
   clicks INTEGER DEFAULT 0,
   create_date TEXT DEFAULT (datetime('now','localtime')),
