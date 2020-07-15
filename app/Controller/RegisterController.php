@@ -83,5 +83,10 @@ class RegisterController extends BaseController {
         }
     }
 
-
+    public static function verify() {
+        require APP . 'View/shared/header.php';
+        require APP . 'View/register/header.php';
+        require APP . 'View/shared/nav.php';
+        require APP . 'View/shared/footer.php';
+    }
 }

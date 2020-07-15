@@ -2,7 +2,9 @@
 
 namespace Model;
 
+use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\UserDAO;
+use Model\DAO\RegisterTokenDAO;
 
 class RegisterTokenModel {
     private $id;
@@ -41,6 +43,17 @@ class RegisterTokenModel {
     
     public function updateInDatabase($dao) {
         return $dao->update($this);
+    }
+
+    public function generate($user) {
+        $id = null;
+        $token = bin2hex(random_bytes(5));
+        $expirationDate = date("Y-m-d H:i:s", time() + 3600);
+        $active = true;
+
+        $token = new self($id, $token, $user, $expirationDate, $active);
+        $dao = new RegisterTokenDAO(SQLite::connectToSQLite());
+        return $token->insertIntoDatabase($dao);
     }
 
     /**

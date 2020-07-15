@@ -41,4 +41,8 @@ class MailController
 
         echo $mail->getContent();
     }
+
+    public static function previewTemplate() {
+        require APP . 'View/mail/templates/verifyAccount.php';
+    }
 }
