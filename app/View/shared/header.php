@@ -3,10 +3,13 @@ use Hydro\Helper\CacheBuster;
 use Hydro\Helper\ColorCollector;
 
 $isSubPage = false;
-$slashPos = strpos($_GET['url'], '/', 1);
-if ($slashPos) {
-    $isSubPage = true;
+if(isset($_GET['url'])){
+    $slashPos = strpos($_GET['url'], '/', 1);
+    if ($slashPos) {
+        $isSubPage = true;
+    }
 }
+
 ?>
 
 <!DOCTYPE html>

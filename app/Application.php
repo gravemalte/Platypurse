@@ -50,12 +50,13 @@ class Application
                 if (strlen($this->url_action) == 0) {
                     $this->url_controller->index();
                 } else {
-                    header('location: ' . URL . 'error');
+                    $error = new ErrorController();
+                    $error->subpageNotFound();
                 }
             }
         } else {
-            header('location: ' . URL . 'error');
-
+            $error = new ErrorController();
+            $error->pageNotFound();
         }
     }
 
@@ -71,6 +72,7 @@ class Application
     private function splitUrl()
     {
         if (isset($_GET['url'])) {
+
 
             // splitting our URL
             $url = trim($_GET['url'], '/');

@@ -32,7 +32,7 @@ class CreateController extends BaseController
         // TODO: Documentation
 
         if($_POST['csrf'] != $_SESSION['csrf_token']){
-            header('location: ' . URL . 'error');
+            header('location: ' . URL . 'error/unauthorized');
             exit();
         }
 

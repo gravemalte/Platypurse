@@ -13,6 +13,11 @@ use PDOException;
 class RegisterController extends BaseController {
 
     public function index(){
+        if (isset($_SESSION['currentUser'])) {
+            header('location: ' . URL . 'error/alreadyLoggedIn');
+            exit();
+        }
+
         require APP . 'View/shared/header.php';
         require APP . 'View/register/header.php';
         require APP . 'View/shared/nav.php';
@@ -25,25 +30,33 @@ class RegisterController extends BaseController {
         if(!(isset($_POST["user-email"]) || isset($_POST["user-passwd"])
         || isset($_POST['user-display-name']) || isset($_POST['user-passwd2'])
             || isset($_POST['agb-confirm']))){
+
             $_SESSION['register-error'] = true;
             header('location:' . URL . 'register');
         }
 
         $userInputDisplayName = $_POST['user-display-name'];
         $userInputMail = strtolower($_POST['user-email']);
+
+
+
         $userInputPassswd = $_POST['user-passwd'];
         $userInputPassswd2 = $_POST['user-passwd2'];
 
         if($userInputPassswd != $userInputPassswd2){
+            $_SESSION['register-inputName'] = $userInputDisplayName;
+            $_SESSION['register-inputMail'] = $userInputMail;
             $_SESSION['register-error-password'] = true;
             header('location:' . URL . 'register');
-            exit();
+            die();
         }
 
         if(!isset($_POST['agb-confirm'])){
+            $_SESSION['register-inputName'] = $userInputDisplayName;
+            $_SESSION['register-inputMail'] = $userInputMail;
             $_SESSION['register-error-agb'] = true;
             header('location:' . URL . 'register');
-            exit();
+            die();
         }
 
         $defaultImagePath = "assets/nav/user-circle-solid.svg";

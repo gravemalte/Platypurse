@@ -32,14 +32,23 @@ $show_error = false;
                         <div class="show-error"></div>
                     <?php endif; ?>
                     <label for="user-display-name">Anzeigename</label>
-                    <input type="text" id="user-display-name" name="user-display-name" placeholder="Anzeigename" required autofocus>
+
+                    <?php if(isset($_SESSION['register-error-agb']) || isset($_SESSION['register-error-password'])) : ?>
+                        <input type="text" id="user-display-name" name="user-display-name" value="<?= $_SESSION['register-inputName'] ?>" required autofocus>
+                    <?php else: ?>
+                        <input type="text" id="user-display-name" name="user-display-name" placeholder="Anzeigename" required autofocus>
+                    <?php endif; ?>
                 </div>
                 <div class="form-email-container">
                     <?php if(isset($_SESSION['register-error'])) : ?>
                         <div class="show-error"></div>
                     <?php endif; ?>
                     <label for="user-email">Email Adresse</label>
-                    <input type="email" id="user-email" name="user-email" placeholder="Email Adresse" required>
+                    <?php if(isset($_SESSION['register-error-agb']) || isset($_SESSION['register-error-password'])) : ?>
+                        <input type="text" id="user-display-name" name="user-display-name" value="<?= $_SESSION['register-inputMail'] ?>" required autofocus>
+                    <?php else: ?>
+                        <input type="email" id="user-email" name="user-email" placeholder="Email Adresse" required>
+                    <?php endif; ?>
                 </div>
                 <div class="form-passwd-container">
                     <?php if(isset($_SESSION['register-error-password'])) : ?>

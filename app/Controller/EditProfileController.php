@@ -40,12 +40,12 @@ class EditProfileController extends BaseController {
 
     public static function update() {
         if (!isset($_POST['id']) || !isset($_SESSION['currentUser'])) {
-            header('location: ' . URL . 'error');
-            exit();
+            header('location: ' . URL . 'error/unauthorized');
+            die();
         }
 
         if($_POST['csrf'] != $_SESSION['csrf_token']){
-            header('location: ' . URL . 'error');
+            header('location: ' . URL . 'error/unauthorized');
             die();
         }
 
@@ -104,7 +104,7 @@ class EditProfileController extends BaseController {
             // TODO: Error handling
             // print "error go brr";
             $con->rollback();
-            header('location: ' . URL . 'error');
+            header('location: ' . URL . 'error/databaseError');
         }
     }
 

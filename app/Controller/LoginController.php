@@ -14,7 +14,7 @@ class LoginController extends BaseController
     public function index()
     {
         if (isset($_SESSION['currentUser'])) {
-            header('location: ' . URL . 'error');
+            header('location: ' . URL . 'error/alreadyLoggedIn');
             exit();
         }
         // load views

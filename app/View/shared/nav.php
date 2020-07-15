@@ -1,3 +1,14 @@
+<?php
+
+if(isset($_GET['url'])){
+    $slashPos = strpos($_GET['url'], '/', 1);
+    if ($slashPos) {
+        $isSubPage = true;
+    }
+}
+?>
+
+
 <body>
 <nav>
     <div class="nav-container">
@@ -7,7 +18,7 @@
         <label for="expand-nav" class="fas fa-times"></label>
         <div class="nav-logo-container">
             <a href="<?= URL ?>">
-                <img src="assets/logo/svg/logo_text.svg" alt="show/hide menu button">
+                <img src="<?= \Hydro\Helper\CacheBuster::serve('assets/logo/svg/logo_text.svg', $isSubPage) ?>" alt="show/hide menu button">
             </a>
         </div>
         <div class="nav-search-container">
@@ -26,16 +37,16 @@
         </div>
         <div class="nav-buttons-container">
             <div class="nav-create-offer-container">
-                <a href="create" class="button">Angebot<br>erstellen</a>
+                <a href="<?=URL . 'create' ?>" class="button">Angebot<br>erstellen</a>
             </div>
             <?php
             if(isset($_SESSION['currentUser'])):?>
             <div class="nav-logout-container">
-                <a href="login/logout" class="button">Abmelden</a>
+                <a href="<?=URL . 'login/logout'?>" class="button">Abmelden</a>
             </div>
             <?php else:?>
             <div class="nav-login-container">
-                <a href="login" class="button">Login</a>
+                <a href="<?=URL . 'login'?>" class="button">Login</a>
             </div>
             <?php endif; ?>
         </div>
@@ -43,7 +54,7 @@
         <div class="nav-profile-container">
             <a href="profile"
                title="<?= $_SESSION['currentUser']->getDisplayName() ?>">
-                <img src="<?= $_SESSION['currentUser']->getPicture() ?>" alt="user avatar">
+                <img src="<?=  \Hydro\Helper\CacheBuster::serve($_SESSION['currentUser']->getPicture()) ?>" alt="user avatar">
             </a>
         </div>
         <?php endif; ?>

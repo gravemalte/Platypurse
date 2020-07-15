@@ -17,7 +17,7 @@ class OfferController extends BaseController
         if(isset($_GET['id'] )){
             $offer = self::getOffer($_GET['id']);
             if($offer == false){
-                header('location: ' . URL . 'error');
+                header('location: ' . URL . 'error/pageNotFound');
             }
         }
 
