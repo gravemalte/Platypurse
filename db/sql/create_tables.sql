@@ -124,6 +124,7 @@ CREATE TABLE user_reports (
   reporter_u_id INTEGER NOT NULL,
   rr_id INTEGER NOT NULL,
   message text,
+  active INTEGER DEFAULT 1,
   CONSTRAINT fk_user_reported
     FOREIGN KEY (reported_u_id)
     REFERENCES user(u_id),
@@ -141,6 +142,7 @@ CREATE TABLE offer_reports (
   reporter_u_id INTEGER NOT NULL,
   rr_id INTEGER NOT NULL,
   message text,
+  active INTEGER DEFAULT 1,
   CONSTRAINT fk_offer_reported
     FOREIGN KEY (reported_o_id)
     REFERENCES offer(o_id),
