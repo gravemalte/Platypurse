@@ -2,7 +2,7 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <title>Verifiziere Konto</title>
@@ -17,6 +17,7 @@
             margin: 0;
             display: flex;
             flex-direction: column;
+            align-items: center;
         }
 
         p,
@@ -35,7 +36,8 @@
         .card {
             background-color: white;
             border-radius: 30px;
-            box-shadow: 0 1px 5px rgba(0,0,0,0.1)
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+            max-width: 700px;
         }
 
         .header-container {
@@ -68,11 +70,13 @@
             margin: 0;
         }
 
+        .under-button-container,
         .button-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            text-align: center;
         }
         .button-container a {
             background-color: #0074FF;
@@ -81,6 +85,27 @@
             padding: 1em;
             margin: 1em;
             text-decoration: none;
+        }
+
+        .under-button-container p {
+            font-size: 0.8em;
+            color: #555;
+            padding: 1em 3em;
+        }
+        .under-button-container a {
+            white-space: pre;
+        }
+
+        .footer {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .footer * {
+            color: #555;
+            text-align: center;
+            font-size: 0.7em;
+            margin: 0.5em 0 0;
         }
     </style>
 </head>
@@ -94,19 +119,28 @@
         <h2>Hey INSERT NAME HERE</h2>
         <p>
             Mega cool, dass du dir ein Konto bei uns erstellt hast.
-            Jetzt musst du dich nur noch verifizieren damit wir wissen, das du auch Zugriff auf deine Mail hast.
+            Jetzt musst du dich nur noch verifizieren damit wir wissen, dass du auch Zugriff auf deine Mail hast.
+            <br>
             Klick einfach auf den Button.
         </p>
     </div>
     <div class="button-container">
-        <a href="../register/verify">
+        <a href="../register/verify?token=TOKENHERE">
             Verifiziere dein Konto!
         </a>
     </div>
     <div class="under-button-container">
-
+        <p>
+            Wenn der Button nicht funktioniert, geh einfach auf diese Webseite
+            <a href="../register/verify?token=TOKENHERE">platypurse.com/register/<wbr>verify?token=TOKENHERE</a>.
+        </p>
     </div>
 </div>
-<div class="footer"></div>
+<div class="footer">
+    <h4>Platypurse GbR</h4>
+    <p>
+        Schnabeltierstraße 5, 26129 Oldenburg
+    </p>
+</div>
 </body>
 </html>
