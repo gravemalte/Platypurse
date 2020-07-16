@@ -68,7 +68,8 @@ class UserDAO implements UserDAOInterface
     public function update($obj)
     {
         $sql = "UPDATE user SET display_name = :displayName, mail = :mail, password = :password, ug_id = :ugId,
-                rating = :rating, mime = :mime, image = :image, disabled = :disabled WHERE u_id = :id;";
+                rating = :rating, mime = :mime, image = :image, disabled = :disabled, verified = :verified
+                WHERE u_id = :id;";
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":displayName", $obj->getDisplayName());
@@ -79,6 +80,7 @@ class UserDAO implements UserDAOInterface
         $stmt->bindValue(":mime", $obj->getMime());
         $stmt->bindValue(":image", $obj->getImage());
         $stmt->bindValue(":disabled", $obj->isDisabled());
+        $stmt->bindValue(":verified", $obj->isVerified());
         $stmt->bindValue(":id", $obj->getId());
 
         if($stmt->execute()) {

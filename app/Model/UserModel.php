@@ -14,6 +14,7 @@ class UserModel
     private $mime;
     private $image;
     private $disabled;
+    private $verified;
 
     /**
      * UserModel constructor.
@@ -27,8 +28,10 @@ class UserModel
      * @param $mime;
      * @param $image;
      * @param $disabled
+     * @param $verified
      */
-    public function __construct($id, $displayName, $mail, $password, $ugId, $rating, $createdAt, $mime, $image, $disabled)
+    public function __construct($id, $displayName, $mail, $password, $ugId, $rating, $createdAt, $mime, $image,
+                                $disabled, $verified)
     {
         $this->id = $id;
         $this->displayName = htmlspecialchars(strip_tags($displayName));
@@ -40,6 +43,7 @@ class UserModel
         $this->mime = $mime;
         $this->image = $image;
         $this->disabled = $disabled;
+        $this->verified = $verified;
     }
 
     public function insertIntoDatabase($userDAO) {
@@ -47,13 +51,13 @@ class UserModel
     }
 
     public static function getFromDatabaseByMail($userDAO, $mail){
-        $tmp = $userDAO->readByMail($mail);
-        return new UserModel($tmp[0], $tmp[1], $tmp[2], $tmp[3], $tmp[4], $tmp[5], $tmp[6], $tmp[7], $tmp[8], $tmp[9]);
+        $row = $userDAO->readByMail($mail);
+        return self::getUserFromRow($row);
     }
 
     public static function getFromDatabaseById($userDAO, $id){
-        $tmp = $userDAO->read($id);
-        return new UserModel($tmp[0], $tmp[1], $tmp[2], $tmp[3], $tmp[4], $tmp[5], $tmp[6], $tmp[7], $tmp[8], $tmp[9]);
+        $row = $userDAO->read($id);
+        return self::getUserFromRow($row);
     }
 
 
@@ -77,6 +81,20 @@ class UserModel
     public function activateInDatabase($dao) {
         $this->setDisabled(0);
         $this->updateInDatabase($dao);
+    }
+
+    /**
+     * Set verified to 1 and update database
+     * @param $dao
+     */
+    public function verify($dao) {
+        $this->setVerified(1);
+        $this->updateInDatabase($dao);
+    }
+
+    private static function getUserFromRow($row) {
+        return new UserModel($row[0], $row[1], $row[2], $row[3], $row[4], $row[5],
+            $row[6], $row[7], $row[8], $row[9], $row[10]);
     }
 
     /**
@@ -236,6 +254,22 @@ class UserModel
     public function setDisabled($disabled)
     {
         $this->disabled = $disabled;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isVerified()
+    {
+        return $this->verified;
+    }
+
+    /**
+     * @param mixed $verified
+     */
+    public function setVerified($verified)
+    {
+        $this->verified = $verified;
     }
 
     public static function getUser($dao, $id) {

@@ -58,6 +58,7 @@ class RegisterController extends BaseController {
             Date::now(),
             $mime,
             $image,
+            0,
             0);
 
         $con = SQLITE::connectToSQLite();
