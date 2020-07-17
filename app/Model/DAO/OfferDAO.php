@@ -138,11 +138,13 @@ class OfferDAO implements OfferDAOInterface
                       AND age_years BETWEEN :ageMin and :ageMax 
                       AND size BETWEEN :sizeMin and :sizeMax 
                       AND weight BETWEEN :weightMin and :weightMax
-                      AND offer.active = 1;";
+                      AND offer.active = 1";
 
         if($bindSex):
             $sql .= " AND sex = :sex";
         endif;
+
+        $sql .= " LIMIT :limit OFFSET :offset;";
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":name", $keyedSearchValuesArray['name']);
@@ -153,6 +155,8 @@ class OfferDAO implements OfferDAOInterface
         $stmt->bindValue(":sizeMax", $keyedSearchValuesArray['sizeMax']);
         $stmt->bindValue(":weightMin", $keyedSearchValuesArray['weightMin']);
         $stmt->bindValue(":weightMax", $keyedSearchValuesArray['weightMax']);
+        $stmt->bindValue(":limit", $keyedSearchValuesArray['limit']);
+        $stmt->bindValue(":offset", $keyedSearchValuesArray['offset']);
 
         if($bindSex):
             $stmt->bindValue(":sex", $keyedSearchValuesArray['sex']);
