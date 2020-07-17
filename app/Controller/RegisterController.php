@@ -58,6 +58,7 @@ class RegisterController extends BaseController {
             Date::now(),
             $mime,
             $image,
+            0,
             0);
 
         $con = SQLITE::connectToSQLite();
@@ -83,5 +84,10 @@ class RegisterController extends BaseController {
         }
     }
 
-
+    public static function verify() {
+        require APP . 'View/shared/header.php';
+        require APP . 'View/register/header.php';
+        require APP . 'View/shared/nav.php';
+        require APP . 'View/shared/footer.php';
+    }
 }

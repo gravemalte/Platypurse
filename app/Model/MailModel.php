@@ -137,4 +137,8 @@ class MailModel {
     {
         $this->sendDate = $sendDate;
     }
+
+    public function exists(): bool {
+        return $this->getContent() != "";
+    }
 }

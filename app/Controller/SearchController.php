@@ -3,6 +3,7 @@ namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\OfferDAO;
 use Model\OfferModel;
 
 class SearchController extends BaseController
