@@ -52,18 +52,28 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
         }
     }
 
-    public function update($obj)
-    {
-        $sql = "UPDATE register_tokens SET active = :active WHERE token_id = :id;";
-        $stmt = $this->con->prepare($sql);
-        $stmt->bindValue(":active", $obj->isActive());
-        $stmt->bindValue(":id", $obj->getId());
+    public function deleteExpired() {
+        $sql = "DELETE FROM register_tokens WHERE expiration_date < date('now');";
 
+        $stmt = $this->con->prepare($sql);
 
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('RegisterTokenDAO update error');
+            throw new PDOException('RegisterTokenDAO deleteExpired error');
+        }
+    }
+
+    public function deleteForUser($id) {
+        $sql = "DELETE FROM register_tokens WHERE u_id = :userId;";
+
+        $stmt = $this->con->prepare($sql);
+        $stmt->bindValue(":userId", $id);
+
+        if($stmt->execute()) {
+            return true;
+        } else {
+            throw new PDOException('RegisterTokenDAO deleteForUser error');
         }
     }
 }

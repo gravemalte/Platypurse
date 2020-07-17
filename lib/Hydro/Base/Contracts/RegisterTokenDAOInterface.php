@@ -6,5 +6,6 @@ interface RegisterTokenDAOInterface
 {
     public function create($obj);
     public function read($id);
-    public function update($obj);
+    public function deleteExpired();
+    public function deleteForUser($id);
 }

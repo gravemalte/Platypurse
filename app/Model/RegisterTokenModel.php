@@ -38,6 +38,14 @@ class RegisterTokenModel {
             UserModel::getFromDatabaseById(new UserDAO($dao->getCon()),$result[2]),
             $result[3], $result[4]);
     }
+
+    public static function deleteExpiredFromDatabase($dao) {
+        return $dao->deleteExpired();
+    }
+
+    public static function deleteForUserFromDatabase($dao, $userId) {
+        return $dao->deleteForUser($userId);
+    }
     
     public function updateInDatabase($dao) {
         return $dao->update($this);
