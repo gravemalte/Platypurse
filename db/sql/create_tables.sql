@@ -176,7 +176,6 @@ CREATE TABLE register_tokens (
   token TEXT NOT NULL,
   u_id INTEGER NOT NULL,
   expiration_date TEXT NOT NULL,
-  active INTEGER DEFAULT 1,
   CONSTRAINT fk_user
     FOREIGN KEY (u_id)
     REFERENCES user(u_id)
