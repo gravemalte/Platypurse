@@ -4,11 +4,10 @@ namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
-use Model\DAO\DAOUser;
+use Model\DAO\UserDAO;
 use Model\UserModel;
 use Hydro\Helper\Date;
 use PDOException;
-
 
 class RegisterController extends BaseController {
 
@@ -72,12 +71,13 @@ class RegisterController extends BaseController {
             Date::now(),
             $mime,
             $image,
+            0,
             0);
 
         $con = SQLITE::connectToSQLite();
         try {
             $con->beginTransaction();
-            $userDao = new DAOUser($con);
+            $userDao = new UserDAO($con);
             $check = $userModel->insertIntoDatabase($userDao);
 
             if($check){
@@ -97,5 +97,10 @@ class RegisterController extends BaseController {
         }
     }
 
-
+    public static function verify() {
+        require APP . 'View/shared/header.php';
+        require APP . 'View/register/header.php';
+        require APP . 'View/shared/nav.php';
+        require APP . 'View/shared/footer.php';
+    }
 }

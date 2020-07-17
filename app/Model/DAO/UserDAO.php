@@ -1,10 +1,10 @@
 <?php
 namespace Model\DAO;
 
+use Hydro\Base\Contracts\UserDAOInterface;
 use PDOException;
-use Hydro\Base\Contracts\DAOContract;
 
-class DAOUser implements DAOContract
+class UserDAO implements UserDAOInterface
 {
     private $con;
 
@@ -16,7 +16,8 @@ class DAOUser implements DAOContract
 
     public function create($obj)
     {
-        $query = "INSERT INTO user(u_id, display_name, mail, password, ug_id, mime, image) VALUES (:userID, :displayName, :mail, :password, :ugID, :mime, :image)";
+        $query = "INSERT INTO user(u_id, display_name, mail, password, ug_id, mime, image)
+            VALUES (:userID, :displayName, :mail, :password, :ugID, :mime, :image);";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":userID", $obj->getId());
         $stmt->bindValue(":displayName", $obj->getDisplayName());
@@ -29,32 +30,46 @@ class DAOUser implements DAOContract
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
-            $sql = "SELECT * FROM user WHERE u_id = $id";
+            $sql = "SELECT * FROM user WHERE u_id = $id;";
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('UserModel statement exception');
+            return new PDOException('UserDAO create error');
         }
 
     }
 
     public function read($id)
     {
-        $query = "SELECT * FROM user WHERE u_id = :id";
+        $query = "SELECT * FROM user WHERE u_id = :id;";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $id);
 
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('UserModel select error...');
+            throw new PDOException('UserDAO read error');
+        }
+    }
+
+    public function readByMail($mail)
+    {
+        $query = "SELECT * FROM user WHERE mail = :mail;";
+        $stmt = $this->con->prepare($query);
+        $stmt->bindValue(":mail", $mail);
+
+        if($stmt->execute()){
+            return $stmt->fetch();
+        } else {
+            throw new PDOException('UserDAO readByMail error');
         }
     }
 
     public function update($obj)
     {
         $sql = "UPDATE user SET display_name = :displayName, mail = :mail, password = :password, ug_id = :ugId,
-                rating = :rating, mime = :mime, image = :image, disabled = :disabled WHERE u_id = :id";
+                rating = :rating, mime = :mime, image = :image, disabled = :disabled, verified = :verified
+                WHERE u_id = :id;";
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":displayName", $obj->getDisplayName());
@@ -65,43 +80,13 @@ class DAOUser implements DAOContract
         $stmt->bindValue(":mime", $obj->getMime());
         $stmt->bindValue(":image", $obj->getImage());
         $stmt->bindValue(":disabled", $obj->isDisabled());
+        $stmt->bindValue(":verified", $obj->isVerified());
         $stmt->bindValue(":id", $obj->getId());
 
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('Update UserModel error...');
+            throw new PDOException('UserDAO update error');
         }
     }
-
-    public function delete($id)
-    {
-    }
-
-    public function readAll()
-    {
-        $sql = "SELECT * FROM user";
-        $stmt = $this->con->prepare($sql);
-
-        if($stmt->execute()) {
-            return $stmt->fetchAll();
-        } else {
-            throw new PDOException('Error UserModel readAll');
-        }
-    }
-
-    public function readByMail($mail)
-    {
-        $query = "SELECT * FROM user WHERE mail = :mail";
-        $stmt = $this->con->prepare($query);
-        $stmt->bindValue(":mail", $mail);
-
-        if($stmt->execute()){
-           return $stmt->fetch();
-        } else {
-            throw new PDOException('UserModel select mail error...');
-        }
-    }
-
-
 }

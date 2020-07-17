@@ -1,10 +1,9 @@
 <?php
-
 namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
-use Model\DAO\DAOOffer;
+use Model\DAO\OfferDAO;
 use Model\OfferImageModel;
 use Model\OfferModel;
 use Model\PlatypusModel;
@@ -36,7 +35,7 @@ class CreateController extends BaseController
             exit();
         }
 
-        $dao = new DAOOffer(SQLite::connectToSQLite());
+        $dao = new OfferDAO(SQLite::connectToSQLite());
         $newOfferId = hexdec(uniqid());
         $isUpdate = isset($_POST["offerId"]);
         $imageUpdate = file_exists($_FILES['image']['tmp_name']);
@@ -85,7 +84,7 @@ class CreateController extends BaseController
         $con = SQLite::connectToSQLite();
         try {
             $con->beginTransaction();
-            $dao = new DAOOffer(SQLite::connectToSQLite());
+            $dao = new OfferDAO(SQLite::connectToSQLite());
 
             if($isUpdate):
                 $existingOfferId = $_POST["offerId"];

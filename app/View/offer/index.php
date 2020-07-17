@@ -6,9 +6,11 @@ OfferController::offerClickPlusOne($offer);
 $seller = $offer->getUser();
 $zipcode = $offer->getZipcode();
 $zipcoordinates = $offer->getZipCoordinates();
-$location = $zipcoordinates->getName();
-$map_lat = $zipcoordinates->getLat();
-$map_lon = $zipcoordinates->getLon();
+if($zipcoordinates):
+    $location = $zipcoordinates->getName();
+    $map_lat = $zipcoordinates->getLat();
+    $map_lon = $zipcoordinates->getLon();
+endif;
 $isSaved = false;
 
 if(isset($_SESSION['currentUser'])):

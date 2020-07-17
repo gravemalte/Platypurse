@@ -1,11 +1,10 @@
 <?php
-
 namespace Controller;
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\OfferDAO;
 use Model\OfferModel;
-use Model\DAO\DAOOffer;
 
 class HomeController extends BaseController
 {
@@ -23,10 +22,10 @@ class HomeController extends BaseController
     }
 
     public function getNewestOffers() {
-        return OfferModel::getNewestOffers(new DAOOffer(SQLite::connectToSQLite()));
+        return OfferModel::getNewestOffers(new OfferDAO(SQLite::connectToSQLite()));
     }
 
     public function getHotOffer() {
-        return OfferModel::getHotOffer(new DAOOffer(SQLite::connectToSQLite()));
+        return OfferModel::getHotOffer(new OfferDAO(SQLite::connectToSQLite()));
     }
 }

@@ -2,12 +2,12 @@
 
 namespace Model;
 
-use Model\DAO\DAOOfferImages;
-use Model\DAO\DAOUser;
-use Model\DAO\DAOPlatypus;
 use Hydro\Helper\Date;
-use Model\DAO\DAOZipCoordinates;
 use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\OfferImagesDAO;
+use Model\DAO\PlatypusDAO;
+use Model\DAO\UserDAO;
+use Model\DAO\ZipCoordinatesDAO;
 
 class OfferModel {
     private $id;
@@ -60,10 +60,10 @@ class OfferModel {
     }
 
     public function insertIntoDatabase($offerDAO) {
-        if($this->getPlatypus()->insertIntoDatabase(new DAOPlatypus($offerDAO->getCon()))):
+        if($this->getPlatypus()->insertIntoDatabase(new PlatypusDAO($offerDAO->getCon()))):
             if($offerDAO->create($this)):
                 foreach($this->getImages() as $image):
-                    $check = $image->insertIntoDatabase(new DAOOfferImages(($offerDAO->getCon())));
+                    $check = $image->insertIntoDatabase(new OfferImagesDAO(($offerDAO->getCon())));
                     if(!$check):
                         return false;
                     endif;
@@ -110,10 +110,10 @@ class OfferModel {
     }
 
     public function updateInDatabase($offerDAO) {
-        if($this->getPlatypus()->updateInDatabase(new DAOPlatypus($offerDAO->getCon()))):
+        if($this->getPlatypus()->updateInDatabase(new PlatypusDAO($offerDAO->getCon()))):
             if($offerDAO->update($this)):
                 foreach($this->getImages() as $image):
-                    $check = $image->updateInDatabase(new DAOOfferImages(($offerDAO->getCon())));
+                    $check = $image->updateInDatabase(new OfferImagesDAO(($offerDAO->getCon())));
                     if(!$check):
                         return false;
                     endif;
@@ -162,10 +162,10 @@ class OfferModel {
 
     private static function getOfferFromRow($row, $offerDAO) {
         return new OfferModel($row[0],
-            UserModel::getFromDatabaseById(new DAOUser($offerDAO->getCon()), $row[1]),
-            PlatypusModel::getFromDatabaseById(new DAOPlatypus($offerDAO->getCon()), $row[2]),
+            UserModel::getFromDatabaseById(new UserDAO($offerDAO->getCon()), $row[1]),
+            PlatypusModel::getFromDatabaseById(new PlatypusDAO($offerDAO->getCon()), $row[2]),
             $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9],
-            OfferImageModel::getFromDatabaseByOfferId(new DAOOfferImages($offerDAO->getCon()), $row[0]), $row[10]);
+            OfferImageModel::getFromDatabaseByOfferId(new OfferImagesDAO($offerDAO->getCon()), $row[0]), $row[10]);
     }
 
     /**
@@ -313,7 +313,7 @@ class OfferModel {
      * @return ZipCoordinatesModel
      */
     public function getZipCoordinates() {
-        $dao = new DAOZipCoordinates(SQLite::connectToSQLite());
+        $dao = new ZipCoordinatesDAO(SQLite::connectToSQLite());
         return ZipCoordinatesModel::getFromDatabaseByZipcode($dao, $this->zipcode);
     }
 

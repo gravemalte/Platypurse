@@ -1,11 +1,11 @@
 <?php
 namespace Model\DAO;
 
+use Hydro\Base\Contracts\PlatypusDAOInterface;
 use PDOException;
-use Hydro\Base\Contracts\DAOContract;
 
 
-class DAOPlatypus implements DAOContract
+class PlatypusDAO implements PlatypusDAOInterface
 {
     private $con;
 
@@ -18,7 +18,7 @@ class DAOPlatypus implements DAOContract
     public function create($obj)
     {
         $query = "INSERT INTO platypus(p_id, name, age_years, sex, size, weight)
-            VALUES (:platypusId, :name, :ageYears, :sex, :size, :weight)";
+            VALUES (:platypusId, :name, :ageYears, :sex, :size, :weight);";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":platypusId", $obj->getId());
         $stmt->bindValue(":name", $obj->getName());
@@ -29,32 +29,32 @@ class DAOPlatypus implements DAOContract
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
-            $sql = "SELECT * FROM platypus WHERE p_id = $id";
+            $sql = "SELECT * FROM platypus WHERE p_id = $id;";
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('DAOPlatypus create error');
+            return new PDOException('PlatypusDAO create error');
         }
 
     }
 
     public function read($id)
     {
-        $query = "SELECT * FROM platypus WHERE p_id = :id";
+        $query = "SELECT * FROM platypus WHERE p_id = :id;";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $id);
 
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('DAOPlatypus read error');
+            throw new PDOException('PlatypusDAO read error');
         }
     }
 
     public function update($obj)
     {
         $sql = "UPDATE platypus SET name = :name, age_years = :ageYears, sex = :sex, size = :size,
-                weight = :weight, active = :active WHERE p_id = :id";
+                weight = :weight, active = :active WHERE p_id = :id;";
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":name", $obj->getName());
@@ -68,23 +68,7 @@ class DAOPlatypus implements DAOContract
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('DAOPlatypus update error');
-        }
-    }
-
-    public function delete($id)
-    {
-    }
-
-    public function readAll()
-    {
-        $sql = "SELECT * FROM platypus";
-        $stmt = $this->con->prepare($sql);
-
-        if($stmt->execute()) {
-            return $stmt->fetchAll();
-        } else {
-            throw new PDOException('DAOPlatypus readAll error');
+            throw new PDOException('PlatypusDAO update error');
         }
     }
 }

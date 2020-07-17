@@ -1,14 +1,11 @@
 <?php
-
-
 namespace Controller;
-
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
-use Model\DAO\DAOOffer;
-use Model\DAO\DAOUser;
-use Model\DAO\DAOUserRating;
+use Model\DAO\OfferDAO;
+use Model\DAO\UserDAO;
+use Model\DAO\UserRatingDAO;
 use Model\UserModel;
 use Model\OfferModel;
 use Model\UserRatingModel;
@@ -40,7 +37,7 @@ class ProfileController extends BaseController
 
     public static function getUser($id, $dao = null){
         if(!isset($dao)):
-            $dao = new DAOUser(SQLite::connectToSQLite());
+            $dao = new UserDAO(SQLite::connectToSQLite());
         endif;
         return UserModel::getUser($dao, $id);
     }
@@ -54,22 +51,22 @@ class ProfileController extends BaseController
 
     public static function getOffersByUserId() {
         $id = ProfileController::getDisplayUser()->getId();
-        return OfferModel::getFromDatabaseByUserId(new DAOOffer(SQLite::connectToSQLite()),$id);
+        return OfferModel::getFromDatabaseByUserId(new OfferDAO(SQLite::connectToSQLite()),$id);
     }
 
     public static function getSavedOffersForCurrentUser() {
         $id = ProfileController::getDisplayUser()->getId();
-        return OfferModel::getSavedOffersFromDatabaseByUserId(new DAOOffer(SQLite::connectToSQLite()), $id);
+        return OfferModel::getSavedOffersFromDatabaseByUserId(new OfferDAO(SQLite::connectToSQLite()), $id);
     }
 
     public static function getRatingForUserId($userId) {
-        $userRatingDao = new DAOUserRating(SQLite::connectToSQLite());
+        $userRatingDao = new UserRatingDAO(SQLite::connectToSQLite());
         return UserRatingModel::getRatingFromDatabaseForUserId($userRatingDao, $userId);
     }
 
     public static function insertRating($fromUserId, $forUserId, $rating) {
         if(isset($_SESSION["currentUser"])):
-            $dao = new DAOUserRating(SQLite::connectToSQLite());
+            $dao = new UserRatingDAO(SQLite::connectToSQLite());
 
             $userRating = UserRatingModel::getFromDatabaseByFromUserIdAndForUserId($dao, $fromUserId, $forUserId);
             if(empty($userRating->getId())):
@@ -92,7 +89,7 @@ class ProfileController extends BaseController
     }
 
     public static function disableUser() {
-        $dao = new DAOUser(SQLite::connectToSQLite());
+        $dao = new UserDAO(SQLite::connectToSQLite());
         $user = UserModel::getFromDatabaseById($dao, $_POST['user_id']);
 
         $user->deactivateInDatabase($dao);
@@ -101,7 +98,7 @@ class ProfileController extends BaseController
     }
 
     public static function enableUser() {
-        $dao = new DAOUser(SQLite::connectToSQLite());
+        $dao = new UserDAO(SQLite::connectToSQLite());
         $user = UserModel::getFromDatabaseById($dao, $_POST['user_id']);
 
         $user->activateInDatabase($dao);

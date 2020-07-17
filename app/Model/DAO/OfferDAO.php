@@ -1,10 +1,10 @@
 <?php
 namespace Model\DAO;
 
+use Hydro\Base\Contracts\OfferDAOInterface;
 use PDOException;
-use Hydro\Base\Contracts\DAOContract;
 
-class DAOOffer implements DAOContract
+class OfferDAO implements OfferDAOInterface
 {
     private $con;
 
@@ -17,11 +17,10 @@ class DAOOffer implements DAOContract
         return $this->con;
     }
 
-
     public function create($obj)
     {
         $query = "INSERT INTO offer (o_id, u_id, p_id, price, negotiable, description, zipcode) 
-            VALUES (:offerId, :userId, :platypusId, :price, :negotiable, :description, :zipCode)";
+            VALUES (:offerId, :userId, :platypusId, :price, :negotiable, :description, :zipCode);";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":offerId", $obj->getId());
         $stmt->bindValue(":userId", $obj->getUser()->getId());
@@ -33,31 +32,31 @@ class DAOOffer implements DAOContract
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
-            $sql = "SELECT * FROM offer WHERE o_id = $id";
+            $sql = "SELECT * FROM offer WHERE o_id = $id;";
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('DAOOffer create error');
+            return new PDOException('OfferDAO create error');
         }
 
     }
 
     public function read($id) {
-        $query = "SELECT * FROM offer WHERE o_id = :id";
+        $query = "SELECT * FROM offer WHERE o_id = :id;";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $id);
 
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('DAOOffer read error');
+            throw new PDOException('OfferDAO read error');
         }
     }
 
     public function update($obj)
     {
         $sql = "UPDATE offer SET price = :price, negotiable = :negotiable, description = :description,
-                 zipcode = :zipcode, clicks = :clicks, edit_date = :edit_date, active = :active WHERE o_id = :id";
+                 zipcode = :zipcode, clicks = :clicks, edit_date = :edit_date, active = :active WHERE o_id = :id;";
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":price", $obj->getPriceUnformatted());
@@ -72,47 +71,31 @@ class DAOOffer implements DAOContract
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('DAOOffer update error');
-        }
-    }
-
-    public function delete($id)
-    {
-    }
-
-    public function readAll()
-    {
-        $sql = "SELECT * FROM offer";
-        $stmt = $this->con->prepare($sql);
-
-        if($stmt->execute()) {
-            return $stmt->fetchAll();
-        } else {
-            throw new PDOException('DAOOffer readAll error');
+            throw new PDOException('OfferDAO update error');
         }
     }
 
     public function readHot()
     {
-        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY clicks desc LIMIT 1";
+        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY clicks desc LIMIT 1;";
         $stmt = $this->con->prepare($sql);
 
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('DAOOffer readAll error');
+            throw new PDOException('OfferDAO readAll error');
         }
     }
 
     public function readNewest()
     {
-        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY create_date desc LIMIT 9";
+        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY create_date desc LIMIT 9;";
         $stmt = $this->con->prepare($sql);
 
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('DAOOffer readAll error');
+            throw new PDOException('OfferDAO readAll error');
         }
     }
 
@@ -120,27 +103,27 @@ class DAOOffer implements DAOContract
     {
         $sql = "SELECT * FROM offer
                     LEFT JOIN saved_offers so on offer.o_id = so.o_id
-                    WHERE so.u_id = :userId AND so.active=1";
+                    WHERE so.u_id = :userId AND so.active=1;";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":userId", $userId);
 
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('DAOOffer readByUserId error');
+            throw new PDOException('OfferDAO readByUserId error');
         }
     }
 
     public function readOffersByUserId($userId)
     {
-        $sql = "SELECT * FROM offer WHERE u_id = :userId";
+        $sql = "SELECT * FROM offer WHERE u_id = :userId;";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":userId", $userId);
 
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('DAOOffer readOffersByUserId error');
+            throw new PDOException('OfferDAO readOffersByUserId error');
         }
     }
 
@@ -161,6 +144,8 @@ class DAOOffer implements DAOContract
             $sql .= " AND sex = :sex";
         endif;
 
+        $sql .= " LIMIT :limit OFFSET :offset;";
+
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":name", $keyedSearchValuesArray['name']);
         $stmt->bindValue(":description", $keyedSearchValuesArray['description']);
@@ -170,6 +155,8 @@ class DAOOffer implements DAOContract
         $stmt->bindValue(":sizeMax", $keyedSearchValuesArray['sizeMax']);
         $stmt->bindValue(":weightMin", $keyedSearchValuesArray['weightMin']);
         $stmt->bindValue(":weightMax", $keyedSearchValuesArray['weightMax']);
+        $stmt->bindValue(":limit", $keyedSearchValuesArray['limit']);
+        $stmt->bindValue(":offset", $keyedSearchValuesArray['offset']);
 
         if($bindSex):
             $stmt->bindValue(":sex", $keyedSearchValuesArray['sex']);
@@ -178,7 +165,7 @@ class DAOOffer implements DAOContract
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('DAOOffer readSearchResults error');
+            throw new PDOException('OfferDAO readSearchResults error');
         }
     }
 }

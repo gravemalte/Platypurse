@@ -1,12 +1,9 @@
 <?php
-
-
 namespace Controller;
-
 
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
-use Model\DAO\DAOUser;
+use Model\DAO\UserDAO;
 use PDOException;
 
 class EditProfileController extends BaseController {
@@ -60,7 +57,7 @@ class EditProfileController extends BaseController {
         $con = SQLite::connectToSQLite();
         try {
             $con->beginTransaction();
-            $dao = new DAOUser($con);
+            $dao = new UserDAO($con);
 
             $user = ProfileController::getUser($id, $dao);
 

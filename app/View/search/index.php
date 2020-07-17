@@ -113,7 +113,7 @@ endif; ?>
     <div class="main-area">
         <div class="search-results-container">
             <?php
-            $offers = SearchController::getOffers($searchText, $sex, $age, $size, $weight);
+            $offers = SearchController::getOffers(0, $searchText, $sex, $age, $size, $weight);
             if (!empty($offers)): ?>
             <div class="offer-list-container">
                 <?php foreach ($offers as $offer): ?>

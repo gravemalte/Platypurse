@@ -23,6 +23,7 @@ CREATE TABLE user (
   mime TEXT,
   image BLOB,
   disabled INTEGER DEFAULT 0,
+  verified INTEGER DEFAULT 0,
   CONSTRAINT fk_user_group
     FOREIGN KEY (ug_id)
     REFERENCES user_group(ug_id)
@@ -57,7 +58,7 @@ CREATE TABLE offer (
   p_id INTEGER NOT NULL,
   price INTEGER NOT NULL,
   negotiable INTEGER DEFAULT 0,
-  description TEXT DEFAULT "",
+  description TEXT DEFAULT '',
   zipcode TEXT,
   clicks INTEGER DEFAULT 0,
   create_date TEXT DEFAULT (datetime('now','localtime')),
@@ -123,6 +124,7 @@ CREATE TABLE user_reports (
   reporter_u_id INTEGER NOT NULL,
   rr_id INTEGER NOT NULL,
   message text,
+  active INTEGER DEFAULT 1,
   CONSTRAINT fk_user_reported
     FOREIGN KEY (reported_u_id)
     REFERENCES user(u_id),
@@ -140,6 +142,7 @@ CREATE TABLE offer_reports (
   reporter_u_id INTEGER NOT NULL,
   rr_id INTEGER NOT NULL,
   message text,
+  active INTEGER DEFAULT 1,
   CONSTRAINT fk_offer_reported
     FOREIGN KEY (reported_o_id)
     REFERENCES offer(o_id),
@@ -154,4 +157,26 @@ CREATE TABLE offer_reports (
 CREATE TABLE log (
   l_id INTEGER PRIMARY KEY AUTOINCREMENT,
   message text
+);
+
+CREATE TABLE mails (
+  m_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  content TEXT NOT NULL,
+  receiver_name TEXT,
+  receiver_id INTEGER NOT NULL,
+  receiver_mail TEXT NOT NULL,
+  send_date TEXT DEFAULT (datetime('now','localtime')),
+  CONSTRAINT fk_user
+    FOREIGN KEY (receiver_id)
+    REFERENCES user(u_id)
+);
+
+CREATE TABLE register_tokens (
+  token_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  token TEXT NOT NULL,
+  u_id INTEGER NOT NULL,
+  expiration_date TEXT NOT NULL,
+  CONSTRAINT fk_user
+    FOREIGN KEY (u_id)
+    REFERENCES user(u_id)
 );
