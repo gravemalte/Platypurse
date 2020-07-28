@@ -46,7 +46,9 @@ class SearchController extends BaseController
             $keyedSearchValuesArray['sex'] = $sex;
         endif;
 
-        $offerDao = new OfferDAO(SQLite::connectToSQLite());
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $offerDao = new OfferDAO($con);
         return OfferModel::getSearchResultsFromDatabase($offerDao, $keyedSearchValuesArray);
     }
 }

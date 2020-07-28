@@ -36,7 +36,9 @@ class LoginController extends BaseController
         $userSentPasswd = $_POST['user-passwd'];
 
 
-        $user = UserModel::getFromDatabaseByMail(new UserDAO(SQLite::connectToSQLite()), $userSentMail);
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $user = UserModel::getFromDatabaseByMail(new UserDAO($con), $userSentMail);
         if ($user):
             if (password_verify($userSentPasswd, $user->getPassword())) {
                 $_SESSION['currentUser'] = $user;
@@ -48,15 +50,9 @@ class LoginController extends BaseController
         header('location: ' . URL . 'login');
     }
 
-    private function checkSession()
-    {
-    }
-
     public function logout()
     {
         session_destroy();
         header('location: ' . URL);
     }
-
-
 }

@@ -30,7 +30,9 @@ class OfferController extends BaseController
 
     public static function getOffer($id, $offerDAO = null) {
         if(!isset($offerDAO)):
-            $offerDAO = new OfferDAO(SQLite::connectToSQLite());
+            $sqlite = new SQLite();
+            $con = $sqlite->getCon();
+            $offerDAO = new OfferDAO($con);
         endif;
         return OfferModel::getFromDatabase($offerDAO, $id);
     }
@@ -39,9 +41,11 @@ class OfferController extends BaseController
         if(isset($_SESSION["currentUser"])):
             $userId = $_SESSION["currentUser"]->getId();
             $offerId = $_POST["offerId"];
-            $con = SQLite::connectToSQLite();
+
+            $sqlite = new SQLite();
             try {
-                $con->beginTransaction();
+                $sqlite->openTransaction();
+                $con = $sqlite->getCon();
                 $dao = new SavedOffersDAO($con);
 
                 $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, false);
@@ -49,23 +53,24 @@ class OfferController extends BaseController
                     $savedOffer = new SavedOfferModel(hexdec(uniqid()),
                         $userId, $offerId, 1);
 
-                    $insertRow = $savedOffer->insertIntoDatabase($dao);
-                    // TODO: Check why this below works
-                    $check = empty($insertRow[0]);
+                    $check = $savedOffer->insertIntoDatabase($dao);
                 else:
                     $savedOffer->setActive(1);
                     $check = $savedOffer->updateInDatabase($dao);
                 endif;
 
+                $sqlite->closeTransaction($check);
                 if($check):
-                    $con->commit();
                     header('location: ' . URL . 'profile?id=' . $userId);
+                    exit();
+                else:
+                    header('location: ' . URL . 'error/databaseError');
                     exit();
                 endif;
             } catch (PDOException $e) {
-                // TODO: Error handling
-                // print "error go brr";
-                $con->rollback();
+                $sqlite->closeTransaction(false);
+                header('location: ' . URL . 'error/databaseError');
+                exit();
             }
         endif;
         header('location: ' . URL . 'login');
@@ -75,26 +80,24 @@ class OfferController extends BaseController
     public static function removeFromSavedList() {
         $userId = $_SESSION["currentUser"]->getId();
         $offerId = $_POST["offerId"];
-        $con = SQLite::connectToSQLite();
 
+        $sqlite = new SQLite();
         try {
-            $con->beginTransaction();
-            $dao = new SavedOffersDAO(SQLite::connectToSQLite());
+            $con = $sqlite->getCon();
+            $sqlite->openTransaction();
+            $dao = new SavedOffersDAO($con);
 
             $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, true);
             $savedOffer->setActive(0);
 
             $check = $savedOffer->updateInDatabase($dao);
 
-            if($check):
-                $con->commit();
-                header('location: ' . URL . 'profile?id=' . $userId);
-                exit();
-            endif;
+
+            $sqlite->closeTransaction($check);
         } catch (PDOException $e) {
-            // TODO: Error handling
-            // print "error go brr";
-            $con->rollback();
+            $sqlite->closeTransaction(false);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
         }
 
         header('location: ' . URL . 'profile?id=' . $userId);
@@ -103,7 +106,9 @@ class OfferController extends BaseController
 
     public static function isOfferInSavedList($offerId) {
         $userId = $_SESSION["currentUser"]->getId();
-        $dao = new SavedOffersDAO(SQLite::connectToSQLite());
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new SavedOffersDAO($con);
 
         $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, true);
 
@@ -115,17 +120,18 @@ class OfferController extends BaseController
     }
 
     public static function offerClickPlusOne($offer) {
-        $con = SQLite::connectToSQLite();
+        $sqlite = new SQLite();
 
         try {
-            $con->beginTransaction();
+            $sqlite->openTransaction();
+            $con = $sqlite->getCon();
             $dao = new OfferDAO($con);
             $offer->offerClickPlusOne($dao);
-            $con->commit();
+            $sqlite->closeTransaction(true);
         } catch (PDOException $e) {
-            // TODO: Error handling
-            // print "error go brr";
-            $con->rollback();
+            $sqlite->closeTransaction(true);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
         }
     }
 
@@ -137,20 +143,19 @@ class OfferController extends BaseController
             header('location: ' . URL . 'login');
         }
 
-        $con = SQLite::connectToSQLite();
-
+        $sqlite = new SQLite();
         try {
-            $con->beginTransaction();
+            $sqlite->openTransaction();
+            $con = $sqlite->getCon();
+
             $dao = new OfferDAO($con);
             $offer = $this->getOffer($_POST['offerId'], $dao);
             $check = $offer->deactivateInDatabase($dao);
-            if($check):
-                $con->commit();
-            endif;
+            $sqlite->closeTransaction($check);
         } catch (PDOException $e) {
-            // TODO: Error handling
-            // print "error go brr";
-            $con->rollback();
+            $sqlite->closeTransaction(false);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
         }
 
         header('location: ' . URL);

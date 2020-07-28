@@ -60,7 +60,9 @@ class RegisterTokenModel {
         $active = true;
 
         $token = new self($id, $token, $user, $expirationDate, $active);
-        $dao = new RegisterTokenDAO(SQLite::connectToSQLite());
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new RegisterTokenDAO($con);
         return $token->insertIntoDatabase($dao);
     }
 

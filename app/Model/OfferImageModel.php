@@ -32,12 +32,7 @@ class OfferImageModel {
 
     public static function getFromDatabaseByOfferId($offerImageDAO, $offerId) {
         $result = $offerImageDAO->readByOfferId($offerId);
-        $returnArray = array();
-        foreach($result as $row):
-            $returnArray[] = new OfferImageModel($row[0], $row[1], $row[2], $row[3], $row[4]);
-        endforeach;
-
-        return $returnArray;
+        return new OfferImageModel($result[0], $result[1], $result[2], $result[3], $result[4]);
     }
     
     public function updateInDatabase($dao) {

@@ -53,7 +53,7 @@ class SavedOffersDAO implements SavedOffersDAOInterface
     {
         $sql = "SELECT * FROM saved_offers
                     WHERE u_id = :userId
-                    AND o_id = :offerId;";
+                    AND o_id = :offerId ";
 
         if($withActives):
             $sql .= "AND active = 1";

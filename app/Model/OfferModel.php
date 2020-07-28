@@ -4,7 +4,7 @@ namespace Model;
 
 use Hydro\Helper\Date;
 use Hydro\Base\Database\Driver\SQLite;
-use Model\DAO\OfferImagesDAO;
+use Model\DAO\OfferImageDAO;
 use Model\DAO\PlatypusDAO;
 use Model\DAO\UserDAO;
 use Model\DAO\ZipCoordinatesDAO;
@@ -20,7 +20,7 @@ class OfferModel {
     private $clicks;
     private $create_date;
     private $edit_date;
-    private $images;
+    private $image;
     private $active;
 
     /**
@@ -35,11 +35,11 @@ class OfferModel {
      * @param $clicks
      * @param $create_date
      * @param $edit_date
-     * @param $images
+     * @param $image
      * @param $active
      */
     public function __construct($id, $user, $platypus, $price, $negotiable, $description,
-                                $zipcode, $clicks, $create_date, $edit_date, $images, $active = 1)
+                                $zipcode, $clicks, $create_date, $edit_date, $image, $active = 1)
     {
         if(empty($create_date)):
             $create_date = Date::now();
@@ -55,19 +55,17 @@ class OfferModel {
         $this->clicks = $clicks;
         $this->create_date = $create_date;
         $this->edit_date = $edit_date;
-        $this->images = $images;
+        $this->image = $image;
         $this->active = $active;
     }
 
     public function insertIntoDatabase($offerDAO) {
         if($this->getPlatypus()->insertIntoDatabase(new PlatypusDAO($offerDAO->getCon()))):
             if($offerDAO->create($this)):
-                foreach($this->getImages() as $image):
-                    $check = $image->insertIntoDatabase(new OfferImagesDAO(($offerDAO->getCon())));
-                    if(!$check):
-                        return false;
-                    endif;
-                endforeach;
+                $check = $this->getImage()->insertIntoDatabase(new OfferImageDAO(($offerDAO->getCon())));
+                if(!empty($check)):
+                    return false;
+                endif;
                 return true;
             endif;
         endif;
@@ -112,12 +110,10 @@ class OfferModel {
     public function updateInDatabase($offerDAO) {
         if($this->getPlatypus()->updateInDatabase(new PlatypusDAO($offerDAO->getCon()))):
             if($offerDAO->update($this)):
-                foreach($this->getImages() as $image):
-                    $check = $image->updateInDatabase(new OfferImagesDAO(($offerDAO->getCon())));
-                    if(!$check):
-                        return false;
-                    endif;
-                endforeach;
+                $check = $this->getImage()->updateInDatabase(new OfferImageDAO(($offerDAO->getCon())));
+                if(!$check):
+                    return false;
+                endif;
                 return true;
             endif;
         endif;
@@ -165,7 +161,7 @@ class OfferModel {
             UserModel::getFromDatabaseById(new UserDAO($offerDAO->getCon()), $row[1]),
             PlatypusModel::getFromDatabaseById(new PlatypusDAO($offerDAO->getCon()), $row[2]),
             $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9],
-            OfferImageModel::getFromDatabaseByOfferId(new OfferImagesDAO($offerDAO->getCon()), $row[0]), $row[10]);
+            OfferImageModel::getFromDatabaseByOfferId(new OfferImageDAO($offerDAO->getCon()), $row[0]), $row[10]);
     }
 
     /**
@@ -313,7 +309,9 @@ class OfferModel {
      * @return ZipCoordinatesModel
      */
     public function getZipCoordinates() {
-        $dao = new ZipCoordinatesDAO(SQLite::connectToSQLite());
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new ZipCoordinatesDAO($con);
         return ZipCoordinatesModel::getFromDatabaseByZipcode($dao, $this->zipcode);
     }
 
@@ -368,27 +366,17 @@ class OfferModel {
     /**
      * @return mixed
      */
-    public function getImages()
+    public function getImage()
     {
-        return $this->images;
+        return $this->image;
     }
 
     /**
-     * @param mixed $images
+     * @param mixed $image
      */
-    public function setImages($images)
+    public function setImage($image)
     {
-        $this->images = $images;
-    }
-
-    public function getImageOnPosition($pos) {
-        $images = $this->getImages();
-        if(!empty($images) && count($images) >= $pos):
-            $image = $images[$pos];
-            return $image->getSrc();
-        else:
-            return null;
-        endif;
+        $this->image = $image;
     }
 
     /**

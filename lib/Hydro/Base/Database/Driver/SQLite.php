@@ -4,15 +4,33 @@
 namespace Hydro\Base\Database\Driver;
 
 use PDO;
-use PDOException;
 
 class SQLite
 {
+    private $con;
 
-    /** Opens a connection to the database.
-     * @return PDO
+    /**
+     * SQLite constructor.
      */
-    public static function connectToSQLite(){
-        return new PDO('sqlite:' . DB_FILE);
+    public function __construct()
+    {
+        $this->con = new PDO('sqlite:' . DB_FILE);;
+    }
+
+    public function getCon() {
+        return $this->con;
+    }
+
+    public function openTransaction() {
+        $this->con->beginTransaction();
+    }
+
+    public function closeTransaction($success) {
+        if($success):
+            $this->con->commit();
+        else:
+            print "lol nein";
+            $this->con->rollback();
+        endif;
     }
 }

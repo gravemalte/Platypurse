@@ -74,26 +74,26 @@ class RegisterController extends BaseController {
             0,
             0);
 
-        $con = SQLITE::connectToSQLite();
+        $sqlite = new SQLite();
         try {
-            $con->beginTransaction();
+            $sqlite->openTransaction();
+            $con = $sqlite->getCon();
             $userDao = new UserDAO($con);
             $check = $userModel->insertIntoDatabase($userDao);
 
+            $sqlite->closeTransaction($check);
+            unset($userModel);
+
             if($check){
-                $con->commit();
-                unset($userModel);
                 header('location: '. URL . 'login');
             } else {
-                $con->rollback();
-                unset($userModel);
                 $_SESSION['register-error'] = true;
                 header('location: '. URL . 'register');
             }
         } catch (PDOException $e) {
-            // TODO: Error handling
-            // print "error go brr";
-            $con->rollback();
+            $sqlite->closeTransaction(false);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
         }
     }
 

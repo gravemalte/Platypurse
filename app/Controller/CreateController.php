@@ -35,7 +35,6 @@ class CreateController extends BaseController
             exit();
         }
 
-        $dao = new OfferDAO(SQLite::connectToSQLite());
         $newOfferId = hexdec(uniqid());
         $isUpdate = isset($_POST["offerId"]);
         $imageUpdate = file_exists($_FILES['image']['tmp_name']);
@@ -51,9 +50,7 @@ class CreateController extends BaseController
             $_POST["weight"],
             1);
 
-        $images = array();
         if($imageUpdate):
-            // TODO: When gallery is implemented, loop through multiple images
             $mime = $_FILES['image']['type'];
             $image = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
         else:
@@ -66,7 +63,6 @@ class CreateController extends BaseController
             0,
             $mime,
             $image);
-        $images[] = $image;
 
         $newOffer = new OfferModel($newOfferId,
             $offerUser,
@@ -78,13 +74,14 @@ class CreateController extends BaseController
             0,
             Date::now(),
             null,
-            $images,
+            $image,
             1);
 
-        $con = SQLite::connectToSQLite();
+        $sqlite = new SQLite();
         try {
-            $con->beginTransaction();
-            $dao = new OfferDAO(SQLite::connectToSQLite());
+            $sqlite->openTransaction();
+            $con = $sqlite->getCon();
+            $dao = new OfferDAO($con);
 
             if($isUpdate):
                 $existingOfferId = $_POST["offerId"];
@@ -101,14 +98,17 @@ class CreateController extends BaseController
                 $newOffer->setEditDate(Date::now());
                 $newOffer->setActive($existingOffer->isActive());
 
-                foreach($newOffer->getImages() as $key=>$image):
-                    $image->setOfferId($existingOfferId);
-                    $image->setId($existingOffer->getImages()[$key]->getId());
-                    if(!$imageUpdate):
-                        $image->setMime($existingOffer->getImages()[$key]->getMime());
-                        $image->setImage($existingOffer->getImages()[$key]->getImage());
-                    endif;
-                endforeach;
+                $newOffer->getImage()->setOfferId($existingOfferId);
+                $newOffer->getImage()->setId($existingOffer->getImage()->getId());
+                if(!$imageUpdate):
+                    $newOffer->getImage()->setMime($existingOffer->getImage()->getMime());
+                    $newOffer->getImage()->setImage($existingOffer->getImage()->getImage());
+                endif;
+
+                //print_r($newOffer->getImage());
+                //print("\n");
+                //print_r($existingOffer->getImage());
+
             endif;
 
             if(!isset($existingOffer) || $offerUser->isAdmin() || $offerUser->getId() == $currentUser->getId()):
@@ -118,16 +118,19 @@ class CreateController extends BaseController
                     $check = $newOffer->insertIntoDatabase($dao);
                 endif;
 
+                $sqlite->closeTransaction($check);
                 if($check):
-                    $con->commit();
                     header('location: ' . URL . 'offer?id=' . $newOffer->getId());
+                    exit();
+                else:
+                    header('location: ' . URL . 'error/databaseError');
                     exit();
                 endif;
             endif;
         } catch (PDOException $e) {
-            // TODO: Error handling
-            // print "error go brr";
-            $con->rollback();
+            $sqlite->closeTransaction(false);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
         }
         header('location: ' . URL . 'offer?id=' .$newOffer->getId());
         exit();
