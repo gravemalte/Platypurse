@@ -51,6 +51,20 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
         }
     }
 
+    public function readByToken($token)
+    {
+        $sql = "SELECT * FROM register_tokens
+                    WHERE token = :token;";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bindValue(":token", $token);
+
+        if($stmt->execute()) {
+            return $stmt->fetch();
+        } else {
+            throw new PDOException('RegisterTokenDAO readByToken error');
+        }
+    }
+
     public function deleteExpired() {
         $sql = "DELETE FROM register_tokens WHERE expiration_date < date('now');";
 

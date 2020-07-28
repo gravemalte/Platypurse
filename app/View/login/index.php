@@ -9,6 +9,9 @@
                     <?php if(isset($_SESSION['user-login-error'])) : ?>
                         Die Kombination aus Email und Passwort sind ungültig.
                     <?php endif; ?>
+                    <?php if(isset($_SESSION['user-verify-error'])) : ?>
+                        Dieses Konto wurde noch nicht verifiziert.
+                    <?php endif; ?>
                 </p>
                 <div class="form-email-container">
                     <?php if(isset($_SESSION['user-login-error'])) : ?>

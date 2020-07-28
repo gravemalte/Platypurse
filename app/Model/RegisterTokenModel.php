@@ -2,6 +2,7 @@
 
 namespace Model;
 
+use http\Client\Curl\User;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\UserDAO;
 use Model\DAO\RegisterTokenDAO;
@@ -36,6 +37,16 @@ class RegisterTokenModel {
         return new RegisterTokenModel($result[0], $result[1],
             UserModel::getFromDatabaseById(new UserDAO($dao->getCon()),$result[2]),
             $result[3]);
+    }
+
+    public static function getFromDatabaseByToken($dao, $token) {
+        $result = $dao->readByToken($token);
+        return new RegisterTokenModel(
+            $result[0],
+            $result[1],
+            UserModel::getFromDatabaseById(new UserDAO($dao->getCon()), $result[2]),
+            $result[3]
+        );
     }
 
     public static function deleteExpiredFromDatabase($dao) {

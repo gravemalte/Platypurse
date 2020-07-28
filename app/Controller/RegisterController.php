@@ -2,10 +2,13 @@
 
 namespace Controller;
 
+use DateTime;
 use http\Client\Curl\User;
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\RegisterTokenDAO;
 use Model\DAO\UserDAO;
+use Model\RegisterTokenModel;
 use Model\UserModel;
 use Hydro\Helper\Date;
 use Hydro\Helper\FakeMailer;
@@ -98,7 +101,12 @@ class RegisterController extends BaseController {
             try {
                 $mailUser = UserModel::getFromDatabaseByMail($userDao, $userInputMail);
                 if (!empty($mailUser->getId())) {
-                    $mail = FakeMailer::sendDuplicateMail($mailUser);
+                    if ($mailUser->isVerified()) {
+                        $mail = FakeMailer::sendDuplicateMail($mailUser);
+                    }
+                    else {
+                        $mail = FakeMailer::sendVerifyMail($mailUser);
+                    }
                     header('location: '. URL . 'register/instructionsSent?id=' . $mail->getId());
                 }
                 else {
@@ -123,9 +131,35 @@ class RegisterController extends BaseController {
     }
 
     public static function verify() {
+        if (!isset($_GET['token'])) {
+            http_response_code(404);
+            header('location: ' . URL . 'error/pageNotFound');
+            exit();
+        }
+
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new RegisterTokenDAO($con);
+        $token = RegisterTokenModel::getFromDatabaseByToken($dao, $_GET['token']);
+
+        $user = $token->getUser();
+
         require APP . 'View/shared/header.php';
         require APP . 'View/register/header.php';
         require APP . 'View/shared/nav.php';
+
+        $expirationDate = new DateTime($token->getExpirationDate());
+        $nowDate = new DateTime("now");
+        if ($expirationDate >= $nowDate) {
+            $user->verify(new UserDAO($con));
+            $token->deleteForUserFromDatabase($dao, $user->getId());
+            require APP . 'View/register/verifySuccess.php';
+        }
+        else {
+            require APP . 'View/register/verifyFail.php';
+        }
+        $token->deleteExpiredFromDatabase($dao);
+
         require APP . 'View/shared/footer.php';
     }
 
