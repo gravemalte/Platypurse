@@ -1,9 +1,10 @@
-# Platypurse Dokumentation
-## inf016 Webprogrammierung - Gruppe K
-### [Malte Grave](https://github.com/daylien), [Tim Hesse](https://github.com/derPiepmatz), [Marvin Kuhlmann](https://github.com/ceitcher)
+<h1 align="center">Platypurse Dokumentation</h1>
+<h2 align="center">inf016 Webprogrammierung - Gruppe K</h2>
+<h3 align="center"><a href="https://github.com/daylien">Malte Grave</a>, <a href="https://github.com/derPiepmatz">Tim Hesse</a> , <a href="https://github.com/ceitcher"> Marvin Kuhlmann</a></h3>
 
-![Logo](public/assets/logo/png/logo_text.png)
-
+<p align="center">
+  <img width="60%" height="60%" src="public/assets/logo/png/logo_text.png">
+</p>
 
 
 # Inhaltsverzeichnis
