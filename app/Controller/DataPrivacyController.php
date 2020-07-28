@@ -4,7 +4,9 @@
 namespace Controller;
 
 
-class DataPrivacyController
+use Hydro\Base\Controller\BaseController;
+
+class DataPrivacyController extends BaseController
 {
 
     public function index(){

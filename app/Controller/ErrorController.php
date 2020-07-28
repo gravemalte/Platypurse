@@ -4,7 +4,9 @@
 namespace Controller;
 
 
-class ErrorController
+use Hydro\Base\Controller\BaseController;
+
+class ErrorController extends BaseController
 {
 
     public function index(){

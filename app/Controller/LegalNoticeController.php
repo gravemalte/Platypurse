@@ -4,7 +4,9 @@
 namespace Controller;
 
 
-class LegalNoticeController
+use Hydro\Base\Controller\BaseController;
+
+class LegalNoticeController extends BaseController
 {
 
     public function index(){

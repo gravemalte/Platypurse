@@ -4,7 +4,9 @@
 namespace Controller;
 
 
-class TermsOfUseController
+use Hydro\Base\Controller\BaseController;
+
+class TermsOfUseController extends BaseController
 {
 
     public function index(){

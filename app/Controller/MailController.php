@@ -3,12 +3,13 @@
 
 namespace Controller;
 
+use Hydro\Base\Controller\BaseController;
 use \Model\DAO\MailDAO;
 use \Hydro\Base\Database\Driver\SQLite;
 use \Model\MailModel;
 
 
-class MailController
+class MailController extends BaseController
 {
 
     public function index() {

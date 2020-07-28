@@ -4,7 +4,9 @@
 namespace Controller;
 
 
-class ContactController
+use Hydro\Base\Controller\BaseController;
+
+class ContactController extends BaseController
 {
 
     public function index(){
