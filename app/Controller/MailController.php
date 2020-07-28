@@ -39,7 +39,8 @@ class MailController
             exit();
         }
 
-        echo $mail->getContent();
+        header('Content-Type: text/html');
+        echo html_entity_decode($mail->getContent());
     }
 
     public static function previewTemplate() {
