@@ -60,7 +60,10 @@ class ErrorController
     }
 
     public function mailContentError(){
-
+        require APP . 'View/shared/header.php';
+        require APP . 'View/shared/nav.php';
+        require APP . 'View/error/mailContentError.php';
+        require APP . 'View/shared/footer.php';
     }
 
 

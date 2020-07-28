@@ -8,12 +8,13 @@ $sqlite = new SQLite();
 $con = $sqlite->getCon();
 $dao = new MailDAO($con);
 $mail = MailModel::getFromDatabase($dao, $_GET['id']);
-
+/*
 if (!$mail->exists()) {
-    header('location: ' . URL . 'error');
+    http_response_code(404);
+    header('location: ' . URL . 'error/pageNotFound');
     exit();
 }
-
+*/
 $id = $mail->getId();
 $name = $mail->getReceiverName();
 $mail_address = $mail->getReceiverMail();
