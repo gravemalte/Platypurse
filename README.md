@@ -14,18 +14,20 @@
     3. [Installation](#installation)
     4. [Testen](#testen)
 3. [Features](#features)
+4. [Aufgaben und Korrektheit](#aufgaben-und-korrektheit)
+5. [Fehler oder Mängel](#fehler-oder-mngel)
 
 
 # Generelles
 
 Wir freuen uns, euch unsere fertige Abgabe nun zur Verfügung zu stellen. Wir bitten euch dieses Dokument komplett durchzulesen, damit keine ungewollten Nebeneffekte oder Situationen
-bei der benutzung der Webseite entstehen. Bei Fragen oder evtl. sogar Fehler bitten wir euch, uns zu Kontaktieren.
+bei der benutzung der Webseite entstehen. Bei Fragen oder evtl. sogar Fehler bitten wir euch, uns zu Kontaktieren. Vielen Dank!
 
 
 
 # Konfiguration
 
-Um dieses Projekt erfolgreich zu starten, müssen wir zum anfang erst einige Einstellungen bei unserem Webserver vornehmen.
+Um dieses Projekt erfolgreich zu starten, müssen wir zum Anfang erst einige Einstellungen bei unserem Webserver vornehmen.
 Wir gehen davon aus, das die Installation über XAMPP erfolgt, da dies am Anfang der Vorlesungen gesagt wurde. Wir unterstützen zwar Docker aber
 es wurde gesagt, das keine Docker Konfiguration als Abgabe akzeptiert wird, als wir dies explizit nachgefragt haben.
 
@@ -89,7 +91,7 @@ Um die Webseite vollständig zu testen, stellen wir euch Standartbenutzer zur ve
 
 Um euch einen groben Überblick zu beschaffen, haben wir für euch eine Sitemap gebastelt die, die grundlegende Seite darstellt.
 
-![Sitemap](docs/mockup/sitemap.svg)
+![Sitemap](docs/readme/sitemap.svg)
 
 Es folgt eine Liste von Feature-implemtierungen, die wir bei der Seite vorgenommen haben.
 
@@ -111,3 +113,12 @@ Es folgt eine Liste von Feature-implemtierungen, die wir bei der Seite vorgenomm
 * CSRF-Protection
 * Dark und Light-Mode
 
+
+# Aufgaben und Korrektheit
+
+Wir haben jedes Aufgabenblatt durchgearbeitet und haben so weit alle geforderten inhalte mit eingepflegt oder implementiert.
+Von unserer Seite können wir keine mängel festellen. 
+
+# Fehler oder Mängel
+
+Uns sind keine fehler mehr nach der Testphase aufgefallen, das hat aber nichts zu bedeuten. Es kann immer sein, das sich hier und dort Fehler einschleichen.
