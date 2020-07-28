@@ -1,0 +1,38 @@
+.contact-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contact-container {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    padding: 1em;
+    flex-grow: 1;
+}
+
+.contact-container > a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
+    margin: 1em;
+    background-color: var(--page-button-alt-bg-color);
+    height: 8em;
+    width: 8em;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+    text-decoration: none;
+}
+.contact-container > a:hover {
+    filter: brightness(0.8);
+}
+.contact-container > a span:first-of-type {
+    margin-bottom: 1em;
+}
+.contact-container > a span.fas {
+    font-size: 6em;
+}
