@@ -33,7 +33,7 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('RegisterTokenDAO create error');
+            throw new PDOException('RegisterTokenDAO create error');
         }
     }
 

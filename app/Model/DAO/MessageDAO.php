@@ -30,7 +30,7 @@ class MessageDAO implements MessageDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('MessageDAO create error');
+            throw new PDOException('MessageDAO create error');
         }
 
     }

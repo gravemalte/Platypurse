@@ -34,7 +34,7 @@ class UserDAO implements UserDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('UserDAO create error');
+            throw new PDOException('UserDAO create error');
         }
 
     }

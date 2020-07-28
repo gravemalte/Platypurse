@@ -43,6 +43,7 @@ class RegisterController extends BaseController {
         $userInputPassswd = $_POST['user-passwd'];
         $userInputPassswd2 = $_POST['user-passwd2'];
 
+
         if($userInputPassswd != $userInputPassswd2){
             $_SESSION['register-inputName'] = $userInputDisplayName;
             $_SESSION['register-inputMail'] = $userInputMail;
@@ -84,17 +85,19 @@ class RegisterController extends BaseController {
 
             $sqlite->closeTransaction($check);
 
+            session_destroy();
             if($check){
                 $mail = FakeMailer::sendVerifyMail($userModel);
                 header('location: '. URL . 'register/instructionsSent?id=' . $mail->getId());
             } else {
-                $_SESSION['register-error'] = true;
-                header('location: '. URL . 'register');
+                header('location: '. URL . 'error/databaseError');
             }
-            unset($userModel);
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);
-            header('location: ' . URL . 'error/databaseError');
+            $_SESSION['register-error'] = true;
+            $_SESSION['register-inputName'] = $userInputDisplayName;
+            $_SESSION['register-inputMail'] = $userInputMail;
+            header('location: '. URL . 'register');
             exit();
         }
     }

@@ -32,7 +32,7 @@ class UserReportDAO implements ReportDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('UserReportDAO create error');
+            throw new PDOException('UserReportDAO create error');
         }
     }
 

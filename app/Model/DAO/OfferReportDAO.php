@@ -32,7 +32,7 @@ class OfferReportDAO implements ReportDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('OfferReportDAO create error');
+            throw new PDOException('OfferReportDAO create error');
         }
     }
 

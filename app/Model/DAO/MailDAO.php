@@ -36,7 +36,7 @@ class MailDAO implements MailDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('MailDAO create error');
+            throw new PDOException('MailDAO create error');
         }
     }
 

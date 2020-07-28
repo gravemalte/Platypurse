@@ -29,7 +29,6 @@ class SQLite
         if($success):
             $this->con->commit();
         else:
-            print "lol nein";
             $this->con->rollback();
         endif;
     }

@@ -52,7 +52,7 @@ if(isset($_GET['url'])){
         </div>
         <?php if(isset($_SESSION['currentUser'])): ?>
         <div class="nav-profile-container">
-            <a href="profile"
+            <a href="<?=URL . 'profile' ?>"
                title="<?= $_SESSION['currentUser']->getDisplayName() ?>">
                 <img src="<?=  \Hydro\Helper\CacheBuster::serve($_SESSION['currentUser']->getPicture()) ?>" alt="user avatar">
             </a>
