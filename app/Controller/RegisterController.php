@@ -7,6 +7,7 @@ use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\UserDAO;
 use Model\UserModel;
 use Hydro\Helper\Date;
+use Hydro\Helper\FakeMailer;
 use PDOException;
 
 class RegisterController extends BaseController {
@@ -82,14 +83,15 @@ class RegisterController extends BaseController {
             $check = $userModel->insertIntoDatabase($userDao);
 
             $sqlite->closeTransaction($check);
-            unset($userModel);
 
             if($check){
+                FakeMailer::sendVerifyMail($userModel);
                 header('location: '. URL . 'login');
             } else {
                 $_SESSION['register-error'] = true;
                 header('location: '. URL . 'register');
             }
+            unset($userModel);
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);
             header('location: ' . URL . 'error/databaseError');

@@ -14,7 +14,7 @@ class MailController
     public function index() {
 
         if (!isset($_GET['id'])) {
-            header('location: ' . URL . 'error');
+            header('location: ' . URL . 'error/unauthorized');
             exit();
         }
 
@@ -26,7 +26,7 @@ class MailController
     public static function getMailContent() {
         if (!isset($_GET['id'])) {
             http_response_code(400);
-            header('location: ' . URL . 'error');
+            header('location: ' . URL . 'error/unauthorized');
             exit();
         }
 
@@ -41,7 +41,8 @@ class MailController
             exit();
         }
 
-        echo $mail->getContent();
+        header('Content-Type: text/html');
+        echo html_entity_decode($mail->getContent());
     }
 
     public static function previewTemplate() {

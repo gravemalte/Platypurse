@@ -66,6 +66,11 @@ $offersByUser = ProfileController::getOffersByUserId();
                         <span>Profil bearbeiten</span>
                     </button>
                 </a>
+                    <a href="profile/chat">
+                        <button class="button">
+                            <span>Meine Nachrichten</span>
+                        </button>
+                    </a>
                 <?php endif; ?>
             </div>
         </div>

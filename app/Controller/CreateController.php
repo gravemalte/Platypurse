@@ -28,8 +28,6 @@ class CreateController extends BaseController
     }
 
     public function processInput() {
-        // TODO: Documentation
-
         if($_POST['csrf'] != $_SESSION['csrf_token']){
             header('location: ' . URL . 'error/unauthorized');
             exit();
@@ -132,7 +130,7 @@ class CreateController extends BaseController
             header('location: ' . URL . 'error/databaseError');
             exit();
         }
-        header('location: ' . URL . 'offer?id=' .$newOffer->getId());
+        header('location: ' . URL . 'offer?id=' . $newOffer->getId());
         exit();
     }
 

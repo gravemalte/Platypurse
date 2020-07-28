@@ -2,6 +2,7 @@
 use \Model\DAO\MailDAO;
 use \Hydro\Base\Database\Driver\SQLite;
 use \Model\MailModel;
+use \Controller\MailController;
 
 $sqlite = new SQLite();
 $con = $sqlite->getCon();
@@ -25,6 +26,6 @@ $mail_address = $mail->getReceiverMail();
     <a class="mail-meta-mail" href="mailto:<?= $mail_address ?>"><?= $mail_address ?></a>
 </div>
 <div class="mail-preview-container">
-    <iframe src="" frameborder="0" class="mail-preview"></iframe>
+    <iframe src="mail/getMailContent?id=<?= $id ?>" frameborder="0" class="mail-preview"></iframe>
 </div>
 </body>

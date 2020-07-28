@@ -3,6 +3,15 @@
 use Controller\HomeController;
 use Controller\ErrorController;
 
+
+/**
+ * Class Application
+ *
+ * This class is managing our request from the client and
+ * is returning the corresponding view to it. Each request will go into it
+ * Each controller is declared into an array, to make sure no unknown controller is involved
+ */
+
 class Application
 {
     private static $instance = null;
@@ -61,6 +70,12 @@ class Application
         }
     }
 
+    /**
+     * Singleton patter, is return the Application object
+     *
+     * @return Application|null
+     */
+
     public static function getInstance()
     {
         if (self::$instance == null) {
@@ -70,12 +85,16 @@ class Application
         return self::$instance;
     }
 
+    /**
+     * Splitting up our URL into an array
+     *
+     * @return void Setting the Class field 'url_params' to the slitted array
+     */
+
     private function splitUrl()
     {
         if (isset($_GET['url'])) {
 
-
-            // splitting our URL
             $url = trim($_GET['url'], '/');
             $url = filter_var($url, FILTER_SANITIZE_URL);
             $url = explode('/', $url);

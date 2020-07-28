@@ -3,7 +3,6 @@
 
 namespace Model;
 
-use Controller\ChatController;
 
 class ChatModel {
     private $msgID;
