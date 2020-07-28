@@ -2,12 +2,14 @@
 
 namespace Hydro\Base\Controller;
 
-class BaseController {
-    
-    public $db = null;
+/**
+ * Class BaseController
+ * The BaseController is inheritance to all other controllers. This will make sure we are
+ * talking to the right controller
+ * @package Hydro\Base\Controller
+ */
 
-    public $model = null;
-
+abstract class BaseController {
 
     function __construct()
     {

@@ -28,8 +28,6 @@ class CreateController extends BaseController
     }
 
     public function processInput() {
-        // TODO: Documentation
-
         if($_POST['csrf'] != $_SESSION['csrf_token']){
             header('location: ' . URL . 'error/unauthorized');
             exit();
@@ -126,10 +124,9 @@ class CreateController extends BaseController
             endif;
         } catch (PDOException $e) {
             // TODO: Error handling
-            // print "error go brr";
             $con->rollback();
         }
-        header('location: ' . URL . 'offer?id=' .$newOffer->getId());
+        header('location: ' . URL . 'offer?id=' . $newOffer->getId());
         exit();
     }
 

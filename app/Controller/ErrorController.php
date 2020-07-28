@@ -59,5 +59,10 @@ class ErrorController
         require APP . 'View/shared/footer.php';
     }
 
+    public function mailContentError(){
+
+    }
+
+
 
 }
