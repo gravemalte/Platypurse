@@ -2,6 +2,9 @@
 
 namespace Model;
 
+use Exception;
+use PDOException;
+
 class UserModel
 {
     private $id;
@@ -47,7 +50,7 @@ class UserModel
     }
 
     public function insertIntoDatabase($userDAO) {
-        return $userDAO->create($this);
+            return $userDAO->create($this);
     }
 
     public static function getFromDatabaseByMail($userDAO, $mail){

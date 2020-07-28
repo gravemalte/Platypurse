@@ -33,7 +33,7 @@ class PlatypusDAO implements PlatypusDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('PlatypusDAO create error');
+            throw new PDOException('PlatypusDAO create error');
         }
 
     }

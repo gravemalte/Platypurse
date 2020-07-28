@@ -31,7 +31,7 @@ class OfferImageDAO implements OfferImagesDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('OfferImageDAO create error');
+            throw new PDOException('OfferImageDAO create error');
         }
 
     }

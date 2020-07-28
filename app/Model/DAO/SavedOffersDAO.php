@@ -30,7 +30,7 @@ class SavedOffersDAO implements SavedOffersDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('SavedOffersDAO create error');
+            throw new PDOException('SavedOffersDAO create error');
         }
     }
 

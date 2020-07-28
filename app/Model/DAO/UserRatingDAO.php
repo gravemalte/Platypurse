@@ -30,7 +30,7 @@ class UserRatingDAO implements UserRatingDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('UserRatingDAO create error');
+            throw new PDOException('UserRatingDAO create error');
         }
 
     }

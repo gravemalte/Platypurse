@@ -36,7 +36,7 @@ class OfferDAO implements OfferDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('OfferDAO create error');
+            throw new PDOException('OfferDAO create error');
         }
 
     }

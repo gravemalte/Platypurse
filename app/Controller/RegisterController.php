@@ -88,13 +88,13 @@ class RegisterController extends BaseController {
                 FakeMailer::sendVerifyMail($userModel);
                 header('location: '. URL . 'login');
             } else {
-                $_SESSION['register-error'] = true;
-                header('location: '. URL . 'register');
+                header('location: '. URL . 'error/databaseError');
             }
             unset($userModel);
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);
-            header('location: ' . URL . 'error/databaseError');
+            $_SESSION['register-error'] = true;
+            header('location: '. URL . 'register');
             exit();
         }
     }
