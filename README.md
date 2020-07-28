@@ -9,7 +9,7 @@
 # Inhaltsverzeichnis
 1. [Generelles](#generelles)
 2. [Konfiguration](#konfiguration)
-    1. [PHP.ini](#php.ini)
+    1. [PHP.ini](#phpini)
     2. [Apache](#apache)
     3. [Installation](#installation)
     4. [Testen](#testen)
