@@ -58,6 +58,6 @@ class MailController
     }
 
     public static function previewTemplate() {
-        require APP . 'View/mail/templates/verifyAccount.php';
+        require APP . 'View/mail/templates/duplicateMail.php';
     }
 }

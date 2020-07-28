@@ -63,6 +63,11 @@ class UserModel
         return self::getUserFromRow($row);
     }
 
+    public static function getFromDatabaseByName($userDAO, $name) {
+        $row = $userDAO->readByName($name);
+        return self::getUserFromRow($row);
+    }
+
 
     public function updateInDatabase($userDAO) {
         return $userDAO->update($this);

@@ -23,6 +23,9 @@ class FakeMailer {
             case "verify":
                 include(self::MAIL_TEMPLATE_PATH . 'verifyAccount.php');
                 break;
+            case "duplicateMail":
+                include(self::MAIL_TEMPLATE_PATH . 'duplicateMail.php');
+                break;
         }
         $php_to_html = ob_get_clean();
         $html_encoded = htmlentities($php_to_html);
@@ -34,5 +37,9 @@ class FakeMailer {
         return self::sendMail("verify", $userModel, array(
             'token' => RegisterTokenModel::generate($userModel)
         ));
+    }
+
+    public static function sendDuplicateMail($userModel) {
+        return self::sendMail("duplicateMail", $userModel);
     }
 }

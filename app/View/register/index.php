@@ -15,7 +15,7 @@ $show_error = false;
             <form action="register/register" method="post" class="register-form">
                 <p class="error-text">
                     <?php if(isset($_SESSION['register-error'])) : ?>
-                        Die angegebenen Daten existiert schon, bitte erneut versuchen.
+                        Der angegebene Nutzername existiert bereits, wähle bitte einen neuen.
                     <?php endif; ?>
 
                     <?php if(isset($_SESSION['register-error-password'])) : ?>
@@ -40,9 +40,6 @@ $show_error = false;
                     <?php endif; ?>
                 </div>
                 <div class="form-email-container">
-                    <?php if(isset($_SESSION['register-error'])) : ?>
-                        <div class="show-error"></div>
-                    <?php endif; ?>
                     <label for="user-email">Email Adresse</label>
                     <?php if(isset($_SESSION['register-error-agb']) || isset($_SESSION['register-error-password']) || isset($_SESSION['register-error'])): ?>
                         <input type="text" id="user-email" name="user-email" value="<?= $_SESSION['register-inputMail'] ?>" required autofocus>

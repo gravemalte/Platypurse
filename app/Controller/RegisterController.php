@@ -2,6 +2,7 @@
 
 namespace Controller;
 
+use http\Client\Curl\User;
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\UserDAO;
@@ -77,10 +78,10 @@ class RegisterController extends BaseController {
             0);
 
         $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $userDao = new UserDAO($con);
         try {
             $sqlite->openTransaction();
-            $con = $sqlite->getCon();
-            $userDao = new UserDAO($con);
             $check = $userModel->insertIntoDatabase($userDao);
 
             $sqlite->closeTransaction($check);
@@ -94,11 +95,30 @@ class RegisterController extends BaseController {
             }
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);
+            try {
+                $mailUser = UserModel::getFromDatabaseByMail($userDao, $userInputMail);
+                if (!empty($mailUser->getId())) {
+                    $mail = FakeMailer::sendDuplicateMail($mailUser);
+                    header('location: '. URL . 'register/instructionsSent?id=' . $mail->getId());
+                }
+                else {
+                    $nameUser = UserModel::getFromDatabaseByName($userDao, $userInputDisplayName);
+                    if (!empty($nameUser->getId())) {
+                        $_SESSION['register-error'] = true;
+                        header('location: '. URL . 'register');
+                    }
+                    else {
+                        header('location: ' . URL . 'error/databaseError');
+                    }
+                }
+            } catch (PDOException $e) {
+                header('location: ' . URL . 'error/databaseError');
+            }
+        } finally {
             $_SESSION['register-error'] = true;
             $_SESSION['register-inputName'] = $userInputDisplayName;
             $_SESSION['register-inputMail'] = $userInputMail;
-            header('location: '. URL . 'register');
-            exit();
+            unset($userModel);
         }
     }
 

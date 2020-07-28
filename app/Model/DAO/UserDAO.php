@@ -65,6 +65,19 @@ class UserDAO implements UserDAOInterface
         }
     }
 
+    public function readByName($name)
+    {
+        $query = "SELECT * FROM user WHERE display_name = :name;";
+        $stmt = $this->con->prepare($query);
+        $stmt->bindValue(":name", $name);
+
+        if($stmt->execute()){
+            return $stmt->fetch();
+        } else {
+            throw new PDOException('UserDAO readByName error');
+        }
+    }
+
     public function update($obj)
     {
         $sql = "UPDATE user SET display_name = :displayName, mail = :mail, password = :password, ug_id = :ugId,
