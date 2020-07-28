@@ -21,11 +21,15 @@ class HomeController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
-    public function getNewestOffers() {
-        return OfferModel::getNewestOffers(new OfferDAO(SQLite::connectToSQLite()));
+    public static function getNewestOffers() {
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        return OfferModel::getNewestOffers(new OfferDAO($con));
     }
 
-    public function getHotOffer() {
-        return OfferModel::getHotOffer(new OfferDAO(SQLite::connectToSQLite()));
+    public static function getHotOffer() {
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        return OfferModel::getHotOffer(new OfferDAO($con));
     }
 }

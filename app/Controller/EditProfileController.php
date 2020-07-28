@@ -54,9 +54,10 @@ class EditProfileController extends BaseController {
             die();
         }
 
-        $con = SQLite::connectToSQLite();
+        $sqlite = new SQLite();
         try {
-            $con->beginTransaction();
+            $sqlite->openTransaction();
+            $con = $sqlite->getCon();
             $dao = new UserDAO($con);
 
             $user = ProfileController::getUser($id, $dao);
@@ -95,13 +96,12 @@ class EditProfileController extends BaseController {
             if ($currentUser->getId() == $id) {
                 $_SESSION['currentUser'] = $user;
             }
-            $con->commit();
+            $sqlite->closeTransaction(true);
             header('location: ' . URL . 'profile/edit?id=' . $id);
         } catch (PDOException $e) {
-            // TODO: Error handling
-            // print "error go brr";
-            $con->rollback();
+            $sqlite->closeTransaction(false);
             header('location: ' . URL . 'error/databaseError');
+            exit();
         }
     }
 

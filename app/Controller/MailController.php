@@ -30,7 +30,9 @@ class MailController
             exit();
         }
 
-        $dao = new MailDAO(SQLite::connectToSQLite());
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new MailDAO($con);
         $mail = MailModel::getFromDatabase($dao, $_GET['id']);
 
         if (!$mail->exists()) {

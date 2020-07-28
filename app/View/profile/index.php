@@ -108,7 +108,7 @@ $offersByUser = ProfileController::getOffersByUserId();
                         href="offer?id=<?= $offer->getId();?>"
                 >
                     <div class="offer-list-item card">
-                        <img src="<?= $offer->getImageOnPosition(0); ?>" alt="">
+                        <img src="<?= $offer->getImage()->getSrc(); ?>" alt="">
                         <p class="name"><?= $offer->getPlatypus()->getName();?></p>
                         <p class="description"><?= $offer->getDescription();?></p>
                         <div class="price-tag-container">
@@ -132,7 +132,7 @@ $offersByUser = ProfileController::getOffersByUserId();
                         href="offer?id=<?= $offer->getId();?>"
                 >
                     <div class="offer-list-item card">
-                        <img src="<?= $offer->getImageOnPosition(0); ?>" alt="">
+                        <img src="<?= $offer->getImage()->getSrc(); ?>" alt="">
                         <p class="name"><?= $offer->getPlatypus()->getName();?></p>
                         <p class="description"><?= $offer->getDescription();?></p>
                         <div class="price-tag-container">

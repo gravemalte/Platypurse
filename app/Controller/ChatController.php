@@ -36,7 +36,9 @@ class ChatController extends BaseController
 
         $userID = $_SESSION['currentUser']->getId();
 
-        $messages = ChatModel::getFromDatabase(new MessageDAO(SQLite::connectToSQLite()), $userID);
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $messages = ChatModel::getFromDatabase(new MessageDAO($con), $userID);
 
         $result = array();
 
@@ -71,7 +73,9 @@ class ChatController extends BaseController
 
         $userID = $_SESSION['currentUser']->getId();
 
-        $messages = ChatModel::getFromDatabaseOrder(new MessageDAO(SQLite::connectToSQLite()), $userID);
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $messages = ChatModel::getFromDatabaseOrder(new MessageDAO($con), $userID);
 
         $result = array();
 
@@ -97,8 +101,10 @@ class ChatController extends BaseController
             echo 0;
             return;
         }
-      
-        $user = UserModel::getUser(new UserDAO(SQLite::connectToSQLite()),
+
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $user = UserModel::getUser(new UserDAO($con),
             $_GET['id']);
 
         if ($user->getUgId() == 3) {
@@ -132,9 +138,10 @@ class ChatController extends BaseController
 
         $newMessage = new ChatModel(null, $fromID, $toID, $message, $date);
 
-        $con = SQLite::connectToSQLite();
+        $sqlite = new SQLite();
         try {
-            $con->beginTransaction();
+            $sqlite->openTransaction();
+            $con = $sqlite->getCon();
             $dao = new MessageDAO($con);
 
             $messages = ChatModel::insertIntoDatabase($dao, $newMessage);
@@ -161,12 +168,12 @@ class ChatController extends BaseController
                 );
             endforeach;
 
-            $con->commit();
+            $sqlite->closeTransaction(true);
             echo json_encode(array('chat' => $result, 'date' => Date::now()));
         } catch (PDOException $e) {
-            // TODO: Error handling
-            // print "error go brr";
-            $con->rollback();
+            $sqlite->closeTransaction(false);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
         }
     }
 }

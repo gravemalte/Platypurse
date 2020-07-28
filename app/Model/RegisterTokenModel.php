@@ -55,9 +55,10 @@ class RegisterTokenModel {
         $id = null;
         $token = bin2hex(random_bytes(5));
         $expirationDate = date("Y-m-d H:i:s", time() + 3600);
-
-        $token = new self($id, $token, $user, $expirationDate);
-        $dao = new RegisterTokenDAO(SQLite::connectToSQLite());
+        $token = new self($id, $token, $user, $expirationDate, $active);
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new RegisterTokenDAO($con);
         $result = $token->insertIntoDatabase($dao);
         return new RegisterTokenModel($result[0], $result[1], $result[2], $result[3]);
     }

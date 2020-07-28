@@ -4,7 +4,7 @@ namespace Model\DAO;
 use Hydro\Base\Contracts\OfferImagesDAOInterface;
 use PDOException;
 
-class OfferImagesDAO implements OfferImagesDAOInterface
+class OfferImageDAO implements OfferImagesDAOInterface
 {
     private $con;
 
@@ -31,7 +31,7 @@ class OfferImagesDAO implements OfferImagesDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            return new PDOException('OfferImagesDAO create error');
+            return new PDOException('OfferImageDAO create error');
         }
 
     }
@@ -43,9 +43,9 @@ class OfferImagesDAO implements OfferImagesDAOInterface
         $stmt->bindValue(":offerId", $offerId);
 
         if($stmt->execute()){
-            return $stmt->fetchAll();
+            return $stmt->fetch();
         } else {
-            throw new PDOException('OfferImagesDAO select by offerId error');
+            throw new PDOException('OfferImageDAO select by offerId error');
         }
     }
 
@@ -64,7 +64,7 @@ class OfferImagesDAO implements OfferImagesDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('OfferImagesDAO update error');
+            throw new PDOException('OfferImageDAO update error');
         }
     }
 }
