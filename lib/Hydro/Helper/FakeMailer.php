@@ -31,7 +31,7 @@ class FakeMailer {
     }
 
     public static function sendVerifyMail($userModel) {
-        self::sendMail("verify", $userModel, array(
+        return self::sendMail("verify", $userModel, array(
             'token' => RegisterTokenModel::generate($userModel)
         ));
     }

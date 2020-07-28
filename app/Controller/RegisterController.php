@@ -85,8 +85,8 @@ class RegisterController extends BaseController {
             $sqlite->closeTransaction($check);
 
             if($check){
-                FakeMailer::sendVerifyMail($userModel);
-                header('location: '. URL . 'login');
+                $mail = FakeMailer::sendVerifyMail($userModel);
+                header('location: '. URL . 'register/instructionsSent?id=' . $mail->getId());
             } else {
                 $_SESSION['register-error'] = true;
                 header('location: '. URL . 'register');
@@ -103,6 +103,19 @@ class RegisterController extends BaseController {
         require APP . 'View/shared/header.php';
         require APP . 'View/register/header.php';
         require APP . 'View/shared/nav.php';
+        require APP . 'View/shared/footer.php';
+    }
+
+    public static function instructionsSent() {
+        if (!isset($_GET['id'])) {
+            http_response_code(404);
+            header('location: ' . URL . 'error/pageNotFound');
+            exit();
+        }
+
+        require APP . 'View/shared/header.php';
+        require APP . 'View/shared/nav.php';
+        require APP . 'View/register/instructionsSent.php';
         require APP . 'View/shared/footer.php';
     }
 }
