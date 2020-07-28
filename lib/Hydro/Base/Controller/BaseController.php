@@ -2,17 +2,7 @@
 
 namespace Hydro\Base\Controller;
 
-class BaseController {
-    
-    public $db = null;
+abstract class BaseController {
 
-    public $model = null;
-
-
-    function __construct()
-    {
-
-    }
-
-
+    abstract public function index();
 }
