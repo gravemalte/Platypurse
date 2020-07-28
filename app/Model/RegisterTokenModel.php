@@ -11,7 +11,6 @@ class RegisterTokenModel {
     private $token;
     private $user;
     private $expirationDate;
-    private $active;
 
     /**
      * RegisterTokenModel constructor.
@@ -55,7 +54,7 @@ class RegisterTokenModel {
         $id = null;
         $token = bin2hex(random_bytes(5));
         $expirationDate = date("Y-m-d H:i:s", time() + 3600);
-        $token = new self($id, $token, $user, $expirationDate, $active);
+        $token = new self($id, $token, $user, $expirationDate);
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $dao = new RegisterTokenDAO($con);
@@ -125,21 +124,5 @@ class RegisterTokenModel {
     public function setExpirationDate($expirationDate): void
     {
         $this->expirationDate = $expirationDate;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function isActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * @param mixed $active
-     */
-    public function setActive($active): void
-    {
-        $this->active = $active;
     }
 }

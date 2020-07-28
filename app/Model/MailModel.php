@@ -47,8 +47,10 @@ class MailModel {
 
     public static function initMail($user, $content) {
         $mail = new MailModel(null, $content, $user->getDisplayName(), $user, $user->getMail(), Date::now());
-        $dao = new MailDAO(SQLite::connectToSQLite());
-        //TODO: Replace to new DAO style
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new MailDAO($con);
+        //TODO: Transaction
         $result = $mail->insertIntoDatabase($dao);
         return new MailModel($result[0], $result[1], $result[2], $result[3], $result[4], $result[5]);
     }

@@ -19,14 +19,13 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
 
     public function create($obj)
     {
-        $query = "INSERT INTO register_tokens (token_id, token, u_id, expiration_date, active) 
-            VALUES (:id, :token, :userId, :expirationDate, :active);";
+        $query = "INSERT INTO register_tokens (token_id, token, u_id, expiration_date) 
+            VALUES (:id, :token, :userId, :expirationDate);";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $obj->getId());
         $stmt->bindValue(":token", $obj->getToken());
         $stmt->bindValue(":userId", $obj->getUser()->getId());
         $stmt->bindValue(":expirationDate", $obj->getExpirationDate());
-        $stmt->bindValue(":active", $obj->isActive());
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
