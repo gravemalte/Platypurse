@@ -15,7 +15,7 @@
     4. [Testen](#testen)
 3. [Features](#features)
 4. [Aufgaben und Korrektheit](#aufgaben-und-korrektheit)
-5. [Fehler oder Mängel](#fehler-oder-mngel)
+5. [Fehler oder Mängel](#fehler-oder-mängel)
 
 
 # Generelles
