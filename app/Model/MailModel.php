@@ -2,7 +2,10 @@
 
 namespace Model;
 
+use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\MailDAO;
 use Model\DAO\UserDAO;
+use Hydro\Helper\Date;
 
 class MailModel {
     private $id;
@@ -40,6 +43,14 @@ class MailModel {
         return new MailModel($result[0], $result[1], $result[2],
             UserModel::getFromDatabaseById(new UserDAO($dao->getCon()),$result[3]),
             $result[4], $result[5]);
+    }
+
+    public static function initMail($user, $content) {
+        $mail = new MailModel(null, $content, $user->getDisplayName(), $user, $user->getMail(), Date::now());
+        $dao = new MailDAO(SQLite::connectToSQLite());
+        //TODO: Replace to new DAO style
+        $result = $mail->insertIntoDatabase($dao);
+        return new MailModel($result[0], $result[1], $result[2], $result[3], $result[4], $result[5]);
     }
 
     /**

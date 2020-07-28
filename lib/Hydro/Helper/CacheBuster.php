@@ -13,13 +13,19 @@ class CacheBuster {
      * This will allow browsers to recognize changes.
      *
      * @param $public_filepath
+     * @param bool $isSubPage
      * @return string
      */
-    public static function serve($public_filepath) {
+    public static function serve($public_filepath, bool $isSubPage = false) {
         $filepath = self::LOCAL_PUBLIC_PATH . $public_filepath;
-        if (file_exists($filepath)) {
+        if (file_exists($filepath) && !$isSubPage) {
             return $public_filepath . "?t=" . filemtime($filepath);
         }
+
+        if (file_exists($filepath)) {
+            return '../' . $public_filepath . "?t=" . filemtime($filepath);
+        }
+
         return $public_filepath;
     }
 
@@ -30,9 +36,10 @@ class CacheBuster {
      * Every output is as best cache busted as possible.
      *
      * @param $public_filepath
+     * @param bool $isSubPage
      * @return string
      */
-    public static function embedCSSImports($public_filepath) {
+    public static function embedCSSImports($public_filepath, bool $isSubPage = false) {
         $filepath = self::LOCAL_PUBLIC_PATH . $public_filepath;
         if (file_exists($filepath)) {
             $fileContent = file_get_contents($filepath);
@@ -42,6 +49,9 @@ class CacheBuster {
                 $output = "<style>\n";
                 foreach ($matches[0] as $match) {
                     $output .= '@import "';
+                    if ($isSubPage) {
+                        $output .= '../';
+                    }
                     $output .= self::serve($relPublicPos . $match);
                     $output .= "\";\n";
                 }

@@ -19,15 +19,13 @@ class RegisterTokenModel {
      * @param $token
      * @param $user
      * @param $expirationDate
-     * @param $active
      */
-    public function __construct($id, $token, $user, $expirationDate, $active)
+    public function __construct($id, $token, $user, $expirationDate)
     {
         $this->id = $id;
         $this->token = $token;
         $this->user = $user;
         $this->expirationDate = $expirationDate;
-        $this->active = $active;
     }
 
     public function insertIntoDatabase($dao) {
@@ -38,22 +36,22 @@ class RegisterTokenModel {
         $result = $dao->read($id);
         return new RegisterTokenModel($result[0], $result[1],
             UserModel::getFromDatabaseById(new UserDAO($dao->getCon()),$result[2]),
-            $result[3], $result[4]);
+            $result[3]);
     }
     
     public function updateInDatabase($dao) {
         return $dao->update($this);
     }
 
-    public function generate($user) {
+    public static function generate($user) {
         $id = null;
         $token = bin2hex(random_bytes(5));
         $expirationDate = date("Y-m-d H:i:s", time() + 3600);
-        $active = true;
 
-        $token = new self($id, $token, $user, $expirationDate, $active);
+        $token = new self($id, $token, $user, $expirationDate);
         $dao = new RegisterTokenDAO(SQLite::connectToSQLite());
-        return $token->insertIntoDatabase($dao);
+        $result = $token->insertIntoDatabase($dao);
+        return new RegisterTokenModel($result[0], $result[1], $result[2], $result[3]);
     }
 
     /**
