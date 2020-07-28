@@ -2,9 +2,6 @@
 
 namespace Model;
 
-use Exception;
-use PDOException;
-
 class UserModel
 {
     private $id;

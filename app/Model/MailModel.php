@@ -66,7 +66,7 @@ class MailModel {
     /**
      * @param mixed $id
      */
-    public function setId($id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -82,7 +82,7 @@ class MailModel {
     /**
      * @param mixed $content
      */
-    public function setContent($content): void
+    public function setContent($content)
     {
         $this->content = $content;
     }
@@ -98,7 +98,7 @@ class MailModel {
     /**
      * @param mixed $receiverName
      */
-    public function setReceiverName($receiverName): void
+    public function setReceiverName($receiverName)
     {
         $this->receiverName = $receiverName;
     }
@@ -114,7 +114,7 @@ class MailModel {
     /**
      * @param mixed $receiverUser
      */
-    public function setReceiverUser($receiverUser): void
+    public function setReceiverUser($receiverUser)
     {
         $this->receiverUser = $receiverUser;
     }
@@ -130,7 +130,7 @@ class MailModel {
     /**
      * @param mixed $receiverMail
      */
-    public function setReceiverMail($receiverMail): void
+    public function setReceiverMail($receiverMail)
     {
         $this->receiverMail = $receiverMail;
     }
@@ -146,12 +146,12 @@ class MailModel {
     /**
      * @param mixed $sendDate
      */
-    public function setSendDate($sendDate): void
+    public function setSendDate($sendDate)
     {
         $this->sendDate = $sendDate;
     }
 
-    public function exists(): bool {
+    public function exists() {
         return $this->getContent() != "";
     }
 }

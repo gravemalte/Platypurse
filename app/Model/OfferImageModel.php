@@ -50,7 +50,7 @@ class OfferImageModel {
     /**
      * @param mixed $id
      */
-    public function setId($id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -66,7 +66,7 @@ class OfferImageModel {
     /**
      * @param mixed $offerId
      */
-    public function setOfferId($offerId): void
+    public function setOfferId($offerId)
     {
         $this->offerId = $offerId;
     }
@@ -82,7 +82,7 @@ class OfferImageModel {
     /**
      * @param mixed $picturePosition
      */
-    public function setPicturePosition($picturePosition): void
+    public function setPicturePosition($picturePosition)
     {
         $this->picturePosition = $picturePosition;
     }
@@ -98,7 +98,7 @@ class OfferImageModel {
     /**
      * @param mixed $mime
      */
-    public function setMime($mime): void
+    public function setMime($mime)
     {
         $this->mime = $mime;
     }
@@ -119,7 +119,7 @@ class OfferImageModel {
     /**
      * @param mixed $image
      */
-    public function setImage($image): void
+    public function setImage($image)
     {
         $this->image = $image;
     }

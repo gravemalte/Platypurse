@@ -57,7 +57,7 @@ class PlatypusModel {
     /**
      * @param mixed $id
      */
-    public function setId($id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -73,7 +73,7 @@ class PlatypusModel {
     /**
      * @param mixed $name
      */
-    public function setName($name): void
+    public function setName($name)
     {
         $this->name = $name;
     }
@@ -89,7 +89,7 @@ class PlatypusModel {
     /**
      * @param mixed $ageYears
      */
-    public function setAgeYears($ageYears): void
+    public function setAgeYears($ageYears)
     {
         $this->ageYears = $ageYears;
     }
@@ -105,7 +105,7 @@ class PlatypusModel {
     /**
      * @param mixed $sex
      */
-    public function setSex($sex): void
+    public function setSex($sex)
     {
         $this->sex = $sex;
     }
@@ -121,7 +121,7 @@ class PlatypusModel {
     /**
      * @param mixed $size
      */
-    public function setSize($size): void
+    public function setSize($size)
     {
         $this->size = $size;
     }
@@ -135,9 +135,9 @@ class PlatypusModel {
     }
 
     /**
-     * @param mixed $size
+     * @param $weight
      */
-    public function setWeight($weight): void
+    public function setWeight($weight)
     {
         $this->weight = $weight;
     }
@@ -153,7 +153,7 @@ class PlatypusModel {
     /**
      * @param mixed $active
      */
-    public function setActive($active): void
+    public function setActive($active)
     {
         $this->active = $active;
     }
