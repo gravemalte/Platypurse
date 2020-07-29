@@ -17,9 +17,9 @@ if(isset($_GET['url'])){
 <head>
     <meta charset="utf-8">
     <title>Platypurse</title>
-    <meta name="description" content="trading market for platypuses">
+    <meta name="description" content="Schnabeltierbörse für Schnabeltiere, oder so">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="platypus, trade">
+    <meta name="keywords" content="platypus, trade, börse, uol">
     <meta name="author" content="Malte Grave, Tim Hesse, Marvin Kuhlmann">
 
     <!-- Favicon -->
