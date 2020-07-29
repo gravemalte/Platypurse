@@ -202,4 +202,14 @@ class ProfileController extends BaseController
             unset($sqlite);
         }
     }
+
+    public static function avatar() {
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new UserDAO($con);
+        $user = UserModel::getFromDatabaseById($dao, $_GET['id']);
+        header("Content-Type: " . $user->getMime());
+        $data = explode(",", $user->getPicture());
+        echo base64_decode($data[1]);
+    }
 }
