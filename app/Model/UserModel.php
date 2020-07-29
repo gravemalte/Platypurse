@@ -226,6 +226,10 @@ class UserModel
         return $this->ugId == 1;
     }
 
+    public function isSupport(){
+        return $this->ugId == 3;
+    }
+
     /**
      * @return mixed
      */

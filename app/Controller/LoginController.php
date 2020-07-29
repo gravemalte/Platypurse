@@ -44,13 +44,12 @@ class LoginController extends BaseController
         $user = UserModel::getFromDatabaseByMail(new UserDAO($con), $userSentMail);
         unset($sqlite);
         if ($user) {
-            if (!$user->isVerified()) {
-                $_SESSION['user-verify-error'] = true;
-                header('location: ' . URL . 'login');
-                exit();
-            }
-
             if (password_verify($userSentPasswd, $user->getPassword())) {
+                if (!$user->isVerified() ) {
+                    $_SESSION['user-verify-error'] = true;
+                    header('location: ' . URL . 'login');
+                    exit();
+                }
                 $_SESSION['currentUser'] = $user;
                 header('location: ' . URL);
                 exit();

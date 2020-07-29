@@ -37,7 +37,11 @@ if(isset($_GET['url'])){
         </div>
         <div class="nav-buttons-container">
             <div class="nav-create-offer-container">
+                <?php if(isset($_SESSION['currentUser']) && $_SESSION['currentUser']->isSupport()): ?>
+                <a href="<?=URL . 'chat' ?>" class="button">Nachrichten<br>einsehen</a>
+                <?php else: ?>
                 <a href="<?=URL . 'create' ?>" class="button">Angebot<br>erstellen</a>
+                <?php endif; ?>
             </div>
             <?php
             if(isset($_SESSION['currentUser'])):?>
