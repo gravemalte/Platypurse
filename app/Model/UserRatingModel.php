@@ -39,10 +39,13 @@ class UserRatingModel {
      * @param UserRatingDAO $dao
      * @param $fromUserId
      * @param $forUserId
-     * @return UserRatingModel
+     * @return UserRatingModel|boolean
      */
     public static function getFromDatabaseByFromUserIdAndForUserId($dao, $fromUserId, $forUserId) {
         $result = $dao->readFromUserIdForUserId($fromUserId, $forUserId);
+        if(!$result):
+            return false;
+        endif;
         return new UserRatingModel($result[0], $result[1], $result[2], $result[3]);
     }
 
