@@ -52,11 +52,18 @@ class LoginController extends BaseController
         unset($sqlite);
         if ($user) {
             if (password_verify($userSentPasswd, $user->getPassword())) {
-                if (!$user->isVerified() ) {
+                if (!$user->isVerified()) {
                     $_SESSION['user-verify-error'] = true;
                     header('location: ' . URL . 'login');
                     exit();
                 }
+
+                if($user->isDisabled()){
+                    $_SESSION['user-banned-error'] = true;
+                    header('location: ' . URL . 'login');
+                    exit();
+                }
+                
                 $_SESSION['currentUser'] = $user;
                 header('location: ' . URL);
                 exit();

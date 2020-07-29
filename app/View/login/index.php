@@ -12,6 +12,9 @@
                     <?php if(isset($_SESSION['user-verify-error'])) : ?>
                         Dieses Konto wurde noch nicht verifiziert.
                     <?php endif; ?>
+                    <?php if(isset($_SESSION['user-banned-error'])) : ?>
+                        Dieses Konto ist deaktivert. Bei Fragen <a href="<?= URL . 'contact' ?>" >kontaktiere</a> uns per E-Mail.
+                    <?php endif; ?>
                 </p>
                 <div class="form-email-container">
                     <?php if(isset($_SESSION['user-login-error'])) : ?>
