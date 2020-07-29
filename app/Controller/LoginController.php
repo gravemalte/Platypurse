@@ -35,6 +35,13 @@ class LoginController extends BaseController
             exit();
         }
 
+        if(isset($_POST['user-remember-me'])){
+            session_destroy();
+            session_set_cookie_params(10800);
+            session_start();
+        }
+
+
         $userSentMail = strtolower($_POST['user-email']);
         $userSentPasswd = $_POST['user-passwd'];
 

@@ -104,6 +104,7 @@ Es folgt eine Liste von Feature-implemtierungen, die wir bei der Seite vorgenomm
     * Eine Pseudo E-Mail
   * Password vergessen
   * Einen Chat
+  * User Rating
 
 * Angebote
   * Angebote erstellen, bearbeiten und löschen
