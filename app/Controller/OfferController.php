@@ -162,7 +162,6 @@ class OfferController extends BaseController
         } finally {
             unset($sqlite);
         }
-        exit();
     }
 
     /**
