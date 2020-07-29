@@ -54,75 +54,107 @@ class ProfileController extends BaseController
         return $model;
     }
 
-    public static function getDisplayUser() {
-      if (isset($_GET['id'])) return ProfileController::getUser($_GET['id']);
-      return $_SESSION['currentUser'];
-      // if both are not set redirect to login
-      // see index()
+    public static function getDisplayUser($dao = null) {
+        if (isset($_GET['id'])) return ProfileController::getUser($_GET['id'], $dao);
+        return $_SESSION['currentUser'];
+        // if both are not set redirect to login
+        // see index()
     }
 
     public static function getOffersByUserId() {
-        $id = ProfileController::getDisplayUser()->getId();
-        $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $model = OfferModel::getFromDatabaseByUserId(new OfferDAO($con),$id);
-        unset($sqlite);
-        return $model;
+        try {
+            $sqlite = new SQLite();
+            $con = $sqlite->getCon();
+            $id = ProfileController::getDisplayUser(new UserDAO($con))->getId();
+            return OfferModel::getFromDatabaseByUserId(new OfferDAO($con),$id);
+
+        } catch (PDOException $ex) {
+            header('location: ' . URL . 'error/databaseError');
+        } finally {
+            unset($sqlite);
+        }
     }
 
     public static function getSavedOffersForCurrentUser() {
-        $id = ProfileController::getDisplayUser()->getId();
-        $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $model = OfferModel::getSavedOffersFromDatabaseByUserId(new OfferDAO($con), $id);
-        unset($sqlite);
-        return $model;
+        try {
+            $sqlite = new SQLite();
+            $con = $sqlite->getCon();
+            $id = ProfileController::getDisplayUser(new UserDAO($con))->getId();
+            return OfferModel::getSavedOffersFromDatabaseByUserId(new OfferDAO($con), $id);
+
+        } catch (PDOException $ex) {
+            header('location: ' . URL . 'error/databaseError');
+        } finally {
+            unset($sqlite);
+        }
+
     }
 
     public static function getUserRating($userId) {
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $dao = new UserRatingDAO($con);
-        unset($sqlite);
-        return UserRatingModel::getRatingFromDatabaseForUserId($dao, $userId);
+        try {
+            $con = $sqlite->getCon();
+            $dao = new UserRatingDAO($con);
+            return UserRatingModel::getRatingFromDatabaseForUserId($dao, $userId);
+
+        } catch (PDOException $ex) {
+            header('location: ' . URL . 'error/databaseError');
+        } finally {
+            unset($sqlite);
+        }
     }
 
     public static function getRatedFromUser($fromUserId, $forUserId) {
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $dao = new UserRatingDAO($con);
-        unset($sqlite);
-        return UserRatingModel::getFromDatabaseByFromUserIdAndForUserId(
-            $dao, $fromUserId, $forUserId);
+        try {
+            $con = $sqlite->getCon();
+            $dao = new UserRatingDAO($con);
+            return UserRatingModel::getFromDatabaseByFromUserIdAndForUserId(
+                $dao, $fromUserId, $forUserId);
+        } catch (PDOException $ex) {
+            header('location: ' . URL . 'error/databaseError');
+        } finally {
+            unset($sqlite);
+        }
     }
 
     public static function disableUser() {
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $dao = new UserDAO($con);
-        $user = UserModel::getFromDatabaseById($dao, $_POST['user_id']);
+        try {
+            $con = $sqlite->getCon();
+            $dao = new UserDAO($con);
+            $user = UserModel::getFromDatabaseById($dao, $_POST['user_id']);
 
-        $user->deactivateInDatabase($dao);
-        unset($sqlite);
-        header('location: ' . URL . 'profile?id=' . $user->getId());
-        exit();
+            $user->deactivateInDatabase($dao);
+            header('location: ' . URL . 'profile?id=' . $user->getId());
+        } catch (PDOException $ex) {
+            header('location: ' . URL . 'error/databaseError');
+        } finally {
+            unset($sqlite);
+        }
     }
 
     public static function enableUser() {
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $dao = new UserDAO($con);
-        $user = UserModel::getFromDatabaseById($dao, $_POST['user_id']);
+        try {
+            $con = $sqlite->getCon();
+            $dao = new UserDAO($con);
+            $user = UserModel::getFromDatabaseById($dao, $_POST['user_id']);
 
-        $user->activateInDatabase($dao);
-        unset($sqlite);
-        header('location: ' . URL . 'profile?id=' .$user->getId());
-        exit();
+            $user->activateInDatabase($dao);
+            header('location: ' . URL . 'profile?id=' .$user->getId());
+            exit();
+        } catch (PDOException $ex) {
+            header('location: ' . URL . 'error/databaseError');
+        } finally {
+            unset($sqlite);
+        }
 
     }
 
     public static function rateUser() {
-        if (!isset($_SESSION['currentUser']) || !isset($_POST['csrf']) || ($_POST['csrf'] != $_SESSION['csrf_token'])) {
+        if (!isset($_SESSION['currentUser']) || !isset($_POST['csrf']) || ($_POST['csrf'] != $_SESSION['csrf_token']
+            || $_SESSION['currentUser']->getId() == $_POST['rating-user-id'])) {
             http_response_code(401);
             echo "unauthorized";
             return;
@@ -137,25 +169,37 @@ class ProfileController extends BaseController
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $dao = new UserRatingDAO($con);
-        $rating = UserRatingModel::getFromDatabaseByFromUserIdAndForUserId(
-            $dao, $_SESSION['currentUser']->getId(), $_POST['rating-user-id']);
-        $rating->setFromUserId($_SESSION['currentUser']->getId());
-        $rating->setForUserId($_POST['rating-user-id']);
+        try {
+            $rating = UserRatingModel::getFromDatabaseByFromUserIdAndForUserId(
+                $dao, $_SESSION['currentUser']->getId(), $_POST['rating-user-id']);
+            if(!$rating) {
+                $rating = new UserRatingModel(null, "", "", "");
+            }
+            $rating->setFromUserId($_SESSION['currentUser']->getId());
+            $rating->setForUserId($_POST['rating-user-id']);
 
-        $rateValue = $_POST['rating'];
-        if ($rateValue <= 5 && $rateValue >= 1) {
-            $rateValue = round($rateValue, 0);
-        }
-        else {
-            $rateValue = 0;
-        }
-        $oldRating = $rating->getRating();
-        $rating->setRating($rateValue);
+            $rateValue = $_POST['rating'];
+            if ($rateValue <= 5 && $rateValue >= 1) {
+                $rateValue = round($rateValue, 0);
+            }
+            else {
+                $rateValue = 0;
+            }
+            $oldRating = $rating->getRating();
+            $rating->setRating($rateValue);
 
-        if (empty ($oldRating)) {
-            $rating->insertIntoDatabase($dao);
-            return;
+            if (empty ($oldRating)) {
+                $rating->insertIntoDatabase($dao);
+                return;
+            }
+            $rating->updateInDatabase($dao);
+            $sqlite->closeTransaction(true);
         }
-        $rating->updateInDatabase($dao);
+        catch (PDOException $ex) {
+            $sqlite->closeTransaction(false);
+            header('location: ' . URL . 'error/databaseError');
+        } finally {
+            unset($sqlite);
+        }
     }
 }

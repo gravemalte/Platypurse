@@ -28,9 +28,12 @@ $rated = 0;
 if(isset($_SESSION['currentUser'])) {
     $isSaved = OfferController::isOfferInSavedList($_GET['id']);
 
-    $rated = ProfileController::getRatedFromUser($_SESSION['currentUser']->getId(), $seller->getId())->getRating();
-    if (empty($rated)) {
-        $rated = 0;
+    $rated = ProfileController::getRatedFromUser($_SESSION['currentUser']->getId(), $seller->getId());
+    if ($rated) {
+        $rated = $rated->getRating();
+        if(empty($rated)) {
+            $rated = 0;
+        }
     }
 }
 ?>

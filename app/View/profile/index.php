@@ -20,9 +20,12 @@ if (isset($_SESSION['currentUser'])) {
     if ($currentUser->isAdmin()) $viewHasAdmin = true;
     $loggedIn = true;
 
-    $rated = ProfileController::getRatedFromUser($currentUser->getId(), $displayUser->getId())->getRating();
-    if (empty($rated)) {
-        $rated = 0;
+    $rated = ProfileController::getRatedFromUser($currentUser->getId(), $displayUser->getId());
+    if ($rated) {
+        $rated = $rated->getRating();
+        if(empty($rated)) {
+            $rated = 0;
+        }
     }
 }
 
@@ -41,7 +44,7 @@ $offersByUser = ProfileController::getOffersByUserId();
                 <span><?= $displayUser->getDisplayName() ?></span>
                 <?php if ($displayUser->isDisabled()): ?>
 
-                <span><strong>[Account deaktiviert]</strong></span>
+                    <span><strong>[Account deaktiviert]</strong></span>
 
                 <?php endif; ?>
             </div>
@@ -128,18 +131,18 @@ $offersByUser = ProfileController::getOffersByUserId();
             </div>
             <div class="profile-button-container">
                 <?php if (!$userItself): ?>
-                <a href="chat?id=<?= $displayUser->getId() ?>">
-                    <button class="send-message-button button">
-                        <span>Nachricht schreiben</span>
-                    </button>
-                </a>
+                    <a href="chat?id=<?= $displayUser->getId() ?>">
+                        <button class="send-message-button button">
+                            <span>Nachricht schreiben</span>
+                        </button>
+                    </a>
                 <?php endif; ?>
                 <?php if ($userItself || $viewHasAdmin): ?>
-                <a href="profile/edit">
-                    <button class="edit-profile-button button">
-                        <span>Profil bearbeiten</span>
-                    </button>
-                </a>
+                    <a href="profile/edit">
+                        <button class="edit-profile-button button">
+                            <span>Profil bearbeiten</span>
+                        </button>
+                    </a>
                     <a href="<?= URL . 'chat'?>">
                         <button class="button">
                             <span>Meine Nachrichten</span>
@@ -152,84 +155,84 @@ $offersByUser = ProfileController::getOffersByUserId();
             <div class="profile-addon-button-container">
                 <?php if ($viewHasAdmin): ?>
                 <?php if ($displayUser->isDisabled()):?>
-                        <form action="profile/enableUser" method="post" class="user-suspend-container">
-                            <label for="submit-suspend" class="fas fa-unlock enable" title="Nutzer entsperren"></label>
+                <form action="profile/enableUser" method="post" class="user-suspend-container">
+                    <label for="submit-suspend" class="fas fa-unlock enable" title="Nutzer entsperren"></label>
                     <?php else:?>
-                        <form action="profile/disableUser" method="post" class="user-suspend-container">
-                            <label for="submit-suspend" class="fas fa-gavel disable" title="Nutzer sperren"></label>
-                    <?php endif; ?>
+                    <form action="profile/disableUser" method="post" class="user-suspend-container">
+                        <label for="submit-suspend" class="fas fa-gavel disable" title="Nutzer sperren"></label>
+                        <?php endif; ?>
                         <input type="text" name="user_id" hidden value='<?= $displayUser->getId();?>'>
                         <button id="submit-suspend" type="submit" hidden></button>
                         <label for="submit-suspend" hidden>Nutzer sperren</label>
                     </form>
-                <?php endif; ?>
-                <form action="" class="user-report-container">
-                    <button id="submit-report" type="submit" hidden></button>
-                    <label for="submit-report" hidden>Nutzer melden</label>
-                    <label for="submit-report" class="fas fa-exclamation-triangle" title="Nutzer melden"></label>
-                </form>
+                    <?php endif; ?>
+                    <form action="" class="user-report-container">
+                        <button id="submit-report" type="submit" hidden></button>
+                        <label for="submit-report" hidden>Nutzer melden</label>
+                        <label for="submit-report" class="fas fa-exclamation-triangle" title="Nutzer melden"></label>
+                    </form>
             </div>
         <?php endif; ?>
     </div>
     <div class="offer-area">
         <?php if (!empty($savedOffers) && $userItself): ?>
-        <div class="saved-offers-container">
-            <p class="title">Deine Merkliste</p>
-            <div class="offer-list-container">
-                <?php foreach($savedOffers as $offer): ?>
-                <a
-                        class="offer-list-link <?php if(!$offer->isActive()) echo "offer-sold" ?>"
-                        href="offer?id=<?= $offer->getId();?>"
-                >
-                    <div class="offer-list-item card">
-                        <img src="<?= $offer->getImage()->getSrc(); ?>" alt="">
-                        <p class="name"><?= $offer->getPlatypus()->getName();?></p>
-                        <p class="description"><?= $offer->getDescription();?></p>
-                        <div class="price-tag-container">
-                            <p class="price-tag"><?= $offer->getShortPrice();?></p>
-                        </div>
-                    </div>
-                </a>
-                <?php endforeach; ?>
+            <div class="saved-offers-container">
+                <p class="title">Deine Merkliste</p>
+                <div class="offer-list-container">
+                    <?php foreach($savedOffers as $offer): ?>
+                        <a
+                                class="offer-list-link <?php if(!$offer->isActive()) echo "offer-sold" ?>"
+                                href="offer?id=<?= $offer->getId();?>"
+                        >
+                            <div class="offer-list-item card">
+                                <img src="<?= $offer->getImage()->getSrc(); ?>" alt="">
+                                <p class="name"><?= $offer->getPlatypus()->getName();?></p>
+                                <p class="description"><?= $offer->getDescription();?></p>
+                                <div class="price-tag-container">
+                                    <p class="price-tag"><?= $offer->getShortPrice();?></p>
+                                </div>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
             </div>
-        </div>
         <?php endif; ?>
         <?php if (!empty($offersByUser)): ?>
-        <div class="user-offers-container">
-            <p class="title">
-                <?php if ($userItself): ?>Deine <?php endif; ?>Angebote
-            </p>
-            <div class="offer-list-container">
-                <?php foreach($offersByUser as $offer): ?>
-                <a
-                        class="offer-list-link <?php if(!$offer->isActive()) echo "offer-sold" ?>"
-                        href="offer?id=<?= $offer->getId();?>"
-                >
-                    <div class="offer-list-item card">
-                        <img src="<?= $offer->getImage()->getSrc(); ?>" alt="">
-                        <p class="name"><?= $offer->getPlatypus()->getName();?></p>
-                        <p class="description"><?= $offer->getDescription();?></p>
-                        <div class="price-tag-container">
-                            <p class="price-tag"><?= $offer->getShortPrice();?></p>
-                        </div>
-                    </div>
-                </a>
-                <?php endforeach; ?>
+            <div class="user-offers-container">
+                <p class="title">
+                    <?php if ($userItself): ?>Deine <?php endif; ?>Angebote
+                </p>
+                <div class="offer-list-container">
+                    <?php foreach($offersByUser as $offer): ?>
+                        <a
+                                class="offer-list-link <?php if(!$offer->isActive()) echo "offer-sold" ?>"
+                                href="offer?id=<?= $offer->getId();?>"
+                        >
+                            <div class="offer-list-item card">
+                                <img src="<?= $offer->getImage()->getSrc(); ?>" alt="">
+                                <p class="name"><?= $offer->getPlatypus()->getName();?></p>
+                                <p class="description"><?= $offer->getDescription();?></p>
+                                <div class="price-tag-container">
+                                    <p class="price-tag"><?= $offer->getShortPrice();?></p>
+                                </div>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
             </div>
-        </div>
         <?php endif; ?>
         <?php if (empty($savedOffers) && empty($offersByUser)): ?>
-        <div class="empty-box">
-            <h1>
-                <?php if ($userItself): ?>
-                <span>Sieht hier ja so leer aus...</span>
-                <span class="fas fa-ghost"></span>
-                <?php else: ?>
-                <span>Der Nutzer hat leider noch keine Angebote.</span>
-                <span class="fas fa-box-open"></span>
-                <?php endif; ?>
-            </h1>
-        </div>
+            <div class="empty-box">
+                <h1>
+                    <?php if ($userItself): ?>
+                        <span>Sieht hier ja so leer aus...</span>
+                        <span class="fas fa-ghost"></span>
+                    <?php else: ?>
+                        <span>Der Nutzer hat leider noch keine Angebote.</span>
+                        <span class="fas fa-box-open"></span>
+                    <?php endif; ?>
+                </h1>
+            </div>
         <?php endif; ?>
     </div>
 </main>
