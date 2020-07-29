@@ -21,6 +21,8 @@ class ProfileController extends BaseController
             header('location: ' . URL . 'login');
         }
 
+        $_SESSION['csrf_token'] = uniqid();
+
         require APP . 'View/shared/header.php';
         require APP . 'View/profile/header.php';
         require APP . 'View/shared/nav.php';
@@ -66,37 +68,19 @@ class ProfileController extends BaseController
         return OfferModel::getSavedOffersFromDatabaseByUserId(new OfferDAO($con), $id);
     }
 
-    public static function getRatingForUserId($userId) {
+    public static function getUserRating($userId) {
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
-        $userRatingDao = new UserRatingDAO($con);
-        return UserRatingModel::getRatingFromDatabaseForUserId($userRatingDao, $userId);
+        $dao = new UserRatingDAO($con);
+        return UserRatingModel::getRatingFromDatabaseForUserId($dao, $userId);
     }
 
-    public static function insertRating($fromUserId, $forUserId, $rating) {
-        if(isset($_SESSION["currentUser"])):
-            $sqlite = new SQLite();
-            $con = $sqlite->getCon();
-            $dao = new UserRatingDAO($con);
-
-            $userRating = UserRatingModel::getFromDatabaseByFromUserIdAndForUserId($dao, $fromUserId, $forUserId);
-            if(empty($userRating->getId())):
-                $userRating = new UserRatingModel(hexdec(uniqid()),
-                    $fromUserId, $forUserId, $rating);
-
-                $check = $userRating->insertIntoDatabase($dao);
-            else:
-                $userRating->setRating($rating);
-                $check = $userRating->updateInDatabase($dao);
-            endif;
-
-            if($check):
-                header('location: ' . URL . 'profile?id=' . $forUserId);
-                exit();
-            endif;
-        endif;
-        header('location: ' . URL . 'login');
-        exit();
+    public static function getRatedFromUser($fromUserId, $forUserId) {
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new UserRatingDAO($con);
+        return UserRatingModel::getFromDatabaseByFromUserIdAndForUserId(
+            $dao, $fromUserId, $forUserId);
     }
 
     public static function disableUser() {

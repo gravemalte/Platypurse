@@ -1,5 +1,6 @@
 <?php
 use Controller\OfferController;
+use Controller\ProfileController;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\UserRatingModel;
 use Model\DAO\UserRatingDAO;
@@ -15,24 +16,18 @@ if($zipcoordinates):
     $map_lon = $zipcoordinates->getLon();
 endif;
 $isSaved = false;
+
+$rating = ProfileController::getUserRating($seller->getId());
+
 $rated = 0;
-
-$sqlite = new SQLite();
-$con = $sqlite->getCon();
-$dao = new UserRatingDAO($con);
-$rating = UserRatingModel::getRatingFromDatabaseForUserId($dao, $seller->getId());
-
 if(isset($_SESSION['currentUser'])) {
     $isSaved = OfferController::isOfferInSavedList($_GET['id']);
-    $userRating = UserRatingModel::getFromDatabaseByFromUserIdAndForUserId(
-        $dao, $_SESSION['currentUser']->getId(), $seller->getId());
-    $rated = $userRating->getRating();
-    if (empty($userRating->getRating())) {
+
+    $rated = ProfileController::getRatedFromUser($_SESSION['currentUser']->getId(), $seller->getId())->getRating();
+    if (empty($rated)) {
         $rated = 0;
     }
 }
-
-$_SESSION['csrf_token'] = uniqid();
 ?>
 <main class="main-page">
     <div class="main-area">
