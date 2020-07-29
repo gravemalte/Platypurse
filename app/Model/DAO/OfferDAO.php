@@ -170,26 +170,34 @@ class OfferDAO implements OfferDAOInterface
 
     /**
      * Read entries by search filters from database
+     * @param $getCount
      * @param $keyedSearchValuesArray
      * @return mixed
      */
-    public function readSearchResults($keyedSearchValuesArray)
+    public function readSearchResults($getCount, $keyedSearchValuesArray)
     {
         $bindSex = array_key_exists("sex", $keyedSearchValuesArray);
-        $sql = "SELECT * FROM offer
-                    INNER JOIN platypus ON platypus.p_id = offer.p_id
-                    WHERE (name LIKE :name
-                      OR description LIKE :description)
-                      AND age_years BETWEEN :ageMin and :ageMax 
-                      AND size BETWEEN :sizeMin and :sizeMax 
-                      AND weight BETWEEN :weightMin and :weightMax
-                      AND offer.active = 1";
+        $sql = "SELECT ";
+        if($getCount):
+            $sql .= "COUNT(*) as test";
+        else:
+            $sql .= "*";
+        endif;
+        $sql .= " FROM offer INNER JOIN platypus ON platypus.p_id = offer.p_id
+            WHERE (name LIKE :name
+            OR description LIKE :description)
+            AND age_years BETWEEN :ageMin and :ageMax 
+            AND size BETWEEN :sizeMin and :sizeMax 
+            AND weight BETWEEN :weightMin and :weightMax
+            AND offer.active = 1";
 
         if($bindSex):
             $sql .= " AND sex = :sex";
         endif;
 
-        $sql .= " LIMIT :limit OFFSET :offset;";
+        if(!$getCount):
+            $sql .= " LIMIT :limit OFFSET :offset";
+        endif;
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":name", $keyedSearchValuesArray['name']);
@@ -200,16 +208,23 @@ class OfferDAO implements OfferDAOInterface
         $stmt->bindValue(":sizeMax", $keyedSearchValuesArray['sizeMax']);
         $stmt->bindValue(":weightMin", $keyedSearchValuesArray['weightMin']);
         $stmt->bindValue(":weightMax", $keyedSearchValuesArray['weightMax']);
-        $stmt->bindValue(":limit", $keyedSearchValuesArray['limit']);
-        $stmt->bindValue(":offset", $keyedSearchValuesArray['offset']);
 
+        if(!$getCount):
+            $stmt->bindValue(":limit", $keyedSearchValuesArray['limit']);
+            $stmt->bindValue(":offset", $keyedSearchValuesArray['offset']);
+        endif;
         if($bindSex):
             $stmt->bindValue(":sex", $keyedSearchValuesArray['sex']);
         endif;
 
         if($stmt->execute()) {
-            return $stmt->fetchAll();
+            if($getCount):
+                return $stmt->fetch()['test'];
+            else:
+                return $stmt->fetchAll();
+            endif;
         } else {
+            print "error2";
             throw new PDOException('OfferDAO readSearchResults error');
         }
     }

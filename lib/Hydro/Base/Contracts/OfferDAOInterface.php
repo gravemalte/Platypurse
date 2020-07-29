@@ -9,6 +9,6 @@ interface OfferDAOInterface
     public function readHot();
     public function readNewest();
     public function readOffersByUserId($userId);
-    public function readSearchResults($keyedSearchValuesArray);
+    public function readSearchResults($getCount, $keyedSearchValuesArray);
     public function update($obj);
 }

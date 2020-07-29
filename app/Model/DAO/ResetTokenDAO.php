@@ -77,7 +77,7 @@ class ResetTokenDAO implements ResetTokenDAOInterface
      */
     public function update($obj)
     {
-        $sql = "UPDATE reset_tokens SET token = :token AND expiration_date = :date WHERE token_id = :id;";
+        $sql = "UPDATE reset_tokens SET token = :token, expiration_date = :date WHERE token_id = :id;";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":token", $obj->getToken());
         $stmt->bindValue(":date", $obj->getExpirationDate());
@@ -109,7 +109,7 @@ class ResetTokenDAO implements ResetTokenDAOInterface
 
     /**
      * Update entry in database
-     * @param $obj
+     * @param $id
      * @return bool
      */
     public function deleteForUser($id) {

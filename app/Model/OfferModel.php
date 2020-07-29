@@ -4,6 +4,7 @@ namespace Model;
 
 use Hydro\Helper\Date;
 use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\OfferDAO;
 use Model\DAO\OfferImageDAO;
 use Model\DAO\PlatypusDAO;
 use Model\DAO\UserDAO;
@@ -90,18 +91,23 @@ class OfferModel {
 
     /**
      * Returns models by search filter from database
-     * @param $offerDAO
+     * @param $getCount
+     * @param OfferDAO $offerDAO
      * @param $keyedSearchValuesArray
      * @return array
      */
-    public static function getSearchResultsFromDatabase($offerDAO, $keyedSearchValuesArray) {
-        $result = $offerDAO->readSearchResults($keyedSearchValuesArray);
-        $returnArray = array();
-        foreach($result as $row):
-            $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon());
-        endforeach;
+    public static function getSearchResultsFromDatabase($getCount, $offerDAO, $keyedSearchValuesArray) {
+        $result = $offerDAO->readSearchResults($getCount, $keyedSearchValuesArray);
+        if($getCount):
+            return $result;
+        else:
+            $returnArray = array();
+            foreach($result as $row):
+                $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon());
+            endforeach;
 
-        return $returnArray;
+            return $returnArray;
+        endif;
     }
 
     /**
