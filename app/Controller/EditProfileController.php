@@ -13,10 +13,12 @@ class EditProfileController extends BaseController {
         // you need to be logged in to edit-profile your profile
         if (!isset($_SESSION['currentUser'])) {
             header('location: ' . URL . 'login');
+            exit();
         }
         // only admins can use specific id to edit-profile user profiles
-        if (isset($_POST['id']) && !$_SESSION['currentUser']->isAdmin()) {
+        if (isset($_GET['id']) && !$_SESSION['currentUser']->isAdmin()) {
             header('location: ' . URL . 'editProfile');
+            exit();
         }
 
         $_SESSION['csrf_token'] = uniqid();
@@ -34,8 +36,8 @@ class EditProfileController extends BaseController {
      */
     public static function getUser() {
         $id = $_SESSION['currentUser']->getId();
-        if (isset($_POST['id'])) {
-            $id = $_POST['id'];
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
         }
         return ProfileController::getUser($id);
     }
