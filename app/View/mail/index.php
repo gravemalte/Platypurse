@@ -1,7 +1,6 @@
 <?php
-use \Model\DAO\MailDAO;
-use \Hydro\Base\Database\Driver\SQLite;
-use \Model\MailModel;
+
+use Controller\MailController;
 
 $mail = MailController::getMail($_GET['id']);
 
