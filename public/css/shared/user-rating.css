@@ -3,7 +3,10 @@
     justify-content: space-evenly;
     flex-direction: row-reverse;
 }
-.user-rating span:hover,
-.user-rating span:hover ~ span {
+.user-rating .rate-point {
+    color: var(--profile-star-highlight-color);
+}
+.user-rating span:hover:not(.average),
+.user-rating span:hover:not(.average) ~ span:not(.average) {
     color: var(--profile-star-highlight-color);
 }

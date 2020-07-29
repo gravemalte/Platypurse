@@ -1,5 +1,8 @@
 <?php
 use Controller\OfferController;
+use Hydro\Base\Database\Driver\SQLite;
+use Model\UserRatingModel;
+use Model\DAO\UserRatingDAO;
 
 $offer = OfferController::getOffer($_GET['id']);
 OfferController::offerClickPlusOne($offer);
@@ -12,10 +15,24 @@ if($zipcoordinates):
     $map_lon = $zipcoordinates->getLon();
 endif;
 $isSaved = false;
+$rated = 0;
 
-if(isset($_SESSION['currentUser'])):
+$sqlite = new SQLite();
+$con = $sqlite->getCon();
+$dao = new UserRatingDAO($con);
+$rating = UserRatingModel::getRatingFromDatabaseForUserId($dao, $seller->getId());
+
+if(isset($_SESSION['currentUser'])) {
     $isSaved = OfferController::isOfferInSavedList($_GET['id']);
-endif;
+    $userRating = UserRatingModel::getFromDatabaseByFromUserIdAndForUserId(
+        $dao, $_SESSION['currentUser']->getId(), $seller->getId());
+    $rated = $userRating->getRating();
+    if (empty($userRating->getRating())) {
+        $rated = 0;
+    }
+}
+
+$_SESSION['csrf_token'] = uniqid();
 ?>
 <main class="main-page">
     <div class="main-area">
@@ -68,13 +85,92 @@ endif;
                         <a href="profile?id=<?= $seller->getId() ?>">
                             <p><?= $seller->getDisplayName() ?></p>
                         </a>
-                        <div class="user-rating">
-                            <span class="fas fa-star" id="user-rating-5"></span>
-                            <span class="fas fa-star" id="user-rating-4"></span>
-                            <span class="fas fa-star" id="user-rating-3"></span>
-                            <span class="fas fa-star" id="user-rating-2"></span>
-                            <span class="fas fa-star" id="user-rating-1"></span>
+                        <div class="user-rating" id="user-rating">
+                            <input type="hidden" id="csrf-token" value="<?= $_SESSION['csrf_token'] ?>">
+                            <input type="hidden" id="rating-user-id" value="<?= $seller->getId() ?>">
+                            <span class="average">(<?= round($rating,1) ?>)</span>
+
+                            <span
+                                    class="
+                                        <?php if ($rating > 4.75): ?>
+                                        fas fa-star
+                                        <?php elseif ($rating > 4.25): ?>
+                                        fas fa-star-half-alt
+                                        <?php else: ?>
+                                        far fa-star
+                                        <?php endif ?>
+                                        <?php if ($rated >=5): ?>
+                                        rate-point
+                                        <?php endif ?>
+                                    "
+                                    id="user-rating-5"
+                            ></span>
+                            <span
+                                    class="
+                                        <?php if ($rating > 3.75): ?>
+                                        fas fa-star
+                                        <?php elseif ($rating > 3.25): ?>
+                                        fas fa-star-half-alt
+                                        <?php else: ?>
+                                        far fa-star
+                                        <?php endif ?>
+                                        <?php if ($rated >=4): ?>
+                                        rate-point
+                                        <?php endif ?>
+                                    "
+                                    id="user-rating-4"
+                            ></span>
+                            <span
+                                    class="
+                                        <?php if ($rating > 2.75): ?>
+                                        fas fa-star
+                                        <?php elseif ($rating > 2.25): ?>
+                                        fas fa-star-half-alt
+                                        <?php else: ?>
+                                        far fa-star
+                                        <?php endif ?>
+                                        <?php if ($rated >=3): ?>
+                                        rate-point
+                                        <?php endif ?>
+                                    "
+                                    id="user-rating-3"
+                            ></span>
+                            <span
+                                    class="
+                                        <?php if ($rating > 1.75): ?>
+                                        fas fa-star
+                                        <?php elseif ($rating > 1.25): ?>
+                                        fas fa-star-half-alt
+                                        <?php else: ?>
+                                        far fa-star
+                                        <?php endif ?>
+                                        <?php if ($rated >=2): ?>
+                                        rate-point
+                                        <?php endif ?>
+                                    "
+                                    id="user-rating-2"
+                            ></span>
+                            <span
+                                    class="
+                                        <?php if ($rating > 0.75): ?>
+                                        fas fa-star
+                                        <?php elseif ($rating > 0.25): ?>
+                                        fas fa-star-half-alt
+                                        <?php else: ?>
+                                        far fa-star
+                                        <?php endif ?>
+                                        <?php if ($rated >=1): ?>
+                                        rate-point
+                                        <?php endif ?>
+                                    "
+                                    id="user-rating-1"
+                            ></span>
                         </div>
+                        <noscript>
+                            <p style="text-align: center">
+                                <small>Bewerten nur möglich mit aktiviertem Javascript.</small>
+                            </p>
+                        </noscript>
                     </div>
                 </div>
                 <div class="attribute-list card">

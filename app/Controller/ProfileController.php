@@ -120,4 +120,37 @@ class ProfileController extends BaseController
         exit();
 
     }
+
+    public static function rateUser() {
+        if (!isset($_SESSION['currentUser']) || !isset($_POST['csrf']) || ($_POST['csrf'] != $_SESSION['csrf_token'])) {
+            http_response_code(401);
+            echo "unauthorized";
+            return;
+        }
+
+        if (!isset($_POST['rating']) || !isset($_POST['rating-user-id'])) {
+            http_response_code(400);
+            echo "bad request";
+            return;
+        }
+
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new UserRatingDAO($con);
+        $rating = UserRatingModel::getFromDatabaseByFromUserIdAndForUserId(
+            $dao, $_SESSION['currentUser']->getId(), $_POST['rating-user-id']);
+        $rating->setFromUserId($_SESSION['currentUser']->getId());
+        $rating->setForUserId($_POST['rating-user-id']);
+
+        $rateValue = $_POST['rating'];
+        if ($rateValue <= 5 && $rateValue >= 1) {
+            $rateValue = round($rateValue, 0);
+        }
+        else {
+            $rateValue = 0;
+        }
+        $rating->setRating($rateValue);
+
+        $rating->insertIntoDatabase($dao);
+    }
 }
