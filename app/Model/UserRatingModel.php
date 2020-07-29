@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Model\DAO\UserRatingDAO;
+
 class UserRatingModel {
     private $id;
     private $fromUserId;
@@ -23,19 +25,42 @@ class UserRatingModel {
         $this->rating = $rating;
     }
 
+    /**
+     * Insert model into database
+     * @param UserRatingDAO $dao
+     * @return mixed
+     */
     public function insertIntoDatabase($dao) {
         return $dao->create($this);
     }
 
+    /**
+     * Returns model from user id for user id from database
+     * @param UserRatingDAO $dao
+     * @param $fromUserId
+     * @param $forUserId
+     * @return UserRatingModel
+     */
     public static function getFromDatabaseByFromUserIdAndForUserId($dao, $fromUserId, $forUserId) {
         $result = $dao->readFromUserIdForUserId($fromUserId, $forUserId);
         return new UserRatingModel($result[0], $result[1], $result[2], $result[3]);
     }
 
+    /**
+     * Returns average rating for user id from database
+     * @param UserRatingDAO $dao
+     * @param $userId
+     * @return mixed
+     */
     public static function getRatingFromDatabaseForUserId($dao, $userId) {
         return $dao->readForUserId($userId)[0];
     }
-    
+
+    /**
+     * Update model in database
+     * @param UserRatingDAO $dao
+     * @return mixed
+     */
     public function updateInDatabase($dao) {
         return $dao->update($this);
     }

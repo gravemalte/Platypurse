@@ -2,18 +2,35 @@
 namespace Model\DAO;
 
 use Hydro\Base\Contracts\ReportDAOInterface;
+use Model\UserReportModel;
 use PDOException;
 
 class UserReportDAO implements ReportDAOInterface
 {
     private $con;
 
+    /**
+     * UserReportDAO constructor.
+     * @param $con
+     */
     public function __construct($con)
     {
         $this->con = $con;
     }
 
+    /**
+     * Returns the current connection
+     * @return mixed
+     */
+    public function getCon() {
+        return $this->con;
+    }
 
+    /**
+     * Insert entry into database
+     * @param UserReportModel $obj
+     * @return mixed
+     */
     public function create($obj)
     {
         $query = "INSERT INTO user_reports (ur_id, reported_u_id, reporter_u_id, rr_id, message)
@@ -23,8 +40,8 @@ class UserReportDAO implements ReportDAOInterface
         $stmt->bindValue(":reportedUserId", $obj->getReportedObject()->getId());
         $stmt->bindValue(":reporterUserId", $obj->getReporterUser()->getId());
         // TODO: Implement report reason to match use in frontend
-        $stmt->bindValue(":reportReasonId", $obj->getReportReason()[0]);
-        $stmt->bindValue(":message", $obj->getUserId());
+        // $stmt->bindValue(":reportReasonId", $obj->getReportReason()[0]);
+        // $stmt->bindValue(":message", $obj->getUserId());
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
@@ -36,6 +53,11 @@ class UserReportDAO implements ReportDAOInterface
         }
     }
 
+    /**
+     * Read entryby id from database
+     * @param $id
+     * @return mixed
+     */
     public function read($id)
     {
         $sql = "SELECT * FROM user_reports
@@ -50,6 +72,10 @@ class UserReportDAO implements ReportDAOInterface
         }
     }
 
+    /**
+     * Read all entries from database
+     * @return mixed
+     */
     public function readAll()
     {
         $sql = "SELECT * FROM user_reports;";
@@ -63,6 +89,11 @@ class UserReportDAO implements ReportDAOInterface
         }
     }
 
+    /**
+     * Update entry in database
+     * @param UserReportModel $obj
+     * @return bool
+     */
     public function update($obj)
     {
         $sql = "UPDATE user_reports SET active = :active WHERE ur_id = :id;";

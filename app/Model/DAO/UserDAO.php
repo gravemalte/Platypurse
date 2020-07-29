@@ -2,18 +2,27 @@
 namespace Model\DAO;
 
 use Hydro\Base\Contracts\UserDAOInterface;
+use Model\UserModel;
 use PDOException;
 
 class UserDAO implements UserDAOInterface
 {
     private $con;
 
+    /**
+     * UserDAO constructor.
+     * @param $con
+     */
     public function __construct($con)
     {
         $this->con = $con;
     }
 
-
+    /**
+     * Insert entry into database
+     * @param UserModel $obj
+     * @return mixed
+     */
     public function create($obj)
     {
         $query = "INSERT INTO user(u_id, display_name, mail, password, ug_id, mime, image)
@@ -39,6 +48,11 @@ class UserDAO implements UserDAOInterface
 
     }
 
+    /**
+     * Read entry by id from database
+     * @param $id
+     * @return mixed
+     */
     public function read($id)
     {
         $query = "SELECT * FROM user WHERE u_id = :id;";
@@ -52,6 +66,11 @@ class UserDAO implements UserDAOInterface
         }
     }
 
+    /**
+     * Read entry by mail from database
+     * @param $mail
+     * @return mixed
+     */
     public function readByMail($mail)
     {
         $query = "SELECT * FROM user WHERE mail = :mail;";
@@ -65,6 +84,11 @@ class UserDAO implements UserDAOInterface
         }
     }
 
+    /**
+     * Read entry by name from database
+     * @param $name
+     * @return mixed
+     */
     public function readByName($name)
     {
         $query = "SELECT * FROM user WHERE display_name = :name;";
@@ -78,6 +102,11 @@ class UserDAO implements UserDAOInterface
         }
     }
 
+    /**
+     * Update entry in database
+     * @param UserModel $obj
+     * @return bool
+     */
     public function update($obj)
     {
         $sql = "UPDATE user SET display_name = :displayName, mail = :mail, password = :password, ug_id = :ugId,

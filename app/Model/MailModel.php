@@ -34,6 +34,11 @@ class MailModel {
         $this->sendDate = $sendDate;
     }
 
+    /**
+     * Insert model into database
+     * @param MailDAO $dao
+     * @return mixed
+     */
     public function insertIntoDatabase($dao) {
         return $dao->create($this);
     }
@@ -45,6 +50,12 @@ class MailModel {
             $result[4], $result[5]);
     }
 
+    /**
+     * Returns model based on user and content
+     * @param $user
+     * @param $content
+     * @return MailModel
+     */
     public static function initMail($user, $content) {
         $mail = new MailModel(null, $content, $user->getDisplayName(), $user, $user->getMail(), Date::now());
         $sqlite = new SQLite();

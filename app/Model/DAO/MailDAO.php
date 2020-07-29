@@ -8,16 +8,28 @@ class MailDAO implements MailDAOInterface
 {
     private $con;
 
+    /**
+     * MailDAO constructor.
+     * @param $con
+     */
     public function __construct($con)
     {
         $this->con = $con;
     }
 
+    /**
+     * Returns the current connection
+     * @return mixed
+     */
     public function getCon() {
         return $this->con;
     }
 
-
+    /**
+     * Insert entry into database
+     * @param $obj
+     * @return mixed
+     */
     public function create($obj)
     {
         $query = "INSERT INTO mails (m_id, content, receiver_name, receiver_id, receiver_mail, send_date) 
@@ -40,6 +52,11 @@ class MailDAO implements MailDAOInterface
         }
     }
 
+    /**
+     * Read entry by id from database
+     * @param $id
+     * @return mixed
+     */
     public function read($id)
     {
         $sql = "SELECT * FROM mails

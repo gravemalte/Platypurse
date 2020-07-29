@@ -2,18 +2,27 @@
 namespace Model\DAO;
 
 use Hydro\Base\Contracts\OfferImagesDAOInterface;
+use Model\OfferImageModel;
 use PDOException;
 
 class OfferImageDAO implements OfferImagesDAOInterface
 {
     private $con;
 
+    /**
+     * OfferImageDAO constructor.
+     * @param $con
+     */
     public function __construct($con)
     {
         $this->con = $con;
     }
 
-
+    /**
+     * Insert entry into database
+     * @param OfferImageModel $obj
+     * @return mixed
+     */
     public function create($obj)
     {
         $query = "INSERT INTO offer_images (oi_id, o_id, picture_position, mime, image) 
@@ -36,6 +45,11 @@ class OfferImageDAO implements OfferImagesDAOInterface
 
     }
 
+    /**
+     * Read entry by offer id from database
+     * @param $offerId
+     * @return mixed
+     */
     public function readByOfferId($offerId)
     {
         $query = "SELECT * FROM offer_images WHERE o_id = :offerId;";
@@ -49,6 +63,11 @@ class OfferImageDAO implements OfferImagesDAOInterface
         }
     }
 
+    /**
+     * Update entry in database
+     * @param OfferImageModel $obj
+     * @return bool
+     */
     public function update($obj)
     {
         $sql = "UPDATE offer_images SET picture_position = :picturePosition, mime = :mime, image = :image

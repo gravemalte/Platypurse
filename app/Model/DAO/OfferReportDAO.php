@@ -2,18 +2,35 @@
 namespace Model\DAO;
 
 use Hydro\Base\Contracts\ReportDAOInterface;
+use Model\OfferReportModel;
 use PDOException;
 
 class OfferReportDAO implements ReportDAOInterface
 {
     private $con;
 
+    /**
+     * OfferReportDAO constructor.
+     * @param $con
+     */
     public function __construct($con)
     {
         $this->con = $con;
     }
 
+    /**
+     * Returns the current connection
+     * @return mixed
+     */
+    public function getCon() {
+        return $this->con;
+    }
 
+    /**
+     * Insert entry into database
+     * @param OfferReportModel $obj
+     * @return mixed
+     */
     public function create($obj)
     {
         $query = "INSERT INTO offer_reports (or_id, reported_o_id, reporter_u_id, rr_id, message)
@@ -23,8 +40,8 @@ class OfferReportDAO implements ReportDAOInterface
         $stmt->bindValue(":offerId", $obj->getReportedObject()->getId());
         $stmt->bindValue(":userId", $obj->getReporterUser()->getId());
         // TODO: Implement report reason to match use in frontend
-        $stmt->bindValue(":reportReasonId", $obj->getReportReason()[0]);
-        $stmt->bindValue(":message", $obj->getUserId());
+        // $stmt->bindValue(":reportReasonId", $obj->getReportReason()[0]);
+        // $stmt->bindValue(":message", $obj->getUserId());
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
@@ -36,6 +53,11 @@ class OfferReportDAO implements ReportDAOInterface
         }
     }
 
+    /**
+     * Read entry by id from database
+     * @param $id
+     * @return mixed
+     */
     public function read($id)
     {
         $sql = "SELECT * FROM offer_reports
@@ -50,6 +72,10 @@ class OfferReportDAO implements ReportDAOInterface
         }
     }
 
+    /**
+     * Read all entries from database
+     * @return mixed
+     */
     public function readAll()
     {
         $sql = "SELECT * FROM offer_reports;";
@@ -63,13 +89,17 @@ class OfferReportDAO implements ReportDAOInterface
         }
     }
 
+    /**
+     * Update entry in database
+     * @param OfferReportModel $obj
+     * @return bool
+     */
     public function update($obj)
     {
         $sql = "UPDATE offer_reports SET active = :active WHERE or_id = :id;";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":active", $obj->isActive());
         $stmt->bindValue(":id", $obj->getId());
-
 
         if($stmt->execute()) {
             return true;

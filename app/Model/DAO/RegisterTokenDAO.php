@@ -2,21 +2,35 @@
 namespace Model\DAO;
 
 use Hydro\Base\Contracts\RegisterTokenDAOInterface;
+use Model\RegisterTokenModel;
 use PDOException;
 
 class RegisterTokenDAO implements RegisterTokenDAOInterface
 {
     private $con;
 
+    /**
+     * RegisterTokenDAO constructor.
+     * @param $con
+     */
     public function __construct($con)
     {
         $this->con = $con;
     }
 
+    /**
+     * Returns the current connection
+     * @return mixed
+     */
     public function getCon() {
         return $this->con;
     }
 
+    /**
+     * Insert entry into database
+     * @param RegisterTokenModel $obj
+     * @return mixed
+     */
     public function create($obj)
     {
         $query = "INSERT INTO register_tokens (token_id, token, u_id, expiration_date) 
@@ -37,6 +51,11 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
         }
     }
 
+    /**
+     * Read entry by id from database
+     * @param $id
+     * @return mixed
+     */
     public function read($id)
     {
         $sql = "SELECT * FROM register_tokens
@@ -51,6 +70,11 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
         }
     }
 
+    /**
+     * Read entry by token from database
+     * @param $token
+     * @return mixed
+     */
     public function readByToken($token)
     {
         $sql = "SELECT * FROM register_tokens
@@ -65,6 +89,10 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
         }
     }
 
+    /**
+     * Delete expired entries from database
+     * @return bool
+     */
     public function deleteExpired() {
         $sql = "DELETE FROM register_tokens WHERE expiration_date < date('now');";
 
@@ -77,6 +105,11 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
         }
     }
 
+    /**
+     * Update entry in database
+     * @param $obj
+     * @return bool
+     */
     public function deleteForUser($id) {
         $sql = "DELETE FROM register_tokens WHERE u_id = :userId;";
 

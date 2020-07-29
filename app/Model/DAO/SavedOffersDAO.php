@@ -2,18 +2,27 @@
 namespace Model\DAO;
 
 use Hydro\Base\Contracts\SavedOffersDAOInterface;
+use Model\SavedOfferModel;
 use PDOException;
 
 class SavedOffersDAO implements SavedOffersDAOInterface
 {
     private $con;
 
+    /**
+     * SavedOffersDAO constructor.
+     * @param $con
+     */
     public function __construct($con)
     {
         $this->con = $con;
     }
 
-
+    /**
+     * Insert entry into database
+     * @param SavedOfferModel $obj
+     * @return mixed
+     */
     public function create($obj)
     {
         $query = "INSERT INTO saved_offers (so_id, u_id, o_id, active)
@@ -34,6 +43,11 @@ class SavedOffersDAO implements SavedOffersDAOInterface
         }
     }
 
+    /**
+     * Read entries by user id from database
+     * @param $userId
+     * @return mixed
+     */
     public function readByUserId($userId)
     {
         $sql = "SELECT * FROM offer
@@ -49,6 +63,13 @@ class SavedOffersDAO implements SavedOffersDAOInterface
         }
     }
 
+    /**
+     * Read entry by user id and offer id from database
+     * @param $userId
+     * @param $offerId
+     * @param boolean $withActives
+     * @return mixed
+     */
     public function readByUserIdAndOfferId($userId, $offerId, $withActives)
     {
         $sql = "SELECT * FROM saved_offers
@@ -70,6 +91,11 @@ class SavedOffersDAO implements SavedOffersDAOInterface
         }
     }
 
+    /**
+     * Update entry in database
+     * @param SavedOfferModel $obj
+     * @return bool
+     */
     public function update($obj)
     {
         $sql = "UPDATE saved_offers SET active = :active WHERE u_id = :userId AND o_id = :offerId;";
