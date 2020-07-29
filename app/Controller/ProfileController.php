@@ -45,8 +45,15 @@ class ProfileController extends BaseController
             $dao = new UserDAO($con);
             $unset = true;
         endif;
-
-        $model = UserModel::getUser($dao, $id);
+        try {
+            $model = UserModel::getUser($dao, $id);
+        } catch (PDOException $ex) {
+            if(isset($unset)):
+                unset($sqlite);
+            endif;
+            header('location: ' . URL . 'editProfile');
+            exit();
+        }
         if(isset($unset)):
             unset($sqlite);
         endif;

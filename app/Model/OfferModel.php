@@ -9,6 +9,7 @@ use Model\DAO\OfferImageDAO;
 use Model\DAO\PlatypusDAO;
 use Model\DAO\UserDAO;
 use Model\DAO\ZipCoordinatesDAO;
+use PDOException;
 
 class OfferModel {
     private $id;
@@ -367,11 +368,16 @@ class OfferModel {
      */
     public function getZipCoordinates() {
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $dao = new ZipCoordinatesDAO($con);
-        $model = ZipCoordinatesModel::getFromDatabaseByZipcode($dao, $this->zipcode);
+        try {
+            $con = $sqlite->getCon();
+            $dao = new ZipCoordinatesDAO($con);
+            $model = ZipCoordinatesModel::getFromDatabaseByZipcode($dao, $this->zipcode);
+            return $model;
+
+        } catch (PDOException $ex) {
+            header('location: ' . URL . 'error/databaseError');
+        }
         unset($sqlite);
-        return $model;
     }
 
     /**

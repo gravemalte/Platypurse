@@ -5,6 +5,7 @@ use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\UserDAO;
 use Model\UserModel;
+use PDOException;
 
 class LoginController extends BaseController
 {
@@ -47,9 +48,15 @@ class LoginController extends BaseController
 
 
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $user = UserModel::getFromDatabaseByMail(new UserDAO($con), $userSentMail);
-        unset($sqlite);
+        try {
+            $con = $sqlite->getCon();
+            $user = UserModel::getFromDatabaseByMail(new UserDAO($con), $userSentMail);
+            unset($sqlite);
+        } catch (PDOException $ex) {
+            unset($sqlite);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
+        }
         if ($user) {
             if (password_verify($userSentPasswd, $user->getPassword())) {
                 if (!$user->isVerified()) {

@@ -43,7 +43,16 @@ class OfferController extends BaseController
             $offerDAO = new OfferDAO($con);
             $unset = true;
         endif;
-        $offerModel = OfferModel::getFromDatabase($offerDAO, $id);
+        try {
+            $offerModel = OfferModel::getFromDatabase($offerDAO, $id);
+        } catch (PDOException $ex) {
+
+            if(isset($unset)):
+                unset($sqlite);
+            endif;
+            header('location: ' . URL . 'error/databaseError');
+            exit();
+        }
 
         if(isset($unset)):
             unset($sqlite);
@@ -133,11 +142,17 @@ class OfferController extends BaseController
     public static function isOfferInSavedList($offerId) {
         $userId = $_SESSION["currentUser"]->getId();
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $dao = new SavedOffersDAO($con);
+        try {
+            $con = $sqlite->getCon();
+            $dao = new SavedOffersDAO($con);
 
-        $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, true);
-        unset($sqlite);
+            $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, true);
+            unset($sqlite);
+        } catch (PDOException $ex) {
+            unset($sqlite);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
+        }
 
         if(!$savedOffer || empty($savedOffer->getId())):
             return false;

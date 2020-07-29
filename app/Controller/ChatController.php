@@ -37,9 +37,15 @@ class ChatController extends BaseController
         $userID = $_SESSION['currentUser']->getId();
 
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $messages = ChatModel::getFromDatabase(new MessageDAO($con), $userID);
-        unset($sqlite);
+        try {
+            $con = $sqlite->getCon();
+            $messages = ChatModel::getFromDatabase(new MessageDAO($con), $userID);
+            unset($sqlite);
+        } catch (PDOException $ex) {
+            unset($sqlite);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
+        }
 
         $result = array();
 
@@ -75,8 +81,15 @@ class ChatController extends BaseController
         $userID = $_SESSION['currentUser']->getId();
 
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $messages = ChatModel::getFromDatabaseOrder(new MessageDAO($con), $userID);
+        try {
+            $con = $sqlite->getCon();
+            $messages = ChatModel::getFromDatabaseOrder(new MessageDAO($con), $userID);
+            unset($sqlite);
+        } catch (PDOException $ex) {
+            unset($sqlite);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
+        }
         unset($sqlite);
 
         $result = array();
@@ -105,10 +118,16 @@ class ChatController extends BaseController
         }
 
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $user = UserModel::getUser(new UserDAO($con),
-            $_GET['id']);
-        unset($sqlite);
+        try {
+            $con = $sqlite->getCon();
+            $user = UserModel::getUser(new UserDAO($con),
+                $_GET['id']);
+            unset($sqlite);
+        } catch (PDOException $ex) {
+            header('location: ' . URL . 'error/databaseError');
+            unset($sqlite);
+            exit();
+        }
 
         if ($user->getUgId() == 3) {
             echo '<em>' . $user->getDisplayName() . '</em>';
