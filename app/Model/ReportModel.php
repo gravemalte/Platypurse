@@ -4,6 +4,8 @@ namespace Model;
 
 use Hydro\Base\Contracts\ReportDAOInterface;
 
+// not in final release
+
 class ReportModel {
     private $id;
     private $reportedObject;
