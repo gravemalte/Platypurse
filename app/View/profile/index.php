@@ -66,7 +66,7 @@ $offersByUser = ProfileController::getOffersByUserId();
                         <span>Profil bearbeiten</span>
                     </button>
                 </a>
-                    <a href="profile/chat">
+                    <a href="<?= URL . 'chat'?>">
                         <button class="button">
                             <span>Meine Nachrichten</span>
                         </button>
