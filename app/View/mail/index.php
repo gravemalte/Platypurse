@@ -3,18 +3,8 @@ use \Model\DAO\MailDAO;
 use \Hydro\Base\Database\Driver\SQLite;
 use \Model\MailModel;
 
-$sqlite = new SQLite();
-$con = $sqlite->getCon();
-$dao = new MailDAO($con);
-$mail = MailModel::getFromDatabase($dao, $_GET['id']);
-unset($sqlite);
-/*
-if (!$mail->exists()) {
-    http_response_code(404);
-    header('location: ' . URL . 'error/pageNotFound');
-    exit();
-}
-*/
+$mail = MailController::getMail($_GET['id']);
+
 $id = $mail->getId();
 $name = $mail->getReceiverName();
 $mail_address = $mail->getReceiverMail();

@@ -37,6 +37,14 @@ class MailController extends BaseController
         require APP . 'View/mail/index.php';
     }
 
+    public static function getMail($id) {
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new MailDAO($con);
+        unset($sqlite);
+        return MailModel::getFromDatabase($dao, $id);
+    }
+
     public static function getMailContent() {
         if (!isset($_GET['id'])) {
             http_response_code(404);
