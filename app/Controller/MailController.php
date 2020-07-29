@@ -7,6 +7,7 @@ use Hydro\Base\Controller\BaseController;
 use \Model\DAO\MailDAO;
 use \Hydro\Base\Database\Driver\SQLite;
 use \Model\MailModel;
+use PDOException;
 
 
 class MailController extends BaseController
@@ -21,10 +22,16 @@ class MailController extends BaseController
         }
 
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $dao = new MailDAO($con);
-        $mail = MailModel::getFromDatabase($dao, $_GET['id']);
-        unset($sqlite);
+        try {
+            $con = $sqlite->getCon();
+            $dao = new MailDAO($con);
+            $mail = MailModel::getFromDatabase($dao, $_GET['id']);
+            unset($sqlite);
+        } catch (PDOException $ex) {
+            unset($sqlite);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
+        }
 
         if (!$mail->exists()) {
             http_response_code(404);
@@ -39,10 +46,16 @@ class MailController extends BaseController
 
     public static function getMail($id) {
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $dao = new MailDAO($con);
-        unset($sqlite);
-        return MailModel::getFromDatabase($dao, $id);
+        try {
+            $con = $sqlite->getCon();
+            $dao = new MailDAO($con);
+            unset($sqlite);
+            return MailModel::getFromDatabase($dao, $id);
+        } catch (PDOException $ex) {
+            unset($sqlite);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
+        }
     }
 
     public static function getMailContent() {
@@ -53,10 +66,16 @@ class MailController extends BaseController
         }
 
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $dao = new MailDAO($con);
-        $mail = MailModel::getFromDatabase($dao, $_GET['id']);
-        unset($sqlite);
+        try {
+            $con = $sqlite->getCon();
+            $dao = new MailDAO($con);
+            $mail = MailModel::getFromDatabase($dao, $_GET['id']);
+            unset($sqlite);
+        } catch (PDOException $ex) {
+            unset($sqlite);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
+        }
 
         if (!$mail->exists()) {
             http_response_code(404);

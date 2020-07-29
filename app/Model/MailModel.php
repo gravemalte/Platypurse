@@ -6,6 +6,7 @@ use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\MailDAO;
 use Model\DAO\UserDAO;
 use Hydro\Helper\Date;
+use PDOException;
 
 class MailModel {
     private $id;
@@ -59,13 +60,21 @@ class MailModel {
     public static function initMail($user, $content) {
         $mail = new MailModel(null, $content, $user->getDisplayName(), $user, $user->getMail(), Date::now());
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $dao = new MailDAO($con);
-        //TODO: Transaction
-        $result = $mail->insertIntoDatabase($dao);
-        $model = new MailModel($result[0], $result[1], $result[2], $result[3], $result[4], $result[5]);
+        try {
+            $con = $sqlite->getCon();
+            $dao = new MailDAO($con);
+            $sqlite->openTransaction();
+
+            $result = $mail->insertIntoDatabase($dao);
+            $model = new MailModel($result[0], $result[1], $result[2], $result[3], $result[4], $result[5]);
+
+            $sqlite->closeTransaction(true);
+            return $model;
+        } catch (PDOException $ex) {
+            $sqlite->closeTransaction(false);
+            header('location: ' . URL . 'error/databaseError');
+        }
         unset($sqlite);
-        return $model;
     }
 
     /**

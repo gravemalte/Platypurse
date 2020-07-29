@@ -68,33 +68,37 @@ class ResetPasswordController extends BaseController
         require APP . 'View/shared/nav.php';
 
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $resetTokenDao = new ResetTokenDAO($con);
-        $tokenModel = ResetTokenModel::getFromDatabase($resetTokenDao, $_GET['token']);
-        //TODO: fix if not available
+        try {
+            $con = $sqlite->getCon();
+            $sqlite->openTransaction();
+            $resetTokenDao = new ResetTokenDAO($con);
+            $tokenModel = ResetTokenModel::getFromDatabase($resetTokenDao, $_GET['token']);
 
-        $expirationDate = new DateTime($tokenModel->getExpirationDate());
-        $nowDate = new DateTime("now");
-        if ($expirationDate >= $nowDate) {
-            $newPassword = bin2hex(random_bytes(5));
-            $user = $tokenModel->getUser();
-            $user->setPassword($newPassword);
+            $expirationDate = new DateTime($tokenModel->getExpirationDate());
+            $nowDate = new DateTime("now");
+            if (!$tokenModel || $expirationDate >= $nowDate) {
+                $newPassword = bin2hex(random_bytes(5));
+                $user = $tokenModel->getUser();
+                $user->setPassword($newPassword);
 
-            $userDao = new UserDAO($con);
-            $user->updateInDatabase($userDao);
+                $userDao = new UserDAO($con);
+                $user->updateInDatabase($userDao);
 
-            $tokenModel->deleteForUserFromDatabase($resetTokenDao, $user->getId());
-            $tokenModel->deleteExpiredFromDatabase($resetTokenDao);
+                $tokenModel->deleteForUserFromDatabase($resetTokenDao, $user->getId());
+                $tokenModel->deleteExpiredFromDatabase($resetTokenDao);
 
-            //TODO: transaction & try catch
-
-            require APP . 'View/reset-password/newPassword.php';
+                $sqlite->closeTransaction(true);
+                require APP . 'View/reset-password/newPassword.php';
+            }
+            else {
+                require APP . 'View/reset-password/invalidToken.php';
+            }
+        } catch (PDOException $ex) {
+            $sqlite->closeTransaction(false);
+            header('location: ' . URL . 'error/databaseError');
         }
-        else {
-            require APP . 'View/reset-password/invalidToken.php';
-        }
+
         unset($sqlite);
-
         require APP . 'View/shared/footer.php';
     }
 }

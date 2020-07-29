@@ -42,10 +42,13 @@ class ResetTokenModel {
      * Returns model from database
      * @param ResetTokenDAO $dao
      * @param $token
-     * @return ResetTokenModel
+     * @return ResetTokenModel|boolean
      */
     public static function getFromDatabase($dao, $token) {
         $result = $dao->read($token);
+        if(!$result):
+            return false;
+        endif;
         return new ResetTokenModel($result[0], $result[1],
             UserModel::getFromDatabaseById(new UserDAO($dao->getCon()),$result[2]),
             $result[3]);
@@ -91,19 +94,23 @@ class ResetTokenModel {
         $expirationDate = date("Y-m-d H:i:s", time() + 3600);
         $token = new ResetTokenModel($id, $token, $user, $expirationDate);
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $dao = new ResetTokenDAO($con);
-        // TODO: Try catch, fix for Roman's settings
         try {
+            $con = $sqlite->getCon();
+            $dao = new ResetTokenDAO($con);
+            $sqlite->openTransaction();
+
             $token->deleteForUserFromDatabase($dao, $user->getId());
             $result = $token->insertIntoDatabase($dao);
+
             $model = new ResetTokenModel($result[0], $result[1], $result[2], $result[3]);
+            $sqlite->closeTransaction(true);
+            return $model;
         }
-        catch (PDOException $e) {
-            //TODO: This is not the right way, lol
+        catch (PDOException $ex) {
+            $sqlite->closeTransaction(false);
+            header('location: ' . URL . 'error/databaseError');
         }
         unset($sqlite);
-        return $model;
     }
 
     /**

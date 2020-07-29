@@ -138,28 +138,34 @@ class RegisterController extends BaseController {
         }
 
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $dao = new RegisterTokenDAO($con);
-        $token = RegisterTokenModel::getFromDatabaseByToken($dao, $_GET['token']);
+        try {
+            $con = $sqlite->getCon();
+            $dao = new RegisterTokenDAO($con);
+            $token = RegisterTokenModel::getFromDatabaseByToken($dao, $_GET['token']);
 
-        $user = $token->getUser();
+            $user = $token->getUser();
 
-        require APP . 'View/shared/header.php';
-        require APP . 'View/register/header.php';
-        require APP . 'View/shared/nav.php';
+            require APP . 'View/shared/header.php';
+            require APP . 'View/register/header.php';
+            require APP . 'View/shared/nav.php';
 
-        $expirationDate = new DateTime($token->getExpirationDate());
-        $nowDate = new DateTime("now");
-        if ($expirationDate >= $nowDate) {
-            $user->verify(new UserDAO($con));
-            $token->deleteForUserFromDatabase($dao, $user->getId());
-            require APP . 'View/register/verifySuccess.php';
+            $expirationDate = new DateTime($token->getExpirationDate());
+            $nowDate = new DateTime("now");
+            if ($expirationDate >= $nowDate) {
+                $user->verify(new UserDAO($con));
+                $token->deleteForUserFromDatabase($dao, $user->getId());
+                require APP . 'View/register/verifySuccess.php';
+            }
+            else {
+                require APP . 'View/register/verifyFail.php';
+            }
+            $token->deleteExpiredFromDatabase($dao);
+            unset($sqlite);
+        } catch (PDOException $ex) {
+            unset($sqlite);
+            header('location: ' . URL . 'error/databaseError');
+            exit();
         }
-        else {
-            require APP . 'View/register/verifyFail.php';
-        }
-        $token->deleteExpiredFromDatabase($dao);
-        unset($sqlite);
 
         require APP . 'View/shared/footer.php';
     }

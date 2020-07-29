@@ -5,6 +5,7 @@ namespace Model;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\UserDAO;
 use Model\DAO\RegisterTokenDAO;
+use PDOException;
 
 class RegisterTokenModel {
     private $id;
@@ -53,10 +54,13 @@ class RegisterTokenModel {
      * Returns model by token from database
      * @param RegisterTokenDAO $dao
      * @param $token
-     * @return RegisterTokenModel
+     * @return RegisterTokenModel|boolean
      */
     public static function getFromDatabaseByToken($dao, $token) {
         $result = $dao->readByToken($token);
+        if(!$result):
+            return false;
+        endif;
         return new RegisterTokenModel(
             $result[0],
             $result[1],
@@ -94,14 +98,21 @@ class RegisterTokenModel {
         $token = bin2hex(random_bytes(5));
         $expirationDate = date("Y-m-d H:i:s", time() + 3600);
         $token = new self($id, $token, $user, $expirationDate);
+
         $sqlite = new SQLite();
-        $con = $sqlite->getCon();
-        $dao = new RegisterTokenDAO($con);
-        // TODO: Try catch, fix for Roman's settings
-        $result = $token->insertIntoDatabase($dao);
-        $model = new RegisterTokenModel($result[0], $result[1], $result[2], $result[3]);
+        try {
+            $con = $sqlite->getCon();
+            $dao = new RegisterTokenDAO($con);
+            $sqlite->openTransaction();
+            $result = $token->insertIntoDatabase($dao);
+            $model = new RegisterTokenModel($result[0], $result[1], $result[2], $result[3]);
+            $sqlite->closeTransaction(true);
+            return $model;
+        } catch (PDOException $ex) {
+            $sqlite->closeTransaction(false);
+            header('location: ' . URL . 'error/databaseError');
+        }
         unset($sqlite);
-        return $model;
     }
 
     /**
