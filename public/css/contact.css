@@ -7,10 +7,16 @@
 .contact-container {
     display: flex;
     flex-direction: row;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
     padding: 1em;
     flex-grow: 1;
+}
+
+@media (max-width: 600px) {
+    .contact-container {
+        flex-direction: column;
+    }
 }
 
 .contact-container > a {
