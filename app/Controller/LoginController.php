@@ -42,6 +42,7 @@ class LoginController extends BaseController
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $user = UserModel::getFromDatabaseByMail(new UserDAO($con), $userSentMail);
+        unset($sqlite);
         if ($user) {
             if (!$user->isVerified()) {
                 $_SESSION['user-verify-error'] = true;

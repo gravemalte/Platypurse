@@ -63,7 +63,9 @@ class MailModel {
         $dao = new MailDAO($con);
         //TODO: Transaction
         $result = $mail->insertIntoDatabase($dao);
-        return new MailModel($result[0], $result[1], $result[2], $result[3], $result[4], $result[5]);
+        $model = new MailModel($result[0], $result[1], $result[2], $result[3], $result[4], $result[5]);
+        unset($sqlite);
+        return $model;
     }
 
     /**

@@ -49,6 +49,8 @@ class SearchController extends BaseController
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $offerDao = new OfferDAO($con);
-        return OfferModel::getSearchResultsFromDatabase($offerDao, $keyedSearchValuesArray);
+        $model = OfferModel::getSearchResultsFromDatabase($offerDao, $keyedSearchValuesArray);
+        unset($sqlite);
+        return $model;
     }
 }

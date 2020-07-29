@@ -2,12 +2,12 @@
 use \Model\DAO\MailDAO;
 use \Hydro\Base\Database\Driver\SQLite;
 use \Model\MailModel;
-use \Controller\MailController;
 
 $sqlite = new SQLite();
 $con = $sqlite->getCon();
 $dao = new MailDAO($con);
 $mail = MailModel::getFromDatabase($dao, $_GET['id']);
+unset($sqlite);
 /*
 if (!$mail->exists()) {
     http_response_code(404);

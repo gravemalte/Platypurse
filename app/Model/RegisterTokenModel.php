@@ -99,7 +99,9 @@ class RegisterTokenModel {
         $dao = new RegisterTokenDAO($con);
         // TODO: Try catch
         $result = $token->insertIntoDatabase($dao);
-        return new RegisterTokenModel($result[0], $result[1], $result[2], $result[3]);
+        $model = new RegisterTokenModel($result[0], $result[1], $result[2], $result[3]);
+        unset($sqlite);
+        return $model;
     }
 
     /**

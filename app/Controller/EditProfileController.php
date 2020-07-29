@@ -106,9 +106,11 @@ class EditProfileController extends BaseController {
             }
             $sqlite->closeTransaction(true);
             header('location: ' . URL . 'profile/edit?id=' . $id);
+            unset($sqlite);
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);
             header('location: ' . URL . 'error/databaseError');
+            unset($sqlite);
             exit();
         }
     }

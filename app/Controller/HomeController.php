@@ -28,7 +28,9 @@ class HomeController extends BaseController
     public static function getNewestOffers() {
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
-        return OfferModel::getNewestOffers(new OfferDAO($con));
+        $models = OfferModel::getNewestOffers(new OfferDAO($con));
+        unset($sqlite);
+        return $models;
     }
 
     /**
@@ -38,6 +40,8 @@ class HomeController extends BaseController
     public static function getHotOffer() {
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
-        return OfferModel::getHotOffer(new OfferDAO($con));
+        $model = OfferModel::getHotOffer(new OfferDAO($con));
+        unset($sqlite);
+        return $model;
     }
 }

@@ -93,7 +93,9 @@ class ResetTokenModel {
         $dao = new ResetTokenDAO($con);
         // TODO: Try catch
         $result = $token->insertIntoDatabase($dao);
-        return new ResetTokenModel($result[0], $result[1], $result[2], $result[3]);
+        $model = new ResetTokenModel($result[0], $result[1], $result[2], $result[3]);
+        unset($sqlite);
+        return $model;
     }
 
     /**

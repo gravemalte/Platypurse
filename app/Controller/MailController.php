@@ -24,6 +24,7 @@ class MailController extends BaseController
         $con = $sqlite->getCon();
         $dao = new MailDAO($con);
         $mail = MailModel::getFromDatabase($dao, $_GET['id']);
+        unset($sqlite);
 
         if (!$mail->exists()) {
             http_response_code(404);
@@ -47,6 +48,7 @@ class MailController extends BaseController
         $con = $sqlite->getCon();
         $dao = new MailDAO($con);
         $mail = MailModel::getFromDatabase($dao, $_GET['id']);
+        unset($sqlite);
 
         if (!$mail->exists()) {
             http_response_code(404);

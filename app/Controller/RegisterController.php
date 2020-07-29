@@ -3,7 +3,6 @@
 namespace Controller;
 
 use DateTime;
-use http\Client\Curl\User;
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\RegisterTokenDAO;
@@ -127,6 +126,7 @@ class RegisterController extends BaseController {
             $_SESSION['register-inputName'] = $userInputDisplayName;
             $_SESSION['register-inputMail'] = $userInputMail;
             unset($userModel);
+            unset($sqlite);
         }
     }
 
@@ -159,6 +159,7 @@ class RegisterController extends BaseController {
             require APP . 'View/register/verifyFail.php';
         }
         $token->deleteExpiredFromDatabase($dao);
+        unset($sqlite);
 
         require APP . 'View/shared/footer.php';
     }

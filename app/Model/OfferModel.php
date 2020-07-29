@@ -363,7 +363,9 @@ class OfferModel {
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $dao = new ZipCoordinatesDAO($con);
-        return ZipCoordinatesModel::getFromDatabaseByZipcode($dao, $this->zipcode);
+        $model = ZipCoordinatesModel::getFromDatabaseByZipcode($dao, $this->zipcode);
+        unset($sqlite);
+        return $model;
     }
 
     /**
