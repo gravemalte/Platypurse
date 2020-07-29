@@ -130,7 +130,6 @@ class OfferDAO implements OfferDAOInterface
     public function readSearchResults($keyedSearchValuesArray)
     {
         $bindSex = array_key_exists("sex", $keyedSearchValuesArray);
-        // TODO: Add zipcode to query when available
         $sql = "SELECT * FROM offer
                     INNER JOIN platypus ON platypus.p_id = offer.p_id
                     WHERE (name LIKE :name

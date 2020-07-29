@@ -51,7 +51,6 @@ class OfferImageDAO implements OfferImagesDAOInterface
 
     public function update($obj)
     {
-        // TODO: Where oi_id
         $sql = "UPDATE offer_images SET picture_position = :picturePosition, mime = :mime, image = :image
                 WHERE o_id = :id;";
 
