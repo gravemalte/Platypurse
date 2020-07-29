@@ -47,4 +47,19 @@ class MessageDAO implements MessageDAOInterface
             throw new PDOException('MessageDAO read error');
         }
     }
+
+    public function readIdWithOrder($id)
+    {
+        $query = "SELECT * FROM message WHERE sender_id = :id ORDER BY msg_id ASC";
+
+        $stmt = $this->con->prepare($query);
+        $stmt->bindValue(":id", $id);
+
+        if($stmt->execute()){
+            return $stmt->fetchAll();
+        } else {
+            throw new PDOException('MessageModel select error...');
+        }
+    }
+
 }
