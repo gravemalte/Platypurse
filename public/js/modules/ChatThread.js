@@ -73,7 +73,7 @@ function buildChatThread(modules) {
 
             let icon =
                 document.createElement("IMG");
-            icon.src = "assets/nav/user-circle-solid.svg";
+            icon.src = "profile/avatar?id=" + this.id;
             icon.alt = "user icon";
 
             let textContainer =

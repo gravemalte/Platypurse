@@ -45,7 +45,8 @@
 }
 .hot-offer-container .img-container img {
     object-fit: cover;
-    width: 100%;
+    width: 800px;
+    max-width: 100%;
     height: 100%;
 }
 .hot-offer-container .side-text {

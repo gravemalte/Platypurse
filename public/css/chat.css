@@ -70,10 +70,13 @@
     justify-content: center;
     flex-direction: column;
     margin: 0.5em;
+    border-radius: 50%;
+    overflow: hidden;
 }
 .chat-contact-icon-container img {
     height: 4.5em;
-    filter: invert(var(--filter-bright));
+    width: 4.5em;
+    /* : invert(var(--filter-bright)); */
 }
 
 .chat-contact-text-container {
