@@ -39,6 +39,11 @@ class ResetPasswordController extends BaseController
         try {
             $user = UserModel::getFromDatabaseByMail($dao, $_GET['mail']);
 
+            if($user->getMail() == ''){
+                header('location: ' . URL . 'resetPassword/noValidMail');
+                exit();
+            }
+
             $mail = FakeMailer::sendResetPasswordMail($user);
             header('location: ' . URL . 'resetPassword/instructionsSent?id=' . $mail->getId());
         }
@@ -47,6 +52,15 @@ class ResetPasswordController extends BaseController
         }
         unset($sqlite);
     }
+
+    public function noValidMail(){
+        require APP . 'View/shared/header.php';
+        require APP . 'View/reset-password/header.php';
+        require APP . 'View/shared/nav.php';
+        require APP . 'View/reset-password/noValidMail.php';
+        require APP . 'View/shared/footer.php';
+    }
+
 
     public static function instructionsSent() {
         require APP . 'View/shared/header.php';
@@ -95,7 +109,7 @@ class ResetPasswordController extends BaseController
             }
         } catch (PDOException $ex) {
             $sqlite->closeTransaction(false);
-            header('location: ' . URL . 'error/databaseError');
+            header('location: ' . URL . 'View/reset-password/noValidMail.php');
         }
 
         unset($sqlite);
