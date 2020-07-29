@@ -140,6 +140,7 @@ if ($showUpdateData) {
                                         min="0"
                                         max="20"
                                         value="<?= $showAge ?>"
+                                        required
                                 >
                                 <p>Jahre</p>
                             </div>
@@ -156,7 +157,8 @@ if ($showUpdateData) {
                                         name="size"
                                         min="0"
                                         max="75"
-                                        value="<?= $showSize ?>">
+                                        value="<?= $showSize ?>"
+                                        required>
                                 <p>cm</p>
                             </div>
                         </div>
@@ -173,6 +175,7 @@ if ($showUpdateData) {
                                         min="0"
                                         max="3000"
                                         value="<?= $showWeight ?>"
+                                        required
                                 >
                                 <p>g</p>
                             </div>
