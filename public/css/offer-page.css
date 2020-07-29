@@ -10,7 +10,8 @@
 }
 .offer-container img {
     object-fit: cover;
-    width: 100%;
+    width: 800px;
+    max-width: 100%;
     height: 20em;
     border-radius: 15px 15px 0 0;
 }
@@ -85,10 +86,17 @@
     display: flex;
     flex-direction: column;
 }
+.offer-area .profile-container .profile-image-container {
+    height: 3em;
+    width: 3em;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0.5em 0 0.5em 0.5em;
+}
 .offer-area .profile-container img {
-    height: 4em;
-    padding: 0.5em 0 0.5em 0.5em;
-    filter: invert(var(--filter-bright));
+    height: 100%;
+    object-fit: cover;
+    /* filter: invert(var(--filter-bright)); */
     flex-grow: 1;
 }
 .offer-area .profile-container > div {

@@ -81,7 +81,7 @@ if(isset($_SESSION['currentUser'])) {
                     <?php endif; ?>
                 </div>
                 <div class="profile-container card">
-                    <a href="profile?id=<?= $seller->getId() ?>">
+                    <a href="profile?id=<?= $seller->getId() ?>" class="profile-image-container">
                         <img src="<?= $seller->getPicture(); ?>" alt="user-avatar">
                     </a>
                     <div>

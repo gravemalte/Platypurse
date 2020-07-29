@@ -63,8 +63,9 @@ class RegisterController extends BaseController {
             die();
         }
 
-        $defaultImagePath = "assets/nav/user-circle-solid.svg";
-        $mime = "image/svg+xml";
+        $random = random_int(1, 6);
+        $defaultImagePath = "assets/placeholder/avatar" . $random . ".png";
+        $mime = "image/png";
         $image = base64_encode(file_get_contents($defaultImagePath));
 
         $userModel = new UserModel(hexdec(uniqid()),
