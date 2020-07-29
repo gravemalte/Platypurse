@@ -10,20 +10,21 @@ $age = array(0, 20);
 $size = array(0, 75);
 $weight = array(0, 3000);
 
-if (isset($_GET['sex'])): $sex = $_GET['sex']; endif;
-if (isset($_GET['sex'])):
-    $sex = $_GET['sex'];
-    if ($sex == "männlich"): $sexMaleSelected = "selected"; endif;
-    if ($sex == "weiblich"): $sexFemaleSelected = "selected"; endif;
-endif;
-if (isset($_GET['age'])):
-    $age = $_GET['age'];
-endif;
-if (isset($_GET['size'])):
-    $size = $_GET['size'];
-endif;
-if (isset($_GET['weight'])):
-    $weight = $_GET['weight'];
+if(isset($_GET['filter-button']) && $_GET['filter-button'] != 'reset'):
+    if (isset($_GET['sex'])):
+        $sex = $_GET['sex'];
+        if ($sex == "männlich"): $sexMaleSelected = "selected"; endif;
+        if ($sex == "weiblich"): $sexFemaleSelected = "selected"; endif;
+    endif;
+    if (isset($_GET['age'])):
+        $age = $_GET['age'];
+    endif;
+    if (isset($_GET['size'])):
+        $size = $_GET['size'];
+    endif;
+    if (isset($_GET['weight'])):
+        $weight = $_GET['weight'];
+    endif;
 endif; ?>
 <main class="main-page filter-page">
     <div class="filter-area">
