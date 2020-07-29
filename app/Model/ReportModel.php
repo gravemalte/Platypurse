@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Hydro\Base\Contracts\ReportDAOInterface;
+
 class ReportModel {
     private $id;
     private $reportedObject;
@@ -29,10 +31,20 @@ class ReportModel {
         $this->active = $active;
     }
 
+    /**
+     * Insert model into database
+     * @param ReportDAOInterface $dao
+     * @return mixed
+     */
     public function insertIntoDatabase($dao) {
         return $dao->create($this);
     }
 
+    /**
+     * Update model in database
+     * @param ReportDAOInterface $dao
+     * @return mixed
+     */
     public function updateInDatabase($dao) {
         return $dao->update($this);
     }

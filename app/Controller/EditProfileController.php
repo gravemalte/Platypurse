@@ -4,6 +4,7 @@ namespace Controller;
 use Hydro\Base\Controller\BaseController;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\UserDAO;
+use Model\UserModel;
 use PDOException;
 
 class EditProfileController extends BaseController {
@@ -27,6 +28,10 @@ class EditProfileController extends BaseController {
         require APP . 'View/shared/footer.php';
     }
 
+    /**
+     * Returns model for current user
+     * @return UserModel
+     */
     public static function getUser() {
         $id = $_SESSION['currentUser']->getId();
         if (isset($_POST['id'])) {
@@ -35,6 +40,9 @@ class EditProfileController extends BaseController {
         return ProfileController::getUser($id);
     }
 
+    /**
+     * Update the profile information
+     */
     public static function update() {
         if (!isset($_POST['id']) || !isset($_SESSION['currentUser'])) {
             header('location: ' . URL . 'error/unauthorized');
@@ -98,9 +106,11 @@ class EditProfileController extends BaseController {
             }
             $sqlite->closeTransaction(true);
             header('location: ' . URL . 'profile/edit?id=' . $id);
+            unset($sqlite);
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);
             header('location: ' . URL . 'error/databaseError');
+            unset($sqlite);
             exit();
         }
     }

@@ -43,8 +43,15 @@ class ProfileController extends BaseController
             $sqlite = new SQLite();
             $con = $sqlite->getCon();
             $dao = new UserDAO($con);
+            $unset = true;
         endif;
-        return UserModel::getUser($dao, $id);
+
+        $model = UserModel::getUser($dao, $id);
+        if(isset($unset)):
+            unset($sqlite);
+        endif;
+
+        return $model;
     }
 
     public static function getDisplayUser() {
@@ -58,20 +65,25 @@ class ProfileController extends BaseController
         $id = ProfileController::getDisplayUser()->getId();
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
-        return OfferModel::getFromDatabaseByUserId(new OfferDAO($con),$id);
+        $model = OfferModel::getFromDatabaseByUserId(new OfferDAO($con),$id);
+        unset($sqlite);
+        return $model;
     }
 
     public static function getSavedOffersForCurrentUser() {
         $id = ProfileController::getDisplayUser()->getId();
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
-        return OfferModel::getSavedOffersFromDatabaseByUserId(new OfferDAO($con), $id);
+        $model = OfferModel::getSavedOffersFromDatabaseByUserId(new OfferDAO($con), $id);
+        unset($sqlite);
+        return $model;
     }
 
     public static function getUserRating($userId) {
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $dao = new UserRatingDAO($con);
+        unset($sqlite);
         return UserRatingModel::getRatingFromDatabaseForUserId($dao, $userId);
     }
 
@@ -79,6 +91,7 @@ class ProfileController extends BaseController
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $dao = new UserRatingDAO($con);
+        unset($sqlite);
         return UserRatingModel::getFromDatabaseByFromUserIdAndForUserId(
             $dao, $fromUserId, $forUserId);
     }
@@ -90,6 +103,7 @@ class ProfileController extends BaseController
         $user = UserModel::getFromDatabaseById($dao, $_POST['user_id']);
 
         $user->deactivateInDatabase($dao);
+        unset($sqlite);
         header('location: ' . URL . 'profile?id=' . $user->getId());
         exit();
     }
@@ -101,6 +115,7 @@ class ProfileController extends BaseController
         $user = UserModel::getFromDatabaseById($dao, $_POST['user_id']);
 
         $user->activateInDatabase($dao);
+        unset($sqlite);
         header('location: ' . URL . 'profile?id=' .$user->getId());
         exit();
 

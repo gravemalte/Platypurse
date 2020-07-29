@@ -27,6 +27,9 @@ class CreateController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
+    /**
+     * Process the form data and insert or update the new offer
+     */
     public function processInput() {
         if($_POST['csrf'] != $_SESSION['csrf_token']){
             header('location: ' . URL . 'error/unauthorized');
@@ -102,11 +105,6 @@ class CreateController extends BaseController
                     $newOffer->getImage()->setMime($existingOffer->getImage()->getMime());
                     $newOffer->getImage()->setImage($existingOffer->getImage()->getImage());
                 endif;
-
-                //print_r($newOffer->getImage());
-                //print("\n");
-                //print_r($existingOffer->getImage());
-
             endif;
 
             if(!isset($existingOffer) || $offerUser->isAdmin() || $offerUser->getId() == $currentUser->getId()):
@@ -128,13 +126,16 @@ class CreateController extends BaseController
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);
             header('location: ' . URL . 'error/databaseError');
+            unset($sqlite);
             exit();
         }
+        unset($sqlite);
         header('location: ' . URL . 'offer?id=' . $newOffer->getId());
         exit();
     }
 
     /**
+     * Formats price for use in database
      * @param $price
      * @return float|int|string formatted price
      */

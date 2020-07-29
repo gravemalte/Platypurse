@@ -1,16 +1,16 @@
 <?php
 namespace Model\DAO;
 
-use Hydro\Base\Contracts\RegisterTokenDAOInterface;
-use Model\RegisterTokenModel;
+use Hydro\Base\Contracts\ResetTokenDAOInterface;
+use Model\ResetTokenModel;
 use PDOException;
 
-class RegisterTokenDAO implements RegisterTokenDAOInterface
+class ResetTokenDAO implements ResetTokenDAOInterface
 {
     private $con;
 
     /**
-     * RegisterTokenDAO constructor.
+     * ResetTokenDAO constructor.
      * @param $con
      */
     public function __construct($con)
@@ -28,12 +28,12 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
 
     /**
      * Insert entry into database
-     * @param RegisterTokenModel $obj
+     * @param ResetTokenModel $obj
      * @return mixed
      */
     public function create($obj)
     {
-        $query = "INSERT INTO register_tokens (token_id, token, u_id, expiration_date) 
+        $query = "INSERT INTO reset_tokens (token_id, token, u_id, expiration_date) 
             VALUES (:id, :token, :userId, :expirationDate);";
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $obj->getId());
@@ -43,41 +43,22 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();
-            $sql = "SELECT * FROM register_tokens WHERE token_id = $id;";
+            $sql = "SELECT * FROM reset_tokens WHERE token_id = $id;";
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('RegisterTokenDAO create error');
+            throw new PDOException('ResetTokenDAO create error');
         }
     }
 
     /**
-     * Read entry by id from database
-     * @param $id
-     * @return mixed
-     */
-    public function read($id)
-    {
-        $sql = "SELECT * FROM register_tokens
-                    WHERE token_id = :id;";
-        $stmt = $this->con->prepare($sql);
-        $stmt->bindValue(":id", $id);
-
-        if($stmt->execute()) {
-            return $stmt->fetch();
-        } else {
-            throw new PDOException('RegisterTokenDAO read error');
-        }
-    }
-
-    /**
-     * Read entry by token from database
+     * Read entry by token from Database
      * @param $token
      * @return mixed
      */
-    public function readByToken($token)
+    public function read($token)
     {
-        $sql = "SELECT * FROM register_tokens
+        $sql = "SELECT * FROM reset_tokens
                     WHERE token = :token;";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":token", $token);
@@ -85,7 +66,28 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('RegisterTokenDAO readByToken error');
+            throw new PDOException('ResetTokenDAO read error');
+        }
+    }
+
+    /**
+     * Updates model in database
+     * @param ResetTokenModel $obj
+     * @return bool
+     */
+    public function update($obj)
+    {
+        $sql = "UPDATE reset_tokens SET token = :token AND expiration_date = :date WHERE token_id = :id;";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bindValue(":token", $obj->getToken());
+        $stmt->bindValue(":date", $obj->getExpirationDate());
+        $stmt->bindValue(":id", $obj->getId());
+
+
+        if($stmt->execute()) {
+            return true;
+        } else {
+            throw new PDOException('ResetTokenDAO update error');
         }
     }
 
@@ -94,14 +96,14 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
      * @return bool
      */
     public function deleteExpired() {
-        $sql = "DELETE FROM register_tokens WHERE expiration_date < date('now');";
+        $sql = "DELETE FROM reset_tokens WHERE expiration_date < date('now');";
 
         $stmt = $this->con->prepare($sql);
 
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('RegisterTokenDAO deleteExpired error');
+            throw new PDOException('ResetTokenDAO deleteExpired error');
         }
     }
 
@@ -111,7 +113,7 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
      * @return bool
      */
     public function deleteForUser($id) {
-        $sql = "DELETE FROM register_tokens WHERE u_id = :userId;";
+        $sql = "DELETE FROM reset_tokens WHERE u_id = :userId;";
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":userId", $id);
@@ -119,7 +121,7 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('RegisterTokenDAO deleteForUser error');
+            throw new PDOException('ResetTokenDAO deleteForUser error');
         }
     }
 }

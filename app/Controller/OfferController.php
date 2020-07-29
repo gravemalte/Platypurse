@@ -30,15 +30,31 @@ class OfferController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
+    /**
+     * Returns model for selected offer
+     * @param $id
+     * @param null $offerDAO
+     * @return OfferModel
+     */
     public static function getOffer($id, $offerDAO = null) {
         if(!isset($offerDAO)):
             $sqlite = new SQLite();
             $con = $sqlite->getCon();
             $offerDAO = new OfferDAO($con);
+            $unset = true;
         endif;
-        return OfferModel::getFromDatabase($offerDAO, $id);
+        $offerModel = OfferModel::getFromDatabase($offerDAO, $id);
+
+        if(isset($unset)):
+            unset($sqlite);
+        endif;
+
+        return $offerModel;
     }
 
+    /**
+     * Add the offer to the saved list of the user
+     */
     public static function offerToSavedList() {
         if(isset($_SESSION["currentUser"])):
             $userId = $_SESSION["currentUser"]->getId();
@@ -64,21 +80,23 @@ class OfferController extends BaseController
                 $sqlite->closeTransaction($check);
                 if($check):
                     header('location: ' . URL . 'profile?id=' . $userId);
-                    exit();
                 else:
                     header('location: ' . URL . 'error/databaseError');
-                    exit();
                 endif;
             } catch (PDOException $e) {
                 $sqlite->closeTransaction(false);
                 header('location: ' . URL . 'error/databaseError');
-                exit();
+            } finally {
+                unset($sqlite);
             }
         endif;
         header('location: ' . URL . 'login');
         exit();
     }
 
+    /**
+     * Deactivates the offeri n saved list from user
+     */
     public static function removeFromSavedList() {
         $userId = $_SESSION["currentUser"]->getId();
         $offerId = $_POST["offerId"];
@@ -94,18 +112,23 @@ class OfferController extends BaseController
 
             $check = $savedOffer->updateInDatabase($dao);
 
-
             $sqlite->closeTransaction($check);
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);
             header('location: ' . URL . 'error/databaseError');
-            exit();
+        } finally {
+            unset($sqlite);
         }
 
         header('location: ' . URL . 'profile?id=' . $userId);
         exit();
     }
 
+    /**
+     * Checks if the offer is already in the saved list of the current user
+     * @param $offerId
+     * @return bool
+     */
     public static function isOfferInSavedList($offerId) {
         $userId = $_SESSION["currentUser"]->getId();
         $sqlite = new SQLite();
@@ -113,6 +136,7 @@ class OfferController extends BaseController
         $dao = new SavedOffersDAO($con);
 
         $savedOffer = SavedOfferModel::getFromDatabaseByUserIdAndOfferId($dao, $userId, $offerId, true);
+        unset($sqlite);
 
         if(!$savedOffer || empty($savedOffer->getId())):
             return false;
@@ -121,6 +145,10 @@ class OfferController extends BaseController
         endif;
     }
 
+    /**
+     * Add one click to the offer
+     * @param OfferModel $offer
+     */
     public static function offerClickPlusOne($offer) {
         $sqlite = new SQLite();
 
@@ -133,7 +161,8 @@ class OfferController extends BaseController
         } catch (PDOException $e) {
             $sqlite->closeTransaction(true);
             header('location: ' . URL . 'error/databaseError');
-            exit();
+        } finally {
+            unset($sqlite);
         }
     }
 
@@ -158,6 +187,8 @@ class OfferController extends BaseController
             $sqlite->closeTransaction(false);
             header('location: ' . URL . 'error/databaseError');
             exit();
+        } finally {
+            unset($sqlite);
         }
 
         header('location: ' . URL);

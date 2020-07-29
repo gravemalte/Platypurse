@@ -24,6 +24,7 @@ class MailController extends BaseController
         $con = $sqlite->getCon();
         $dao = new MailDAO($con);
         $mail = MailModel::getFromDatabase($dao, $_GET['id']);
+        unset($sqlite);
 
         if (!$mail->exists()) {
             http_response_code(404);
@@ -34,6 +35,14 @@ class MailController extends BaseController
         // load views
         require APP . 'View/mail/header.php';
         require APP . 'View/mail/index.php';
+    }
+
+    public static function getMail($id) {
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new MailDAO($con);
+        unset($sqlite);
+        return MailModel::getFromDatabase($dao, $id);
     }
 
     public static function getMailContent() {
@@ -47,6 +56,7 @@ class MailController extends BaseController
         $con = $sqlite->getCon();
         $dao = new MailDAO($con);
         $mail = MailModel::getFromDatabase($dao, $_GET['id']);
+        unset($sqlite);
 
         if (!$mail->exists()) {
             http_response_code(404);

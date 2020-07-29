@@ -180,3 +180,13 @@ CREATE TABLE register_tokens (
     FOREIGN KEY (u_id)
     REFERENCES user(u_id)
 );
+
+CREATE TABLE reset_tokens (
+  token_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  token TEXT NOT NULL,
+  u_id INTEGER UNIQUE NOT NULL,
+  expiration_date TEXT NOT NULL,
+  CONSTRAINT fk_user
+    FOREIGN KEY (u_id)
+    REFERENCES user(u_id)
+);

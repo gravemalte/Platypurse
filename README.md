@@ -98,21 +98,30 @@ Es folgt eine Liste von Feature-implemtierungen, die wir bei der Seite vorgenomm
 
 ## Funktionen
 
-* Login
-* Registrierung
-* Password vergessen
-* Eine Pseudo E-Mail
-* Angebote erstellen, bearbeiten und löschen
-* Nutzerrechte
-* Einen echtzeit Chat
-* Eine Standortkarte
-* Benutzer bannen
-* Eine Merkliste
-* Pagination
-* Dynamische Suche
-* XSS-Protection
-* CSRF-Protection
-* Dark und Light-Mode
+* Benutzer
+  * Login
+  * Registrierung
+    * Eine Pseudo E-Mail
+  * Password vergessen
+  * Einen Chat
+
+* Angebote
+  * Angebote erstellen, bearbeiten und löschen
+  * Eine Standortkarte
+  * Eine Merkliste
+  * Dynamische Suche
+  
+* Sicherheit
+  * XSS-Protection
+  * CSRF-Protection
+
+* Administration
+  * Benutzer bannen
+  * Nutzerrechte
+  
+* Usability
+  * Pagination
+  * Dark und Light-Mode
 
 
 # Aufgaben und Korrektheit

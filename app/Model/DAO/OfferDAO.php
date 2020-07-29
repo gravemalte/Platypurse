@@ -2,21 +2,35 @@
 namespace Model\DAO;
 
 use Hydro\Base\Contracts\OfferDAOInterface;
+use Model\OfferModel;
 use PDOException;
 
 class OfferDAO implements OfferDAOInterface
 {
     private $con;
 
+    /**
+     * OfferDAO constructor.
+     * @param $con
+     */
     public function __construct($con)
     {
         $this->con = $con;
     }
 
+    /**
+     * Returns the current connection
+     * @return mixed
+     */
     public function getCon() {
         return $this->con;
     }
 
+    /**
+     * Insert entry into database
+     * @param OfferModel $obj
+     * @return mixed
+     */
     public function create($obj)
     {
         $query = "INSERT INTO offer (o_id, u_id, p_id, price, negotiable, description, zipcode) 
@@ -38,9 +52,13 @@ class OfferDAO implements OfferDAOInterface
         } else {
             throw new PDOException('OfferDAO create error');
         }
-
     }
 
+    /**
+     * Read entry by id from database
+     * @param $id
+     * @return mixed
+     */
     public function read($id) {
         $query = "SELECT * FROM offer WHERE o_id = :id;";
         $stmt = $this->con->prepare($query);
@@ -53,6 +71,11 @@ class OfferDAO implements OfferDAOInterface
         }
     }
 
+    /**
+     * Update entry in database
+     * @param OfferModel $obj
+     * @return bool
+     */
     public function update($obj)
     {
         $sql = "UPDATE offer SET price = :price, negotiable = :negotiable, description = :description,
@@ -75,6 +98,10 @@ class OfferDAO implements OfferDAOInterface
         }
     }
 
+    /**
+     * Read top entry from database, based on descending order by clicks
+     * @return mixed
+     */
     public function readHot()
     {
         $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY clicks desc LIMIT 1;";
@@ -87,6 +114,10 @@ class OfferDAO implements OfferDAOInterface
         }
     }
 
+    /**
+     * Read top 9 entrys from database, based on descending order by create date
+     * @return mixed
+     */
     public function readNewest()
     {
         $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY create_date desc LIMIT 9;";
@@ -99,6 +130,11 @@ class OfferDAO implements OfferDAOInterface
         }
     }
 
+    /**
+     * Read entries for user id from database, based on entries in saved_offers table
+     * @param $userId
+     * @return mixed
+     */
     public function readSavedOffersByUserId($userId)
     {
         $sql = "SELECT * FROM offer
@@ -114,6 +150,11 @@ class OfferDAO implements OfferDAOInterface
         }
     }
 
+    /**
+     * Read entries by user id from database
+     * @param $userId
+     * @return mixed
+     */
     public function readOffersByUserId($userId)
     {
         $sql = "SELECT * FROM offer WHERE u_id = :userId;";
@@ -127,10 +168,14 @@ class OfferDAO implements OfferDAOInterface
         }
     }
 
+    /**
+     * Read entries by search filters from database
+     * @param $keyedSearchValuesArray
+     * @return mixed
+     */
     public function readSearchResults($keyedSearchValuesArray)
     {
         $bindSex = array_key_exists("sex", $keyedSearchValuesArray);
-        // TODO: Add zipcode to query when available
         $sql = "SELECT * FROM offer
                     INNER JOIN platypus ON platypus.p_id = offer.p_id
                     WHERE (name LIKE :name

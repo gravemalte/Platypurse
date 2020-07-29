@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Model\DAO\UserDAO;
+
 class UserModel
 {
     private $id;
@@ -46,33 +48,60 @@ class UserModel
         $this->verified = $verified;
     }
 
+    /**
+     * Insert model into database
+     * @param UserDAO $userDAO
+     * @return mixed
+     */
     public function insertIntoDatabase($userDAO) {
             return $userDAO->create($this);
     }
 
+    /**
+     * Returns model by mail from database
+     * @param UserDAO $userDAO
+     * @param $mail
+     * @return UserModel
+     */
     public static function getFromDatabaseByMail($userDAO, $mail){
         $row = $userDAO->readByMail($mail);
         return self::getUserFromRow($row);
     }
 
+    /**
+     * Returns model by id from database
+     * @param UserDAO $userDAO
+     * @param $id
+     * @return UserModel
+     */
     public static function getFromDatabaseById($userDAO, $id){
         $row = $userDAO->read($id);
         return self::getUserFromRow($row);
     }
 
+    /**
+     * Returns model by name from database
+     * @param UserDAO $userDAO
+     * @param $name
+     * @return UserModel
+     */
     public static function getFromDatabaseByName($userDAO, $name) {
         $row = $userDAO->readByName($name);
         return self::getUserFromRow($row);
     }
 
-
+    /**
+     * Update model in database
+     * @param UserDAO $userDAO
+     * @return mixed
+     */
     public function updateInDatabase($userDAO) {
         return $userDAO->update($this);
     }
 
     /**
-     * Set active to 0 and update database
-     * @param $dao
+     * Set disabled to 1 and update model in database
+     * @param UserDAO $dao
      */
     public function deactivateInDatabase($dao) {
         $this->setDisabled(1);
@@ -80,8 +109,8 @@ class UserModel
     }
 
     /**
-     * Set active to 0 and update database
-     * @param $dao
+     * Set disabled to 0 and update model in database
+     * @param UserDAO $dao
      */
     public function activateInDatabase($dao) {
         $this->setDisabled(0);
@@ -89,14 +118,19 @@ class UserModel
     }
 
     /**
-     * Set verified to 1 and update database
-     * @param $dao
+     * Set verified to 1 and update model in database
+     * @param UserDAO $dao
      */
     public function verify($dao) {
         $this->setVerified(1);
         $this->updateInDatabase($dao);
     }
 
+    /**
+     * Returns model from database row
+     * @param $row
+     * @return UserModel
+     */
     private static function getUserFromRow($row) {
         return new UserModel($row[0], $row[1], $row[2], $row[3], $row[4], $row[5],
             $row[6], $row[7], $row[8], $row[9], $row[10]);
@@ -190,6 +224,10 @@ class UserModel
     public function isAdmin()
     {
         return $this->ugId == 1;
+    }
+
+    public function isSupport(){
+        return $this->ugId == 3;
     }
 
     /**

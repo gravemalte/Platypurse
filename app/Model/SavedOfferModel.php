@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Model\DAO\SavedOffersDAO;
+
 class SavedOfferModel {
     private $id;
     private $userId;
@@ -23,10 +25,21 @@ class SavedOfferModel {
         $this->active = $active;
     }
 
+    /**
+     * Insert model into database
+     * @param SavedOffersDAO $savedOffersDAO
+     * @return mixed
+     */
     public function insertIntoDatabase($savedOffersDAO) {
         return $savedOffersDAO->create($this);
     }
 
+    /**
+     * Returns models by user id from database
+     * @param SavedOffersDAO $savedOffersDAO
+     * @param $userId
+     * @return array
+     */
     public static function getFromDatabaseByUserId($savedOffersDAO, $userId) {
         $result = $savedOffersDAO->readByUserId($userId);
 
@@ -38,8 +51,16 @@ class SavedOfferModel {
         return $returnArray;
     }
 
-    public static function getFromDatabaseByUserIdAndOfferId($savedOffersDAO, $userId, $offerId, $withActives) {
-        $result = $savedOffersDAO->readByUserIdAndOfferId($userId, $offerId, $withActives);
+    /**
+     * Returns model by user id and offer id from database
+     * @param SavedOffersDAO $savedOffersDAO
+     * @param $userId
+     * @param $offerId
+     * @param $onlyActives
+     * @return false|SavedOfferModel
+     */
+    public static function getFromDatabaseByUserIdAndOfferId($savedOffersDAO, $userId, $offerId, $onlyActives) {
+        $result = $savedOffersDAO->readByUserIdAndOfferId($userId, $offerId, $onlyActives);
 
         if(empty($result)):
             return false;
@@ -47,7 +68,12 @@ class SavedOfferModel {
 
         return new SavedOfferModel($result[0], $result[1], $result[2], $result[3]);
     }
-    
+
+    /**
+     * Update model in database
+     * @param SavedOffersDAO $dao
+     * @return mixed
+     */
     public function updateInDatabase($dao) {
         return $dao->update($this);
     }

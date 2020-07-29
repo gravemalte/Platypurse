@@ -1,8 +1,7 @@
 <?php
-
-
 namespace Model;
 
+use Model\DAO\MessageDAO;
 
 class ChatModel {
     private $msgID;
@@ -11,6 +10,14 @@ class ChatModel {
     private $message;
     private $date;
 
+    /**
+     * ChatModel constructor.
+     * @param $msgID
+     * @param $fromID
+     * @param $senderID
+     * @param $message
+     * @param $date
+     */
     public function __construct($msgID, $fromID, $senderID, $message, $date)
     {
         $this->msgID = $msgID;
@@ -20,14 +27,26 @@ class ChatModel {
         $this->date = $date;
     }
 
+    /**
+     * Insert model into database
+     * @param MessageDAO $messageDAO
+     * @param $message
+     * @return mixed
+     */
     public static function insertIntoDatabase($messageDAO, $message)
     {
         return $messageDAO->create($message);
     }
 
-    public static function getFromDatabase($messageDAO, $id)
+    /**
+     * Returns all models by sender id from database
+     * @param MessageDAO $messageDAO
+     * @param $senderId
+     * @return array
+     */
+    public static function getFromDatabase($messageDAO, $senderId)
     {
-        $result = $messageDAO->read($id);
+        $result = $messageDAO->readBySenderId($senderId);
 
         $returnArray = array();
         foreach($result as $row):
@@ -38,6 +57,12 @@ class ChatModel {
 
     }
 
+    /**
+     * Returns all model from
+     * @param $messageDAO
+     * @param $id
+     * @return array
+     */
     public static function getFromDatabaseOrder($messageDAO, $id)
     {
         $result = $messageDAO->readIdWithOrder($id);
@@ -51,30 +76,12 @@ class ChatModel {
 
     }
 
-
-    public function getDatabaseValues()
-    {
-        return array($this->getId(),
-            $this->getFrom(),
-            $this->getTo(),
-            $this->getMessage(),
-            $this->getDate());
-    }
-
+    /**
+     * @return mixed
+     */
     public function getId()
     {
         return $this->msgID;
-    }
-
-    public function sendMessageToDatabase(){
-        $insertValues = array(
-            $this->getFrom(),
-            $this->getTo(),
-            $this->getMessage(),
-            $this->getDate()
-        );
-
-        //SQLite::insertBuilder(TABLE_MESSAGE, COLUMNS_MESSAGE, $insertValues);
     }
 
     /**

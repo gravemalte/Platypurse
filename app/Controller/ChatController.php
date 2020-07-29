@@ -39,6 +39,7 @@ class ChatController extends BaseController
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $messages = ChatModel::getFromDatabase(new MessageDAO($con), $userID);
+        unset($sqlite);
 
         $result = array();
 
@@ -76,6 +77,7 @@ class ChatController extends BaseController
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $messages = ChatModel::getFromDatabaseOrder(new MessageDAO($con), $userID);
+        unset($sqlite);
 
         $result = array();
 
@@ -106,6 +108,7 @@ class ChatController extends BaseController
         $con = $sqlite->getCon();
         $user = UserModel::getUser(new UserDAO($con),
             $_GET['id']);
+        unset($sqlite);
 
         if ($user->getUgId() == 3) {
             echo '<em>' . $user->getDisplayName() . '</em>';
@@ -169,6 +172,7 @@ class ChatController extends BaseController
             endforeach;
 
             $sqlite->closeTransaction(true);
+            unset($sqlite);
             echo json_encode(array('chat' => $result, 'date' => Date::now()));
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);

@@ -4,16 +4,16 @@ namespace Model;
 
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\UserDAO;
-use Model\DAO\RegisterTokenDAO;
+use Model\DAO\ResetTokenDAO;
 
-class RegisterTokenModel {
+class ResetTokenModel {
     private $id;
     private $token;
     private $user;
     private $expirationDate;
 
     /**
-     * RegisterTokenModel constructor.
+     * ResetTokenModel constructor.
      * @param $id
      * @param $token
      * @param $user
@@ -29,7 +29,7 @@ class RegisterTokenModel {
 
     /**
      * Insert model into database
-     * @param RegisterTokenDAO $dao
+     * @param ResetTokenDAO $dao
      * @return mixed
      */
     public function insertIntoDatabase($dao) {
@@ -37,45 +37,30 @@ class RegisterTokenModel {
     }
 
     /**
-     * Returns model by id from database
-     * @param RegisterTokenDAO $dao
-     * @param $id
-     * @return RegisterTokenModel
+     * Returns model from database
+     * @param ResetTokenDAO $dao
+     * @param $token
+     * @return ResetTokenModel
      */
-    public static function getFromDatabase($dao, $id) {
-        $result = $dao->read($id);
-        return new RegisterTokenModel($result[0], $result[1],
+    public static function getFromDatabase($dao, $token) {
+        $result = $dao->read($token);
+        return new ResetTokenModel($result[0], $result[1],
             UserModel::getFromDatabaseById(new UserDAO($dao->getCon()),$result[2]),
             $result[3]);
     }
 
     /**
-     * Returns model by token from database
-     * @param RegisterTokenDAO $dao
-     * @param $token
-     * @return RegisterTokenModel
-     */
-    public static function getFromDatabaseByToken($dao, $token) {
-        $result = $dao->readByToken($token);
-        return new RegisterTokenModel(
-            $result[0],
-            $result[1],
-            UserModel::getFromDatabaseById(new UserDAO($dao->getCon()), $result[2]),
-            $result[3]
-        );
-    }
-
-    /**
-     * Deletes expired models in database
-     * @param RegisterTokenDAO $dao
+     * Deletes expired models from database
+     * @param ResetTokenDAO $dao
      * @return mixed
      */
     public static function deleteExpiredFromDatabase($dao) {
         return $dao->deleteExpired();
     }
 
-    /** Deletes model for user id in database
-     * @param RegisterTokenDAO $dao
+    /**
+     * Deletes models for user id from database
+     * @param ResetTokenDAO $dao
      * @param $userId
      * @return mixed
      */
@@ -84,9 +69,18 @@ class RegisterTokenModel {
     }
 
     /**
+     * Update model in database
+     * @param ResetTokenDAO $dao
+     * @return mixed
+     */
+    public function updateInDatabase($dao) {
+        return $dao->update($this);
+    }
+
+    /**
      * Generates new model for user
      * @param UserModel $user
-     * @return RegisterTokenModel
+     * @return ResetTokenModel
      * @throws \Exception
      */
     public static function generate($user) {
@@ -96,10 +90,10 @@ class RegisterTokenModel {
         $token = new self($id, $token, $user, $expirationDate);
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
-        $dao = new RegisterTokenDAO($con);
+        $dao = new ResetTokenDAO($con);
         // TODO: Try catch
         $result = $token->insertIntoDatabase($dao);
-        $model = new RegisterTokenModel($result[0], $result[1], $result[2], $result[3]);
+        $model = new ResetTokenModel($result[0], $result[1], $result[2], $result[3]);
         unset($sqlite);
         return $model;
     }
@@ -115,7 +109,7 @@ class RegisterTokenModel {
     /**
      * @param mixed $id
      */
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }

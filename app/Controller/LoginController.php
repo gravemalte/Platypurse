@@ -24,6 +24,9 @@ class LoginController extends BaseController
         session_destroy();
     }
 
+    /**
+     * Try to login with the form data
+     */
     public function login()
     {
         if (!(isset($_POST['user-email']) && isset($_POST['user-passwd']))) {
@@ -39,14 +42,14 @@ class LoginController extends BaseController
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $user = UserModel::getFromDatabaseByMail(new UserDAO($con), $userSentMail);
+        unset($sqlite);
         if ($user) {
-            if (!$user->isVerified()) {
-                $_SESSION['user-verify-error'] = true;
-                header('location: ' . URL . 'login');
-                exit();
-            }
-
             if (password_verify($userSentPasswd, $user->getPassword())) {
+                if (!$user->isVerified() ) {
+                    $_SESSION['user-verify-error'] = true;
+                    header('location: ' . URL . 'login');
+                    exit();
+                }
                 $_SESSION['currentUser'] = $user;
                 header('location: ' . URL);
                 exit();
@@ -56,6 +59,9 @@ class LoginController extends BaseController
         header('location: ' . URL . 'login');
     }
 
+    /**
+     * Logout the current user
+     */
     public function logout()
     {
         session_destroy();
