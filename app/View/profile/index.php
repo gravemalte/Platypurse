@@ -1,27 +1,30 @@
 <?php
 
 use Controller\ProfileController;
+use Hydro\Base\Database\Driver\SQLite;
+use Model\DAO\UserRatingDAO;
+use Model\UserRatingModel;
 
 $displayUser = ProfileController::getDisplayUser();
 
 $userItself = false;
 $viewHasAdmin = false;
 $loggedIn = false;
+
+$rating = ProfileController::getUserRating($displayUser->getId());
+
+$rated = 0;
 if (isset($_SESSION['currentUser'])) {
     $currentUser = $_SESSION['currentUser'];
     if ($currentUser->getId() == $displayUser->getId()) $userItself = true;
     if ($currentUser->isAdmin()) $viewHasAdmin = true;
     $loggedIn = true;
+
+    $rated = ProfileController::getRatedFromUser($currentUser->getId(), $displayUser->getId())->getRating();
+    if (empty($rated)) {
+        $rated = 0;
+    }
 }
-
-
-
-$userRating = ProfileController::getRatingForUserId($displayUser->getId());
-if(empty($userRating)):
-    $ratingString = "Bisher nicht bewertet ...";
-else:
-    $ratingString = "Rating: $userRating";
-endif;
 
 $savedOffers = ProfileController::getSavedOffersForCurrentUser();
 $offersByUser = ProfileController::getOffersByUserId();
@@ -42,15 +45,86 @@ $offersByUser = ProfileController::getOffersByUserId();
 
                 <?php endif; ?>
             </div>
-            <div class="user-rating">
-                <span><?= $ratingString ?></span>
-            </div>
-            <div class="user-rating">
-                <span class="fas fa-star" id="user-rating-5"></span>
-                <span class="fas fa-star" id="user-rating-4"></span>
-                <span class="fas fa-star" id="user-rating-3"></span>
-                <span class="fas fa-star" id="user-rating-2"></span>
-                <span class="fas fa-star" id="user-rating-1"></span>
+            <div class="user-rating" id="user-rating">
+                <input type="hidden" id="csrf-token" value="<?= $_SESSION['csrf_token'] ?>">
+                <input type="hidden" id="rating-user-id" value="<?= $displayUser->getId() ?>">
+                <span class="average">(<?= round($rating,1) ?>)</span>
+
+                <span
+                        class="
+                                        <?php if ($rating > 4.75): ?>
+                                        fas fa-star
+                                        <?php elseif ($rating > 4.25): ?>
+                                        fas fa-star-half-alt
+                                        <?php else: ?>
+                                        far fa-star
+                                        <?php endif ?>
+                                        <?php if ($rated >=5): ?>
+                                        rate-point
+                                        <?php endif ?>
+                                    "
+                        id="user-rating-5"
+                ></span>
+                <span
+                        class="
+                                        <?php if ($rating > 3.75): ?>
+                                        fas fa-star
+                                        <?php elseif ($rating > 3.25): ?>
+                                        fas fa-star-half-alt
+                                        <?php else: ?>
+                                        far fa-star
+                                        <?php endif ?>
+                                        <?php if ($rated >=4): ?>
+                                        rate-point
+                                        <?php endif ?>
+                                    "
+                        id="user-rating-4"
+                ></span>
+                <span
+                        class="
+                                        <?php if ($rating > 2.75): ?>
+                                        fas fa-star
+                                        <?php elseif ($rating > 2.25): ?>
+                                        fas fa-star-half-alt
+                                        <?php else: ?>
+                                        far fa-star
+                                        <?php endif ?>
+                                        <?php if ($rated >=3): ?>
+                                        rate-point
+                                        <?php endif ?>
+                                    "
+                        id="user-rating-3"
+                ></span>
+                <span
+                        class="
+                                        <?php if ($rating > 1.75): ?>
+                                        fas fa-star
+                                        <?php elseif ($rating > 1.25): ?>
+                                        fas fa-star-half-alt
+                                        <?php else: ?>
+                                        far fa-star
+                                        <?php endif ?>
+                                        <?php if ($rated >=2): ?>
+                                        rate-point
+                                        <?php endif ?>
+                                    "
+                        id="user-rating-2"
+                ></span>
+                <span
+                        class="
+                                        <?php if ($rating > 0.75): ?>
+                                        fas fa-star
+                                        <?php elseif ($rating > 0.25): ?>
+                                        fas fa-star-half-alt
+                                        <?php else: ?>
+                                        far fa-star
+                                        <?php endif ?>
+                                        <?php if ($rated >=1): ?>
+                                        rate-point
+                                        <?php endif ?>
+                                    "
+                        id="user-rating-1"
+                ></span>
             </div>
             <div class="profile-button-container">
                 <?php if (!$userItself): ?>

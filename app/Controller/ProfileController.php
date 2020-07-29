@@ -9,6 +9,7 @@ use Model\DAO\UserRatingDAO;
 use Model\UserModel;
 use Model\OfferModel;
 use Model\UserRatingModel;
+use PDOException;
 
 class ProfileController extends BaseController
 {
@@ -19,6 +20,8 @@ class ProfileController extends BaseController
         if (!isset($_SESSION['currentUser']) && !isset($_GET['id'])) {
             header('location: ' . URL . 'login');
         }
+
+        $_SESSION['csrf_token'] = uniqid();
 
         require APP . 'View/shared/header.php';
         require APP . 'View/profile/header.php';
@@ -76,40 +79,21 @@ class ProfileController extends BaseController
         return $model;
     }
 
-    public static function getRatingForUserId($userId) {
+    public static function getUserRating($userId) {
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
-        $userRatingDao = new UserRatingDAO($con);
-        $model = UserRatingModel::getRatingFromDatabaseForUserId($userRatingDao, $userId);
+        $dao = new UserRatingDAO($con);
         unset($sqlite);
-        return $model;
+        return UserRatingModel::getRatingFromDatabaseForUserId($dao, $userId);
     }
 
-    public static function insertRating($fromUserId, $forUserId, $rating) {
-        if(isset($_SESSION["currentUser"])):
-            $sqlite = new SQLite();
-            $con = $sqlite->getCon();
-            $dao = new UserRatingDAO($con);
-
-            $userRating = UserRatingModel::getFromDatabaseByFromUserIdAndForUserId($dao, $fromUserId, $forUserId);
-            if(empty($userRating->getId())):
-                $userRating = new UserRatingModel(hexdec(uniqid()),
-                    $fromUserId, $forUserId, $rating);
-
-                $check = $userRating->insertIntoDatabase($dao);
-            else:
-                $userRating->setRating($rating);
-                $check = $userRating->updateInDatabase($dao);
-            endif;
-            unset($sqlite);
-
-            if($check):
-                header('location: ' . URL . 'profile?id=' . $forUserId);
-                exit();
-            endif;
-        endif;
-        header('location: ' . URL . 'login');
-        exit();
+    public static function getRatedFromUser($fromUserId, $forUserId) {
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new UserRatingDAO($con);
+        unset($sqlite);
+        return UserRatingModel::getFromDatabaseByFromUserIdAndForUserId(
+            $dao, $fromUserId, $forUserId);
     }
 
     public static function disableUser() {
@@ -135,5 +119,43 @@ class ProfileController extends BaseController
         header('location: ' . URL . 'profile?id=' .$user->getId());
         exit();
 
+    }
+
+    public static function rateUser() {
+        if (!isset($_SESSION['currentUser']) || !isset($_POST['csrf']) || ($_POST['csrf'] != $_SESSION['csrf_token'])) {
+            http_response_code(401);
+            echo "unauthorized";
+            return;
+        }
+
+        if (!isset($_POST['rating']) || !isset($_POST['rating-user-id'])) {
+            http_response_code(400);
+            echo "bad request";
+            return;
+        }
+
+        $sqlite = new SQLite();
+        $con = $sqlite->getCon();
+        $dao = new UserRatingDAO($con);
+        $rating = UserRatingModel::getFromDatabaseByFromUserIdAndForUserId(
+            $dao, $_SESSION['currentUser']->getId(), $_POST['rating-user-id']);
+        $rating->setFromUserId($_SESSION['currentUser']->getId());
+        $rating->setForUserId($_POST['rating-user-id']);
+
+        $rateValue = $_POST['rating'];
+        if ($rateValue <= 5 && $rateValue >= 1) {
+            $rateValue = round($rateValue, 0);
+        }
+        else {
+            $rateValue = 0;
+        }
+        $oldRating = $rating->getRating();
+        $rating->setRating($rateValue);
+
+        if (empty ($oldRating)) {
+            $rating->insertIntoDatabase($dao);
+            return;
+        }
+        $rating->updateInDatabase($dao);
     }
 }

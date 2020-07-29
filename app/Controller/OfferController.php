@@ -20,6 +20,8 @@ class OfferController extends BaseController
             }
         }
 
+        $_SESSION['csrf_token'] = uniqid();
+
         // load views
         require APP . 'View/shared/header.php';
         require APP . 'View/offer/header.php';
