@@ -219,7 +219,6 @@ function buildChat(modules) {
                 if (chatInput.value === "") return;
                 let sendResponse = await chat.sendMessage(chatInput.value);
                 chatInput.value = "";
-                // TODO: Add instant show
             }
 
             // catch submit event
