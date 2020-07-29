@@ -22,7 +22,7 @@ class UserRatingDAO implements UserRatingDAOInterface
         $stmt->bindValue(":userRatingId", $obj->getId());
         $stmt->bindValue(":fromUserId", $obj->getFromUserId());
         $stmt->bindValue(":forUserId", $obj->getForUserId());
-        $stmt->bindValue(":rating", $obj->getRating()());
+        $stmt->bindValue(":rating", $obj->getRating());
 
         if($stmt->execute()) {
             $id = $this->con->lastInsertId();

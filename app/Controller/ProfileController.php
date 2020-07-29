@@ -9,6 +9,7 @@ use Model\DAO\UserRatingDAO;
 use Model\UserModel;
 use Model\OfferModel;
 use Model\UserRatingModel;
+use PDOException;
 
 class ProfileController extends BaseController
 {
@@ -149,8 +150,13 @@ class ProfileController extends BaseController
         else {
             $rateValue = 0;
         }
+        $oldRating = $rating->getRating();
         $rating->setRating($rateValue);
 
-        $rating->insertIntoDatabase($dao);
+        if (empty ($oldRating)) {
+            $rating->insertIntoDatabase($dao);
+            return;
+        }
+        $rating->updateInDatabase($dao);
     }
 }

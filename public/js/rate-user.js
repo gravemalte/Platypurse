@@ -30,6 +30,7 @@
                 body: payload
             });
             console.log(sendMessageResponse);
+            console.log(await sendMessageResponse.text());
             if (!sendMessageResponse.ok) return;
 
             let pageUpdateResponse = await fetch(window.location, {
