@@ -69,6 +69,6 @@ class MailController extends BaseController
     }
 
     public static function previewTemplate() {
-        require APP . 'View/mail/templates/duplicateMail.php';
+        require APP . 'View/mail/templates/resetPassword.php';
     }
 }

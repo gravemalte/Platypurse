@@ -39,7 +39,7 @@
                         <label for="remember-me" class="fas fa-check-square no-js-hide"></label>
                     </div>
                     <div class="form-forgot-container">
-                        <a href="">Passwort vergessen?</a>
+                        <a href="resetPassword">Passwort vergessen?</a>
                     </div>
                 </div>
                 <div class="form-submit-container">
