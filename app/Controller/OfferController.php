@@ -83,6 +83,7 @@ class OfferController extends BaseController
                 else:
                     header('location: ' . URL . 'error/databaseError');
                 endif;
+                exit();
             } catch (PDOException $e) {
                 $sqlite->closeTransaction(false);
                 header('location: ' . URL . 'error/databaseError');
@@ -95,7 +96,7 @@ class OfferController extends BaseController
     }
 
     /**
-     * Deactivates the offeri n saved list from user
+     * Deactivates the offer in saved list from user
      */
     public static function removeFromSavedList() {
         $userId = $_SESSION["currentUser"]->getId();
