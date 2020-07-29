@@ -25,6 +25,13 @@ class ErrorController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
+    public function badRequest(){
+        require APP . 'View/shared/header.php';
+        require APP . 'View/shared/nav.php';
+        require APP . 'View/error/badRequest.php';
+        require APP . 'View/shared/footer.php';
+    }
+
     public function subpageNotFound(){
         require APP . 'View/shared/header.php';
         require APP . 'View/shared/nav.php';

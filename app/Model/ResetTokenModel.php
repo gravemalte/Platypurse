@@ -2,9 +2,11 @@
 
 namespace Model;
 
+use http\Exception;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\UserDAO;
 use Model\DAO\ResetTokenDAO;
+use PDOException;
 
 class ResetTokenModel {
     private $id;
@@ -81,19 +83,25 @@ class ResetTokenModel {
      * Generates new model for user
      * @param UserModel $user
      * @return ResetTokenModel
-     * @throws \Exception
+     * @throws Exception
      */
     public static function generate($user) {
         $id = null;
         $token = bin2hex(random_bytes(5));
         $expirationDate = date("Y-m-d H:i:s", time() + 3600);
-        $token = new self($id, $token, $user, $expirationDate);
+        $token = new ResetTokenModel($id, $token, $user, $expirationDate);
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $dao = new ResetTokenDAO($con);
-        // TODO: Try catch
-        $result = $token->insertIntoDatabase($dao);
-        $model = new ResetTokenModel($result[0], $result[1], $result[2], $result[3]);
+        // TODO: Try catch, fix for Roman's settings
+        try {
+            $token->deleteForUserFromDatabase($dao, $user->getId());
+            $result = $token->insertIntoDatabase($dao);
+            $model = new ResetTokenModel($result[0], $result[1], $result[2], $result[3]);
+        }
+        catch (PDOException $e) {
+            //TODO: This is not the right way, lol
+        }
         unset($sqlite);
         return $model;
     }

@@ -97,7 +97,7 @@ class RegisterTokenModel {
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $dao = new RegisterTokenDAO($con);
-        // TODO: Try catch
+        // TODO: Try catch, fix for Roman's settings
         $result = $token->insertIntoDatabase($dao);
         $model = new RegisterTokenModel($result[0], $result[1], $result[2], $result[3]);
         unset($sqlite);

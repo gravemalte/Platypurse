@@ -30,6 +30,7 @@ class Application
         "Offer",
         "Profile",
         "Register",
+        "ResetPassword",
         "Search",
         "TermsOfUse");
 
