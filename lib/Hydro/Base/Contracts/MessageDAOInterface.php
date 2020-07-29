@@ -6,5 +6,4 @@ interface MessageDAOInterface
 {
     public function create($obj);
     public function readBySenderId($senderId);
-    public function readOrderedById($id);
 }
