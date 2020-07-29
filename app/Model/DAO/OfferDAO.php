@@ -104,7 +104,10 @@ class OfferDAO implements OfferDAOInterface
      */
     public function readHot()
     {
-        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY clicks desc LIMIT 1;";
+        $sql = "SELECT * FROM offer 
+            INNER JOIN user on offer.u_id = user.u_id
+            WHERE active = 1 AND user.disabled = 0
+            ORDER BY clicks desc LIMIT 1;";
         $stmt = $this->con->prepare($sql);
 
         if($stmt->execute()) {
@@ -120,7 +123,10 @@ class OfferDAO implements OfferDAOInterface
      */
     public function readNewest()
     {
-        $sql = "SELECT * FROM offer WHERE active = 1 ORDER BY create_date desc LIMIT 9;";
+        $sql = "SELECT * FROM offer
+            INNER JOIN user on offer.u_id = user.u_id
+            WHERE active = 1 AND user.disabled = 0
+            ORDER BY create_date desc LIMIT 9;";
         $stmt = $this->con->prepare($sql);
 
         if($stmt->execute()) {
@@ -184,12 +190,14 @@ class OfferDAO implements OfferDAOInterface
             $sql .= "*";
         endif;
         $sql .= " FROM offer INNER JOIN platypus ON platypus.p_id = offer.p_id
+            INNER JOIN user on offer.u_id = user.u_id
             WHERE (name LIKE :name
             OR description LIKE :description)
             AND age_years BETWEEN :ageMin and :ageMax 
             AND size BETWEEN :sizeMin and :sizeMax 
             AND weight BETWEEN :weightMin and :weightMax
-            AND offer.active = 1";
+            AND offer.active = 1
+            AND user.disabled = 0";
 
         if($bindSex):
             $sql .= " AND sex = :sex";
