@@ -166,11 +166,14 @@ $offersByUser = ProfileController::getOffersByUserId();
                         <label for="submit-suspend" hidden>Nutzer sperren</label>
                     </form>
                     <?php endif; ?>
+                    <!--
+                    not in final release
                     <form action="" class="user-report-container">
                         <button id="submit-report" type="submit" hidden></button>
                         <label for="submit-report" hidden>Nutzer melden</label>
                         <label for="submit-report" class="fas fa-exclamation-triangle" title="Nutzer melden"></label>
                     </form>
+                    -->
             </div>
         <?php endif; ?>
     </div>

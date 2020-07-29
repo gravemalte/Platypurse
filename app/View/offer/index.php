@@ -195,6 +195,8 @@ if(isset($_SESSION['currentUser'])) {
                 </div>
                 <div class="offer-interactions-container">
                     <?php if((isset($_SESSION['currentUser']))): ?>
+                        <!--
+                        not in final release
                         <form action="report">
                             <input type="text" id="report-id" name="id" hidden value="<?=$offer->getId();?>">
                             <label for="report-id" hidden>Änderungs-ID</label>
@@ -202,6 +204,7 @@ if(isset($_SESSION['currentUser'])) {
                             <label for="submit-report" hidden>Artikel melden</label>
                             <label for="submit-report" class="fas fa-exclamation-triangle" title="Artikel melden"></label>
                         </form>
+                        -->
                         <?php if($_SESSION["currentUser"]->getId() == $seller->getId() || $_SESSION["currentUser"]->isAdmin()): ?>
                             <form action="offer/delete" method="post" data-needs-confirmation>
                                 <input type="text" id="delete-platypus-id" name="platypusId" hidden value="<?=$offer->getPlatypus()->getId();?>">
