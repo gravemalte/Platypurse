@@ -2,17 +2,27 @@
 namespace Model\DAO;
 
 use Hydro\Base\Contracts\MessageDAOInterface;
+use Model\ChatModel;
 use PDOException;
 
 class MessageDAO implements MessageDAOInterface
 {
     private $con;
 
+    /**
+     * MessageDAO constructor.
+     * @param $con
+     */
     public function __construct($con)
     {
         $this->con = $con;
     }
 
+    /**
+     * Insert entry into database
+     * @param ChatModel $obj
+     * @return mixed
+     */
     public function create($obj)
     {
         $query = "INSERT INTO message(msg_id, sender_id, receiver_id, message, send_date)
@@ -35,16 +45,41 @@ class MessageDAO implements MessageDAOInterface
 
     }
 
-    public function read($id)
+    /**
+     * Read entry by id from database
+     * @param $senderId
+     * @return mixed
+     */
+    public function readBySenderId($senderId)
     {
         $query = "SELECT * FROM message WHERE sender_id = :id;";
         $stmt = $this->con->prepare($query);
-        $stmt->bindValue(":id", $id);
+        $stmt->bindValue(":id", $senderId);
 
         if($stmt->execute()){
             return $stmt->fetchAll();
         } else {
             throw new PDOException('MessageDAO read error');
+        }
+    }
+
+    /**
+     * Read models by id from database, ordered ascending by
+     * @param $id
+     * @return mixed
+     */
+    public function readOrderedById($id)
+    {
+        // TODO: Implement readOrderedById() method.
+        $query = "SELECT * FROM message WHERE sender_id = :id ORDER BY msg_id;";
+
+        $stmt = $this->con->prepare($query);
+        $stmt->bindValue(":id", $id);
+
+        if($stmt->execute()) {
+            return $stmt->fetchAll();
+        } else {
+            throw new PDOException('MessageDAO readOrderedById error');
         }
     }
 }

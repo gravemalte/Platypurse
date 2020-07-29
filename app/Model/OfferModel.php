@@ -59,6 +59,11 @@ class OfferModel {
         $this->active = $active;
     }
 
+    /**
+     * Insert model into database
+     * @param $offerDAO
+     * @return bool
+     */
     public function insertIntoDatabase($offerDAO) {
         if($this->getPlatypus()->insertIntoDatabase(new PlatypusDAO($offerDAO->getCon()))):
             if($offerDAO->create($this)):
@@ -72,41 +77,70 @@ class OfferModel {
         return false;
     }
 
+    /**
+     * Returns model by id from database
+     * @param $offerDAO
+     * @param $id
+     * @return OfferModel
+     */
     public static function getFromDatabase($offerDAO, $id){
         $result = $offerDAO->read($id);
-        return self::getOfferFromRow($result, $offerDAO);
+        return self::getOfferFromRow($result, $offerDAO->getCon());
     }
 
+    /**
+     * Returns models by search filter from database
+     * @param $offerDAO
+     * @param $keyedSearchValuesArray
+     * @return array
+     */
     public static function getSearchResultsFromDatabase($offerDAO, $keyedSearchValuesArray) {
         $result = $offerDAO->readSearchResults($keyedSearchValuesArray);
         $returnArray = array();
         foreach($result as $row):
-            $returnArray[] = self::getOfferFromRow($row, $offerDAO);
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon());
         endforeach;
 
         return $returnArray;
     }
 
+    /**
+     * Returns model by user id from database
+     * @param $offerDAO
+     * @param $userId
+     * @return array
+     */
     public static function getFromDatabaseByUserId($offerDAO, $userId){
         $result = $offerDAO->readOffersByUserId($userId);
         $returnArray = array();
         foreach($result as $row):
-            $returnArray[] = self::getOfferFromRow($row, $offerDAO);
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon());
         endforeach;
 
         return $returnArray;
     }
 
+    /**
+     * Returns models by user id from database, based on saved offers
+     * @param $offerDAO
+     * @param $userId
+     * @return array
+     */
     public static function getSavedOffersFromDatabaseByUserId($offerDAO, $userId){
         $result = $offerDAO->readSavedOffersByUserId($userId);
         $returnArray = array();
         foreach($result as $row):
-            $returnArray[] = self::getOfferFromRow($row, $offerDAO);
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon());
         endforeach;
 
         return $returnArray;
     }
 
+    /**
+     * Update model in database
+     * @param $offerDAO
+     * @return bool
+     */
     public function updateInDatabase($offerDAO) {
         if($this->getPlatypus()->updateInDatabase(new PlatypusDAO($offerDAO->getCon()))):
             if($offerDAO->update($this)):
@@ -132,23 +166,34 @@ class OfferModel {
         return $this->updateInDatabase($offerDAO);
     }
 
+    /**
+     * Returns top 9 models from database, ordered descending by create date
+     * @param $offerDAO
+     * @return array
+     */
     public static function getNewestOffers($offerDAO) {
         $result = $offerDAO->readNewest();
 
         $returnArray = array();
         foreach($result as $row):
-            $returnArray[] = self::getOfferFromRow($row, $offerDAO);
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon());
         endforeach;
         return $returnArray;
     }
 
+    /**
+     * Returns top model from database, ordered descending by clicks
+     * @param $offerDAO
+     * @return OfferModel
+     */
     public static function getHotOffer($offerDAO) {
         $result = $offerDAO->readHot();
 
-        return self::getOfferFromRow($result, $offerDAO);
+        return self::getOfferFromRow($result, $offerDAO->getCon());
     }
 
     /**
+     * Add one click to the offer and updates model in database
      * @param $offerDAO
      */
     public function offerClickPlusOne($offerDAO) {
@@ -156,12 +201,18 @@ class OfferModel {
         $this->updateInDatabase($offerDAO);
     }
 
-    private static function getOfferFromRow($row, $offerDAO) {
+    /**
+     * Returns model from database row
+     * @param $row
+     * @param $con
+     * @return OfferModel
+     */
+    private static function getOfferFromRow($row, $con) {
         return new OfferModel($row[0],
-            UserModel::getFromDatabaseById(new UserDAO($offerDAO->getCon()), $row[1]),
-            PlatypusModel::getFromDatabaseById(new PlatypusDAO($offerDAO->getCon()), $row[2]),
+            UserModel::getFromDatabaseById(new UserDAO($con), $row[1]),
+            PlatypusModel::getFromDatabaseById(new PlatypusDAO($con), $row[2]),
             $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9],
-            OfferImageModel::getFromDatabaseByOfferId(new OfferImageDAO($offerDAO->getCon()), $row[0]), $row[10]);
+            OfferImageModel::getFromDatabaseByOfferId(new OfferImageDAO($con), $row[0]), $row[10]);
     }
 
     /**

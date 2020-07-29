@@ -2,7 +2,6 @@
 
 namespace Model;
 
-use http\Client\Curl\User;
 use Hydro\Base\Database\Driver\SQLite;
 use Model\DAO\UserDAO;
 use Model\DAO\RegisterTokenDAO;
@@ -28,10 +27,21 @@ class RegisterTokenModel {
         $this->expirationDate = $expirationDate;
     }
 
+    /**
+     * Insert model into database
+     * @param RegisterTokenDAO $dao
+     * @return mixed
+     */
     public function insertIntoDatabase($dao) {
         return $dao->create($this);
     }
 
+    /**
+     * Returns model by id from database
+     * @param RegisterTokenDAO $dao
+     * @param $id
+     * @return RegisterTokenModel
+     */
     public static function getFromDatabase($dao, $id) {
         $result = $dao->read($id);
         return new RegisterTokenModel($result[0], $result[1],
@@ -39,6 +49,12 @@ class RegisterTokenModel {
             $result[3]);
     }
 
+    /**
+     * Returns model by token from database
+     * @param RegisterTokenDAO $dao
+     * @param $token
+     * @return RegisterTokenModel
+     */
     public static function getFromDatabaseByToken($dao, $token) {
         $result = $dao->readByToken($token);
         return new RegisterTokenModel(
@@ -49,18 +65,30 @@ class RegisterTokenModel {
         );
     }
 
+    /**
+     * Deletes expired models in database
+     * @param RegisterTokenDAO $dao
+     * @return mixed
+     */
     public static function deleteExpiredFromDatabase($dao) {
         return $dao->deleteExpired();
     }
 
+    /** Deletes model for user id in database
+     * @param RegisterTokenDAO $dao
+     * @param $userId
+     * @return mixed
+     */
     public static function deleteForUserFromDatabase($dao, $userId) {
         return $dao->deleteForUser($userId);
     }
-    
-    public function updateInDatabase($dao) {
-        return $dao->update($this);
-    }
 
+    /**
+     * Generates new model for user
+     * @param UserModel $user
+     * @return RegisterTokenModel
+     * @throws \Exception
+     */
     public static function generate($user) {
         $id = null;
         $token = bin2hex(random_bytes(5));
@@ -69,6 +97,7 @@ class RegisterTokenModel {
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $dao = new RegisterTokenDAO($con);
+        // TODO: Try catch
         $result = $token->insertIntoDatabase($dao);
         return new RegisterTokenModel($result[0], $result[1], $result[2], $result[3]);
     }

@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Model\DAO\OfferImageDAO;
+
 class OfferImageModel {
     private $id;
     private $offerId;
@@ -26,15 +28,31 @@ class OfferImageModel {
         $this->image = $image;
     }
 
+    /**
+     * Insert model into database
+     * @param OfferImageDAO $offerImageDAO
+     * @return mixed
+     */
     public function insertIntoDatabase($offerImageDAO) {
         return $offerImageDAO->create($this);
     }
 
+    /**
+     * Return model by offer id from database
+     * @param OfferImageDAO $offerImageDAO
+     * @param $offerId
+     * @return OfferImageModel
+     */
     public static function getFromDatabaseByOfferId($offerImageDAO, $offerId) {
         $result = $offerImageDAO->readByOfferId($offerId);
         return new OfferImageModel($result[0], $result[1], $result[2], $result[3], $result[4]);
     }
-    
+
+    /**
+     * Update model in database
+     * @param OfferImageDAO $dao
+     * @return mixed
+     */
     public function updateInDatabase($dao) {
         return $dao->update($this);
     }

@@ -27,10 +27,21 @@ class ResetTokenModel {
         $this->expirationDate = $expirationDate;
     }
 
+    /**
+     * Insert model into database
+     * @param ResetTokenDAO $dao
+     * @return mixed
+     */
     public function insertIntoDatabase($dao) {
         return $dao->create($this);
     }
 
+    /**
+     * Returns model from database
+     * @param ResetTokenDAO $dao
+     * @param $token
+     * @return ResetTokenModel
+     */
     public static function getFromDatabase($dao, $token) {
         $result = $dao->read($token);
         return new ResetTokenModel($result[0], $result[1],
@@ -38,18 +49,40 @@ class ResetTokenModel {
             $result[3]);
     }
 
+    /**
+     * Deletes expired models from database
+     * @param ResetTokenDAO $dao
+     * @return mixed
+     */
     public static function deleteExpiredFromDatabase($dao) {
         return $dao->deleteExpired();
     }
 
+    /**
+     * Deletes models for user id from database
+     * @param ResetTokenDAO $dao
+     * @param $userId
+     * @return mixed
+     */
     public static function deleteForUserFromDatabase($dao, $userId) {
         return $dao->deleteForUser($userId);
     }
-    
+
+    /**
+     * Update model in database
+     * @param ResetTokenDAO $dao
+     * @return mixed
+     */
     public function updateInDatabase($dao) {
         return $dao->update($this);
     }
 
+    /**
+     * Generates new model for user
+     * @param UserModel $user
+     * @return ResetTokenModel
+     * @throws \Exception
+     */
     public static function generate($user) {
         $id = null;
         $token = bin2hex(random_bytes(5));
@@ -58,6 +91,7 @@ class ResetTokenModel {
         $sqlite = new SQLite();
         $con = $sqlite->getCon();
         $dao = new ResetTokenDAO($con);
+        // TODO: Try catch
         $result = $token->insertIntoDatabase($dao);
         return new ResetTokenModel($result[0], $result[1], $result[2], $result[3]);
     }

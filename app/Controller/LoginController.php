@@ -24,6 +24,9 @@ class LoginController extends BaseController
         session_destroy();
     }
 
+    /**
+     * Try to login with the form data
+     */
     public function login()
     {
         if (!(isset($_POST['user-email']) && isset($_POST['user-passwd']))) {
@@ -56,6 +59,9 @@ class LoginController extends BaseController
         header('location: ' . URL . 'login');
     }
 
+    /**
+     * Logout the current user
+     */
     public function logout()
     {
         session_destroy();

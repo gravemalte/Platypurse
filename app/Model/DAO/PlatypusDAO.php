@@ -2,6 +2,7 @@
 namespace Model\DAO;
 
 use Hydro\Base\Contracts\PlatypusDAOInterface;
+use Model\PlatypusModel;
 use PDOException;
 
 
@@ -9,12 +10,20 @@ class PlatypusDAO implements PlatypusDAOInterface
 {
     private $con;
 
+    /**
+     * PlatypusDAO constructor.
+     * @param $con
+     */
     public function __construct($con)
     {
         $this->con = $con;
     }
 
-
+    /**
+     * Insert entry into database
+     * @param PlatypusModel $obj
+     * @return mixed
+     */
     public function create($obj)
     {
         $query = "INSERT INTO platypus(p_id, name, age_years, sex, size, weight)
@@ -35,9 +44,13 @@ class PlatypusDAO implements PlatypusDAOInterface
         } else {
             throw new PDOException('PlatypusDAO create error');
         }
-
     }
 
+    /**
+     * Read entry by id from database
+     * @param $id
+     * @return mixed
+     */
     public function read($id)
     {
         $query = "SELECT * FROM platypus WHERE p_id = :id;";
@@ -51,6 +64,11 @@ class PlatypusDAO implements PlatypusDAOInterface
         }
     }
 
+    /**
+     * Update entry in database
+     * @param PlatypusModel $obj
+     * @return bool
+     */
     public function update($obj)
     {
         $sql = "UPDATE platypus SET name = :name, age_years = :ageYears, sex = :sex, size = :size,

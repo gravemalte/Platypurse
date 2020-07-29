@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Model\DAO\PlatypusDAO;
+
 class PlatypusModel {
     private $id;
     private $name;
@@ -32,16 +34,32 @@ class PlatypusModel {
         $this->active = $active;
     }
 
+    /**
+     * Insert model into database
+     * @param PlatypusDAO $dao
+     * @return mixed
+     */
     public function insertIntoDatabase($dao) {
         return $dao->create($this);
     }
 
+    /**
+     * Returns model by id from database
+     * @param PlatypusDAO $platypusDAO
+     * @param $id
+     * @return PlatypusModel
+     */
     public static function getFromDatabaseById($platypusDAO, $id){
         $result = $platypusDAO->read($id);
 
         return new PlatypusModel($result[0], $result[1], $result[2], $result[3], $result[4], $result[5], $result[6]);
     }
-    
+
+    /**
+     * Update model in database
+     * @param PlatypusDAO $dao
+     * @return mixed
+     */
     public function updateInDatabase($dao) {
         return $dao->update($this);
     }

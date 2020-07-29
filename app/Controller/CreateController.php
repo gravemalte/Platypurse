@@ -27,6 +27,9 @@ class CreateController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
+    /**
+     * Process the form data and insert or update the new offer
+     */
     public function processInput() {
         if($_POST['csrf'] != $_SESSION['csrf_token']){
             header('location: ' . URL . 'error/unauthorized');
@@ -135,6 +138,7 @@ class CreateController extends BaseController
     }
 
     /**
+     * Formats price for use in database
      * @param $price
      * @return float|int|string formatted price
      */

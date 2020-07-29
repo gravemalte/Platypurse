@@ -28,6 +28,12 @@ class OfferController extends BaseController
         require APP . 'View/shared/footer.php';
     }
 
+    /**
+     * Returns model for selected offer
+     * @param $id
+     * @param null $offerDAO
+     * @return OfferModel
+     */
     public static function getOffer($id, $offerDAO = null) {
         if(!isset($offerDAO)):
             $sqlite = new SQLite();
@@ -37,6 +43,9 @@ class OfferController extends BaseController
         return OfferModel::getFromDatabase($offerDAO, $id);
     }
 
+    /**
+     * Add the offer to the saved list of the user
+     */
     public static function offerToSavedList() {
         if(isset($_SESSION["currentUser"])):
             $userId = $_SESSION["currentUser"]->getId();
@@ -77,6 +86,9 @@ class OfferController extends BaseController
         exit();
     }
 
+    /**
+     * Deactivates the offeri n saved list from user
+     */
     public static function removeFromSavedList() {
         $userId = $_SESSION["currentUser"]->getId();
         $offerId = $_POST["offerId"];
@@ -104,6 +116,11 @@ class OfferController extends BaseController
         exit();
     }
 
+    /**
+     * Checks if the offer is already in the saved list of the current user
+     * @param $offerId
+     * @return bool
+     */
     public static function isOfferInSavedList($offerId) {
         $userId = $_SESSION["currentUser"]->getId();
         $sqlite = new SQLite();
@@ -119,6 +136,10 @@ class OfferController extends BaseController
         endif;
     }
 
+    /**
+     * Add one click to the offer
+     * @param OfferModel $offer
+     */
     public static function offerClickPlusOne($offer) {
         $sqlite = new SQLite();
 

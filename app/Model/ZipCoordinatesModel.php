@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Model\DAO\ZipCoordinatesDAO;
+
 class ZipCoordinatesModel {
     private $id;
     private $loc_id;
@@ -29,6 +31,12 @@ class ZipCoordinatesModel {
         $this->lon = $lon;
     }
 
+    /**
+     * Returns model by zipcode from database
+     * @param ZipCoordinatesDAO $zipCoordinatesDAO
+     * @param $zipcode
+     * @return false|ZipCoordinatesModel
+     */
     public static function getFromDatabaseByZipcode($zipCoordinatesDAO, $zipcode) {
         $result = $zipCoordinatesDAO->readByZipcode($zipcode);
         if(!$result):
