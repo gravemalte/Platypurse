@@ -2,13 +2,17 @@
 
 use Controller\SearchController;
 
-$searchText = htmlspecialchars(strip_tags($_GET['search']));
+$searchText = "";
 $sex = "";
 $sexMaleSelected = "";
 $sexFemaleSelected = "";
 $age = array(0, 20);
 $size = array(0, 75);
 $weight = array(0, 3000);
+
+if (isset($_GET['search'])) {
+    $searchText = htmlspecialchars(strip_tags($_GET['search']));
+}
 
 if(isset($_GET['filter-button']) && $_GET['filter-button'] != 'reset'):
     if (isset($_GET['sex'])):
@@ -25,11 +29,28 @@ if(isset($_GET['filter-button']) && $_GET['filter-button'] != 'reset'):
     if (isset($_GET['weight'])):
         $weight = $_GET['weight'];
     endif;
-endif; ?>
+endif;
+
+$page = 1;
+if (isset($_GET['page'])) {
+    $page = $_GET['page'];
+}
+if ($page < 1) {
+    $page = 1;
+}
+$offset = ($page - 1) * 30;
+$offerCount = SearchController::getOffers($offset, $searchText, $sex, $age, $size, $weight, true);
+
+if ($offset > $offerCount) {
+    $page = round($offerCount / 30, 0);
+    $offset = ($page - 1) * 30;
+}
+?>
 <main class="main-page filter-page">
     <div class="filter-area">
         <div class="filter-container card">
             <form action="search" method="get">
+                <input type="hidden" name="page" value="1">
                 <div class="title-container">
                     <input type="hidden" name="search" value='<?php echo $searchText ?>'>
                     <p>Filter</p>
@@ -114,7 +135,7 @@ endif; ?>
     <div class="main-area">
         <div class="search-results-container">
             <?php
-            $offers = SearchController::getOffers(0, $searchText, $sex, $age, $size, $weight);
+            $offers = SearchController::getOffers($offset, $searchText, $sex, $age, $size, $weight);
             if (!empty($offers)): ?>
             <div class="offer-list-container">
                 <?php foreach ($offers as $offer): ?>
@@ -128,8 +149,38 @@ endif; ?>
                             </div>
                         </div>
                     </a>
-                <?php endforeach;
-                else: ?>
+                <?php endforeach ?>
+                <div class="pagination-container">
+                    <form action="search" method="get" class="pagination">
+                        <input type="hidden" name="search" value="<?= $searchText ?>">
+                        <input type="hidden" name="sex" value="<?= $sex ?>">
+                        <input type="hidden" name="age[]" value="<?= $age[0] ?>">
+                        <input type="hidden" name="age[]" value="<?= $age[1] ?>">
+                        <input type="hidden" name="size[]" value="<?= $size[0] ?>">
+                        <input type="hidden" name="size[]" value="<?= $size[1] ?>">
+                        <input type="hidden" name="weight[]" value="<?= $weight[0] ?>">
+                        <input type="hidden" name="weight[]" value="<?= $weight[1] ?>">
+                        <input type="hidden" name="filter-button" value="search">
+                        <button
+                                type="submit"
+                                name="page"
+                                value="<?= $page - 1 ?>"
+                                <?php if($page <= 1): ?>
+                                style="visibility: hidden"
+                                <?php endif ?>
+                        >&LT;</button>
+                        <p><?= $page ?></p>
+                        <button
+                                type="submit"
+                                name="page"
+                                value="<?= $page + 1 ?>"
+                                <?php if(($offset + 30) >= $offerCount): ?>
+                                style="visibility: hidden"
+                                <?php endif ?>
+                        >&GT;</button>
+                    </form>
+                </div>
+                <?php else: ?>
                     <div>
                         <h1>Sorry, es gibt leider keine passenden Angebote. ¯\_(ツ)_/¯</h1>
                     </div>
