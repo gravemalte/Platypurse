@@ -33,7 +33,7 @@
     <div class="under-button-container">
         <p>
             Wenn der Button nicht funktioniert, geh einfach auf diese Webseite
-            <a href="../resetPassword/resetPassword?token=<?= $token->getToken() ?>" target="_blank">platypurse.com/register/<wbr>verify?token=<?= $token->getToken() ?></a>.
+            <a href="<?= URL ?>resetPassword/resetPassword?token=<?= $token->getToken() ?>" target="_blank">platypurse.com/register/<wbr>verify?token=<?= $token->getToken() ?></a>.
         </p>
     </div>
 </div>

@@ -32,7 +32,7 @@
     <div class="under-button-container">
         <p>
             Wenn der Button nicht funktioniert, geh einfach auf diese Webseite
-            <a href="../register/verify?token=<?= $token->getToken() ?>" target="_blank">platypurse.com/register/<wbr>verify?token=<?= $token->getToken() ?></a>.
+            <a href="<?= URL .?> '/register/verify?token=<?= $token->getToken() ?>" target="_blank">platypurse.com/register/<wbr>verify?token=<?= $token->getToken() ?></a>.
         </p>
     </div>
 </div>
