@@ -1,5 +1,5 @@
 <h1 align="center">Platypurse Dokumentation</h1>
-<h2 align="center">inf016 Webprogrammierung - Gruppe K</h2>
+<h2 align="center">inf016 Webprogrammierung - Gruppe K<br>im Sommersemester 2020</h2>
 <h3 align="center"><a href="https://github.com/daylien">Malte Grave</a>, <a href="https://github.com/derPiepmatz">Tim Hesse</a> , <a href="https://github.com/ceitcher"> Marvin Kuhlmann</a></h3>
 
 <p align="center">
