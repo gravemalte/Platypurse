@@ -375,12 +375,12 @@ class OfferModel {
             $con = $sqlite->getCon();
             $dao = new ZipCoordinatesDAO($con);
             $model = ZipCoordinatesModel::getFromDatabaseByZipcode($dao, $this->zipcode);
+            unset($sqlite);
             return $model;
 
         } catch (PDOException $ex) {
-            header('location: ' . URL . 'error/databaseError');
+            die(header('location: ' . URL . 'error/databaseError'));
         }
-        unset($sqlite);
     }
 
     /**

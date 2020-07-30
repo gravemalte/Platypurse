@@ -29,8 +29,7 @@ class MailController extends BaseController
             unset($sqlite);
         } catch (PDOException $ex) {
             unset($sqlite);
-            header('location: ' . URL . 'error/databaseError');
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
 
         if (!$mail->exists()) {
@@ -53,8 +52,7 @@ class MailController extends BaseController
             return MailModel::getFromDatabase($dao, $id);
         } catch (PDOException $ex) {
             unset($sqlite);
-            header('location: ' . URL . 'error/databaseError');
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
     }
 
@@ -73,8 +71,7 @@ class MailController extends BaseController
             unset($sqlite);
         } catch (PDOException $ex) {
             unset($sqlite);
-            header('location: ' . URL . 'error/databaseError');
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
 
         if (!$mail->exists()) {

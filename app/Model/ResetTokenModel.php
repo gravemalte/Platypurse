@@ -104,13 +104,13 @@ class ResetTokenModel {
 
             $model = new ResetTokenModel($result[0], $result[1], $result[2], $result[3]);
             $sqlite->closeTransaction(true);
+            unset($sqlite);
             return $model;
         }
         catch (PDOException $ex) {
             $sqlite->closeTransaction(false);
-            header('location: ' . URL . 'error/databaseError');
+            die(header('location: ' . URL . 'error/databaseError'));
         }
-        unset($sqlite);
     }
 
     /**

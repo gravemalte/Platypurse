@@ -40,8 +40,7 @@ class HomeController extends BaseController
             return $models;
         } catch (PDOException $ex) {
             unset($sqlite);
-            header('location: ' . URL . 'error/databaseError');
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
     }
 

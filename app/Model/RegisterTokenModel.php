@@ -107,12 +107,12 @@ class RegisterTokenModel {
             $result = $token->insertIntoDatabase($dao);
             $model = new RegisterTokenModel($result[0], $result[1], $result[2], $result[3]);
             $sqlite->closeTransaction(true);
+            unset($sqlite);
             return $model;
         } catch (PDOException $ex) {
             $sqlite->closeTransaction(false);
-            header('location: ' . URL . 'error/databaseError');
+            die(header('location: ' . URL . 'error/databaseError'));
         }
-        unset($sqlite);
     }
 
     /**

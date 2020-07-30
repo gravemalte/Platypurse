@@ -69,12 +69,12 @@ class MailModel {
             $model = new MailModel($result[0], $result[1], $result[2], $result[3], $result[4], $result[5]);
 
             $sqlite->closeTransaction(true);
+            unset($sqlite);
             return $model;
         } catch (PDOException $ex) {
             $sqlite->closeTransaction(false);
-            header('location: ' . URL . 'error/databaseError');
+            die(header('location: ' . URL . 'error/databaseError'));
         }
-        unset($sqlite);
     }
 
     /**
