@@ -55,10 +55,13 @@ Falls VHost benutzt werden sollte, bitte das ``DocumentRoot`` anpassen.
 ## Installation
 
 Die ``.zip``-Datei kann im XAMPP root ``(htdocs)`` entpackt werden. Danach kann auf dem Webserver zugegriffen werden. Standartmäßig ist die Adresse ``http://localhost``.
-Beim ersten Start wird die Datenbank erstellt und mit Testdatengefüllt. Nach einer kurzen Wartezeit wird dann auf die Startseite geleitet.
+Beim ersten Start wird die Datenbank erstellt und mit Testdaten gefüllt. Nach einer kurzen Wartezeit wird dann auf die Startseite geleitet.
 Von hier an kann die Seite in vollem Unfang benutzt werden.
 
 ## Testen
+
+In der Datenbank werden standardmäßig neun Angebote angelegt. In ``public\index.php`` steht in Zeile 34 ein Faktor, wie häufig diese neun Angebote eingefügt werden sollen.
+Dadurch kann der Testbetrieb mit sehr vielen Angeboten stattfinden.
 
 Um die Webseite vollständig testen zu können, stellen wir folgende Benutzer zur Verfügung.
 
