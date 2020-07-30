@@ -16,51 +16,47 @@
     4. [Testen](#testen)
 3. [Features](#features)
 4. [Aufgaben und Korrektheit](#aufgaben-und-korrektheit)
-5. [Fehler oder Mängel](#fehler-oder-mängel)
+5. [Nicht umgesetzte Funktionen](#nicht-umgesetzte-funktionen)
+6. [Fehler oder Mängel](#fehler-oder-mängel)
 
 
 # Generelles
 
-Wir freuen uns, euch unsere fertige Abgabe nun zur Verfügung zu stellen. Wir bitten euch dieses Dokument komplett durchzulesen, damit keine ungewollten Nebeneffekte oder Situationen
-bei der benutzung der Webseite entstehen. Bei Fragen oder evtl. sogar Fehler bitten wir euch, uns zu Kontaktieren. Vielen Dank!
-
-
+Wir freuen uns, euch unsere fertige Abgabe nun zur Verfügung zu stellen. Wir bitten euch dieses Dokument komplett durchzulesen, damit keine ungewollten Nebeneffekte oder Situationen bei der Benutzung der Webseite entstehen. Bei Fragen oder evtl. sogar Fehler bitten wir euch, uns zu kontaktieren. Vielen Dank!
 
 # Konfiguration
 
-Um dieses Projekt erfolgreich zu starten, müssen wir zum Anfang erst einige Einstellungen bei unserem Webserver vornehmen.
-Wir gehen davon aus, das die Installation über XAMPP erfolgt, da dies am Anfang der Vorlesungen gesagt wurde. Wir unterstützen zwar Docker aber
-es wurde gesagt, das keine Docker Konfiguration als Abgabe akzeptiert wird, als wir dies explizit nachgefragt haben.
+Um dieses Projekt erfolgreich zu starten, müssen zuerst Einstellungen am Webserver vorgenommen werden.
+Aufgrund der Spezifikation der Vorlesung wird davon ausgegangen, dass die Installtion über XAMPP erfolgte.
+Es wird auch Docker unterstützt. Jedoch nicht aktiv, da auf Nachfrage keine Dockerkonfiguration als Abgabe akzeptiert wurde.
 
 ## PHP.ini
 
-Die PHP.ini fällt recht leer aus, es muss hier lediglich die Upload funktion aktiviert werden. Dazu bitte folgendes in die .ini Datei schreiben.
+In der PHP.ini muss lediglich die Uploadfunktion aktiviert werden. Hierzu bitte folgendes in die .ini-Datei schreiben:
 ````ini
 "file_uploads = On"
 ````
-Das war es schon. Kurz und schmerzlos.
+Nachdem die Änderung abgespeichert wurde, war es das bereits.
 
 ## Apache
 
-Bei dem Apache Webserver müssen wir mehr Einstellungen vornehmen, das hat einen speziellen Grund. Da wir unser Projekt als MVC-Framework aufgesetzt haben, wir mappen die URL relativ und 
-Apache löst die URL dann entsprechend
-immer auf unsere ``index.php`` auf.
+Da unser Projekt als MVC-Framework aufgesetzt ist, wird die URL relativ gemappt. Diese muss von Apache entsprechend auf unsere ``index.php`` aufgelöst werden.
 
-Um ``mod_rewrite`` zu aktivieren bitte Folgendes in die ``httpd.conf`` eingeben.
-
+Dafür muss ``mod_rewrite`` aktiviert werden. Dazu bitte folgendes in die ``httpd.conf`` eingeben:
 
 Unter XAMPP:
 ````ini
 LoadModule rewrite_module modules/mod_rewrite.so
 ````
 
-Wenn VHost benutzt werden, bitte das ``DocumentRoot`` Anpassen, wir gehen aber davon aus, dass das Projekt sofort in dem ``htdocs`` Ordner von XAMPP landet!
-
+Hier wird davon ausgegangen, dass sich das Projekt im ``htdocs`` Ordner von XAMPP befindet.
+Falls VHost benutzt werden sollte, bitte das ``DocumentRoot`` anpassen. 
 
 ## Installation
 
-Die ``.zip`` Datei könnt ihr einfach in euren XAMPP root ``(htdocs)`` Ordner kopieren und entpacken. Danach könnt ihr auf den Webserver zugreifen, Standardmäßig ist dies die Adresse: ``http://localhost``. Es dauert einige Sekunden beim ersten Start, da die
-komplette Datenbank erstellt und mit Daten aufgefüllt wird. Danach solltet ihr auf die Startseite gelangen. Wenn dies geklappt hat, könnt ihr nun alles ausgiebig testen!
+Die ``.zip``-Datei kann im XAMPP root ``(htdocs)` entpackt werden. Danach kann auf dem Webserver zugegriffen werden. Standartmäßig ist die Adresse ``http://localhost``.
+Beim ersten Start wird die Datenbank erstellt und mit Testdatengefüllt. Nach einer kurzen Wartezeit wird dann auf die Startseite geleitet.
+Von hier an kann die Seite in vollem Unfang benutzt werden.
 
 ## Testen
 
@@ -90,35 +86,58 @@ Um die Webseite vollständig zu testen, stellen wir euch Standartbenutzer zur ve
 
 # Features
 
-Um euch einen groben Überblick zu beschaffen, haben wir für euch eine Sitemap gebastelt die, die grundlegende Seite darstellt.
-
+Um einen groben Überblick über die grundlegenden Funktionen der Seite zu schaffen, wurde diese Sitemap erstellt:
 ![Sitemap](docs/readme/sitemap.svg)
 
-Es folgt eine Liste von Feature-implemtierungen, die wir bei der Seite vorgenommen haben.
+Es folgt eine Liste der Funktionen, die auf der Seite implementiert wurden.
 
 ## Funktionen
 
 * Benutzer
-  * Login
   * Registrierung
-    * Eine Pseudo E-Mail
+  * Login
   * Password vergessen
-  * Einen Chat
+  * Eigenes Profil bearbeiten
+    * Name (Freitext)
+    * Avatar (Bilddatei)
+    * Passwort (Freitext)
+  * Chat zwischen Usern
   * User Rating
+  * Pseudo E-Mails für:
+    * Registrierung
+    * Passwort vergessen
+  * Übersicht eigener Angebote
+  * Übersicht gemerkter Angebote
+  * Löschen und bearbeiten eigener Angebote
 
 * Angebote
-  * Angebote erstellen, bearbeiten und löschen
-  * Eine Standortkarte
-  * Eine Merkliste
-  * Dynamische Suche
+  * Angebot erstellen
+    * Name (Pflicht, Freitext)
+    * Preis (Pflicht, Gleitkommazahl)
+    * Bild (Optional, Bilddatei kleiner 2 MB)
+    * Beschreibung (Optional, Freitext)
+    * Geschlecht (Pflicht, Auswahl über Dropdown)
+    * Alter (Pflicht, Zahl zwischen 0 und 20)
+    * Körpergröße (Pflicht, Zahl zwischen 0 und 75)
+    * Gewicht (Pflicht, Zahl zwischen 0 und 3000)
+    * Standort (Optional, Fünfstellige PLZ)
+  * Angebot bearbeiten
+    * Felder siehe "Angebot erstellen"
+  * Angebot löschen
+  * Standortkarte im Angebot, wenn PLZ gültig
+  * Suche anhand Filter
+  * Hinzufügen und entfernen von Angeboten zur persönlichen Merkliste
   
 * Sicherheit
   * XSS-Protection
   * CSRF-Protection
 
 * Administration
-  * Benutzer bannen
-  * Nutzerrechte
+  * Benutzer sperren und entsperren
+  * Erweiterte Nutzerrechte
+    * Bearbeiten aller Angebote
+    * Löschen aller Angebote
+    * Bearbeiten aller Profile
   
 * Usability
   * Pagination
@@ -130,6 +149,13 @@ Es folgt eine Liste von Feature-implemtierungen, die wir bei der Seite vorgenomm
 Wir haben jedes Aufgabenblatt durchgearbeitet und haben so weit alle geforderten inhalte mit eingepflegt oder implementiert.
 Von unserer Seite können wir keine mängel festellen. 
 
+# Nicht umgesetzte Funktionen
+
+Folgende Funktionen wurde aufgrund zeitlicher Einschränkung nicht mehr umgesetzt, sind jedoch teilweise im Backend vorhanden:
+* Melden von Benutzern
+* Melden von Angeboten
+* Ändern der Benutzermail
+
 # Fehler oder Mängel
 
-Uns sind keine fehler mehr nach der Testphase aufgefallen, das hat aber nichts zu bedeuten. Es kann immer sein, das sich hier und dort Fehler einschleichen.
+Nach der Testphase sind uns keine Fehler aufgefallen. Das wir jedoch als Ersteller nicht als außenstehende Person die Seite testen konnten, kann es sein, dass wir Fehler übersehen haben. Diese bitten wir zu verzeihen und uns bei Fehlern auf diese hinzuweisen!
