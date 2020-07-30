@@ -36,12 +36,9 @@ In der PHP.ini muss lediglich die Uploadfunktion aktiviert werden. Hierzu bitte 
 ````ini
 "file_uploads = On"
 ````
-Wichtig zu erwähnen ist, das PHP Standartmäßig einen Upload von maximal 2MB zulässt. Um dies zu erhöhen, muss folgendes in die PHP.ini geschrieben werden:
-```ini
-upload_max_filesize = 10M
-post_max_size = 10M
-```
 Nachdem die Änderung abgespeichert wurde, war es das bereits.
+
+Weiterhin ist wichtig zu erwähnen, dass PHP standardmäßig einen Upload von max. 2 MB zulässt.
 
 ## Apache
 
