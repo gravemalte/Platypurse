@@ -144,7 +144,14 @@ class RegisterController extends BaseController {
             $dao = new RegisterTokenDAO($con);
             $token = RegisterTokenModel::getFromDatabaseByToken($dao, $_GET['token']);
 
+            if(is_bool($token)){
+                header('location: ' . URL . 'error/databaseError');
+                exit();
+            }
+
+
             $user = $token->getUser();
+
 
             require APP . 'View/shared/header.php';
             require APP . 'View/register/header.php';

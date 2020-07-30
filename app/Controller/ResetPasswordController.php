@@ -46,11 +46,12 @@ class ResetPasswordController extends BaseController
 
             $mail = FakeMailer::sendResetPasswordMail($user);
             header('location: ' . URL . 'resetPassword/instructionsSent?id=' . $mail->getId());
+            die();
         }
         catch (PDOException $e) {
             header('location: ' . URL . 'resetPassword/instructionsSent?id=' . 0);
+            die();
         }
-        unset($sqlite);
     }
 
     public function noValidMail(){
@@ -74,7 +75,7 @@ class ResetPasswordController extends BaseController
         if (!isset($_GET['token'])) {
             http_response_code(404);
             header('location: ' . URL . 'error/notFound');
-            return;
+            die();
         }
 
         require APP . 'View/shared/header.php';
@@ -87,6 +88,11 @@ class ResetPasswordController extends BaseController
             $sqlite->openTransaction();
             $resetTokenDao = new ResetTokenDAO($con);
             $tokenModel = ResetTokenModel::getFromDatabase($resetTokenDao, $_GET['token']);
+
+            if(is_bool($tokenModel)){
+                header('location: ' . URL . 'error/databaseError');
+                die();
+            }
 
             $expirationDate = new DateTime($tokenModel->getExpirationDate());
             $nowDate = new DateTime("now");
@@ -110,6 +116,7 @@ class ResetPasswordController extends BaseController
         } catch (PDOException $ex) {
             $sqlite->closeTransaction(false);
             header('location: ' . URL . 'View/reset-password/noValidMail.php');
+            die();
         }
 
         unset($sqlite);
