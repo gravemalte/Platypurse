@@ -87,6 +87,7 @@ Um die Webseite vollständig zu testen, stellen wir euch Standartbenutzer zur ve
 # Features
 
 Um einen groben Überblick über die grundlegenden Funktionen der Seite zu schaffen, wurde diese Sitemap erstellt:
+
 ![Sitemap](docs/readme/sitemap.svg)
 
 Es folgt eine Liste der Funktionen, die auf der Seite implementiert wurden.
@@ -140,8 +141,9 @@ Es folgt eine Liste der Funktionen, die auf der Seite implementiert wurden.
     * Bearbeiten aller Profile
   
 * Usability
+  * Optimierung für mobile Geräte ab 350px Bildschirmbreite
   * Pagination
-  * Dark und Light-Mode
+  * Möglichkeit zum Wechsel zwischen Dark Mode und Light Mode
 
 
 # Aufgaben und Korrektheit
