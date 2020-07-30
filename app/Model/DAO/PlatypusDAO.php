@@ -43,7 +43,7 @@ class PlatypusDAO implements PlatypusDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('PlatypusDAO create error. ' . $stmt->errorInfo());
+            throw new PDOException('PlatypusDAO create error. ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -61,7 +61,7 @@ class PlatypusDAO implements PlatypusDAOInterface
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('PlatypusDAO read error. ' . $stmt->errorInfo());
+            throw new PDOException('PlatypusDAO read error. ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -87,7 +87,7 @@ class PlatypusDAO implements PlatypusDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('PlatypusDAO update error. ' . $stmt->errorInfo());
+            throw new PDOException('PlatypusDAO update error. ');
         }
     }
 }

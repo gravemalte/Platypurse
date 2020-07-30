@@ -40,7 +40,7 @@ class MessageDAO implements MessageDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('MessageDAO create error ' . $stmt->errorInfo());
+            throw new PDOException('MessageDAO create error ' . implode(",", $stmt->errorInfo()));
         }
 
     }
@@ -59,7 +59,7 @@ class MessageDAO implements MessageDAOInterface
         if($stmt->execute()){
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('MessageDAO read error ' . $stmt->errorInfo());
+            throw new PDOException('MessageDAO read error ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -70,7 +70,7 @@ class MessageDAO implements MessageDAOInterface
      */
     public function readIdWithOrder($id)
     {
-        $query = "SELECT * FROM message WHERE sender_id = :id ORDER BY msg_id ASC";
+        $query = "SELECT * FROM message WHERE sender_id = :id ORDER BY msg_id";
 
         $stmt = $this->con->prepare($query);
         $stmt->bindValue(":id", $id);
@@ -78,7 +78,7 @@ class MessageDAO implements MessageDAOInterface
         if($stmt->execute()){
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('MesseageDAO readIdWithOrder error ' . $stmt->errorInfo());
+            throw new PDOException('MesseageDAO readIdWithOrder error ' . implode(",", $stmt->errorInfo()));
         }
     }
 

@@ -48,7 +48,7 @@ class MailDAO implements MailDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('MailDAO create error ' . $stmt->errorInfo());
+            throw new PDOException('MailDAO create error ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -67,7 +67,7 @@ class MailDAO implements MailDAOInterface
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('MailDAO read error ' . $stmt->errorInfo());
+            throw new PDOException('MailDAO read error ' . implode(",", $stmt->errorInfo()));
         }
     }
 }
