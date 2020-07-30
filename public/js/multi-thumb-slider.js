@@ -22,13 +22,16 @@
         let showSibling = getSibling(showElement);
         let inputSibling = getSibling(input);
 
-        let showPair = getSiblingPair(showElement, showSibling, "innerHTML");
+        // let showPair = getSiblingPair(showElement, showSibling, "innerHTML");
+        let showPair = [showElement, showSibling];
+        showPair.sort(compareShowPair);
         let inputPair = getSiblingPair(input, inputSibling, "value");
 
         function updateData(event) {
             let inputValue = parseFloat(input.value);
             let inputSiblingValue = parseFloat(inputSibling.value);
 
+            /*
             if ((input === inputPair[0] && inputValue < inputSiblingValue) ||
                 (input === inputPair[1] && inputValue < inputSiblingValue)) {
                 showPair[0].innerHTML = input.value;
@@ -37,6 +40,14 @@
             }
             showPair[0].innerHTML = inputSibling.value;
             showPair[1].innerHTML = input.value;
+            */
+
+            let values = [inputValue, inputSiblingValue];
+            values.sort((a, b) => {
+                return a - b;
+            });
+            showPair[0].innerHTML = values[0];
+            showPair[1].innerHTML = values[1];
         }
 
         return updateData;
@@ -79,4 +90,9 @@
         pair.push(sibling, element);
         return pair;
     }
+
+    function compareShowPair(a, b) {
+        return a.dataset.showMultiThumbSlider.localeCompare(b.dataset.showMultiThumbSlider);
+    }
+
 })();
