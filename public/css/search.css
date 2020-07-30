@@ -38,13 +38,16 @@
     width: 100%;
     grid-column: 1/-1;
 }
-.pagination {
+.pagination,
+.pagination noscript {
     width: 100%;
     display: flex;
     align-items: center;
+    flex-direction: row;
     justify-content: center;
 }
-.pagination button {
+.pagination button,
+.pagination noscript button {
     font-size: 3em;
     font-weight: bold;
     color: var(--page-text-color);
