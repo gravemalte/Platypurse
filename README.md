@@ -148,8 +148,8 @@ Es folgt eine Liste der Funktionen, die auf der Seite implementiert wurden.
 
 # Aufgaben und Korrektheit
 
-Wir haben jedes Aufgabenblatt durchgearbeitet und haben so weit alle geforderten inhalte mit eingepflegt oder implementiert.
-Von unserer Seite können wir keine mängel festellen. 
+Jedes Aufgabenblatt wurde von vollständig bearbeitet und somit wurden alle geforderten Inhalte und Funktionen eingepflegt bzw. implementiert.
+Somit konnten wir keinen Mangel an geforderten Inhalten feststellen.
 
 # Nicht umgesetzte Funktionen
 
