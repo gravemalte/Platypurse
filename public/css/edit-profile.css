@@ -88,3 +88,25 @@
     font-size: 2em;
     padding: 0.5em 0.6em;
 }
+
+@media (max-width: 700px) {
+    .edit-profile-container form {
+        flex-direction: column;
+        align-items: center;
+        max-width: 80vw;
+    }
+    .edit-profile-container form * {
+        min-width: 0;
+    }
+
+    .text-inputs-container {
+        max-width: 100%;
+    }
+    .text-inputs-container input {
+        max-width: calc(100% - 1em);
+    }
+
+    .submit-container {
+        align-self: flex-end;
+    }
+}

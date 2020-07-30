@@ -99,6 +99,7 @@
     border-radius: 50%;
     overflow: hidden;
     margin: 0.5em 0 0.5em 0.5em;
+    flex-shrink: 0;
 }
 .offer-area .profile-container img {
     height: 100%;
@@ -114,6 +115,16 @@
 }
 .offer-area .profile-container > div > * {
     padding: 0.2em;
+}
+
+.offer-area .profile-container .user-right-side-container {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
+}
+.offer-area .profile-container .user-displayname {
+    width: 100%;
+    overflow-wrap: break-word;
 }
 
 .offer-area .attribute-list {

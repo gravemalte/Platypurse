@@ -84,9 +84,9 @@ if(isset($_SESSION['currentUser'])) {
                     <a href="profile?id=<?= $seller->getId() ?>" class="profile-image-container">
                         <img src="<?= $seller->getPicture(); ?>" alt="user-avatar">
                     </a>
-                    <div>
+                    <div class="user-right-side-container">
                         <a href="profile?id=<?= $seller->getId() ?>">
-                            <p><?= $seller->getDisplayName() ?></p>
+                            <p class="user-displayname"><?= $seller->getDisplayName() ?></p>
                         </a>
                         <div class="user-rating" id="user-rating">
                             <input type="hidden" id="csrf-token" value="<?= $_SESSION['csrf_token'] ?>">
