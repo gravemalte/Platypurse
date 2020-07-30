@@ -30,12 +30,16 @@
     padding-right: 1em;
     border-radius: 0 15px 15px 0;
     background-color: var(--main-container-bg-color);
+    display: flex;
 }
 .hot-offer .price-tag p {
     font-size: 4em;
 }
-.hot-offer .price-tag p:after {
+.hot-offer .price-tag p:first-of-type:after {
     content: "\20AC";
+}
+.hot-offer .price-tag p:last-of-type {
+    padding-left: 0.25em;
 }
 .hot-offer-container .img-container {
     float: left;

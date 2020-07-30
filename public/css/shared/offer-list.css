@@ -37,8 +37,10 @@
     background-color: var(--main-container-bg-color);
     top: 0;
     border-radius: 15px 0 15px 0;
+    display: flex;
 }
-.offer-list-item .price-tag {
+.offer-list-item .price-tag,
+.offer-list-item .price-negotiable {
     font-size: 2em;
     margin: 0.2em;
 }

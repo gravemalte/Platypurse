@@ -28,7 +28,10 @@ use \Controller\HomeController;
                             <p class="view-description">Aufrufe in den letzten 24H</p>
                         </div>
                         <div class="price-tag">
-                            <p><?= $hotOffer->getPrice();?></p>
+                            <p><?= $hotOffer->getShortPrice();?></p>
+                            <?php if ($hotOffer->isNegotiable()): ?>
+                                <p>VB</p>
+                            <?php endif ?>
                         </div>
                     </div>
                 </div>
@@ -51,7 +54,10 @@ use \Controller\HomeController;
                         <p class="name"><?= $offer->getPlatypus()->getName();?></p>
                         <p class="description"><?= $offer->getDescription();?></p>
                         <div class="price-tag-container">
-                            <p class="price-tag"><?= $offer->getPrice();?></p>
+                            <p class="price-tag"><?= $offer->getShortPrice();?></p>
+                            <?php if ($offer->isNegotiable()): ?>
+                            <p class="price-negotiable">VB</p>
+                            <?php endif ?>
                         </div>
                     </div>
                 </a>

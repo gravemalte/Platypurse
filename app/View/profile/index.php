@@ -193,6 +193,9 @@ $offersByUser = ProfileController::getOffersByUserId();
                                 <p class="description"><?= $offer->getDescription();?></p>
                                 <div class="price-tag-container">
                                     <p class="price-tag"><?= $offer->getShortPrice();?></p>
+                                    <?php if ($offer->isNegotiable()): ?>
+                                        <p class="price-negotiable">VB</p>
+                                    <?php endif ?>
                                 </div>
                             </div>
                         </a>
@@ -217,6 +220,9 @@ $offersByUser = ProfileController::getOffersByUserId();
                                 <p class="description"><?= $offer->getDescription();?></p>
                                 <div class="price-tag-container">
                                     <p class="price-tag"><?= $offer->getShortPrice();?></p>
+                                    <?php if ($offer->isNegotiable()): ?>
+                                        <p class="price-negotiable">VB</p>
+                                    <?php endif ?>
                                 </div>
                             </div>
                         </a>
