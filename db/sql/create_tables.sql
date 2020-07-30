@@ -76,7 +76,7 @@ CREATE TABLE offer (
 );
 
 CREATE TABLE offer_images (
-  oi_id INTEGER NOT NULL,
+  oi_id INTEGER PRIMARY KEY AUTOINCREMENT,
   o_id INTEGER NOT NULL,
   picture_position INTEGER NOT NULL,
   mime TEXT NOT NULL,
