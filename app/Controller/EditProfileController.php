@@ -77,7 +77,7 @@ class EditProfileController extends BaseController {
                 exit();
             }
 
-            $possibleChanges = array('display-name', 'email', 'password');
+            $possibleChanges = array('display-name', 'password');
             foreach ($possibleChanges as $possibleChange) {
                 if (isset($_POST[$possibleChange])) {
                     if (!empty($_POST[$possibleChange])) {
@@ -86,9 +86,6 @@ class EditProfileController extends BaseController {
                                 $user->setDisplayName($_POST[$possibleChange]);
                                 break;
                             case $possibleChanges[1]:
-                                $user->setMail($_POST[$possibleChange]);
-                                break;
-                            case $possibleChanges[2]:
                                 $user->setPassword($_POST[$possibleChange]);
                                 break;
                         }

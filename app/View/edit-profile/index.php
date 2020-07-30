@@ -29,16 +29,6 @@ $user = EditProfileController::getUser();
                         >
                         <label for="display-name-input" hidden>Anzeigename anpassen</label>
                     </div>
-                    <div class="mail-container">
-                        <p>Email anpassen</p>
-                        <input
-                                type="text"
-                                name="email"
-                                id="email-input"
-                                placeholder="<?= $user->getMail() ?>"
-                        >
-                        <label for="email-input" hidden>Email anpassen</label>
-                    </div>
                     <div>
                         <p>Passwort ändern</p>
                         <input
