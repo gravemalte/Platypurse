@@ -118,7 +118,7 @@ class OfferDAO implements OfferDAOInterface
     }
 
     /**
-     * Read top 9 entrys from database, based on descending order by create date
+     * Read top 9 entries from database, based on descending order by create date
      * @return mixed
      */
     public function readNewest()
