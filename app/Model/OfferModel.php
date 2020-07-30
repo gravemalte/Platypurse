@@ -70,7 +70,7 @@ class OfferModel {
         if($this->getPlatypus()->insertIntoDatabase(new PlatypusDAO($offerDAO->getCon()))):
             if($offerDAO->create($this)):
                 $check = $this->getImage()->insertIntoDatabase(new OfferImageDAO(($offerDAO->getCon())));
-                if(!empty($check)):
+                if(empty($check)):
                     return false;
                 endif;
                 return true;

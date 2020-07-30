@@ -128,7 +128,7 @@ class CreateController extends BaseController
             endif;
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);
-            die(header('location: ' . URL . 'error/databaseError'));
+            die(header('location: ' . URL . 'error/alreadyLoggedIn'));
         }
         unset($sqlite);
         header('location: ' . URL . 'offer?id=' . $newOffer->getId());
