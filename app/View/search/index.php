@@ -137,7 +137,7 @@ if ($offset > $offerCount) {
             <?php
             $offers = SearchController::getOffers($offset, $searchText, $sex, $age, $size, $weight);
             if (!empty($offers)): ?>
-            <div class="offer-list-container">
+            <div class="offer-list-container" id="offers">
                 <?php foreach ($offers as $offer): ?>
                     <a class="offer-list-link" href="offer?id=<?= $offer->getId(); ?>">
                         <div class="offer-list-item card">
@@ -150,8 +150,8 @@ if ($offset > $offerCount) {
                         </div>
                     </a>
                 <?php endforeach ?>
-                <div class="pagination-container">
-                    <form action="search" method="get" class="pagination">
+                <div class="pagination-container" id="pagination">
+                    <form action="search" method="get" class="pagination" id="load-more-form">
                         <input type="hidden" name="search" value="<?= $searchText ?>">
                         <input type="hidden" name="sex" value="<?= $sex ?>">
                         <input type="hidden" name="age[]" value="<?= $age[0] ?>">
@@ -161,24 +161,41 @@ if ($offset > $offerCount) {
                         <input type="hidden" name="weight[]" value="<?= $weight[0] ?>">
                         <input type="hidden" name="weight[]" value="<?= $weight[1] ?>">
                         <input type="hidden" name="filter-button" value="search">
-                        <button
-                                type="submit"
-                                name="page"
-                                value="<?= $page - 1 ?>"
+                        <noscript>
+                            <button
+                                    type="submit"
+                                    name="page"
+                                    value="<?= $page - 1 ?>"
+                                    class="navigation"
                                 <?php if($page <= 1): ?>
-                                style="visibility: hidden"
+                                    style="visibility: hidden"
                                 <?php endif ?>
-                        >&LT;</button>
-                        <p><?= $page ?></p>
+                            >&LT;</button>
+                            <p><?= $page ?></p>
+                            <button
+                                    type="submit"
+                                    name="page"
+                                    value="<?= $page + 1 ?>"
+                                    class="navigation"
+                                <?php if(($offset + 30) >= $offerCount): ?>
+                                    style="visibility: hidden"
+                                <?php endif ?>
+                            >&GT;</button>
+                        </noscript>
                         <button
                                 type="submit"
                                 name="page"
+                                class="no-js-hide load-more"
+                                id="load-more-button"
                                 value="<?= $page + 1 ?>"
-                                <?php if(($offset + 30) >= $offerCount): ?>
+                            <?php if(($offset + 30) >= $offerCount): ?>
                                 style="visibility: hidden"
-                                <?php endif ?>
-                        >&GT;</button>
+                            <?php endif ?>
+                        >
+                            Mehr laden
+                        </button>
                     </form>
+                    <input type="hidden" id="offerCount" value="<?= $offerCount ?>">
                 </div>
                 <?php else: ?>
                     <div>
