@@ -60,7 +60,8 @@ Von hier an kann die Seite in vollem Unfang benutzt werden.
 
 ## Testen
 
-In der Datenbank werden standardmäßig neun Angebote angelegt. In ``public\index.php`` steht in Zeile 34 ein Faktor, wie häufig diese neun Angebote eingefügt werden sollen.
+In der Datenbank werden standardmäßig neun Angebote angelegt. 
+In ``public\index.php`` steht in Zeile 34 ein Faktor, wie häufig zusätzliche neun Angebote eingefügt werden sollen, die alle vom User "ShadowStabber69_HD" erstellt werden.
 Dadurch kann der Testbetrieb mit sehr vielen Angeboten stattfinden.
 
 Um die Webseite vollständig testen zu können, stellen wir folgende Benutzer zur Verfügung.
@@ -160,6 +161,7 @@ Folgende Funktionen wurde aufgrund zeitlicher Einschränkung nicht mehr umgesetz
 * Melden von Benutzern
 * Melden von Angeboten
 * Ändern der Benutzermail
+* Lazy Loading für Angebote auf der Profilseite
 
 # Fehler oder Mängel
 
