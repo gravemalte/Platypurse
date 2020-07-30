@@ -36,11 +36,11 @@
             payload.set("csrf", document.getElementById("csrf-token").value);
             payload.set("rating-user-id", document.getElementById("rating-user-id").value);
 
-            let sendMessageResponse = await fetch("./profile/rateUser", {
+            let sendVotingResponse = await fetch("./profile/rateUser", {
                 method: "POST",
                 body: payload
             });
-            if (!sendMessageResponse.ok) return;
+            if (!sendVotingResponse.ok) return;
 
             // after rate was successful update buttons
             let pageUpdateResponse = await fetch(window.location, {
