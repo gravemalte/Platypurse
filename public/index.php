@@ -26,9 +26,19 @@ if(!file_exists(DB_FILE)){
     $sql_file = file_get_contents($sql_file_name);
     $database->exec($sql_file);
     // Fill tables
-    $sql_file_name = DB . 'sql/fill_tables_mucho.sql';
+    $sql_file_name = DB . 'sql/fill_tables.sql';
     $sql_file = file_get_contents($sql_file_name);
     $database->exec($sql_file);
+
+    // Defines how many offers are created. Each loop inserts 9 offers
+    $insertLoops = 1;
+
+    for($i = 0; $i < $insertLoops; $i++) {
+        $sql_file_name = DB . 'sql/fill_offer.sql';
+        $sql_file = file_get_contents($sql_file_name);
+        $database->exec($sql_file);
+    }
+
     // Fill tables
     $sql_file_name = DB . 'sql/zipcodes_germany.sql';
     $sql_file = file_get_contents($sql_file_name);
