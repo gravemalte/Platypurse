@@ -47,7 +47,7 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('RegisterTokenDAO create error ' . $stmt->errorInfo());
+            throw new PDOException('RegisterTokenDAO create error ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -66,7 +66,7 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('RegisterTokenDAO read error ' . $stmt->errorInfo());
+            throw new PDOException('RegisterTokenDAO read error ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -85,7 +85,7 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('RegisterTokenDAO readByToken error ' . $stmt->errorInfo());
+            throw new PDOException('RegisterTokenDAO readByToken error ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -101,7 +101,7 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('RegisterTokenDAO deleteExpired error ' . $stmt->errorInfo());
+            throw new PDOException('RegisterTokenDAO deleteExpired error ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -119,7 +119,7 @@ class RegisterTokenDAO implements RegisterTokenDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('RegisterTokenDAO deleteForUser error ' . $stmt->errorInfo());
+            throw new PDOException('RegisterTokenDAO deleteForUser error ' . implode(",", $stmt->errorInfo()));
         }
     }
 }

@@ -123,15 +123,12 @@ class CreateController extends BaseController
                     header('location: ' . URL . 'offer?id=' . $newOffer->getId());
                     exit();
                 else:
-                    header('location: ' . URL . 'error/databaseError');
-                    exit();
+                    die(header('location: ' . URL . 'error/databaseError'));
                 endif;
             endif;
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);
-            header('location: ' . URL . 'error/databaseError');
-            unset($sqlite);
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
         unset($sqlite);
         header('location: ' . URL . 'offer?id=' . $newOffer->getId());
@@ -161,7 +158,6 @@ class CreateController extends BaseController
         else:
             $price *= 100;
         endif;
-        // print($price);
         return $price;
     }
 }

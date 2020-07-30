@@ -54,8 +54,7 @@ class LoginController extends BaseController
             unset($sqlite);
         } catch (PDOException $ex) {
             unset($sqlite);
-            header('location: ' . URL . 'error/databaseError');
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
         if ($user) {
             if (password_verify($userSentPasswd, $user->getPassword())) {

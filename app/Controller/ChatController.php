@@ -43,8 +43,7 @@ class ChatController extends BaseController
             unset($sqlite);
         } catch (PDOException $ex) {
             unset($sqlite);
-            header('location: ' . URL . 'error/databaseError');
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
 
         $result = array();
@@ -87,8 +86,7 @@ class ChatController extends BaseController
             unset($sqlite);
         } catch (PDOException $ex) {
             unset($sqlite);
-            header('location: ' . URL . 'error/databaseError');
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
         unset($sqlite);
 
@@ -124,9 +122,8 @@ class ChatController extends BaseController
                 $_GET['id']);
             unset($sqlite);
         } catch (PDOException $ex) {
-            header('location: ' . URL . 'error/databaseError');
             unset($sqlite);
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
 
         if ($user->getUgId() == 3) {
@@ -195,8 +192,7 @@ class ChatController extends BaseController
             echo json_encode(array('chat' => $result, 'date' => Date::now()));
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);
-            header('location: ' . URL . 'error/databaseError');
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
     }
 }

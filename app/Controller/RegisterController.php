@@ -116,11 +116,11 @@ class RegisterController extends BaseController {
                         header('location: '. URL . 'register');
                     }
                     else {
-                        header('location: ' . URL . 'error/databaseError');
+                        die(header('location: ' . URL . 'error/databaseError'));
                     }
                 }
             } catch (PDOException $e) {
-                header('location: ' . URL . 'error/databaseError');
+                die(header('location: ' . URL . 'error/databaseError'));
             }
         } finally {
             $_SESSION['register-error'] = true;
@@ -171,8 +171,7 @@ class RegisterController extends BaseController {
             unset($sqlite);
         } catch (PDOException $ex) {
             unset($sqlite);
-            header('location: ' . URL . 'error/databaseError');
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
 
         require APP . 'View/shared/footer.php';

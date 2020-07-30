@@ -83,10 +83,13 @@ class OfferModel {
      * Returns model by id from database
      * @param $offerDAO
      * @param $id
-     * @return OfferModel
+     * @return OfferModel|boolean
      */
     public static function getFromDatabase($offerDAO, $id){
         $result = $offerDAO->read($id);
+        if(!$result):
+            return false;
+        endif;
         return self::getOfferFromRow($result, $offerDAO->getCon());
     }
 
@@ -372,12 +375,12 @@ class OfferModel {
             $con = $sqlite->getCon();
             $dao = new ZipCoordinatesDAO($con);
             $model = ZipCoordinatesModel::getFromDatabaseByZipcode($dao, $this->zipcode);
+            unset($sqlite);
             return $model;
 
         } catch (PDOException $ex) {
-            header('location: ' . URL . 'error/databaseError');
+            die(header('location: ' . URL . 'error/databaseError'));
         }
-        unset($sqlite);
     }
 
     /**

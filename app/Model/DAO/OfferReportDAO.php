@@ -49,7 +49,7 @@ class OfferReportDAO implements ReportDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('OfferReportDAO create error ' . $stmt->errorInfo());
+            throw new PDOException('OfferReportDAO create error ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -68,7 +68,7 @@ class OfferReportDAO implements ReportDAOInterface
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('OfferReportDAO read error ' . $stmt->errorInfo());
+            throw new PDOException('OfferReportDAO read error ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -85,7 +85,7 @@ class OfferReportDAO implements ReportDAOInterface
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('OfferReportDAO readAll error ' . $stmt->errorInfo());
+            throw new PDOException('OfferReportDAO readAll error ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -104,7 +104,7 @@ class OfferReportDAO implements ReportDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('OfferReportDAO update error ' . $stmt->errorInfo());
+            throw new PDOException('OfferReportDAO update error ' . implode(",", $stmt->errorInfo()));
         }
     }
 }

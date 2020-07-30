@@ -20,6 +20,12 @@ class ProfileController extends BaseController
         if (!isset($_SESSION['currentUser']) && !isset($_GET['id'])) {
             header('location: ' . URL . 'login');
         }
+        if(isset($_GET['id'] )){
+            $user = self::getDisplayUser();
+            if($user == false){
+                header('location: ' . URL . 'error/pageNotFound');
+            }
+        }
 
         $_SESSION['csrf_token'] = uniqid();
 
@@ -76,7 +82,7 @@ class ProfileController extends BaseController
             return OfferModel::getFromDatabaseByUserId(new OfferDAO($con),$id);
 
         } catch (PDOException $ex) {
-            header('location: ' . URL . 'error/databaseError');
+            die(header('location: ' . URL . 'error/databaseError'));
         } finally {
             unset($sqlite);
         }
@@ -90,7 +96,7 @@ class ProfileController extends BaseController
             return OfferModel::getSavedOffersFromDatabaseByUserId(new OfferDAO($con), $id);
 
         } catch (PDOException $ex) {
-            header('location: ' . URL . 'error/databaseError');
+            die(header('location: ' . URL . 'error/databaseError'));
         } finally {
             unset($sqlite);
         }
@@ -105,7 +111,7 @@ class ProfileController extends BaseController
             return UserRatingModel::getRatingFromDatabaseForUserId($dao, $userId);
 
         } catch (PDOException $ex) {
-            header('location: ' . URL . 'error/databaseError');
+            die(header('location: ' . URL . 'error/databaseError'));
         } finally {
             unset($sqlite);
         }
@@ -119,7 +125,7 @@ class ProfileController extends BaseController
             return UserRatingModel::getFromDatabaseByFromUserIdAndForUserId(
                 $dao, $fromUserId, $forUserId);
         } catch (PDOException $ex) {
-            header('location: ' . URL . 'error/databaseError');
+            die(header('location: ' . URL . 'error/databaseError'));
         } finally {
             unset($sqlite);
         }
@@ -135,7 +141,7 @@ class ProfileController extends BaseController
             $user->deactivateInDatabase($dao);
             header('location: ' . URL . 'profile?id=' . $user->getId());
         } catch (PDOException $ex) {
-            header('location: ' . URL . 'error/databaseError');
+            die(header('location: ' . URL . 'error/databaseError'));
         } finally {
             unset($sqlite);
         }
@@ -149,14 +155,12 @@ class ProfileController extends BaseController
             $user = UserModel::getFromDatabaseById($dao, $_POST['user_id']);
 
             $user->activateInDatabase($dao);
+            unset($sqlite);
             header('location: ' . URL . 'profile?id=' .$user->getId());
             exit();
         } catch (PDOException $ex) {
-            header('location: ' . URL . 'error/databaseError');
-        } finally {
-            unset($sqlite);
+            die(header('location: ' . URL . 'error/databaseError'));
         }
-
     }
 
     public static function rateUser() {
@@ -204,7 +208,7 @@ class ProfileController extends BaseController
         }
         catch (PDOException $ex) {
             $sqlite->closeTransaction(false);
-            header('location: ' . URL . 'error/databaseError');
+            die(header('location: ' . URL . 'error/databaseError'));
         } finally {
             unset($sqlite);
         }

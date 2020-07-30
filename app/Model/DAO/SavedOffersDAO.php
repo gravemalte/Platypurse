@@ -39,7 +39,7 @@ class SavedOffersDAO implements SavedOffersDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('SavedOffersDAO create error ' . $stmt->errorInfo());
+            throw new PDOException('SavedOffersDAO create error ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -59,7 +59,7 @@ class SavedOffersDAO implements SavedOffersDAOInterface
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('SavedOffersDAO readByUserId error ' . $stmt->errorInfo());
+            throw new PDOException('SavedOffersDAO readByUserId error ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -87,7 +87,7 @@ class SavedOffersDAO implements SavedOffersDAOInterface
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('SavedOffersDAO readByUserId error ' . $stmt->errorInfo());
+            throw new PDOException('SavedOffersDAO readByUserId error ' . implode(",", $stmt->errorInfo()));
         }
     }
 
@@ -108,7 +108,7 @@ class SavedOffersDAO implements SavedOffersDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('SavedOffersDAO update error ' . $stmt->errorInfo());
+            throw new PDOException('SavedOffersDAO update error ' . implode(",", $stmt->errorInfo()));
         }
     }
 }

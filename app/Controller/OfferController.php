@@ -46,12 +46,10 @@ class OfferController extends BaseController
         try {
             $offerModel = OfferModel::getFromDatabase($offerDAO, $id);
         } catch (PDOException $ex) {
-
             if(isset($unset)):
                 unset($sqlite);
             endif;
-            header('location: ' . URL . 'error/databaseError');
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
 
         if(isset($unset)):
@@ -90,14 +88,13 @@ class OfferController extends BaseController
                 if($check):
                     header('location: ' . URL . 'profile?id=' . $userId);
                 else:
-                    header('location: ' . URL . 'error/databaseError');
+                    die(header('location: ' . URL . 'error/databaseError'));
                 endif;
+                unset($sqlite);
                 exit();
             } catch (PDOException $e) {
                 $sqlite->closeTransaction(false);
-                header('location: ' . URL . 'error/databaseError');
-            } finally {
-                unset($sqlite);
+                die(header('location: ' . URL . 'error/databaseError'));
             }
         endif;
         header('location: ' . URL . 'login');
@@ -125,7 +122,7 @@ class OfferController extends BaseController
             $sqlite->closeTransaction($check);
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);
-            header('location: ' . URL . 'error/databaseError');
+            die(header('location: ' . URL . 'error/databaseError'));
         } finally {
             unset($sqlite);
         }
@@ -150,8 +147,7 @@ class OfferController extends BaseController
             unset($sqlite);
         } catch (PDOException $ex) {
             unset($sqlite);
-            header('location: ' . URL . 'error/databaseError');
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
 
         if(!$savedOffer || empty($savedOffer->getId())):
@@ -167,7 +163,6 @@ class OfferController extends BaseController
      */
     public static function offerClickPlusOne($offer) {
         $sqlite = new SQLite();
-
         try {
             $sqlite->openTransaction();
             $con = $sqlite->getCon();
@@ -175,10 +170,8 @@ class OfferController extends BaseController
             $offer->offerClickPlusOne($dao);
             $sqlite->closeTransaction(true);
         } catch (PDOException $e) {
-            $sqlite->closeTransaction(true);
-            header('location: ' . URL . 'error/databaseError');
-        } finally {
-            unset($sqlite);
+            $sqlite->closeTransaction(false);
+            die(header('location: ' . URL . 'error/databaseError'));
         }
     }
 
@@ -201,8 +194,7 @@ class OfferController extends BaseController
             $sqlite->closeTransaction($check);
         } catch (PDOException $e) {
             $sqlite->closeTransaction(false);
-            header('location: ' . URL . 'error/databaseError');
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         } finally {
             unset($sqlite);
         }
