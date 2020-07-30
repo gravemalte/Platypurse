@@ -141,3 +141,9 @@
         margin-top: 0;
     }
 }
+
+@media (min-width: 1921px) {
+    .hot-offer-container {
+        max-width: 1000px;
+    }
+}
