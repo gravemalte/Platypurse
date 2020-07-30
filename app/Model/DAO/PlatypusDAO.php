@@ -83,8 +83,6 @@ class PlatypusDAO implements PlatypusDAOInterface
         $stmt->bindValue(":weight", $obj->getWeight());
         $stmt->bindValue(":active", $obj->isActive());
         $stmt->bindValue(":id", $obj->getId());
-        var_dump($stmt);
-        var_dump($obj);
 
         if($stmt->execute()) {
             return true;
