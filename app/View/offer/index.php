@@ -49,7 +49,7 @@ if(isset($_SESSION['currentUser'])) {
                 <div class="price-tag-container">
                     <div class="price-tag">
                         <p><?=$offer->getShortPrice();?></p>
-                        <?php if($offer->getNegotiable()): ?>
+                        <?php if($offer->isNegotiable()): ?>
                             <span>VB</span>
                         <?php endif; ?>
                     </div>

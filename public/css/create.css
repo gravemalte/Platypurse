@@ -36,6 +36,38 @@
     padding: 0.5em;
     border-radius: 15px;
 }
+.create-offer-container .main-container .price-container {
+    display: flex;
+    align-items: center;
+}
+.create-offer-container .main-container .price-container label[for=price] {
+    flex-grow: 1;
+}
+.create-offer-container .main-container .price-container label[for=price] input {
+    flex-grow: 1;
+}
+.create-offer-container .main-container .price-container .negotiable-text {
+    font-size: 2em;
+    padding-right: 0.25em;
+}
+.create-offer-container .main-container .price-container input[type=checkbox] {
+    display: none;
+    margin: 0;
+}
+.create-offer-container .main-container .price-container label[for=negotiable] {
+    background-color: var(--page-button-bg-color);
+    width: 2em;
+    height: 2em;
+    padding: 0.25em;
+    border-radius: 15%;
+}
+.create-offer-container .main-container .price-container label[for=negotiable] span {
+    font-size: 2em;
+    color: var(--page-button-bg-color);
+}
+.create-offer-container .main-container .price-container input:checked ~ label[for=negotiable] span {
+    color: var(--page-text-color);
+}
 .create-offer-container .name-container input,
 .create-offer-container .description-container textarea {
     font-size: 2em;
@@ -119,6 +151,9 @@
 }
 .create-offer-container .buttons-container button ~ label:hover {
     filter: brightness(0.9);
+}
+.attribute-item.dropdown-item .attribute-item.dropdown-item {
+    margin-right: 0;
 }
 @media (max-width: 600px) {
     .main-area .create-offer-container form {

@@ -40,7 +40,7 @@ class OfferDAO implements OfferDAOInterface
         $stmt->bindValue(":userId", $obj->getUser()->getId());
         $stmt->bindValue(":platypusId", $obj->getPlatypus()->getId());
         $stmt->bindValue(":price", $obj->getPriceUnformatted());
-        $stmt->bindValue(":negotiable", $obj->getNegotiable());
+        $stmt->bindValue(":negotiable", $obj->isNegotiable());
         $stmt->bindValue(":description", $obj->getDescription());
         $stmt->bindValue(":zipCode", $obj->getZipcode());
 
@@ -83,7 +83,7 @@ class OfferDAO implements OfferDAOInterface
 
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(":price", $obj->getPriceUnformatted());
-        $stmt->bindValue(":negotiable", $obj->getNegotiable());
+        $stmt->bindValue(":negotiable", $obj->isNegotiable());
         $stmt->bindValue(":description", $obj->getDescription());
         $stmt->bindValue(":zipcode", $obj->getZipcode());
         $stmt->bindValue(":clicks", $obj->getClicks());

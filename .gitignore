@@ -2,6 +2,7 @@
 .vscode/
 *.dat
 *.sqlite
+Thumb.db
 
 # colors.css now get's generated
 public/css/shared/colors.css

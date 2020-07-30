@@ -318,7 +318,7 @@ class OfferModel {
     /**
      * @return mixed
      */
-    public function getNegotiable()
+    public function isNegotiable()
     {
         return $this->negotiable;
     }

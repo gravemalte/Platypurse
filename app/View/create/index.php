@@ -13,6 +13,7 @@ if($isUpdate) {
 $showUpdateData = $isUpdate && ($userIsOwner || $userIsAdmin);
 $showName = "";
 $showPrice = "";
+$showNegotiable = "";
 $showDescription = "";
 $showSex = "";
 $showAge = "";
@@ -22,6 +23,12 @@ $showZipcode = "";
 if ($showUpdateData) {
     $showName = $offer->getPlatypus()->getName();
     $showPrice = $offer->getPrice(false);
+    if ($offer->isNegotiable()) {
+        $showNegotiable = "ja";
+    }
+    else {
+        $showNegotiable = "nein";
+    }
     $showDescription = $offer->getDescription();
     $showSex = $offer->getPlatypus()->getSex();
     $showAge = $offer->getPlatypus()->getAgeYears();
@@ -56,7 +63,7 @@ if ($showUpdateData) {
                     </div>
                     <div class="name-container main-input-container">
                         <p class="name">Preis</p>
-                        <div class="input-container">
+                        <div class="input-container price-container">
                             <label for="price">
                                 <input
                                         type="text"
@@ -69,6 +76,16 @@ if ($showUpdateData) {
                                         value="<?= $showPrice ?>"
                                 >
                             </label>
+                            <span class="negotiable-text">VB?</span>
+                            <input
+                                    type="checkbox"
+                                    name="negotiable"
+                                    id="negotiable"
+                                    <?php if ($showNegotiable == "ja"): ?>
+                                    checked
+                                    <?php endif ?>
+                            >
+                            <label for="negotiable"><span class="fas fa-check"></span></label>
                         </div>
                     </div>
                     <div class="img-container main-input-container">

@@ -65,11 +65,15 @@ class CreateController extends BaseController
             $mime,
             $image);
 
+        $negotiable = 0;
+        if (isset($_POST['negotiable'])) {
+            $negotiable = 1;
+        }
         $newOffer = new OfferModel($newOfferId,
             $offerUser,
             $newPlatypus,
             $this->processInputPrice($_POST["price"]),
-            0,
+            $negotiable,
             $_POST['description'],
             $_POST['zipcode'],
             0,
