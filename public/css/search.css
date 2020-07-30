@@ -82,4 +82,11 @@
     .filter-options-container {
         align-items: stretch;
     }
+
+    .main-area {
+        max-width: 100vw;
+    }
+    .search-results-container {
+        width: 100%;
+    }
 }
