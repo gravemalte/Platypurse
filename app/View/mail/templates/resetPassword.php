@@ -26,7 +26,7 @@
         </p>
     </div>
     <div class="button-container">
-        <a href="../resetPassword/resetPassword?token=<?= $token->getToken() ?>" target="_blank">
+        <a href="<?= URL ?>resetPassword/resetPassword?token=<?= $token->getToken() ?>" target="_blank">
             Neues Passwort anfordern!
         </a>
     </div>
