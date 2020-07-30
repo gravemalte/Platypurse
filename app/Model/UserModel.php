@@ -165,7 +165,7 @@ class UserModel
      */
     public function setDisplayName($displayName)
     {
-        $this->displayName = $displayName;
+        $this->displayName = htmlspecialchars(strip_tags($displayName));
     }
 
     /**
@@ -181,7 +181,7 @@ class UserModel
      */
     public function setMail($mail)
     {
-        $this->mail = $mail;
+        $this->mail = htmlspecialchars(strip_tags($mail));
     }
 
     /**

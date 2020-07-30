@@ -288,7 +288,7 @@ class OfferModel {
      */
     public function setPrice($price)
     {
-        $this->price = $price;
+        $this->price = htmlspecialchars(strip_tags($price));
     }
 
     /**
@@ -344,7 +344,7 @@ class OfferModel {
      */
     public function setDescription($description)
     {
-        $this->description = $description;
+        $this->description = htmlspecialchars(strip_tags($description));
     }
 
     /**
@@ -360,7 +360,7 @@ class OfferModel {
      */
     public function setZipcode($zipcode)
     {
-        $this->zipcode = $zipcode;
+        $this->zipcode = htmlspecialchars(strip_tags($zipcode));
     }
 
     /**

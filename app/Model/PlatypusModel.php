@@ -28,7 +28,7 @@ class PlatypusModel {
         $this->id = $id;
         $this->name = htmlspecialchars(strip_tags($name));
         $this->ageYears = htmlspecialchars(strip_tags($age_years));
-        $this->sex = $sex;
+        $this->sex = htmlspecialchars(strip_tags($sex));
         $this->size = htmlspecialchars(strip_tags($size));
         $this->weight = htmlspecialchars(strip_tags($weight));
         $this->active = $active;
@@ -93,7 +93,7 @@ class PlatypusModel {
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->name = htmlspecialchars(strip_tags($name));
     }
 
     /**
@@ -109,7 +109,7 @@ class PlatypusModel {
      */
     public function setAgeYears($ageYears)
     {
-        $this->ageYears = $ageYears;
+        $this->ageYears = htmlspecialchars(strip_tags($ageYears));
     }
 
     /**
@@ -125,7 +125,7 @@ class PlatypusModel {
      */
     public function setSex($sex)
     {
-        $this->sex = $sex;
+        $this->sex = htmlspecialchars(strip_tags($sex));
     }
 
     /**
@@ -141,7 +141,7 @@ class PlatypusModel {
      */
     public function setSize($size)
     {
-        $this->size = $size;
+        $this->size = htmlspecialchars(strip_tags($size));
     }
 
     /**
@@ -157,7 +157,7 @@ class PlatypusModel {
      */
     public function setWeight($weight)
     {
-        $this->weight = $weight;
+        $this->weight = htmlspecialchars(strip_tags($weight));
     }
 
     /**
