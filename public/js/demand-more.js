@@ -20,8 +20,6 @@
                 method: "GET"
             });
 
-            console.log(url);
-
             if (!pageUpdateResponse.ok) return;
             let pageUpdateText = await pageUpdateResponse.text();
             let parser = new DOMParser();
