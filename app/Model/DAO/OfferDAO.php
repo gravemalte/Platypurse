@@ -50,7 +50,7 @@ class OfferDAO implements OfferDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('OfferDAO create error');
+            throw new PDOException('OfferDAO create error ' . $stmt->errorInfo());
         }
     }
 
@@ -67,7 +67,7 @@ class OfferDAO implements OfferDAOInterface
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('OfferDAO read error');
+            throw new PDOException('OfferDAO read error ' . $stmt->errorInfo());
         }
     }
 
@@ -94,7 +94,7 @@ class OfferDAO implements OfferDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('OfferDAO update error');
+            throw new PDOException('OfferDAO update error ' . $stmt->errorInfo());
         }
     }
 
@@ -113,7 +113,7 @@ class OfferDAO implements OfferDAOInterface
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('OfferDAO readAll error');
+            throw new PDOException('OfferDAO readAll error ' . $stmt->errorInfo());
         }
     }
 
@@ -132,7 +132,7 @@ class OfferDAO implements OfferDAOInterface
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('OfferDAO readAll error');
+            throw new PDOException('OfferDAO readAll error ' . $stmt->errorInfo());
         }
     }
 
@@ -152,7 +152,7 @@ class OfferDAO implements OfferDAOInterface
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('OfferDAO readByUserId error');
+            throw new PDOException('OfferDAO readByUserId error ' . $stmt->errorInfo());
         }
     }
 
@@ -170,7 +170,7 @@ class OfferDAO implements OfferDAOInterface
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('OfferDAO readOffersByUserId error');
+            throw new PDOException('OfferDAO readOffersByUserId error ' . $stmt->errorInfo());
         }
     }
 
@@ -233,7 +233,7 @@ class OfferDAO implements OfferDAOInterface
             endif;
         } else {
             print "error2";
-            throw new PDOException('OfferDAO readSearchResults error');
+            throw new PDOException('OfferDAO readSearchResults error ' . $stmt->errorInfo());
         }
     }
 }

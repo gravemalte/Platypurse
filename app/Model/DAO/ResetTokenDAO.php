@@ -47,7 +47,7 @@ class ResetTokenDAO implements ResetTokenDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('ResetTokenDAO create error');
+            throw new PDOException('ResetTokenDAO create error ' . $stmt->errorInfo());
         }
     }
 
@@ -66,7 +66,7 @@ class ResetTokenDAO implements ResetTokenDAOInterface
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('ResetTokenDAO read error');
+            throw new PDOException('ResetTokenDAO read error ' . $stmt->errorInfo());
         }
     }
 
@@ -87,7 +87,7 @@ class ResetTokenDAO implements ResetTokenDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('ResetTokenDAO update error');
+            throw new PDOException('ResetTokenDAO update error ' . $stmt->errorInfo());
         }
     }
 
@@ -103,7 +103,7 @@ class ResetTokenDAO implements ResetTokenDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('ResetTokenDAO deleteExpired error');
+            throw new PDOException('ResetTokenDAO deleteExpired error ' . $stmt->errorInfo());
         }
     }
 
@@ -121,7 +121,7 @@ class ResetTokenDAO implements ResetTokenDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('ResetTokenDAO deleteForUser error');
+            throw new PDOException('ResetTokenDAO deleteForUser error ' . $stmt->errorInfo());
         }
     }
 }

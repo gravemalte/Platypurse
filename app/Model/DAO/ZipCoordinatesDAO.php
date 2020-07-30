@@ -31,7 +31,7 @@ class ZipCoordinatesDAO implements ZipCoordinatesDAOInterface
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('ZipCoordinatesDAO readByZipcode error');
+            throw new PDOException('ZipCoordinatesDAO readByZipcode error ' . $stmt->errorInfo());
         }
     }
 }

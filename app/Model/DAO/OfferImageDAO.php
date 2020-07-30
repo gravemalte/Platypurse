@@ -40,7 +40,7 @@ class OfferImageDAO implements OfferImagesDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('OfferImageDAO create error');
+            throw new PDOException('OfferImageDAO create error ' . $stmt->errorInfo());
         }
 
     }
@@ -59,7 +59,7 @@ class OfferImageDAO implements OfferImagesDAOInterface
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('OfferImageDAO select by offerId error');
+            throw new PDOException('OfferImageDAO select by offerId error ' . $stmt->errorInfo());
         }
     }
 
@@ -82,7 +82,7 @@ class OfferImageDAO implements OfferImagesDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('OfferImageDAO update error');
+            throw new PDOException('OfferImageDAO update error ' . $stmt->errorInfo());
         }
     }
 }

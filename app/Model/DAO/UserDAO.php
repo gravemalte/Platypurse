@@ -43,7 +43,7 @@ class UserDAO implements UserDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('UserDAO create error');
+            throw new PDOException('UserDAO create error ' . $stmt->errorInfo());
         }
 
     }
@@ -62,7 +62,7 @@ class UserDAO implements UserDAOInterface
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('UserDAO read error');
+            throw new PDOException('UserDAO read error ' . $stmt->errorInfo());
         }
     }
 
@@ -80,7 +80,7 @@ class UserDAO implements UserDAOInterface
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('UserDAO readByMail error');
+            throw new PDOException('UserDAO readByMail error ' . $stmt->errorInfo());
         }
     }
 
@@ -98,7 +98,7 @@ class UserDAO implements UserDAOInterface
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('UserDAO readByName error');
+            throw new PDOException('UserDAO readByName error ' . $stmt->errorInfo());
         }
     }
 
@@ -128,7 +128,7 @@ class UserDAO implements UserDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('UserDAO update error');
+            throw new PDOException('UserDAO update error ' . $stmt->errorInfo());
         }
     }
 }

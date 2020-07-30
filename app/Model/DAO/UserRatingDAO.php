@@ -40,7 +40,7 @@ class UserRatingDAO implements UserRatingDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('UserRatingDAO create error');
+            throw new PDOException('UserRatingDAO create error ' . $stmt->errorInfo());
         }
 
     }
@@ -59,7 +59,7 @@ class UserRatingDAO implements UserRatingDAOInterface
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('UserRatingDAO readForUserId error');
+            throw new PDOException('UserRatingDAO readForUserId error ' . $stmt->errorInfo());
         }
     }
 
@@ -81,7 +81,7 @@ class UserRatingDAO implements UserRatingDAOInterface
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('UserRatingDAO readForUserId error');
+            throw new PDOException('UserRatingDAO readForUserId error ' . $stmt->errorInfo());
         }
     }
 
@@ -103,7 +103,7 @@ class UserRatingDAO implements UserRatingDAOInterface
         if($stmt->execute()) {
             return $stmt->fetch();
         } else {
-            throw new PDOException('UserRatingDAO update error');
+            throw new PDOException('UserRatingDAO update error ' . $stmt->errorInfo());
         }
     }
 }

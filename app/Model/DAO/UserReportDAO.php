@@ -49,7 +49,7 @@ class UserReportDAO implements ReportDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('UserReportDAO create error');
+            throw new PDOException('UserReportDAO create error ' . $stmt->errorInfo());
         }
     }
 
@@ -68,7 +68,7 @@ class UserReportDAO implements ReportDAOInterface
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('UserReportDAO read error');
+            throw new PDOException('UserReportDAO read error ' . $stmt->errorInfo());
         }
     }
 
@@ -85,7 +85,7 @@ class UserReportDAO implements ReportDAOInterface
         if($stmt->execute()) {
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('UserReportDAO readAll error');
+            throw new PDOException('UserReportDAO readAll error ' . $stmt->errorInfo());
         }
     }
 
@@ -105,7 +105,7 @@ class UserReportDAO implements ReportDAOInterface
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('UserReportDAO update error');
+            throw new PDOException('UserReportDAO update error ' . $stmt->errorInfo());
         }
     }
 }

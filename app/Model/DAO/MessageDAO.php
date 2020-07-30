@@ -40,7 +40,7 @@ class MessageDAO implements MessageDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('MessageDAO create error');
+            throw new PDOException('MessageDAO create error ' . $stmt->errorInfo());
         }
 
     }
@@ -59,7 +59,7 @@ class MessageDAO implements MessageDAOInterface
         if($stmt->execute()){
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('MessageDAO read error');
+            throw new PDOException('MessageDAO read error ' . $stmt->errorInfo());
         }
     }
 
@@ -78,7 +78,7 @@ class MessageDAO implements MessageDAOInterface
         if($stmt->execute()){
             return $stmt->fetchAll();
         } else {
-            throw new PDOException('MessageModel select error...');
+            throw new PDOException('MesseageDAO readIdWithOrder error ' . $stmt->errorInfo());
         }
     }
 

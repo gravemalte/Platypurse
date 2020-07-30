@@ -3,6 +3,7 @@ namespace Model\DAO;
 
 use Hydro\Base\Contracts\PlatypusDAOInterface;
 use Model\PlatypusModel;
+use PDO;
 use PDOException;
 
 
@@ -42,7 +43,7 @@ class PlatypusDAO implements PlatypusDAOInterface
             $result = $this->con->query($sql);
             return $result->fetch();
         } else {
-            throw new PDOException('PlatypusDAO create error');
+            throw new PDOException('PlatypusDAO create error. ' . $stmt->errorInfo());
         }
     }
 
@@ -60,7 +61,7 @@ class PlatypusDAO implements PlatypusDAOInterface
         if($stmt->execute()){
             return $stmt->fetch();
         } else {
-            throw new PDOException('PlatypusDAO read error');
+            throw new PDOException('PlatypusDAO read error. ' . $stmt->errorInfo());
         }
     }
 
@@ -75,18 +76,20 @@ class PlatypusDAO implements PlatypusDAOInterface
                 weight = :weight, active = :active WHERE p_id = :id;";
 
         $stmt = $this->con->prepare($sql);
-        $stmt->bindValue(":name", $obj->getName());
+        $stmt->bindValue(":name", $obj->getName(), PDO::PARAM_STR);
         $stmt->bindValue(":ageYears", $obj->getAgeYears());
-        $stmt->bindValue(":sex", $obj->getSex());
+        $stmt->bindValue(":sex", $obj->getSex(), PDO::PARAM_STR);
         $stmt->bindValue(":size", $obj->getSize());
         $stmt->bindValue(":weight", $obj->getWeight());
         $stmt->bindValue(":active", $obj->isActive());
         $stmt->bindValue(":id", $obj->getId());
+        var_dump($stmt);
+        var_dump($obj);
 
         if($stmt->execute()) {
             return true;
         } else {
-            throw new PDOException('PlatypusDAO update error');
+            throw new PDOException('PlatypusDAO update error. ' . $stmt->errorInfo());
         }
     }
 }
