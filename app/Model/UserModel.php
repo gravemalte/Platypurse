@@ -72,10 +72,13 @@ class UserModel
      * Returns model by id from database
      * @param UserDAO $userDAO
      * @param $id
-     * @return UserModel
+     * @return UserModel|boolean
      */
     public static function getFromDatabaseById($userDAO, $id){
         $row = $userDAO->read($id);
+        if(!$row):
+            return false;
+        endif;
         return self::getUserFromRow($row);
     }
 

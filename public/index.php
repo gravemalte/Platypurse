@@ -42,5 +42,7 @@ session_set_cookie_params(3600);
 session_start();
 session_get_cookie_params();
 
+ob_start();
+
 // boot the application
 $app = Application::getInstance();

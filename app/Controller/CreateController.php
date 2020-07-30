@@ -157,7 +157,6 @@ class CreateController extends BaseController
         else:
             $price *= 100;
         endif;
-        // print($price);
         return $price;
     }
 }

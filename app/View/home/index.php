@@ -3,7 +3,8 @@ use \Controller\HomeController;
 ?>
 <main class="main-page">
     <div class="main-area">
-        <?php $hotOffer = HomeController::getHotOffer();
+        <?php
+        $hotOffer = HomeController::getHotOffer();
         if(!empty($hotOffer)):?>
             <a href="offer?id=<?= $hotOffer->getId();?>">
                 <div class="hot-offer-container card">

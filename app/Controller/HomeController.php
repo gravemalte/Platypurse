@@ -15,10 +15,15 @@ class HomeController extends BaseController
     public function index()
     {
         // load views
+        echo headers_sent();
         require APP . 'View/shared/header.php';
+        echo headers_sent();
         require APP . 'View/home/header.php';
+        echo headers_sent();
         require APP . 'View/shared/nav.php';
+        echo headers_sent();
         require APP . 'View/home/index.php';
+        //echo headers_sent();
         require APP . 'View/shared/footer.php';
     }
 
@@ -45,6 +50,7 @@ class HomeController extends BaseController
      * @return OfferModel
      */
     public static function getHotOffer() {
+        echo headers_sent();
         $sqlite = new SQLite();
         try {
             $con = $sqlite->getCon();
@@ -52,9 +58,7 @@ class HomeController extends BaseController
             unset($sqlite);
             return $model;
         } catch (PDOException $ex) {
-            unset($sqlite);
-            header('location: ' . URL . 'error/databaseError');
-            exit();
+            die(header('location: ' . URL . 'error/databaseError'));
         }
     }
 }

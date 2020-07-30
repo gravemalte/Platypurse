@@ -20,6 +20,12 @@ class ProfileController extends BaseController
         if (!isset($_SESSION['currentUser']) && !isset($_GET['id'])) {
             header('location: ' . URL . 'login');
         }
+        if(isset($_GET['id'] )){
+            $user = self::getDisplayUser();
+            if($user == false){
+                header('location: ' . URL . 'error/pageNotFound');
+            }
+        }
 
         $_SESSION['csrf_token'] = uniqid();
 

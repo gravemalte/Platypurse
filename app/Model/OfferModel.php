@@ -83,10 +83,13 @@ class OfferModel {
      * Returns model by id from database
      * @param $offerDAO
      * @param $id
-     * @return OfferModel
+     * @return OfferModel|boolean
      */
     public static function getFromDatabase($offerDAO, $id){
         $result = $offerDAO->read($id);
+        if(!$result):
+            return false;
+        endif;
         return self::getOfferFromRow($result, $offerDAO->getCon());
     }
 
