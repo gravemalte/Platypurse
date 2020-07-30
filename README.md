@@ -60,14 +60,14 @@ Von hier an kann die Seite in vollem Unfang benutzt werden.
 
 ## Testen
 
-Um die Webseite vollständig zu testen, stellen wir euch Standartbenutzer zur verfügung.
+Um die Webseite vollständig testen zu können, stellen wir folgende Benutzer zur Verfügung.
 
 * Administrator (Super User)
   * Administrator
     * E-Mail: admin@platypurse.com
     * Passwort: 123
 
-* Benutzer (Normale User)
+* Benutzer (Normale Benutzer)
   * SchnabelFan1337
     * E-Mail: schnabelfan@ymail.com
     * Passwort: 123
@@ -78,7 +78,7 @@ Um die Webseite vollständig zu testen, stellen wir euch Standartbenutzer zur ve
     * E-Mail: harald.haraldsen@outlook.com
     * Passwort: 123
 
-* Support (Spezieller User)
+* Support (Spezieller Benutzer für den Support)
   * Support
     * E-Mail: support@platypurse.com
     * Passwort: 123
