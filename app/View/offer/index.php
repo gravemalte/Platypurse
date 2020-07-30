@@ -180,8 +180,8 @@ if(isset($_SESSION['currentUser'])) {
                     <div class="attribute-item">
                         <p><strong>Geschlecht:</strong><br>&nbsp;<?=$offer->getPlatypus()->getSex();?></p>
                         <p><strong>Alter:</strong><br>&nbsp;<?=$offer->getPlatypus()->getAgeYears();?> Jahre</p>
-                        <p><strong>Größe:</strong><br>&nbsp<?=$offer->getPlatypus()->getSize();?>cm</p>
-                        <p><strong>Gewicht:</strong><br>&nbsp<?=$offer->getPlatypus()->getWeight();?>g</p>
+                        <p><strong>Größe:</strong><br>&nbsp;<?=$offer->getPlatypus()->getSize();?>cm</p>
+                        <p><strong>Gewicht:</strong><br>&nbsp;<?=$offer->getPlatypus()->getWeight();?>g</p>
                     </div>
                     <div class="attribute-item">
                         <p>Erstellt: <strong class="date-display">
