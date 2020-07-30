@@ -16,6 +16,7 @@
     width: 300px;
     height: 250px;
     position: relative;
+    overflow: hidden;
 }
 .offer-list-item img {
     object-fit: cover;

@@ -4,7 +4,7 @@
     margin-bottom: 1em;
 }
 .offer-container {
-    flex-grow: 7;
+    width: 70%;
     min-height: 40em;
     position: relative;
 }
@@ -17,6 +17,12 @@
 }
 .offer-container .description-container {
     margin: 0.5em;
+    overflow: hidden;
+}
+.offer-container .description-container * {
+    max-width: 90%;
+    width: 700px;
+    overflow-wrap: break-word;
 }
 .offer-container .description-container .name{
     font-size: 2em;
@@ -46,6 +52,7 @@
     margin-left: 1em;
     display: flex;
     flex-direction: column;
+    width: calc(30% - 1em);
 }
 
 .offer-buttons-container {
@@ -191,13 +198,14 @@
     border-bottom-right-radius: inherit;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
     .offer-area {
         flex-direction: column;
     }
 
     .offer-container {
         min-height: 25em;
+        width: 100%;
     }
     .offer-container img {
         height: 10em;
@@ -205,13 +213,15 @@
     .offer-container .price-tag-container {
         top: 6em;
     }
-    .offer-container .price-tag p {
+    .offer-container .price-tag p,
+    .offer-container .price-tag span {
         font-size: 2em;
     }
 
     .side-container {
         margin-top: 1em;
         margin-left: 0;
+        width: 100%;
     }
     .offer-area .attribute-list {
         min-height: 20em;

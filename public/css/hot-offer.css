@@ -2,6 +2,7 @@
     width: 100%;
     height: calc(1080px / 2);
     position: relative;
+    max-width: 95vw;
 }
 .hot-offer-container .annotation {
     position: absolute;
@@ -56,6 +57,7 @@
     display: flex;
     flex-direction: column;
     margin-left: 1em;
+    overflow: hidden;
 }
 .side-text .name {
     margin-bottom: 0.1em;
