@@ -107,7 +107,7 @@ class OfferModel {
         else:
             $returnArray = array();
             foreach($result as $row):
-                $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon());
+                $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon(), false);
             endforeach;
 
             return $returnArray;
@@ -124,7 +124,7 @@ class OfferModel {
         $result = $offerDAO->readOffersByUserId($userId);
         $returnArray = array();
         foreach($result as $row):
-            $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon());
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon(), false);
         endforeach;
 
         return $returnArray;
@@ -140,7 +140,7 @@ class OfferModel {
         $result = $offerDAO->readSavedOffersByUserId($userId);
         $returnArray = array();
         foreach($result as $row):
-            $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon());
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon(), false);
         endforeach;
 
         return $returnArray;
@@ -186,7 +186,8 @@ class OfferModel {
 
         $returnArray = array();
         foreach($result as $row):
-            $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon());
+            $model = self::getOfferFromRow($row, $offerDAO->getCon(), false);
+            $returnArray[] = $model;
         endforeach;
         return $returnArray;
     }
@@ -198,8 +199,8 @@ class OfferModel {
      */
     public static function getHotOffer($offerDAO) {
         $result = $offerDAO->readHot();
-
-        return self::getOfferFromRow($result, $offerDAO->getCon());
+        $model = self::getOfferFromRow($result, $offerDAO->getCon(), false);
+        return $model;
     }
 
     /**
@@ -217,12 +218,20 @@ class OfferModel {
      * @param $con
      * @return OfferModel
      */
-    private static function getOfferFromRow($row, $con) {
-        return new OfferModel($row[0],
-            UserModel::getFromDatabaseById(new UserDAO($con), $row[1]),
-            PlatypusModel::getFromDatabaseById(new PlatypusDAO($con), $row[2]),
-            $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9],
-            OfferImageModel::getFromDatabaseByOfferId(new OfferImageDAO($con), $row[0]), $row[10]);
+    private static function getOfferFromRow($row, $con, $withUser = true) {
+        if($withUser):
+            $model = new OfferModel($row[0],
+                UserModel::getFromDatabaseById(new UserDAO($con), $row[1]),
+                PlatypusModel::getFromDatabaseById(new PlatypusDAO($con), $row[2]),
+                $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9],
+                OfferImageModel::getFromDatabaseByOfferId(new OfferImageDAO($con), $row[0]), $row[10]);
+        else:
+            $model = new OfferModel($row[0], "",
+                PlatypusModel::getFromDatabaseById(new PlatypusDAO($con), $row[2]),
+                $row[3], $row[4], $row[5], $row[6], $row[7], $row[8], $row[9],
+                OfferImageModel::getFromDatabaseByOfferId(new OfferImageDAO($con), $row[0]), $row[10]);
+        endif;
+        return $model;
     }
 
     /**
