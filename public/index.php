@@ -31,7 +31,7 @@ if(!file_exists(DB_FILE)){
     $database->exec($sql_file);
 
     // Defines how many additional offers are created. Each loop inserts 9 offers
-    $insertLoops = 0;
+    $insertLoops = 20;
 
     for($i = 0; $i < $insertLoops; $i++) {
         $sql_file_name = DB . 'sql/fill_offer.sql';
