@@ -18,7 +18,7 @@
 4. [Aufgaben und Korrektheit](#aufgaben-und-korrektheit)
 5. [Nicht umgesetzte Funktionen](#nicht-umgesetzte-funktionen)
 6. [Fehler oder Mängel](#fehler-oder-mängel)
-
+7. [Validatoren](#validatoren)
 
 # Generelles
 
@@ -170,3 +170,8 @@ Folgende Funktionen wurde aufgrund zeitlicher Einschränkung nicht mehr umgesetz
 # Fehler oder Mängel
 
 Nach der Testphase sind uns keine Fehler aufgefallen. Das wir jedoch als Ersteller nicht als außenstehende Person die Seite testen konnten, kann es sein, dass wir Fehler übersehen haben. Diese bitten wir zu verzeihen und uns bei Fehlern auf diese hinzuweisen!
+
+# Validatoren
+
+Uns ist bewusst, dass einige Validatoren Warnungen und Fehler anzeigen, allerdings sehen wir in den angezeigten Fehlern keine Option diese zu lösen und/oder halten die Aussagen für ungültig. (Bsp.: MDN stellt ein CSS Attribut als Living Standard dar und der Validator hält es für deprecated.)
+Ansonsten sind alle Seiten mit Validatoren getestet.
