@@ -21,6 +21,7 @@ require APP . 'Application.php';
 
 ini_set('memory_limit','4096M');
 ini_set('upload_max_filesize', '2MB');
+ini_set('file_uploads' , 'On');
 
 if(!file_exists(DB_FILE)){
     $database = new PDO('sqlite:' . DB_FILE);
@@ -34,7 +35,7 @@ if(!file_exists(DB_FILE)){
     $database->exec($sql_file);
 
     // Defines how many additional offers are created. Each loop inserts 9 offers
-    $insertLoops = 20;
+    $insertLoops = 0;
 
     for($i = 0; $i < $insertLoops; $i++) {
         $sql_file_name = DB . 'sql/fill_offer.sql';
