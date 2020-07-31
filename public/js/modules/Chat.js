@@ -134,12 +134,10 @@ function buildChat(modules) {
                     this.setTitle();
                     this.setChatLog();
 
+                    // highlight current thread
                     chatInput.select();
                 });
             }
-
-            // highlight current thread
-            chatInput.select();
         }
 
         /**
@@ -252,6 +250,9 @@ function buildChat(modules) {
                 }
                 callFunction();
             })();
+
+            // highlight current thread
+            chatInput.select();
         }
 
         /**
