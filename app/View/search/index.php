@@ -64,7 +64,7 @@ if ($offset > $offerCount) {
                             <div class="attribute-item-select dropdown-item-select">
                                 <label for="filter-sex" hidden>Geschlecht</label>
                                 <select name="sex" id="filter-sex">
-                                    <option value=""></option>
+                                    <option id="sex-none-option" value="">keine Auswahl</option>
                                     <option value="männlich" <?php echo $sexMaleSelected ?>>männlich</option>
                                     <option value="weiblich" <?php echo $sexFemaleSelected ?>>weiblich</option>
                                 </select>

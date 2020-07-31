@@ -16,6 +16,6 @@ $mail_address = $mail->getReceiverMail();
     <a class="mail-meta-mail" href="mailto:<?= $mail_address ?>"><?= $mail_address ?></a>
 </div>
 <div class="mail-preview-container">
-    <iframe src="mail/getMailContent?id=<?= $id ?>" frameborder="0" class="mail-preview"></iframe>
+    <iframe src="mail/getMailContent?id=<?= $id ?>" style="border: none" class="mail-preview"></iframe>
 </div>
 </body>

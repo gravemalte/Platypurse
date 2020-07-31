@@ -195,7 +195,7 @@ function buildChat(modules) {
             if (!this.chatThreadMap.has(this.currentThreadId) && this.currentThreadId !== null) {
                 let recipientNameResponse = await fetch("./chat/getUserDisplayName?id=" + this.currentThreadId);
                 let recipientName = await recipientNameResponse.text();
-                let chatThread = new ChatThread();
+                let chatThread = new ChatThread(this.currentThreadId);
                 chatThread.recipientName = recipientName;
                 chatThread.id = this.currentThreadId;
                 this.chatThreadMap.set(this.currentThreadId, chatThread);

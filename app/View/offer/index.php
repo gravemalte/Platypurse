@@ -207,7 +207,7 @@ if(isset($_SESSION['currentUser'])) {
                             <form action="offer/delete" method="post" data-needs-confirmation>
                                 <input type="text" id="delete-platypus-id" name="platypusId" hidden value="<?=$offer->getPlatypus()->getId();?>">
                                 <input type="text" id="delete-offer-id" name="offerId" hidden value="<?=$offer->getId();?>">
-                                <label for="delete-id" hidden>Änderungs-ID</label>
+                                <!-- <label for="delete-id" hidden>Änderungs-ID</label> -->
                                 <button id="submit-delete" class="delete-button button" type="submit" hidden></button>
                                 <label for="submit-delete" hidden>Artikel löschen</label>
                                 <label for="submit-delete" class="fas fa-trash-alt" title="Artikel löschen"></label>

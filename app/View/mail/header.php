@@ -2,8 +2,8 @@
 use Hydro\Helper\CacheBuster;
 use Hydro\Helper\ColorCollector;
 ?>
-
-<html lang="en">
+<!DOCTYPE html>
+<html lang="de">
 <head>
     <meta charset="utf-8">
     <title>Platypurse - Mail Preview</title>

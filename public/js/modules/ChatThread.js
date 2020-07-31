@@ -196,7 +196,8 @@ function buildChatThread(modules) {
                 method: "GET"
             });
             let imageBuffer = await fetchResponse.arrayBuffer();
-            let base64Flag = "data:" + fetchResponse.headers.get["Content-Type"] + ";base64,";
+            console.log(fetchResponse);
+            let base64Flag = "data:" + fetchResponse.headers.get("Content-Type") + ";base64,";
             let imageStr = arrayBufferToBase64(imageBuffer);
 
             function arrayBufferToBase64(buffer) {

@@ -13,10 +13,10 @@ if(isset($_GET['url'])){
 
 <footer>
     <div class="footer-link-container">
-        <a href="./contact">Kontakt</a>
-        <a href="./legalNotice">Impressum</a>
-        <a href="./dataPrivacy">Datenschutzerklärung</a>
-        <a href="./termsOfUse">Nutzungsbedingungen</a>
+        <a href="<?= URL . "contact" ?>">Kontakt</a>
+        <a href="<?= URL . "legalNotice" ?>">Impressum</a>
+        <a href="<?= URL . "dataPrivacy" ?>">Datenschutzerklärung</a>
+        <a href="<?= URL . "termsOfUse" ?>">Nutzungsbedingungen</a>
         <a href="https://uol.de/" target="_blank">Universität<br>Oldenburg</a>
     </div>
     <div class="footer-copyright-container">
