@@ -214,6 +214,7 @@ class OfferModel {
      * Returns model from database row
      * @param $row
      * @param $con
+     * @param bool $withUser
      * @return OfferModel
      */
     private static function getOfferFromRow($row, $con, $withUser = true) {

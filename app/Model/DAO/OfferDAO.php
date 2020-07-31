@@ -104,7 +104,7 @@ class OfferDAO implements OfferDAOInterface
      */
     public function readHot()
     {
-        $sql = "SELECT * FROM offer 
+        $sql = "SELECT offer.*, user.disabled FROM offer 
             INNER JOIN user on offer.u_id = user.u_id
             WHERE active = 1 AND user.disabled = 0
             ORDER BY clicks desc LIMIT 1;";
@@ -123,7 +123,7 @@ class OfferDAO implements OfferDAOInterface
      */
     public function readNewest()
     {
-        $sql = "SELECT * FROM offer
+        $sql = "SELECT offer.*, user.disabled FROM offer
             INNER JOIN user on offer.u_id = user.u_id
             WHERE active = 1 AND user.disabled = 0
             ORDER BY create_date desc, o_id desc LIMIT 9;";
@@ -185,9 +185,9 @@ class OfferDAO implements OfferDAOInterface
         $bindSex = array_key_exists("sex", $keyedSearchValuesArray);
         $sql = "SELECT ";
         if($getCount):
-            $sql .= "COUNT(*) as test";
+            $sql .= "COUNT(*) as offerCount";
         else:
-            $sql .= "*";
+            $sql .= "offer.*, user.disabled";
         endif;
         $sql .= " FROM offer INNER JOIN platypus ON platypus.p_id = offer.p_id
             INNER JOIN user on offer.u_id = user.u_id
@@ -227,7 +227,7 @@ class OfferDAO implements OfferDAOInterface
 
         if($stmt->execute()) {
             if($getCount):
-                return $stmt->fetch()['test'];
+                return $stmt->fetch()['offerCount'];
             else:
                 return $stmt->fetchAll();
             endif;
