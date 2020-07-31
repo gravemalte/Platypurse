@@ -246,7 +246,7 @@ function buildChat(modules) {
                     }
                     setTimeout(() => {
                         this.fetchNewMessages().then(callNext);
-                    }, 10000);
+                    }, 3000);
                 }
                 callFunction();
             })();
