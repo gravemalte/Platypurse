@@ -92,6 +92,7 @@ function buildChatThread(modules) {
 
             let lastMessage =
                 document.createElement("P");
+            lastMessage.style.maxHeight = "1em";
             if (this.latestMessage !== null) {
                 lastMessage.innerText = this.latestMessage.message;
             }
