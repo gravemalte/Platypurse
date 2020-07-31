@@ -39,7 +39,7 @@ file_uploads=On
 upload_max_filesize=2M
 ```
 
-Außerdem haben wir das das Memory Limit etwas erhöht damit alles etwas performanter läuft. Dies regelt die Applikation von alleine [Zeile 22-24](public/index.php#L22).
+Außerdem haben wir das das Memory Limit etwas erhöht damit alles etwas performanter läuft. Dies regelt die Applikation von alleine [Zeile 22](public/index.php#L22).
 ## Apache
 
 Da unser Projekt als MVC-Framework aufgesetzt ist, wird die URL relativ gemappt. Diese muss von Apache entsprechend auf unsere ``index.php`` aufgelöst werden.
