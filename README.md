@@ -57,7 +57,7 @@ Falls VHost benutzt werden sollte, bitte das ``DocumentRoot`` anpassen.
 ## Installation
 
 Die ``.zip``-Datei muss im XAMPP root ``(htdocs)`` entpackt werden, sodass sich die Dateien unter ``htdocs/Platypurse/`` befinden. Danach kann auf dem Webserver zugegriffen werden. Standartmäßig ist die Adresse ``http://localhost/Platypurse/``.
-Beim ersten Start wird die Datenbank erstellt und mit Testdaten gefüllt. Nach einer kurzen Wartezeit wird dann auf die Startseite geleitet.
+Falls beim Aufrufen der Seite keine Datenbank vorhanden ist, wird diese erstellt und mit Testdaten gefüllt. Nach einer kurzen Wartezeit wird dann auf die Startseite geleitet.
 Von hier an kann die Seite in vollem Umfang benutzt werden.
 
 ## Testen
