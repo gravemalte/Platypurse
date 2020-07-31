@@ -164,7 +164,6 @@ Folgende Funktionen wurde aufgrund zeitlicher Einschränkung nicht mehr umgesetz
 * Ändern der Benutzermail
 * Lazy Loading für Angebote auf der Profilseite
 * Lazy Loading für den Chat
-* Sofortiges Feedback des Chats
 * Verwaltungsseite für Administratoren mit Statistiken, direkter Abfrage auf Datenbank, etc.
 
 # Fehler oder Mängel
