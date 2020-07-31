@@ -19,7 +19,7 @@ require ROOT . 'vendor/autoload.php';
 // load application class
 require APP . 'Application.php';
 
-ini_set('memory_limit','512M');
+ini_set('memory_limit','256M');
 
 if(!file_exists(DB_FILE)){
     $database = new PDO('sqlite:' . DB_FILE);
@@ -33,7 +33,7 @@ if(!file_exists(DB_FILE)){
     $database->exec($sql_file);
 
     // Defines how many additional offers are created. Each loop inserts 9 offers
-    $insertLoops = 100;
+    $insertLoops = 50;
 
     for($i = 0; $i < $insertLoops; $i++) {
         $sql_file_name = DB . 'sql/fill_offer.sql';
