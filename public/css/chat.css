@@ -118,6 +118,7 @@
 .chat-title-container {
     border-bottom: 2px solid var(--chat-list-bg-color);
     overflow: hidden;
+    flex-shrink: 0;
 }
 .chat-title-container a {
     text-decoration: none;
