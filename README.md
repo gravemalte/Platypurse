@@ -32,18 +32,8 @@ Es wird auch Docker unterstützt. Jedoch nicht aktiv, da auf Nachfrage keine Doc
 
 ## PHP.ini
 
-In der PHP.ini muss die Uploadfunktion aktiviert werden. Hierzu bitte folgendes in die .ini-Datei schreiben:
-````ini
-file_uploads = On
-````
-
-Nachdem die Änderung abgespeichert wurde, war es das bereits.
-
-Weiterhin ist wichtig zu erwähnen, dass XAMPP standardmäßig einen Upload von max. 40 MB zulässt. Wir haben dies bei uns auf 2MB begrenzt, da die Datenbank Performant bleiben soll.
-
-```ìni
-upload_max_filesize=2M
-```
+In der PHP.ini muss nichts eingestellt werden, dies regelt die Applikation von alleine [Zeile 22-24](public/index.php).
+Wir haben lediglich den Upload aktiviert, das Uploadlimit auf 2MB gesetzt und das Memory Limit etwas erhöht damit alles etwas performanter läuft.
 
 ## Apache
 
@@ -68,7 +58,7 @@ Von hier an kann die Seite in vollem Umfang benutzt werden.
 ## Testen
 
 In der Datenbank werden standardmäßig neun Angebote angelegt. 
-In ``public\index.php`` steht in Zeile 34 ein Faktor, wie häufig zusätzliche neun Angebote eingefügt werden sollen, die alle vom User "ShadowStabber69_HD" erstellt werden.
+In ``public\index.php`` steht in Zeile 38 ein Faktor, wie häufig zusätzliche neun Angebote eingefügt werden sollen, die alle vom User "ShadowStabber69_HD" erstellt werden.
 Dadurch kann der Testbetrieb mit sehr vielen Angeboten stattfinden.
 
 Um die Webseite vollständig testen zu können, stellen wir folgende Benutzer zur Verfügung.
