@@ -45,7 +45,11 @@ class OfferImageModel {
      */
     public static function getFromDatabaseByOfferId($offerImageDAO, $offerId) {
         $result = $offerImageDAO->readByOfferId($offerId);
-        return new OfferImageModel($result[0], $result[1], $result[2], $result[3], $result[4]);
+        $return = new OfferImageModel(uniqid(), $offerId, 0, "", "");
+        if($result):
+            $return = new OfferImageModel($result[0], $result[1], $result[2], $result[3], $result[4]);
+        endif;
+        return $return;
     }
 
     /**
@@ -110,7 +114,12 @@ class OfferImageModel {
      */
     public function getMime()
     {
-        return $this->mime;
+        $mime = $this->mime;
+        // Returns placeholder offer mime in case of no mime in database
+        if(empty($mime)):
+            $mime = "png";
+        endif;
+        return $mime;
     }
 
     /**
@@ -126,7 +135,12 @@ class OfferImageModel {
      */
     public function getImage()
     {
-        return $this->image;
+        $image = $this->image;
+        // Returns placeholder offer image in case of no image in database
+        if(empty($image)):
+            $image = base64_encode(file_get_contents("assets/placeholder/offer.png"));
+        endif;
+        return $image;
     }
 
     public function getSrc() {

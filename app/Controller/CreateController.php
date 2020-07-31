@@ -55,9 +55,8 @@ class CreateController extends BaseController
             $mime = $_FILES['image']['type'];
             $image = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
         else:
-            $defaultImagePath = "assets/placeholder/offer.png";
-            $mime = pathinfo($defaultImagePath)['extension'];
-            $image = base64_encode(file_get_contents($defaultImagePath));
+            $mime = "";
+            $image = "";
         endif;
         $image = new OfferImageModel(hexdec(uniqid()),
             $newOfferId,

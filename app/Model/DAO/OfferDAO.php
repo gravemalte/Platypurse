@@ -126,7 +126,7 @@ class OfferDAO implements OfferDAOInterface
         $sql = "SELECT * FROM offer
             INNER JOIN user on offer.u_id = user.u_id
             WHERE active = 1 AND user.disabled = 0
-            ORDER BY create_date desc LIMIT 9;";
+            ORDER BY create_date desc, o_id desc LIMIT 9;";
         $stmt = $this->con->prepare($sql);
 
         if($stmt->execute()) {
