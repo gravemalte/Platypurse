@@ -32,13 +32,23 @@ Es wird auch Docker unterstützt. Jedoch nicht aktiv, da auf Nachfrage keine Doc
 
 ## PHP.ini
 
-In der PHP.ini muss lediglich die Uploadfunktion aktiviert werden. Hierzu bitte folgendes in die .ini-Datei schreiben:
+In der PHP.ini muss die Uploadfunktion aktiviert werden. Hierzu bitte folgendes in die .ini-Datei schreiben:
 ````ini
-"file_uploads = On"
+file_uploads = On
 ````
+Außerdem haben wir bei uns das Memory Limit von PHP etwas angehoben damit wir mehr verarbeiten können.
+
+```ini
+memory_limit=2048M
+```
+
 Nachdem die Änderung abgespeichert wurde, war es das bereits.
 
-Weiterhin ist wichtig zu erwähnen, dass PHP standardmäßig einen Upload von max. 2 MB zulässt.
+Weiterhin ist wichtig zu erwähnen, dass XAMPP standardmäßig einen Upload von max. 40 MB zulässt. Wir haben dies bei uns auf 2MB begrenzt, da die Datenbank Performant bleiben soll.
+
+```ìni
+upload_max_filesize=2M
+```
 
 ## Apache
 
