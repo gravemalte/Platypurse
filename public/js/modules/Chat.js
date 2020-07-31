@@ -230,7 +230,7 @@ function buildChat(modules) {
             });
 
             // update regularly the shown timestamps
-            setInterval(this.updateTimeStamps, 60000, this);
+            setInterval(this.updateTimeStamps, 3000, this);
 
             // finally display chat after all loaded
             this.container.classList.remove("hide");

@@ -27,6 +27,15 @@ function buildChatThread(modules) {
              * @type {string}
              */
             this.id = id;
+
+            /**
+             * The avatar of the user.
+             *
+             * @type {HTMLElement}
+             */
+            this.avatarElement = document.createElement("IMG");
+            this.avatarElement.alt = "user icon";
+            this.fetchAvatar();
         }
 
         /**
@@ -71,10 +80,7 @@ function buildChatThread(modules) {
                 document.createElement("DIV");
             iconContainer.classList.add("chat-contact-icon-container");
 
-            let icon =
-                document.createElement("IMG");
-            icon.src = "profile/avatar?id=" + this.id;
-            icon.alt = "user icon";
+            let icon = this.avatarElement;
 
             let textContainer =
                 document.createElement("DIV");
@@ -177,6 +183,31 @@ function buildChatThread(modules) {
             if (aDate.getTime() > bDate.getTime()) return -1;
             if (bDate.getTime() < bDate.getTime()) return 1;
             return 0;
+        }
+
+        /**
+         * Fetches avatar to only load it once.
+         *
+         * @returns {Promise<void>}
+         */
+        async fetchAvatar() {
+            let fetchResponse = await fetch("./profile/avatar?id=" + this.id, {
+                method: "GET"
+            });
+            let imageBuffer = await fetchResponse.arrayBuffer();
+            let base64Flag = "data:" + fetchResponse.headers.get["Content-Type"] + ";base64,";
+            let imageStr = arrayBufferToBase64(imageBuffer);
+
+            function arrayBufferToBase64(buffer) {
+                let binary = '';
+                let bytes = [].slice.call(new Uint8Array(buffer));
+
+                bytes.forEach((b) => binary += String.fromCharCode(b));
+
+                return window.btoa(binary);
+            }
+
+            this.avatarElement.src = base64Flag + imageStr;
         }
     }
 
