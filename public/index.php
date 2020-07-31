@@ -54,7 +54,7 @@ session_set_cookie_params(3600);
 session_start();
 session_get_cookie_params();
 
-if(!ob_get_length()) {
+if(ob_get_length()) {
     ob_end_clean();
 }
 
