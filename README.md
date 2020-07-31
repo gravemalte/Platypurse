@@ -27,7 +27,7 @@ Wir freuen uns, euch unsere fertige Abgabe nun zur Verfügung zu stellen. Wir bi
 # Konfiguration
 
 Um dieses Projekt erfolgreich zu starten, müssen zuerst Einstellungen am Webserver vorgenommen werden.
-Aufgrund der Spezifikation der Vorlesung wird davon ausgegangen, dass die Installtion über XAMPP erfolgte.
+Aufgrund der Spezifikation der Vorlesung wird davon ausgegangen, dass die Installation über XAMPP erfolgte.
 Es wird auch Docker unterstützt. Jedoch nicht aktiv, da auf Nachfrage keine Dockerkonfiguration als Abgabe akzeptiert wurde.
 
 ## PHP.ini
@@ -44,7 +44,7 @@ Weiterhin ist wichtig zu erwähnen, dass PHP standardmäßig einen Upload von ma
 
 Da unser Projekt als MVC-Framework aufgesetzt ist, wird die URL relativ gemappt. Diese muss von Apache entsprechend auf unsere ``index.php`` aufgelöst werden.
 
-Dafür muss ``mod_rewrite`` aktiviert werden. Dazu bitte folgendes in die ``httpd.conf`` eingeben:
+Dafür muss ``mod_rewrite`` aktiviert werden. Dazu bitte Folgendes in die ``httpd.conf`` eingeben:
 
 Unter XAMPP:
 ````ini
@@ -56,9 +56,9 @@ Falls VHost benutzt werden sollte, bitte das ``DocumentRoot`` anpassen.
 
 ## Installation
 
-Die ``.zip``-Datei muss im XAMPP root ``(htdocs)`` entpackt werden, so dass sich die Dateien unter ``htdocs/Platypurse/`` befinden. Danach kann auf dem Webserver zugegriffen werden. Standartmäßig ist die Adresse ``http://localhost/Platypurse/``.
+Die ``.zip``-Datei muss im XAMPP root ``(htdocs)`` entpackt werden, sodass sich die Dateien unter ``htdocs/Platypurse/`` befinden. Danach kann auf dem Webserver zugegriffen werden. Standartmäßig ist die Adresse ``http://localhost/Platypurse/``.
 Beim ersten Start wird die Datenbank erstellt und mit Testdaten gefüllt. Nach einer kurzen Wartezeit wird dann auf die Startseite geleitet.
-Von hier an kann die Seite in vollem Unfang benutzt werden.
+Von hier an kann die Seite in vollem Umfang benutzt werden.
 
 ## Testen
 
