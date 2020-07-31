@@ -1,4 +1,29 @@
 **************************
+           V2.0
+**************************
+INFORMATIONEN:
+Admin-Daten:
+
+Email: admin@platypurse.com
+Passwort: 123
+
+Neuheiten:
+ * Finale Abgabe
+ * Es wurden alle bugs gefixt die uns zugetragen wurden
+ * Das Backend wurde performanter
+ * Das Frontend hat viele neue schönheiten bekommen
+ * Der Quellcode wurde kommentiert
+ * Es wurde eine übersichtliche Dokumentation geschrieben
+
+* Bugfixes:
+ * CRSF Sicherheitslücken wurden behoben
+ * XSS Sicherheitslücken wurden behoben
+ * Bilder werden jetzt auch im Hochkant Format ordentlich dargestellt
+
+
+===============================================================================================
+
+**************************
            V1.2
 **************************
 INFORMATIONEN:
