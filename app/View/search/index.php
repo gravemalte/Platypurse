@@ -14,7 +14,10 @@ if (isset($_GET['search'])) {
     $searchText = htmlspecialchars(strip_tags($_GET['search']));
 }
 
-if(isset($_GET['filter-button']) && $_GET['filter-button'] != 'reset'):
+if(isset($_GET['filter-button']) && $_GET['filter-button'] == 'reset'):
+    header('location: ' . URL . 'search');
+    die();
+else:
     if (isset($_GET['sex'])):
         $sex = $_GET['sex'];
         if ($sex == "männlich"): $sexMaleSelected = "selected"; endif;
