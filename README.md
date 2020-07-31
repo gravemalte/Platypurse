@@ -32,9 +32,14 @@ Es wird auch Docker unterstützt. Jedoch nicht aktiv, da auf Nachfrage keine Doc
 
 ## PHP.ini
 
-In der PHP.ini muss nichts eingestellt werden, dies regelt die Applikation von alleine [Zeile 22-24](public/index.php#L22-L24).
-Wir haben lediglich den Upload aktiviert, das Uploadlimit auf 2MB gesetzt und das Memory Limit etwas erhöht damit alles etwas performanter läuft.
+In der PHP.ini muss nicht viel eingestellt werden, es muss lediglich der Upload aktiviert und das Uploadlimit auf 2MB gesetzt werden.
 
+```ini
+file_uploads=On
+upload_max_filesize=2M
+```
+
+Außerdem haben wir das das Memory Limit etwas erhöht damit alles etwas performanter läuft. Dies regelt die Applikation von alleine [Zeile 22-24](public/index.php#L22).
 ## Apache
 
 Da unser Projekt als MVC-Framework aufgesetzt ist, wird die URL relativ gemappt. Diese muss von Apache entsprechend auf unsere ``index.php`` aufgelöst werden.
