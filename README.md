@@ -36,11 +36,6 @@ In der PHP.ini muss die Uploadfunktion aktiviert werden. Hierzu bitte folgendes 
 ````ini
 file_uploads = On
 ````
-Außerdem haben wir bei uns das Memory Limit von PHP etwas angehoben damit wir mehr verarbeiten können.
-
-```ini
-memory_limit=2048M
-```
 
 Nachdem die Änderung abgespeichert wurde, war es das bereits.
 
