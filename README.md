@@ -63,7 +63,7 @@ Von hier an kann die Seite in vollem Umfang benutzt werden.
 ## Testen
 
 In der Datenbank werden standardmäßig neun Angebote angelegt. 
-In ``public\index.php`` steht in Zeile 38 ein Faktor, wie häufig zusätzliche neun Angebote eingefügt werden sollen, die alle vom User "ShadowStabber69_HD" erstellt werden.
+In ``public\index.php`` steht in [Zeile 36](public/index.php#L36) ein Faktor, wie häufig zusätzliche neun Angebote eingefügt werden sollen, die alle vom User "ShadowStabber69_HD" erstellt werden.
 Dadurch kann der Testbetrieb mit sehr vielen Angeboten stattfinden.
 
 Um die Webseite vollständig testen zu können, stellen wir folgende Benutzer zur Verfügung.
