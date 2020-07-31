@@ -142,9 +142,9 @@ Es folgt eine Liste der Funktionen, die auf der Seite implementiert wurden.
     * Bearbeiten aller Profile
   
 * Usability
-  * Optimierung für mobile Geräte ab 350px Bildschirmbreite
-  * Pagination
-  * Möglichkeit zum Wechsel zwischen Dark Mode und Light Mode
+  * Optimierung für mobile Geräte ab 350px Bildschirmbreite (iPhone 5)
+  * Pagination oder On-Demand Angebote nachladen
+  * Möglichkeit zum Wechsel zwischen Dark Mode und Light Mode (dynamisch nach System bis Button links unten geklickt wird, danach statisch nach Button)
 
 
 # Aufgaben und Korrektheit
@@ -159,6 +159,8 @@ Folgende Funktionen wurde aufgrund zeitlicher Einschränkung nicht mehr umgesetz
 * Melden von Angeboten
 * Ändern der Benutzermail
 * Lazy Loading für Angebote auf der Profilseite
+* Lazy Loading für den Chat
+* Sofortiges Feedback des Chats
 
 # Fehler oder Mängel
 
