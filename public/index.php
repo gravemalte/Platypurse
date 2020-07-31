@@ -19,6 +19,9 @@ require ROOT . 'vendor/autoload.php';
 // load application class
 require APP . 'Application.php';
 
+ini_set('memory_limit','4096M');
+ini_set('upload_max_filesize', '2MB');
+
 if(!file_exists(DB_FILE)){
     $database = new PDO('sqlite:' . DB_FILE);
     // Create tables
