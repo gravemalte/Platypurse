@@ -46,7 +46,7 @@ if(isset($_SESSION['currentUser'])) {
                 <div class="price-tag-container">
                     <div class="price-tag">
                         <p><?=$offer->getShortPrice();?></p>
-                        <?php if($offer->isNegotiable()): ?>
+                        <?php if($offer->isNegotiable() && $offer->isActive()): ?>
                             <span>VB</span>
                         <?php endif; ?>
                     </div>
