@@ -62,8 +62,8 @@ Von hier an kann die Seite in vollem Umfang benutzt werden.
 ## Testen
 
 In der Datenbank werden standardmäßig neun Angebote angelegt. 
-In ``public\index.php`` steht in [Zeile 36](public/index.php#L36) ein Faktor, wie häufig zusätzliche neun Angebote eingefügt werden sollen, die alle vom User "ShadowStabber69_HD" erstellt werden. Standardmäßiger Faktor ist 50, also werden 9 + 50*9 = 459 Angebote erstellt.
-Dadurch kann der Testbetrieb mit sehr vielen Angeboten stattfinden.
+In ``public\index.php`` steht in [Zeile 36](public/index.php#L36) ein Faktor, wie häufig zusätzliche neun Angebote eingefügt werden sollen, die alle vom User "ShadowStabber69_HD" erstellt werden. Standardmäßiger Faktor ist 25, also werden 9 + 25*9 = 234 Angebote erstellt.
+Dadurch kann der Testbetrieb mit sehr vielen Angeboten stattfinden. Bei 234 Angeboten dauert die Erzeugung der Datenbank aufgrund der Generierung von Zufallswerten ca. 5 Sekunden.
 
 Um die Webseite vollständig testen zu können, stellen wir folgende Benutzer zur Verfügung.
 
