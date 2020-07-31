@@ -105,6 +105,9 @@ class RegisterController extends BaseController {
                         $mail = FakeMailer::sendDuplicateMail($mailUser);
                     }
                     else {
+                        $mailUser->setDisplayName($userModel->getDisplayName());
+                        $mailUser->setPassword($userModel->getPassword(), false);
+                        $mailUser->updateInDatabase($userDao);
                         $mail = FakeMailer::sendVerifyMail($mailUser);
                     }
                     header('location: '. URL . 'register/instructionsSent?id=' . $mail->getId());
