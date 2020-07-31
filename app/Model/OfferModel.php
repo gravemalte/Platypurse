@@ -186,8 +186,7 @@ class OfferModel {
 
         $returnArray = array();
         foreach($result as $row):
-            $model = self::getOfferFromRow($row, $offerDAO->getCon(), false);
-            $returnArray[] = $model;
+            $returnArray[] = self::getOfferFromRow($row, $offerDAO->getCon(), false);
         endforeach;
         return $returnArray;
     }
@@ -199,8 +198,7 @@ class OfferModel {
      */
     public static function getHotOffer($offerDAO) {
         $result = $offerDAO->readHot();
-        $model = self::getOfferFromRow($result, $offerDAO->getCon(), false);
-        return $model;
+        return self::getOfferFromRow($result, $offerDAO->getCon(), false);
     }
 
     /**

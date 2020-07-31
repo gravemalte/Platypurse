@@ -1,5 +1,7 @@
 <?php
 
+use Hydro\Helper\CacheBuster;
+
 if(isset($_GET['url'])){
     $slashPos = strpos($_GET['url'], '/', 1);
     if ($slashPos) {
@@ -18,7 +20,7 @@ if(isset($_GET['url'])){
         <label for="expand-nav" class="fas fa-times"></label>
         <div class="nav-logo-container">
             <a href="<?= URL ?>">
-                <img src="<?= \Hydro\Helper\CacheBuster::serve('assets/logo/svg/logo_text.svg', $isSubPage) ?>" alt="show/hide menu button">
+                <img src="<?= CacheBuster::serve('assets/logo/svg/logo_text.svg', $isSubPage) ?>" alt="show/hide menu button">
             </a>
         </div>
         <div class="nav-search-container">
@@ -58,7 +60,7 @@ if(isset($_GET['url'])){
         <div class="nav-profile-container">
             <a href="<?=URL . 'profile' ?>"
                title="<?= $_SESSION['currentUser']->getDisplayName() ?>">
-                <img src="<?=  \Hydro\Helper\CacheBuster::serve($_SESSION['currentUser']->getPicture()) ?>" alt="user avatar">
+                <img src="<?=  CacheBuster::serve($_SESSION['currentUser']->getPicture()) ?>" alt="user avatar">
             </a>
         </div>
         <?php endif; ?>

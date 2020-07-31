@@ -91,7 +91,7 @@ class RegisterTokenModel {
      * Generates new model for user
      * @param UserModel $user
      * @return RegisterTokenModel
-     * @throws \Exception
+     * @throws PDOException
      */
     public static function generate($user) {
         $id = null;

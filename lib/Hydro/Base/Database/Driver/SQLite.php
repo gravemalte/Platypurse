@@ -14,7 +14,7 @@ class SQLite
      */
     public function __construct()
     {
-        $this->con = new PDO('sqlite:' . DB_FILE);;
+        $this->con = new PDO('sqlite:' . DB_FILE);
     }
 
     /**
