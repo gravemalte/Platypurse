@@ -93,7 +93,7 @@ class CreateController extends BaseController
                 $existingOffer = OfferModel::getFromDatabase($dao, $existingOfferId);
 
                 $newPlatypus->setId($existingOffer->getPlatypus()->getId());
-                $newPlatypus->setActive($existingOffer->getPlatypus()->isActive());
+                //$newPlatypus->setActive($existingOffer->getPlatypus()->isActive());
 
                 $newOffer->setId($existingOffer->getId());
                 $newOffer->setUser($existingOffer->getUser());
@@ -101,7 +101,7 @@ class CreateController extends BaseController
                 $newOffer->setClicks($existingOffer->getClicks());
                 $newOffer->setCreateDate($existingOffer->getCreateDate());
                 $newOffer->setEditDate(Date::now());
-                $newOffer->setActive($existingOffer->isActive());
+                //$newOffer->setActive($existingOffer->isActive());
 
                 $newOffer->getImage()->setOfferId($existingOfferId);
                 $newOffer->getImage()->setId($existingOffer->getImage()->getId());

@@ -1,9 +1,6 @@
 <?php
 use Controller\OfferController;
 use Controller\ProfileController;
-use Hydro\Base\Database\Driver\SQLite;
-use Model\UserRatingModel;
-use Model\DAO\UserRatingDAO;
 
 $offer = OfferController::getOffer($_GET['id']);
 OfferController::offerClickPlusOne($offer);
@@ -205,7 +202,8 @@ if(isset($_SESSION['currentUser'])) {
                             <label for="submit-report" class="fas fa-exclamation-triangle" title="Artikel melden"></label>
                         </form>
                         -->
-                        <?php if($_SESSION["currentUser"]->getId() == $seller->getId() || $_SESSION["currentUser"]->isAdmin()): ?>
+                        <?php if($_SESSION["currentUser"]->getId() == $seller->getId() || $_SESSION["currentUser"]->isAdmin()):
+                            if($offer->isActive()):?>
                             <form action="offer/delete" method="post" data-needs-confirmation>
                                 <input type="text" id="delete-platypus-id" name="platypusId" hidden value="<?=$offer->getPlatypus()->getId();?>">
                                 <input type="text" id="delete-offer-id" name="offerId" hidden value="<?=$offer->getId();?>">
@@ -214,6 +212,7 @@ if(isset($_SESSION['currentUser'])) {
                                 <label for="submit-delete" hidden>Artikel löschen</label>
                                 <label for="submit-delete" class="fas fa-trash-alt" title="Artikel löschen"></label>
                             </form>
+                            <?php endif; ?>
                             <form action="create">
                                 <input type="text" id="create-id" name="id" hidden value="<?=$offer->getId();?>">
                                 <label for="create-id" hidden>Änderungs-ID</label>

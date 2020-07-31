@@ -321,6 +321,10 @@ if ($showUpdateData) {
                             (<?= $showZipcode ?>)
                         <?php endif; ?>
                     </p>
+                    <hr>
+                    <p>
+                        <span>Das Angebot wird durch bestätigen online sichtbar sein.</span>
+                    </p>
                 </div>
                 <button title="Änderungen anwenden" data-confirm="confirm">
                     <span class="fas fa-check-double"></span>
