@@ -32,7 +32,7 @@ Es wird auch Docker unterstützt. Jedoch nicht aktiv, da auf Nachfrage keine Doc
 
 ## PHP.ini
 
-In der PHP.ini muss nichts eingestellt werden, dies regelt die Applikation von alleine [Zeile 22-24](public/index.php).
+In der PHP.ini muss nichts eingestellt werden, dies regelt die Applikation von alleine [Zeile 22-24](public/index.php#L22-L24).
 Wir haben lediglich den Upload aktiviert, das Uploadlimit auf 2MB gesetzt und das Memory Limit etwas erhöht damit alles etwas performanter läuft.
 
 ## Apache
