@@ -101,7 +101,7 @@ Es folgt eine Liste der Funktionen, die auf der Seite implementiert wurden.
   * Password vergessen
   * Eigenes Profil bearbeiten
     * Name (Freitext)
-    * Avatar (Bilddatei)
+    * Avatar (Bilddatei kleiner 2 MB)
     * Passwort (Freitext)
   * Chat zwischen Usern
   * User Rating
