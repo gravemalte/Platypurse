@@ -54,12 +54,11 @@ session_set_cookie_params(3600);
 session_start();
 session_get_cookie_params();
 
-if(ob_end_clean()){
-    ob_start();
-}else{
-    ob_start();
+if(!ob_get_length()) {
+    ob_end_clean();
 }
 
+ob_start();
 
 // boot the application
 $app = Application::getInstance();
